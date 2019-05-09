@@ -36,6 +36,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - vuex : https://vuex.vuejs.org/
 - assets and css : https://vue-loader.vuejs.org/#what-is-vue-loader
 - list of components : https://github.com/vuejs/awesome-vue
+- bootstrap vue : https://bootstrap-vue.js.org/docs/components/layout
 
 ### Testing
 
