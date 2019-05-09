@@ -35,12 +35,33 @@
       <router-view/>
     </b-container>
 
+    <!-- Notification toasts -->
+    <b-toast
+            :key="index"
+            v-for="(message, index) in errorMessages"
+            toaster="b-toaster-bottom-center"
+            title="Error"
+            variant="danger"
+            @hidden="closeError(message)"
+            visible
+            auto-hide-delay="10000">
+      <span>{{ message }}</span>
+    </b-toast>
+
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-  name: 'App'
+  name: 'App',
+  computed: mapState({
+    errorMessages: state => state.notification.errorMessages
+  }),
+  methods: mapMutations({
+    closeError: 'notification/closeError'
+  })
 }
 </script>
 
