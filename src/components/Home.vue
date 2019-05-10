@@ -29,7 +29,7 @@
           <b-col class="mt-3" :key="project.id" cols="4" v-for="project in projects">
             <b-card
               :title="project.name"
-              :img-src="thumbnail(project)"
+              :img-src="getProjectThumbnail(project)"
               img-alt="Image"
               img-top
               tag="article"
@@ -56,19 +56,19 @@
 import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
   data () {
     return {}
   },
   created () {
-    this.$store.dispatch('project/all')
+    this.$store.dispatch('project/getAll')
   },
   computed: {
     ...mapState({
       projects: state => state.project.all
     }),
     ...mapGetters('project', {
-      thumbnail: 'thumbnail'
+      getProjectThumbnail: 'thumbnail'
     })
   }
 }

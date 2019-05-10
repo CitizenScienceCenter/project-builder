@@ -25,6 +25,9 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'notification.js' : 'off',
-    "semi": [1, "never"]
+    "semi": [1, "never"],
+    "standard/no-callback-literal": 'off',
+    "no-trailing-spaces": 'off',
+    "import/no-webpack-loader-syntax": 'off'
   }
 }

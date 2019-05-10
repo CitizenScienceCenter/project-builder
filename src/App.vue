@@ -37,15 +37,39 @@
 
     <!-- Notification toasts -->
     <b-toast
-            :key="index"
-            v-for="(message, index) in errorMessages"
+            :key="notification.id"
+            v-for="notification in errorNotifications"
             toaster="b-toaster-bottom-center"
-            title="Error"
+            :title="notification.message.title"
             variant="danger"
-            @hidden="closeError(message)"
+            @hidden="closeError(notification.id)"
             visible
             auto-hide-delay="10000">
-      <span>{{ message }}</span>
+      <span>{{ notification.message.content }}</span>
+    </b-toast>
+
+    <b-toast
+            :key="notification.id"
+            v-for="notification in infoNotifications"
+            toaster="b-toaster-bottom-center"
+            :title="notification.message.title"
+            variant="info"
+            @hidden="closeInfo(notification.id)"
+            visible
+            auto-hide-delay="10000">
+      <span>{{ notification.message.content }}</span>
+    </b-toast>
+
+    <b-toast
+            :key="notification.id"
+            v-for="notification in successNotifications"
+            toaster="b-toaster-bottom-center"
+            :title="notification.message.title"
+            variant="success"
+            @hidden="closeSuccess(notification.id)"
+            visible
+            auto-hide-delay="10000">
+      <span>{{ notification.message.content }}</span>
     </b-toast>
 
   </div>
@@ -57,10 +81,14 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'App',
   computed: mapState({
-    errorMessages: state => state.notification.errorMessages
+    errorNotifications: state => state.notification.errorNotifications,
+    infoNotifications: state => state.notification.infoNotifications,
+    successNotifications: state => state.notification.successNotifications
   }),
   methods: mapMutations({
-    closeError: 'notification/closeError'
+    closeError: 'notification/closeError',
+    closeInfo: 'notification/closeInfo',
+    closeSuccess: 'notification/closeSuccess'
   })
 }
 </script>
