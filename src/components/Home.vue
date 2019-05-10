@@ -23,7 +23,7 @@
       </b-col>
     </b-row>
     <b-row class="justify-content-center mt-4">
-      <h2 class="text-center p-2">Featured projects</h2>
+      <h2 class="p-2">Featured projects</h2>
       <b-col cols="12">
         <b-row align-v="center" class="justify-content-center">
           <b-col class="mt-3" :key="project.id" cols="4" v-for="project in projects">
