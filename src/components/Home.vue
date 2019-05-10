@@ -25,11 +25,11 @@
     <b-row class="justify-content-center mt-4">
       <h2 class="text-center p-2">Featured projects</h2>
       <b-col cols="12">
-        <b-row class="justify-content-center">
-          <b-col class="mt-3" :key="n" cols="4" v-for="n in 10">
+        <b-row align-v="center" class="justify-content-center">
+          <b-col class="mt-3" :key="project.id" cols="4" v-for="project in projects">
             <b-card
-              title="Project"
-              img-src="https://picsum.photos/600/300/?image=25"
+              :title="project.name"
+              :img-src="getProjectThumbnail(project)"
               img-alt="Image"
               img-top
               tag="article"
@@ -37,7 +37,7 @@
               class="mb-2">
 
               <b-card-text>
-                Some quick example text to build on the card title and make up the bulk of the card's content.
+                {{ project.long_description }}
               </b-card-text>
 
               <b-button href="#" variant="primary">Go to project</b-button>
@@ -53,12 +53,23 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
+
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
   data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+    return {}
+  },
+  created () {
+    this.$store.dispatch('project/getAll')
+  },
+  computed: {
+    ...mapState({
+      projects: state => state.project.all
+    }),
+    ...mapGetters('project', {
+      getProjectThumbnail: 'thumbnail'
+    })
   }
 }
 </script>

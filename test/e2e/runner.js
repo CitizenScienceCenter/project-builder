@@ -41,7 +41,7 @@ devConfigPromise.then(devConfig => {
     process.exit(code)
   })
 
-  runner.on('error', function (err) {
+  runner.on('notification.js', function (err) {
     server.close()
     throw err
   })

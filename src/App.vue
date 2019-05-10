@@ -35,12 +35,61 @@
       <router-view/>
     </b-container>
 
+    <!-- Notification toasts -->
+    <b-toast
+            :key="notification.id"
+            v-for="notification in errorNotifications"
+            toaster="b-toaster-bottom-center"
+            :title="notification.message.title"
+            variant="danger"
+            @hidden="closeError(notification.id)"
+            visible
+            auto-hide-delay="10000">
+      <span>{{ notification.message.content }}</span>
+    </b-toast>
+
+    <b-toast
+            :key="notification.id"
+            v-for="notification in infoNotifications"
+            toaster="b-toaster-bottom-center"
+            :title="notification.message.title"
+            variant="info"
+            @hidden="closeInfo(notification.id)"
+            visible
+            auto-hide-delay="10000">
+      <span>{{ notification.message.content }}</span>
+    </b-toast>
+
+    <b-toast
+            :key="notification.id"
+            v-for="notification in successNotifications"
+            toaster="b-toaster-bottom-center"
+            :title="notification.message.title"
+            variant="success"
+            @hidden="closeSuccess(notification.id)"
+            visible
+            auto-hide-delay="10000">
+      <span>{{ notification.message.content }}</span>
+    </b-toast>
+
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-  name: 'App'
+  name: 'App',
+  computed: mapState({
+    errorNotifications: state => state.notification.errorNotifications,
+    infoNotifications: state => state.notification.infoNotifications,
+    successNotifications: state => state.notification.successNotifications
+  }),
+  methods: mapMutations({
+    closeError: 'notification/closeError',
+    closeInfo: 'notification/closeInfo',
+    closeSuccess: 'notification/closeSuccess'
+  })
 }
 </script>
 

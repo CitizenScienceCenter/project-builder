@@ -1,39 +1,28 @@
 import Home from '@/components/Home'
 import Vuex from 'vuex'
-import VueRouter from '@/router'
-import { createLocalVue, mount } from '@vue/test-utils'
+import router from '@/router'
+import store from '@/store'
+import sinon from 'sinon'
+import BootstrapVue from 'bootstrap-vue'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
 
 // https://vue-test-utils.vuejs.org/api/#createlocalvue
 // returns a Vue class for you to add components, mixins and install plugins without polluting the global Vue class.
 const localVue = createLocalVue()
 
 describe('Home.vue', () => {
-  let store // application data
-
   beforeEach(() => {
     localVue.use(Vuex)
-    store = new Vuex.Store({
-      state: {
-
-      },
-      mutations: {
-
-      },
-      getters: {
-
-      },
-      actions: {
-
-      }
-    }) // import from a file normally
+    localVue.use(BootstrapVue)
   })
 
-  it('should render correct contents', () => {
-    const router = VueRouter
-    // prepare the vue instance
-    const wrapper = mount(Home, { store, localVue, router })
+  it('should dispatch project/getAll action', () => {
+    const spy = sinon.spy(store, 'dispatch')
 
-    // https://www.chaijs.com/api/bdd/ for the complete list of assertions
-    expect(wrapper.find({ ref: 'title' }).text()).to.equal('Welcome to Your Vue.js App')
+    // prepare the vue instance
+    shallowMount(Home, { store, localVue, router })
+
+    // eslint-disable-next-line no-unused-expressions
+    expect(spy.withArgs('project/getAll').calledOnce).to.be.true
   })
 })

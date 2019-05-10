@@ -28,6 +28,12 @@ module.exports = function karmaConfig (config) {
         { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
       ]
+    },
+    client: {
+      captureConsole: true,
+      mocha: {
+        bail: true
+      }
     }
   })
 }
