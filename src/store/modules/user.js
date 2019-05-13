@@ -1,7 +1,10 @@
 import api from '@/api/user'
 
 const state = {
-  user: {},
+  infos: {
+    id: 2,
+    apiKey: '90cb9c4b-2f31-4d26-bd4e-f4926e57babb'
+  },
   logged: false,
   authOptions: {}
 }
@@ -20,7 +23,7 @@ const actions = {
       commit('setLogged')
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Error during user sigin', content: reason
+        title: 'Error during user sign in', content: reason
       }, { root: true })
     })
   },

@@ -16,13 +16,13 @@ describe('Home.vue', () => {
     localVue.use(BootstrapVue)
   })
 
-  it('should dispatch project/getAll action', () => {
+  it('should dispatch project/getUserProjects action', () => {
     const spy = sinon.spy(store, 'dispatch')
 
     // prepare the vue instance
     shallowMount(Home, { store, localVue, router })
 
     // eslint-disable-next-line no-unused-expressions
-    expect(spy.withArgs('project/getAll').calledOnce).to.be.true
+    expect(spy.withArgs('project/getUserProjects').calledOnce).to.be.true
   })
 })

@@ -29,7 +29,7 @@
           <b-col class="mt-3" :key="project.id" cols="4" v-for="project in projects">
             <b-card
               :title="project.name"
-              :img-src="getProjectThumbnail(project)"
+              :img-src="project.thumbnail ? project.thumbnail : '/static/img/placeholder.project.png'"
               img-alt="Image"
               img-top
               tag="article"
@@ -37,7 +37,7 @@
               class="mb-2">
 
               <b-card-text>
-                {{ project.long_description }}
+                {{ project.description }}
               </b-card-text>
 
               <b-button href="#" variant="primary">Go to project</b-button>
@@ -61,11 +61,11 @@ export default {
     return {}
   },
   created () {
-    this.$store.dispatch('project/getAll')
+    this.$store.dispatch('project/getAllPublishedProjects')
   },
   computed: {
     ...mapState({
-      projects: state => state.project.all
+      projects: state => state.project.topProjects
     }),
     ...mapGetters('project', {
       getProjectThumbnail: 'thumbnail'

@@ -20,10 +20,10 @@ describe('store/modules/project', () => {
   //
   // ----------------------------------------------------------
 
-  it('test action: project/getAll success', done => {
+  it('test action: project/getUserProjects success', done => {
     const project = actionsInjector({
       '../../api/project': {
-        getProjects () {
+        getUserProjects () {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               resolve({
@@ -37,16 +37,16 @@ describe('store/modules/project', () => {
       }
     })
 
-    testAction(project.default.actions.getAll, null, {}, [
+    testAction(project.default.actions.getUserProjects, null, {}, [
       { type: 'setProjects', payload: [{}] }
     ], done)
   })
 
-  it('test action: project/getAll error', done => {
+  it('test action: project/getUserProjects error', done => {
     const error = new Error('HTTP ERROR')
     const project = actionsInjector({
       '../../api/project': {
-        getProjects () {
+        getUserProjects () {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               reject(error)
@@ -56,7 +56,7 @@ describe('store/modules/project', () => {
       }
     })
 
-    testAction(project.default.actions.getAll, null, project.default.state, [{
+    testAction(project.default.actions.getUserProjects, null, project.default.state, [{
       type: 'notification/showError',
       payload: {
         title: 'Error during projects loading', content: error
