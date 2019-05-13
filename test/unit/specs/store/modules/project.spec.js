@@ -1,4 +1,5 @@
 import store from '@/store'
+import projectModule from '@/store/modules/project'
 import { testAction } from '../helper'
 const actionsInjector = require('inject-loader!@/store/modules/project.js')
 
@@ -8,10 +9,34 @@ describe('store/modules/project', () => {
   //   MUTATIONS
   //
   // ----------------------------------------------------------
+
   it('test mutation: setProjects', () => {
-    expect(store.state.project.all.length).to.equal(0)
-    store.commit('project/setProjects', [{name: 'project1'}, {name: 'project2'}])
-    expect(store.state.project.all.length).to.equal(2)
+    expect(store.state.project.topProjects.length).to.equal(0)
+    expect(store.state.project.categories.length).to.equal(0)
+    expect(Object.values(store.state.project.categoriesProjects).length).to.equal(0)
+
+    store.commit('project/setProjects', {
+      'top_projects': [{name: 'project_a'}, {name: 'project_b'}, {name: 'project_c'}],
+      'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}],
+      'categories_projects': {
+        category_a: [
+          {name: 'project_a'}, {name: 'project_b'}
+        ],
+        category_b: [
+          {name: 'project_c'}
+        ]
+      }
+    })
+
+    expect(store.state.project.topProjects.length).to.equal(3)
+    expect(store.state.project.categories.length).to.equal(2)
+    expect(Object.values(store.state.project.categoriesProjects).length).to.equal(2)
+  })
+
+  it('test mutation: setUserProjects', () => {
+    expect(store.state.project.userProjects.length).to.equal(0)
+    store.commit('project/setUserProjects', [{name: 'project1'}, {name: 'project2'}])
+    expect(store.state.project.userProjects.length).to.equal(2)
   })
 
   // ----------------------------------------------------------
@@ -23,7 +48,7 @@ describe('store/modules/project', () => {
   it('test action: project/getUserProjects success', done => {
     const project = actionsInjector({
       '../../api/project': {
-        getUserProjects () {
+        getUserProjects (userInfos) {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               resolve({
@@ -37,8 +62,8 @@ describe('store/modules/project', () => {
       }
     })
 
-    testAction(project.default.actions.getUserProjects, null, {}, [
-      { type: 'setProjects', payload: [{}] }
+    testAction(project.default.actions.getUserProjects, null, {}, store.state, [
+      { type: 'setUserProjects', payload: [{}] }
     ], done)
   })
 
@@ -46,7 +71,7 @@ describe('store/modules/project', () => {
     const error = new Error('HTTP ERROR')
     const project = actionsInjector({
       '../../api/project': {
-        getUserProjects () {
+        getUserProjects (userInfos) {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               reject(error)
@@ -56,11 +81,119 @@ describe('store/modules/project', () => {
       }
     })
 
-    testAction(project.default.actions.getUserProjects, null, project.default.state, [{
+    testAction(project.default.actions.getUserProjects, null, project.default.state, store.state, [{
       type: 'notification/showError',
       payload: {
-        title: 'Error during projects loading', content: error
+        title: projectModule.errors.GET_USER_PROJECTS_LOADING_ERROR, content: error
       }
     }], done)
+  })
+
+  it('test action: project/getAllPublishedProjects success', done => {
+    const project = actionsInjector({
+      '../../api/project': {
+        getAllProjects () {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              resolve({
+                data: {
+
+                }
+              })
+            }, 100)
+          })
+        }
+      }
+    })
+
+    testAction(project.default.actions.getAllPublishedProjects, null, project.default.state, store.state, [
+      { type: 'setProjects', payload: {} }
+    ], done)
+  })
+
+  it('test action: project/getAllPublishedProjects error', done => {
+    const error = new Error('HTTP ERROR')
+    const project = actionsInjector({
+      '../../api/project': {
+        getAllProjects () {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              reject(error)
+            }, 100)
+          })
+        }
+      }
+    })
+
+    testAction(project.default.actions.getAllPublishedProjects, null, project.default.state, store.state, [
+      {
+        type: 'notification/showError',
+        payload: {
+          title: projectModule.errors.GET_ALL_PROJECTS_LOADING_ERROR, content: error
+        }
+      }
+    ], done)
+  })
+
+  // ----------------------------------------------------------
+  //
+  //   GETTERS
+  //
+  // ----------------------------------------------------------
+
+  it('test getter: project/getFeaturedProjects', () => {
+    store.commit('project/setProjects', {
+      'top_projects': [{name: 'project_a'}, {name: 'project_b'}],
+      'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}, {short_name: 'category_c'}],
+      'categories_projects': {
+        category_a: [
+          {name: 'project_a', featured: true}, {name: 'project_b', featured: false}
+        ],
+        category_b: [
+          {name: 'project_c', featured: false}
+        ],
+        category_c: [
+          {name: 'project_d', featured: true}
+        ]
+      }
+    })
+
+    let result = projectModule.getters.getFeaturedProjects(projectModule.state)
+
+    // eslint-disable-next-line no-unused-expressions
+    expect(result).to.be.an('array')
+    expect(result.length).to.equal(2)
+    expect(result).to.have.deep.members([
+      {name: 'project_a', featured: true},
+      {name: 'project_d', featured: true}
+    ])
+  })
+
+  it('test getter: project/getProjectsFor', () => {
+    store.commit('project/setProjects', {
+      'top_projects': [{name: 'project_a'}, {name: 'project_b'}],
+      'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}, {short_name: 'category_c'}],
+      'categories_projects': {
+        category_a: [
+          {name: 'project_a', featured: true}, {name: 'project_b', featured: false}
+        ],
+        category_b: [
+          {name: 'project_c', featured: false}
+        ],
+        category_c: [
+          {name: 'project_d', featured: true}
+        ]
+      }
+    })
+
+    let result = projectModule.getters.getProjectsFor(projectModule.state)({short_name: 'category_a'})
+
+    // eslint-disable-next-line no-unused-expressions
+    expect(result).to.be.an('array')
+    expect(result.length).to.equal(2)
+    expect(result).to.have.deep.members([
+      {name: 'project_a', featured: true},
+      {name: 'project_b', featured: false}
+    ])
   })
 })
