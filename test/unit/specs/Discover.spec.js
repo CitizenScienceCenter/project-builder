@@ -1,4 +1,4 @@
-import Home from '@/components/Home'
+import Discover from '@/components/Discover'
 import Vuex from 'vuex'
 import router from '@/router'
 import store from '@/store'
@@ -6,11 +6,9 @@ import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
 import {createLocalVue, shallowMount} from '@vue/test-utils'
 
-// https://vue-test-utils.vuejs.org/api/#createlocalvue
-// returns a Vue class for you to add components, mixins and install plugins without polluting the global Vue class.
 const localVue = createLocalVue()
 
-describe('Home.vue', () => {
+describe('Discover.vue', () => {
 
   let sandbox
   localVue.use(Vuex)
@@ -20,11 +18,11 @@ describe('Home.vue', () => {
     sandbox = sinon.sandbox.create()
   })
 
-  it('should dispatch project/getUserProjects action in create()', () => {
+  it('should dispatch project/getAllPublishedProjects action in create()', () => {
     const spy = sandbox.spy(store, 'dispatch')
 
     // prepare the vue instance
-    shallowMount(Home, { store, localVue, router })
+    shallowMount(Discover, { store, localVue, router })
 
     // eslint-disable-next-line no-unused-expressions
     expect(spy.withArgs('project/getAllPublishedProjects').calledOnce).to.be.true

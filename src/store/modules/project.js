@@ -1,10 +1,15 @@
 import api from '../../api/project'
 
+const errors = {
+  GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
+  GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading'
+}
+
 // global state for this module
 const state = {
   userProjects: [],
   categories: [],
-  categoriesProjects: [],
+  categoriesProjects: {},
   topProjects: []
 }
 
@@ -34,7 +39,7 @@ const actions = {
       commit('setProjects', value.data)
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Error during projects loading', content: reason
+        title: errors.GET_ALL_PROJECTS_LOADING_ERROR, content: reason
       }, { root: true })
     })
   },
@@ -43,7 +48,7 @@ const actions = {
       commit('setUserProjects', value.data)
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Error during user projects loading', content: reason
+        title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
       }, { root: true })
     })
   }
@@ -66,5 +71,6 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
+  errors
 }
