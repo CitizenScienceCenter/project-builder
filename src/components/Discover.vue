@@ -35,7 +35,7 @@
 
                   <b-card
                           :title="project.name"
-                          :img-src="thumbnail(project, )"
+                          :img-src="thumbnail(project)"
                           img-alt="Image"
                           img-top
                           tag="article"
@@ -46,7 +46,7 @@
                       {{ project.description }}
                     </b-card-text>
 
-                    <b-button href="#" variant="primary">Go to project</b-button>
+                    <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
                   </b-card>
 
                 </b-col>

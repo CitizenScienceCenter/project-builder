@@ -16,5 +16,6 @@ export default {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'account/signin', {
       data: {}
     })
-  }
+  },
+
 }
