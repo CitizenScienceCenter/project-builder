@@ -12,7 +12,18 @@ export default {
     })
   },
   getProjectThumbnail (project) {
-    return project.info.thumbnail ? process.env.BASE_ENDPOINT_URL + 'uploads/' + (project.info.container ? project.info.container : 'user_' + project.owner_id) + '/' + project.info.thumbnail
-      : process.env.BASE_ENDPOINT_URL + '/static/img/placeholder.project.png'
+    const defaultThumbnail = process.env.BASE_ENDPOINT_URL + '/static/img/placeholder.project.png'
+
+    if (typeof project !== 'undefined' && typeof project.info !== 'undefined' && typeof project.info.thumbnail !== 'undefined') {
+      return project.info.thumbnail
+        ? process.env.BASE_ENDPOINT_URL + 'uploads/' + (project.info.container ? project.info.container : 'user_' + project.owner_id) + '/' + project.info.thumbnail
+        : defaultThumbnail
+    }
+    return defaultThumbnail
+  },
+  getProjectById (id) {
+    return axios.get(process.env.BASE_API_URL + 'project/' + id, {
+      data: {}
+    })
   }
 }

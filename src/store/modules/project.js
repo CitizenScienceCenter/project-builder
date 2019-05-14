@@ -2,7 +2,8 @@ import api from '../../api/project'
 
 const errors = {
   GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
-  GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading'
+  GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading',
+  GET_PROJECT_LOADING_ERROR: 'Error during project loading'
 }
 
 // global state for this module
@@ -10,7 +11,8 @@ const state = {
   userProjects: [],
   categories: [],
   categoriesProjects: {},
-  topProjects: []
+  topProjects: [],
+  selectedProject: {}
 }
 
 // filter methods on the state data
@@ -51,6 +53,16 @@ const actions = {
         title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
       }, { root: true })
     })
+  },
+  getProject ({ commit, state, rootState }, id) {
+    return api.getProjectById(id).then(value => {
+      commit('setSelectedProject', value.data)
+      return state.selectedProject
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PROJECT_LOADING_ERROR, content: reason
+      }, { root: true })
+    })
   }
 }
 
@@ -63,6 +75,9 @@ const mutations = {
   },
   setUserProjects (state, projects) {
     state.userProjects = projects
+  },
+  setSelectedProject (state, project) {
+    state.selectedProject = project
   }
 }
 

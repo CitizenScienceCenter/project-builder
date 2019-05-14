@@ -6,6 +6,7 @@ import createLogger from 'vuex/dist/logger'
 import notification from './modules/notification'
 import project from './modules/project'
 import user from './modules/user'
+import task from './modules/task'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
   modules: {
     notification,
     project,
-    user
+    user,
+    task
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []
