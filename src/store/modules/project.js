@@ -1,9 +1,11 @@
 import api from '../../api/project'
+import builder from './project-builder'
 
 const errors = {
   GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
   GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading',
-  GET_PROJECT_LOADING_ERROR: 'Error during project loading'
+  GET_PROJECT_LOADING_ERROR: 'Error during project loading',
+  POST_PROJECT_ERROR: 'Error during project creation'
 }
 
 // global state for this module
@@ -63,6 +65,9 @@ const actions = {
         title: errors.GET_PROJECT_LOADING_ERROR, content: reason
       }, { root: true })
     })
+  },
+  createProject ({ commit, state, rootState }, builder) {
+    return api.createProject(builder)
   }
 }
 
@@ -87,5 +92,8 @@ export default {
   getters,
   actions,
   mutations,
-  errors
+  errors,
+  modules: {
+    builder
+  }
 }

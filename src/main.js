@@ -13,6 +13,8 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 
+window.Vue = Vue
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

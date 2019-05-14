@@ -25,5 +25,8 @@ export default {
     return axios.get(process.env.BASE_API_URL + 'project/' + id, {
       data: {}
     })
+  },
+  createProject (builder) {
+
   }
 }
