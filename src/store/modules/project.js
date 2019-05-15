@@ -9,12 +9,16 @@ const errors = {
 }
 
 // global state for this module
+
 const state = {
   userProjects: [],
   categories: [],
   categoriesProjects: {},
   topProjects: [],
-  selectedProject: {}
+
+  selectedProject: {},
+
+  projectCreationOptions: {}
 }
 
 // filter methods on the state data
@@ -67,7 +71,19 @@ const actions = {
     })
   },
   createProject ({ commit, state, rootState }, builder) {
-    return api.createProject(builder)
+    return api.createProject(rootState.user.infos.apiKey, builder).then(value => {
+      console.log(value.data)
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.POST_PROJECT_ERROR, content: reason
+      }, { root: true })
+    })
+  },
+  getProjectCreationOptions ({ commit, state, rootState }) {
+    return api.getProjectCreationOptions().then(value => {
+      commit.setProjectCreationOptions(value.data)
+      console.log(value.data)
+    })
   }
 }
 
@@ -83,6 +99,9 @@ const mutations = {
   },
   setSelectedProject (state, project) {
     state.selectedProject = project
+  },
+  setProjectCreationOptions (state, options) {
+    state.projectCreationOptions = options
   }
 }
 

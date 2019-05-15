@@ -24,15 +24,8 @@ export default {
   },
   computed: {
     ...mapState('project/builder', [
-      'currentStep', 'steps'
+      'currentStep', 'steps', 'title', 'shortDescription', 'picture', 'story'
     ]),
-    builder () {
-      return {
-        ...mapState('project/builder', [
-          'title', 'shortDescription', 'picture', 'story'
-        ])
-      }
-    },
     items () {
       return [
         {
@@ -58,12 +51,27 @@ export default {
   watch: {
     steps (newVal, oldVal) {
       if (this.currentStep === 'name' && newVal['name'] === true) {
+
         this.$router.push({ name: 'project.builder.information' })
+
       } else if (this.currentStep === 'information' && newVal['information'] === true) {
+
         this.$router.push({ name: 'project.builder.story' })
+
       } else if (this.currentStep === 'story' && newVal['story'] === true) {
-        this.$store.dispatch('project/createProject', this.builder)
+
+        // this.$store.dispatch('project/getProjectCreationOptions').then(value => {
+        //   this.$store.dispatch('project/createProject', this.builder)
+        // })
+
+        this.$store.dispatch('project/createProject', {
+          title: this.title,
+          shortDescription: this.shortDescription,
+          story: this.story
+        })
+
       } else {
+
         this.$router.push({ name: 'project.builder.name' })
       }
     }

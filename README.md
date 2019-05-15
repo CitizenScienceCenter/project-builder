@@ -45,6 +45,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
     - Vue test helper : https://vue-test-utils.vuejs.org/
     - Assertions : https://www.chaijs.com/api/bdd/
 - test runner : http://karma-runner.github.io/0.13/config/configuration-file.html
+- karma intellij integration : https://gitlab.mobilethinking.ch/pybossa/client/wikis/Configure-Karma-test-runner-in-PhpStorm-or-WebStorm
 
 ### Global config
 
