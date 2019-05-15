@@ -1,18 +1,24 @@
 import api from '../../api/project'
+import builder from './project-builder'
 
 const errors = {
   GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
   GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading',
-  GET_PROJECT_LOADING_ERROR: 'Error during project loading'
+  GET_PROJECT_LOADING_ERROR: 'Error during project loading',
+  POST_PROJECT_ERROR: 'Error during project creation'
 }
 
 // global state for this module
+
 const state = {
   userProjects: [],
   categories: [],
   categoriesProjects: {},
   topProjects: [],
-  selectedProject: {}
+
+  selectedProject: {},
+
+  projectCreationOptions: {}
 }
 
 // filter methods on the state data
@@ -63,6 +69,21 @@ const actions = {
         title: errors.GET_PROJECT_LOADING_ERROR, content: reason
       }, { root: true })
     })
+  },
+  createProject ({ commit, state, rootState }, builder) {
+    return api.createProject(rootState.user.infos.apiKey, builder).then(value => {
+      console.log(value.data)
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.POST_PROJECT_ERROR, content: reason
+      }, { root: true })
+    })
+  },
+  getProjectCreationOptions ({ commit, state, rootState }) {
+    return api.getProjectCreationOptions().then(value => {
+      commit.setProjectCreationOptions(value.data)
+      console.log(value.data)
+    })
   }
 }
 
@@ -78,6 +99,9 @@ const mutations = {
   },
   setSelectedProject (state, project) {
     state.selectedProject = project
+  },
+  setProjectCreationOptions (state, options) {
+    state.projectCreationOptions = options
   }
 }
 
@@ -87,5 +111,8 @@ export default {
   getters,
   actions,
   mutations,
-  errors
+  errors,
+  modules: {
+    builder
+  }
 }

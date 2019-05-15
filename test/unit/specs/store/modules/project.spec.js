@@ -135,6 +135,73 @@ describe('store/modules/project', () => {
     ], done)
   })
 
+  it('test action: project/createProject success', done => {
+    const project = actionsInjector({
+      '../../api/project': {
+        createProject (apiKey, builder) {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              resolve({
+                data: {}
+              })
+            }, 100)
+          })
+        }
+      }
+    })
+
+    const projectBuilder = {
+      title: 'my new project',
+      shortDescription: 'a little description',
+      story: {
+        whatWhy: 'what, why...',
+        who: 'Someone',
+        how: 'I dont know',
+        keepTrack: 'Send an email'
+      }
+    }
+
+    testAction(project.default.actions.createProject, projectBuilder, project.default.state, store.state, [
+      // TODO : assert commit is done when create project will be fully implemented
+    ], done)
+  })
+
+  it('test action: project/createProject error', done => {
+    const error = new Error('HTTP ERROR')
+
+    const project = actionsInjector({
+      '../../api/project': {
+        createProject (apiKey, builder) {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              reject(error)
+            }, 100)
+          })
+        }
+      }
+    })
+
+    const projectBuilder = {
+      title: 'my new project',
+      shortDescription: 'a little description',
+      story: {
+        whatWhy: 'what, why...',
+        who: 'Someone',
+        how: 'I dont know',
+        keepTrack: 'Send an email'
+      }
+    }
+
+    testAction(project.default.actions.createProject, projectBuilder, project.default.state, store.state, [
+      {
+        type: 'notification/showError',
+        payload: {
+          title: projectModule.errors.POST_PROJECT_ERROR, content: error
+        }
+      }
+    ], done)
+  })
+
   // ----------------------------------------------------------
   //
   //   GETTERS

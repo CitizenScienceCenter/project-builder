@@ -2238,6 +2238,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.1.3:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.1.tgz#3bf93c6e89bf46d18cccc27160cd7d9b936cac7a"
+  integrity sha512-b6+gzlkhxEUswBNVwYct6fz+sJYdbmW7F6dAXwNkjTVfZcPcXBYADnVzvxNYcSOPkh/ytzmTRktbNkg5/Uw/PQ==
+
 cross-env@^5.0.1:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
@@ -7789,6 +7794,13 @@ slice-ansi@1.0.0:
   dependencies:
     is-fullwidth-code-point "^2.0.0"
 
+slug@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/slug/-/slug-1.1.0.tgz#73eef5710416f515077bdf70c683bde4915913c9"
+  integrity sha512-NuIOjDQeTMPm+/AUIHJ5636mF3jOsYLFnoEErl9Tdpt4kpt4fOrAJxscH9mUgX1LtPaEqgPCawBg7A4yhoSWRg==
+  dependencies:
+    unicode ">= 0.3.1"
+
 smart-buffer@^1.0.13:
   version "1.1.15"
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-1.1.15.tgz#7f114b5b65fab3e2a35aa775bb12f0d1c649bf16"
@@ -8534,6 +8546,11 @@ ultron@1.0.x:
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
   integrity sha1-rOEWq1V80Zc4ak6I9GhTeMiy5Po=
 
+"unicode@>= 0.3.1":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/unicode/-/unicode-11.0.1.tgz#735bd422ec75cf28d396eb224d535d168d5f1db6"
+  integrity sha512-+cHtykLb+eF1yrSLWTwcYBrqJkTfX7Quoyg7Juhe6uylF43ZbMdxMuSHNYlnyLT8T7POAvavgBthzUF9AIaQvQ==
+
 union-value@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.0.tgz#5c71c34cb5bad5dcebe3ea0cd08207ba5aa1aea4"
@@ -8712,6 +8729,13 @@ void-elements@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
+
+vue-cropperjs@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vue-cropperjs/-/vue-cropperjs-3.0.0.tgz#b3456009a72014ae98bd374a1d812a5c1f5ff46f"
+  integrity sha512-vNdtSLjjcvbMVHqD/JapGKIsP0C+hgyxCiqEDGaxwnSWkj6nQGD2vcXx67Qk8JQfz6Hx/1UVh9jzpyZAeKRU8Q==
+  dependencies:
+    cropperjs "^1.1.3"
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
