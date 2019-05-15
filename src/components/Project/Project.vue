@@ -52,7 +52,7 @@
               </b-col>
               <b-col>
                 <b-button v-b-modal.task_presenter_modal>Open task presenter</b-button>
-                <b-modal id="task_presenter_modal" title="Task presenter">
+                <b-modal id="task_presenter_modal" title="Task presenter" v-if="project.info">
                   <div v-html="project.info.task_presenter"></div>
                 </b-modal>
               </b-col>

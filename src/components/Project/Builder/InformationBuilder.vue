@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form @submit.prevent="onSubmit">
+    <b-form ref="form" @submit.prevent="onSubmit">
       <b-row class="mt-4">
         <b-col md="9">
           <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>
@@ -28,8 +28,8 @@
       <b-row class="mt-4">
         <b-col md="9">
           <h3 class="mt-3">Choose a nice picture</h3>
-          <vue-cropper ref="cropper" :data="cropData" :view-mode="2" v-show="pictureUrl !== ''" :src="pictureUrl"></vue-cropper>
-          <b-form-file v-model="selectedPicture" accept=".jpg, .png, .gif"></b-form-file>
+          <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2"></vue-cropper>
+          <b-form-file @change="setImage" accept=".jpg, .png, .gif"></b-form-file>
         </b-col>
       </b-row>
       <b-row class="mt-4">
@@ -54,12 +54,19 @@ export default {
     return {
       maxNbCharacters: 120,
       currentShortDescription: '',
-      selectedPicture: ''
+      selectedPicture: '',
+      pictureSelected: false
     }
   },
   mounted () {
     this.currentShortDescription = this.shortDescription
-    this.selectedPicture = this.picture
+
+    if (this.picture.length > 0) {
+      this.selectedPicture = this.picture
+      this.pictureSelected = true
+
+      this.$refs.cropper.replace(this.picture)
+    }
   },
   methods: {
     onSubmit () {
@@ -69,7 +76,28 @@ export default {
 
         this.$store.commit('project/builder/setPicture', this.selectedPicture)
         this.$store.commit('project/builder/setCroppedPicture', this.$refs.cropper.getCroppedCanvas().toDataURL())
-        this.$store.commit('project/builder/setCropData', this.$refs.cropper.getData())
+        this.$store.commit('project/builder/setCropData', this.$refs.cropper.getData(true))
+      }
+    },
+
+    setImage (event) {
+      const file = event.target.files[0]
+
+      if (!file.type.includes('image/')) {
+        alert('Please select an image file')
+        return
+      }
+
+      if (typeof FileReader === 'function') {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          this.selectedPicture = e.target.result
+          this.$refs.cropper.replace(this.selectedPicture)
+          this.pictureSelected = true
+        }
+        reader.readAsDataURL(file)
+      } else {
+        alert('Sorry, FileReader API not supported')
       }
     }
   },
@@ -78,37 +106,30 @@ export default {
       title: state => state.title,
       shortDescription: state => state.shortDescription,
       picture: state => state.picture,
+      croppedPicture: state => state.croppedPicture,
       cropData: state => state.cropData
     }),
 
-    pictureUrl () {
-      return typeof this.selectedPicture === 'object' ? URL.createObjectURL(this.selectedPicture) : ''
-    },
-
+    /**
+     * Returns true if the short description is validated
+     * @return {boolean}
+     */
     validated () {
       return this.currentShortDescription.length > 0 && this.currentShortDescription.length <= this.maxNbCharacters
     },
+    /**
+     * Returns a valid feedback message that will be displayed in the form
+     * @return {string}
+     */
     validFeedback () {
       return this.maxNbCharacters - this.currentShortDescription.length + ' characters left'
     },
+    /**
+     * Returns an invalid feedback message that will be displayed in the form
+     * @return {string}
+     */
     invalidFeedback () {
       return this.currentShortDescription.length === 0 ? 'You must set a description for your project' : 'The description length should not exceed ' + this.maxNbCharacters + ' characters'
-    }
-  },
-  watch: {
-    selectedPicture (newVal, oldVal) {
-      if (newVal !== '') {
-        if (typeof FileReader === 'function') {
-          const reader = new FileReader()
-          reader.onload = (event) => {
-            // rebuild cropperjs with the updated source
-            this.$refs.cropper.replace(event.target.result)
-          }
-          reader.readAsDataURL(newVal)
-        } else {
-          alert('Sorry, FileReader API not supported')
-        }
-      }
     }
   }
 }

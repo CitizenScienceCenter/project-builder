@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form @submit.prevent="onSubmit">
+    <b-form ref="form" @submit.prevent="onSubmit">
       <b-row class="mt-4">
         <b-col md="9">
           <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>

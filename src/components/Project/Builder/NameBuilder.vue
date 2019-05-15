@@ -5,7 +5,7 @@
   </b-row>
   <b-row>
     <b-col md="6" offset-md="3" align-h="center">
-      <b-form @submit.prevent="onSubmit">
+      <b-form @submit.prevent="onSubmit" ref="form">
         <b-form-group
                 id="fieldset-title"
                 label="Project title"
