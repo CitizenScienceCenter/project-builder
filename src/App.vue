@@ -9,15 +9,15 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item to="/">Home</b-nav-item>
-            <b-nav-item to="/discover">Discover</b-nav-item>
-            <b-nav-item to="/about">About</b-nav-item>
+            <b-nav-item :to="{ name: 'home' }">Home</b-nav-item>
+            <b-nav-item :to="{ name: 'discover' }">Discover</b-nav-item>
+            <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
 
-            <b-nav-item to="login">Login</b-nav-item>
+            <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
 
             <b-nav-item-dropdown right>
               <template slot="button-content">User</template>

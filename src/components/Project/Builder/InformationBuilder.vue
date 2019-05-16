@@ -74,9 +74,11 @@ export default {
         this.$store.commit('project/builder/setShortDescription', this.currentShortDescription)
         this.$store.commit('project/builder/setStep', { step: 'information', value: true })
 
-        this.$store.commit('project/builder/setPicture', this.selectedPicture)
-        this.$store.commit('project/builder/setCroppedPicture', this.$refs.cropper.getCroppedCanvas().toDataURL())
-        this.$store.commit('project/builder/setCropData', this.$refs.cropper.getData(true))
+        if (this.selectedPicture) {
+          this.$store.commit('project/builder/setPicture', this.selectedPicture)
+          this.$store.commit('project/builder/setCroppedPicture', this.$refs.cropper.getCroppedCanvas().toDataURL())
+          this.$store.commit('project/builder/setCropData', this.$refs.cropper.getData(true))
+        }
       }
     },
 

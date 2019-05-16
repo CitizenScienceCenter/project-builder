@@ -65,9 +65,14 @@ export default {
         // })
 
         this.$store.dispatch('project/createProject', {
-          title: this.title,
+          name: this.title,
           shortDescription: this.shortDescription,
-          story: this.story
+          longDescription: JSON.stringify({
+            whatWhy: this.story.whatWhy,
+            how: this.story.how,
+            who: this.story.who,
+            keepTrack: this.story.keepTrack
+          })
         })
 
       } else {

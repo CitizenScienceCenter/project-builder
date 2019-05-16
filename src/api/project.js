@@ -32,12 +32,12 @@ export default {
       data: {}
     })
   },
-  createProject (apiKey, builder) {
+  createProject (apiKey, { name, shortDescription, longDescription }) {
     return axios.post(process.env.BASE_API_URL + 'project?api_key=' + apiKey, {
-      name: builder.title,
-      short_name: slug(builder.title, {lower: true, replacement: '_'}),
-      description: builder.shortDescription,
-      long_description: builder.story.whatWhy + ' ' + builder.story.how + ' ' + builder.story.who + ' ' + builder.story.keepTrack
+      name: name,
+      short_name: slug(name, { lower: true, replacement: '_' }),
+      description: shortDescription,
+      long_description: longDescription
     })
   }
 }
