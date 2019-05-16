@@ -30,13 +30,17 @@ const getters = {
     return state.categoriesProjects[category.short_name]
   },
   getFeaturedProjects: state => {
-    // let featuredProjects = []
-    return Object.values(state.categoriesProjects).reduce((previousValue, currentValue) => {
-      let result = currentValue.filter(project => {
-        return project.featured
-      })
-      return previousValue.concat(result)
-    }, [])
+    let featuredProjects = []
+
+    if (state.categoriesProjects) {
+      featuredProjects = Object.values(state.categoriesProjects).reduce((previousValue, currentValue) => {
+        let result = currentValue.filter(project => {
+          return project.featured
+        })
+        return previousValue.concat(result)
+      }, [])
+    }
+    return featuredProjects
   }
 }
 

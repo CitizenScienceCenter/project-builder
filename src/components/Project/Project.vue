@@ -7,7 +7,8 @@
       <b-col cols="8">
         <h2>{{ project.name }}</h2>
         <p>{{ project.description }}</p>
-        <b-btn variant="success">Contribute!</b-btn>
+        <b-btn v-if="project.published" variant="success">Contribute!</b-btn>
+        <b-btn v-else variant="success">Draft, complete it!</b-btn>
         <b-btn variant="outline-success">Subscribe</b-btn>
       </b-col>
     </b-row>
