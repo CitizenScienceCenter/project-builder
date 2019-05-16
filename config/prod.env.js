@@ -1,6 +1,6 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_ENDPOINT_URL: '"PROD_ENDPOINT_URL"',
-  BASE_API_URL: '"PROD_API_URL"'
+  BASE_ENDPOINT_URL: '"https://pb.citizenscience.ch/"',
+  BASE_API_URL: '"https://pb.citizenscience.ch/api/"'
 }
