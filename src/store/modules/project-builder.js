@@ -30,7 +30,30 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
-
+  /**
+   * Reset all the builder data to have empty fields when creating a new project
+   * @param commit
+   * @return {Promise<void>}
+   */
+  reset ({ commit }) {
+    return new Promise(resolve => {
+      commit('setStep', { step: 'name', value: false })
+      commit('setStep', { step: 'information', value: false })
+      commit('setStep', { step: 'story', value: false })
+      commit('setTitle', '')
+      commit('setShortDescription', '')
+      commit('setPicture', '')
+      commit('setCroppedPicture', '')
+      commit('setCropData', {})
+      commit('setStory', {
+        whatWhy: '',
+        how: '',
+        who: '',
+        keepTrack: ''
+      })
+      resolve()
+    })
+  }
 }
 
 // methods that change the state
