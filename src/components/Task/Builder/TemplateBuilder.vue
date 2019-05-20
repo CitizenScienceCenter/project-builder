@@ -9,7 +9,7 @@
 
     <b-row v-if="task.job === jobs.classify">
       <b-col md="9">
-        <JobClassifyEditor></JobClassifyEditor>
+        <ClassifyTemplateEditor></ClassifyTemplateEditor>
       </b-col>
       <b-col md="3">
         <p>Formulate simple questions and provide even simpler answer options!</p>
@@ -19,7 +19,7 @@
 
     <b-row v-if="task.job === jobs.describe">
       <b-col md="9">
-        <JobDescribeEditor></JobDescribeEditor>
+        <DescribeTemplateEditor></DescribeTemplateEditor>
       </b-col>
       <b-col md="3">
         <p>If our template doesn't exactly fit your project, you can always try our expert path. But remember: not for beginners!</p>
@@ -28,7 +28,7 @@
 
     <b-row v-if="task.job === jobs.count">
       <b-col md="9">
-        <JobCountEditor></JobCountEditor>
+        <CountTemplateEditor></CountTemplateEditor>
       </b-col>
       <b-col md="3">
         <p>Explain briefly what users should be counting. They will then be able to locate the things to be counted with dots on the image.</p>
@@ -40,16 +40,16 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import JobClassifyEditor from '@/components/Task/Builder/JobEditor/JobClassifyEditor'
-import JobCountEditor from '@/components/Task/Builder/JobEditor/JobCountEditor'
-import JobDescribeEditor from '@/components/Task/Builder/JobEditor/JobDescribeEditor'
+import ClassifyTemplateEditor from '@/components/Task/Builder/TemplateEditor/ClassifyTemplateEditor'
+import CountTemplateEditor from '@/components/Task/Builder/TemplateEditor/CountTemplateEditor'
+import DescribeTemplateEditor from '@/components/Task/Builder/TemplateEditor/DescribeTemplateEditor'
 
 export default {
-  name: 'JobEditor',
+  name: 'TemplateBuilder',
   components: {
-    JobDescribeEditor,
-    JobCountEditor,
-    JobClassifyEditor
+    ClassifyTemplateEditor,
+    CountTemplateEditor,
+    DescribeTemplateEditor
   },
   computed: {
     ...mapState('task/builder', [
@@ -58,11 +58,13 @@ export default {
   },
   methods: {
     ...mapMutations('task/builder', [
-      'setTaskJob'
+      'setTaskJob', 'setStep', 'setCurrentStep'
     ]),
 
     goBack () {
-      this.setTaskJob(null)
+      // go back to job selection
+      this.setCurrentStep('material')
+      this.setStep({ step: 'job', value: false })
     }
   },
   filters: {

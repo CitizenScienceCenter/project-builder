@@ -8,31 +8,37 @@
     <b-row>
       <b-col>
         <b-tabs content-class="mt-4">
-          <b-tab :key="key" v-for="(question, key) in questions" :title="'Question ' + (key + 1)" active>
+          <b-tab :key="questionKey" v-for="(question, questionKey) in questions" :title="'Question ' + (questionKey + 1)" active>
 
             <b-form-group
-                    :label="'Question ' + (key + 1)"
+                    :label="'Question ' + (questionKey + 1)"
                     :valid-feedback="validQuestionFeedback(question.question)"
                     :invalid-feedback="invalidQuestionFeedback(question.question)"
                     :state="questionValidated(question.question)">
+
               <b-input v-model="question.question"></b-input>
+              <b-btn @click="deleteQuestion(questionKey)" v-if="questions.length > 1" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete question</b-btn>
+
             </b-form-group>
 
             <b-form-group
-                    :key="key"
-                    v-for="(answer, key) in question.answers"
-                    :label="'Answer ' + (key + 1)"
+                    :key="answerKey"
+                    v-for="(answer, answerKey) in question.answers"
+                    :label="'Answer ' + (answerKey + 1)"
                     :valid-feedback="validAnswerFeedback(answer)"
                     :invalid-feedback="invalidAnswerFeedback(answer)"
                     :state="answerValidated(answer)">
-              <b-input v-model="question.answers[key]"></b-input>
+
+              <b-input v-model="question.answers[answerKey]"></b-input>
+              <b-btn @click="deleteAnswer(question, answerKey)" v-if="question.answers.length > 1" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete answer</b-btn>
+
             </b-form-group>
 
             <b-btn @click="addAnswer(question)" class="float-right ">Add answer</b-btn>
           </b-tab>
         </b-tabs>
 
-        <b-btn @click="onSubmit" variant="success" class="mt-4">I'm good to go</b-btn>
+        <b-btn @click="onSubmit" variant="success" size="lg" class="mt-4">I'm good to go</b-btn>
       </b-col>
     </b-row>
   </div>
@@ -71,11 +77,33 @@ export default {
       'showError'
     ]),
 
+    addQuestion () {
+      this.questions.push({
+        question: '',
+        answers: [
+          ''
+        ]
+      })
+    },
+    deleteQuestion (key) {
+      if (this.questions.length > 1) {
+        this.questions.splice(key, 1)
+      }
+    },
+    addAnswer (question) {
+      question.answers.push('')
+    },
+    deleteAnswer (question, key) {
+      if (question.answers.length > 1) {
+        question.answers.splice(key, 1)
+      }
+    },
+
     onSubmit () {
       if (this.isFormValid()) {
         // clone the content
         this.setTaskTemplate(JSON.parse(JSON.stringify(this.questions)))
-        this.setStep({ step: 'job', value: true })
+        this.setStep({ step: 'template', value: true })
       } else {
         this.showError({ title: 'Incomplete form', content: 'Some fields are not validated' })
       }
@@ -98,18 +126,6 @@ export default {
       }
 
       return countInvalidQuestions === 0 && countInvalidAnswers === 0
-    },
-
-    addQuestion () {
-      this.questions.push({
-        question: '',
-        answers: [
-          ''
-        ]
-      })
-    },
-    addAnswer (question) {
-      question.answers.push('')
     },
 
     validQuestionFeedback (question) {

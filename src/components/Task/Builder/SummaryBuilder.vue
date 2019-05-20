@@ -11,8 +11,8 @@
         <ul>
           <li>Material: {{ task.material }}</li>
           <li>Job: {{ task.job }}</li>
-          <li>Source: {{ task.source }}</li>
           <li>Template: {{ task.template }}</li>
+          <li>Source: {{ task.source }}</li>
         </ul>
       </b-col>
     </b-row>

@@ -1,32 +1,109 @@
 <template>
   <div>
-    <JobSelector v-if="!task.job" class="mt-4"></JobSelector>
-    <JobEditor v-else class="mt-4"></JobEditor>
+    <!-- Job type selection title -->
+    <b-row class="mt-4">
+      <b-col>
+        <h2 class="text-center">What will you do with all the files?</h2>
+        <b-link @click="goBack">Go back</b-link>
+      </b-col>
+    </b-row>
+
+    <b-row class="mt-4">
+      <b-col md="9">
+        <b-row>
+
+          <b-col md="4" v-for="job in materialJobs[task.material]" :key="job">
+
+            <b-card :class="{ 'material-selected': selectedJob === jobs.describe }" v-if="job === jobs.describe" @click="onJobSelected(job)" class="text-center material">
+              <i class="far fa-edit fa-4x"></i>
+              <div class="m-2">Describe</div>
+            </b-card>
+
+            <b-card :class="{ 'material-selected': selectedJob === jobs.classify }" v-if="job === jobs.classify" @click="onJobSelected(job)" class="text-center material">
+              <i class="fas fa-filter fa-4x"></i><br>
+              <div class="m-2">Classify</div>
+            </b-card>
+
+            <b-card :class="{ 'material-selected': selectedJob === jobs.count }" v-if="job === jobs.count" @click="onJobSelected(job)" class="text-center material">
+              <i class="fas fa-calculator fa-4x"></i><br>
+              <div class="m-2">Count</div>
+            </b-card>
+          </b-col>
+
+        </b-row>
+      </b-col>
+
+      <b-col md="3" class="text-muted">
+        <p>Choose any of the options.</p>
+        <p>Not what you were looking for? Try the <b-link>expert path</b-link> (not for beginners!)</p>
+      </b-col>
+
+    </b-row>
+
+    <b-row class="mt-4">
+      <b-col>
+        <b-btn @click="onSubmit" variant="success" size="lg">Yup!</b-btn>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import JobSelector from '@/components/Task/Builder/JobSelector'
-import JobEditor from '@/components/Task/Builder/JobEditor/JobEditor'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'JobBuilder',
-  components: {
-    JobEditor,
-    JobSelector
+  name: 'JobSelector',
+  mounted () {
+    this.selectedJob = this.task.job
+  },
+  data: () => {
+    return {
+      selectedJob: null
+    }
   },
   computed: {
     ...mapState('task/builder', [
-      'materialJobs', 'task', 'jobs'
+      'task', 'jobs', 'materialJobs'
     ])
   },
   methods: {
+    ...mapMutations('task/builder', [
+      'setTaskJob', 'setCurrentStep', 'setStep', 'setTaskTemplate'
+    ]),
 
+    onJobSelected (jobType) {
+      this.selectedJob = jobType
+    },
+    onSubmit () {
+      if (this.task.job !== this.selectedJob) {
+        // reset the template if it was already set
+        this.setTaskTemplate(null)
+      }
+      this.setTaskJob(this.selectedJob)
+      this.setStep({ step: 'job', value: true })
+    },
+    goBack () {
+      // invalidate job step and go to material selection
+      this.setStep({ step: 'job', value: false })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  @import '~bootstrap/scss/bootstrap.scss';
 
+  .material {
+    &:hover {
+      cursor: pointer;
+      transition: all 0.3s;
+      background-color: $primary;
+      color: $white;
+    }
+  }
+
+  .material-selected {
+    background-color: $primary;
+    color: $white;
+  }
 </style>

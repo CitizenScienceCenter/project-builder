@@ -22,7 +22,7 @@ const state = {
     material: null, // the kind of data (image, sound, video)
     job: null, // the kind of task (classify, describe...)
     template: null, // configuration of the task
-    source: null // selected of the source
+    source: null // selected source
   },
   currentStep: 'material',
   steps: {

@@ -21,13 +21,16 @@
               :valid-feedback="validDescriptionFeedback(description)"
               :invalid-feedback="invalidDescriptionFeedback(description)"
               :state="descriptionValidated(description)">
+
         <b-input v-model="descriptions[key]" placeholder="Describe what?"></b-input>
+        <b-btn @click="deleteDescription(key)" v-if="descriptions.length > 1" variant="danger" size="sm" class="mt-1 mb-1 float-right">Delete</b-btn>
+
       </b-form-group>
 
       <b-btn @click="addDescription" class="float-right">Add description</b-btn>
     </div>
 
-    <b-btn @click="onSubmit" variant="success" class="mt-4">I'm good to go</b-btn>
+    <b-btn @click="onSubmit" variant="success" size="lg" class="mt-4">I'm good to go</b-btn>
   </div>
 </template>
 
@@ -66,20 +69,25 @@ export default {
       'setTaskTemplate', 'setStep'
     ]),
 
+    addDescription () {
+      this.descriptions.push('')
+    },
+    deleteDescription (key) {
+      if (this.descriptions.length > 1) {
+        this.descriptions.splice(key, 1)
+      }
+    },
+
     onSubmit () {
       if (this.isFormValid()) {
         this.setTaskTemplate({
           question: this.question,
           descriptions: this.descriptions.slice(0)
         })
-        this.setStep({ step: 'job', value: true })
+        this.setStep({ step: 'template', value: true })
       } else {
         this.showError({ title: 'Incomplete form', content: 'All the fields should be validated' })
       }
-    },
-
-    addDescription () {
-      this.descriptions.push('')
     },
 
     isFormValid () {

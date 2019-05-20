@@ -8,7 +8,7 @@
               :state="validated">
         <b-input v-model="question" placeholder="E.g. How many people can you see in the image?"></b-input>
       </b-form-group>
-      <b-button type="submit" variant="success">I'm good to go</b-button>
+      <b-button type="submit" size="lg" variant="success">I'm good to go</b-button>
     </b-form>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
     onSubmit () {
       if (this.validated) {
         this.setTaskTemplate(JSON.parse(JSON.stringify(this.question)))
-        this.setStep({ step: 'job', value: true })
+        this.setStep({ step: 'template', value: true })
       } else {
         this.showError({ title: 'Form incomplete', content: 'You have to provide a correct question' })
       }

@@ -135,15 +135,28 @@ export default new Router({
       }
     },
     {
+      path: '/task/builder/template',
+      name: 'task.builder.template',
+      component: TaskBuilder,
+      beforeEnter: (to, from, next) => {
+        if (store.state.task.builder.steps.job === true) {
+          store.commit('task/builder/setCurrentStep', 'template')
+          next()
+        } else {
+          next({ name: 'task.builder.job' })
+        }
+      }
+    },
+    {
       path: '/task/builder/source',
       name: 'task.builder.source',
       component: TaskBuilder,
       beforeEnter: (to, from, next) => {
-        if (store.state.task.builder.steps.job === true) {
+        if (store.state.task.builder.steps.template === true) {
           store.commit('task/builder/setCurrentStep', 'source')
           next()
         } else {
-          next({ name: 'task.builder.job' })
+          next({ name: 'task.builder.template' })
         }
       }
     },

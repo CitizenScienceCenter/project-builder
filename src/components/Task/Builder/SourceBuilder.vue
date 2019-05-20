@@ -3,7 +3,7 @@
     <b-row class="mt-4">
       <b-col>
         <h2 class="text-center">Now's the time to select your source</h2>
-        <b-btn @click="onSubmit" variant="success">Next</b-btn>
+        <b-btn @click="onSubmit" variant="success" size="lg">Next</b-btn>
       </b-col>
     </b-row>
   </div>
