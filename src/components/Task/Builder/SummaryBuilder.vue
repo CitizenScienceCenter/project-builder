@@ -13,7 +13,17 @@
           <li>Job: {{ task.job }}</li>
           <li>Template: {{ task.template }}</li>
           <li>Source: {{ task.source }}</li>
+          <li>
+            Links ({{ task.sourceContent.length }})
+            <ul>
+              <li :key="link" v-for="link in task.sourceContent">
+                <b-link :href="link" target="_blank">{{ link }}</b-link>
+              </li>
+            </ul>
+          </li>
         </ul>
+
+        <b-btn @click="onSubmit" variant="success" size="lg">Create task</b-btn>
       </b-col>
     </b-row>
   </div>
@@ -28,6 +38,11 @@ export default {
     ...mapState('task/builder', [
       'task'
     ])
+  },
+  methods: {
+    onSubmit () {
+      console.log(this.task)
+    }
   }
 }
 </script>
