@@ -1,4 +1,5 @@
 import api from '@/api/task'
+import builder from './task-builder'
 
 const errors = {
   GET_PROJECT_TASKS_LOADING_ERROR: 'Error during project tasks loading'
@@ -38,5 +39,8 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
+  modules: {
+    builder
+  }
 }

@@ -3,16 +3,17 @@ import { uuid } from '@/helper'
 const state = {
   errorNotifications: [],
   infoNotifications: [],
-  successNotifications: []
+  successNotifications: [],
+  loadingNotifications: []
 }
 
 // filter methods on the state data
 const getters = {
-  // isDisplayed: (state) => (message) => {
-  //   return state.errorMessages.find(value => {
-  //     return value === message
-  //   }) !== null
-  // }
+  isLoadingDisplayed: (state) => (id) => {
+    return typeof state.loadingNotifications.find(value => {
+      return value === id
+    }) !== 'undefined'
+  }
 }
 
 // async methods making mutations are placed here
@@ -44,6 +45,14 @@ const mutations = {
   closeInfo (state, id) {
     state.infoNotifications = state.infoNotifications.filter(value => {
       return value.id !== id
+    })
+  },
+  showLoading (state, id) {
+    state.loadingNotifications.push(id)
+  },
+  closeLoading (state, id) {
+    state.loadingNotifications = state.loadingNotifications.filter(value => {
+      return value !== id
     })
   }
 }

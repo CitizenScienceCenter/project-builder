@@ -76,11 +76,13 @@ const actions = {
   },
   createProject ({ commit, state, rootState }, builder) {
     return api.createProject(rootState.user.infos.apiKey, builder).then(value => {
-      console.log(value.data)
+      commit('setSelectedProject', value.data)
+      return state.selectedProject
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.POST_PROJECT_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
   getProjectCreationOptions ({ commit, state, rootState }) {

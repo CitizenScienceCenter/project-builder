@@ -4,6 +4,7 @@
     <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
     <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>
     <StoryBuilder v-if="currentStep === 'story'"></StoryBuilder>
+    <EndBuilder v-if="currentStep === 'end'"></EndBuilder>
   </div>
 </template>
 
@@ -12,15 +13,21 @@ import NameBuilder from '@/components/Project/Builder/NameBuilder'
 import InformationBuilder from '@/components/Project/Builder/InformationBuilder'
 import StoryBuilder from '@/components/Project/Builder/StoryBuilder'
 
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import EndBuilder from '@/components/Project/Builder/EndBuilder'
 
 export default {
   name: 'ProjectBuilder',
-  components: {StoryBuilder, InformationBuilder, NameBuilder},
+  components: {EndBuilder, StoryBuilder, InformationBuilder, NameBuilder},
   data () {
     return {
 
     }
+  },
+  methods: {
+    ...mapActions('project/builder', {
+      resetBuilder: 'reset'
+    })
   },
   computed: {
     ...mapState('project/builder', [
@@ -60,18 +67,25 @@ export default {
 
       } else if (this.currentStep === 'story' && newVal['story'] === true) {
 
-        // this.$store.dispatch('project/getProjectCreationOptions').then(value => {
-        //   this.$store.dispatch('project/createProject', this.builder)
-        // })
-
         this.$store.dispatch('project/createProject', {
-          title: this.title,
+          name: this.title,
           shortDescription: this.shortDescription,
-          story: this.story
+          longDescription: JSON.stringify({
+            whatWhy: this.story.whatWhy,
+            how: this.story.how,
+            who: this.story.who,
+            keepTrack: this.story.keepTrack
+          })
+        }).then(project => {
+
+          // if project successfully created
+          if (project) {
+            this.$router.push({name: 'project.builder.end'})
+          }
+
         })
 
-      } else {
-
+      } else if (this.currentStep !== 'end') {
         this.$router.push({ name: 'project.builder.name' })
       }
     }

@@ -3,7 +3,7 @@ import api from '@/api/user'
 const state = {
   infos: {
     id: 2,
-    apiKey: '90cb9c4b-2f31-4d26-bd4e-f4926e57babb'
+    apiKey: '3120c4af-757b-4958-8ab9-9765c88f8d56'
   },
   logged: false,
   authOptions: {}
