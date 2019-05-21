@@ -1,5 +1,4 @@
 <template>
-
   <b-row class="mt-4">
 
     <b-col md="9">
@@ -10,10 +9,17 @@
       <b-btn @click="getBucketLinks(bucket.name)" variant="primary">Search in bucket</b-btn>
       <b-btn @click="onSubmit" variant="success" size="lg" class="float-right" v-if="materialAuthorizedLinks.length > 0">Go!</b-btn>
 
+      <LoadingSpinner class="mt-4" :id="loaders.GET_BUCKET_LINKS"></LoadingSpinner>
+
       <b-list-group class="mt-4">
         <b-list-group-item :key="link" v-for="link in materialAuthorizedLinks">
-          <b-img v-if="task.material === materials.image" style="width: 200px" :src="link"></b-img>
-          <b-link :href="link">{{ link }}</b-link>
+          <div>
+            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="link"></b-img>
+            <b-link :href="link">{{ link }}</b-link>
+          </div>
+         <div class="text-right">
+           <b-btn @click="deleteBucketLink(link)" variant="danger">Delete</b-btn>
+         </div>
         </b-list-group-item>
       </b-list-group>
     </b-col>
@@ -22,25 +28,28 @@
       <p>You can use any free licensed pics (Creative Commons or alike), your own pictures or those copyright images that you are authorised to use.</p>
     </b-col>
   </b-row>
-
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
+import LoadingSpinner from '@/components/Helper/LoadingSpinner'
 
 export default {
   name: 'AmazonSourceEditor',
+  components: {
+    LoadingSpinner
+  },
   data: () => {
     return {
 
     }
   },
   mounted () {
-    this.setBucketLinks(this.task.sourceContent ? [...this.task.sourceContent] : [])
+    this.setBucketLinks(Array.isArray(this.task.sourceContent) ? [...this.task.sourceContent] : [])
   },
   computed: {
     ...mapState('task/builder', [
-      'bucketLinks', 'materialExtensions', 'task', 'sources', 'materials', 'bucket'
+      'bucketLinks', 'materialExtensions', 'task', 'sources', 'materials', 'bucket', 'loaders'
     ]),
     ...mapGetters('task/builder', [
       'getBucketLinksWithExtensions'
@@ -64,7 +73,7 @@ export default {
       'getBucketLinks'
     ]),
     ...mapMutations('task/builder', [
-      'setTaskSource', 'setTaskSourceContent', 'setStep', 'setBucketLinks', 'setBucketName'
+      'setTaskSource', 'setTaskSourceContent', 'setStep', 'setBucketLinks', 'setBucketName', 'deleteBucketLink'
     ]),
 
     onSubmit () {

@@ -118,6 +118,9 @@ const state = {
   bucket: {
     name: '',
     links: []
+  },
+  loaders: {
+    GET_BUCKET_LINKS: 'task-builder/GET_BUCKET_LINKS'
   }
 }
 
@@ -137,13 +140,18 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
-  getBucketLinks ({ commit }, bucketName) {
+  getBucketLinks ({ state, commit }, bucketName) {
+    const id = state.loaders.GET_BUCKET_LINKS
+    commit('notification/showLoading', id, { root: true })
+
     return api.getBucketLinks(bucketName).then(value => {
+      commit('notification/closeLoading', id, { root: true })
       const links = value.data.map(link => {
         return 'https://' + bucketName + '.s3.amazonaws.com/' + link
       })
       commit('setBucketLinks', links)
     }).catch(reason => {
+      commit('notification/closeLoading', id, { root: true })
       commit('notification/showError', {
         title: errors.GET_BUCKET_LINKS_ERROR, content: reason
       }, { root: true })
@@ -179,6 +187,14 @@ const mutations = {
   },
   setBucketLinks (state, links) {
     state.bucket = { ...state.bucket, links }
+  },
+  deleteBucketLink (state, link) {
+    state.bucket = {
+      ...state.bucket,
+      links: state.bucket.links.filter(value => {
+        return value !== link
+      })
+    }
   }
 }
 

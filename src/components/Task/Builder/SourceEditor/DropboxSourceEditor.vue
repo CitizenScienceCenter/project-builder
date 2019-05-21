@@ -5,9 +5,14 @@
       <div class="mt-3 mb-3" id="dropbox-button"></div>
 
       <b-list-group>
-        <b-list-group-item v-for="link in links" :key="link">
-          <b-img v-if="task.material === materials.image" style="width: 200px" :src="link"></b-img>
-          <b-link :href="link" target="_blank">{{ link }}</b-link>
+        <b-list-group-item v-for="(link, key) in links" :key="link">
+          <div>
+            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="link"></b-img>
+            <b-link :href="link" target="_blank">{{ link }}</b-link>
+          </div>
+          <div class="text-right">
+            <b-btn @click="deleteLink(key)" variant="danger">Delete</b-btn>
+          </div>
         </b-list-group-item>
       </b-list-group>
 
@@ -60,6 +65,10 @@ export default {
       this.setTaskSource(this.sources.dropbox)
       this.setTaskSourceContent(this.links)
       this.setStep({ step: 'source', value: true })
+    },
+
+    deleteLink (key) {
+      this.links.splice(key, 1)
     }
   },
   computed: {
