@@ -22,6 +22,7 @@
         </b-card>
       </b-col>
     </b-row>
+
     <b-row class="justify-content-center mt-4">
       <h2 class="p-2">Featured projects</h2>
       <b-col cols="12">
@@ -46,7 +47,13 @@
         </b-row>
 
       </b-col>
+    </b-row>
 
+    <hr>
+    <b-row>
+      <b-col>
+          <TemplateRenderer></TemplateRenderer>
+      </b-col>
     </b-row>
 
   </div>
@@ -54,18 +61,19 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import TemplateRenderer from '@/components/Task/TemplateRenderer'
 
 export default {
   name: 'Home',
-  data () {
-    return {}
+  components: {
+    TemplateRenderer
   },
   created () {
     this.$store.dispatch('project/getAllPublishedProjects')
   },
   computed: {
     ...mapState({
-      projects: state => state.project.topProjects
+      projects: state => state.project.topProjects,
     }),
     ...mapGetters('project', {
       getProjectThumbnail: 'thumbnail'
