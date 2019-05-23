@@ -5,7 +5,8 @@ const errors = {
   GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
   GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading',
   GET_PROJECT_LOADING_ERROR: 'Error during project loading',
-  POST_PROJECT_ERROR: 'Error during project creation'
+  POST_PROJECT_ERROR: 'Error during project creation',
+  GET_PROJECT_USER_PROGRESS_LOADING_ERROR: 'Error during project user progress loading'
 }
 
 // global state for this module
@@ -17,6 +18,7 @@ const state = {
   topProjects: [],
 
   selectedProject: {},
+  selectedProjectUserProgress: { done: 0, total: 0 },
 
   projectCreationOptions: {}
 }
@@ -41,6 +43,9 @@ const getters = {
       }, [])
     }
     return featuredProjects
+  },
+  getUserProgressInPercent: state => {
+    return state.selectedProjectUserProgress.done / state.selectedProjectUserProgress.total * 100
   }
 }
 
@@ -90,6 +95,15 @@ const actions = {
       commit.setProjectCreationOptions(value.data)
       console.log(value.data)
     })
+  },
+  getUserProgress ({ commit }, project) {
+    return api.getProjectUserProgress(project.id).then(value => {
+      commit('setSelectedProjectUserProgress', value.data)
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PROJECT_USER_PROGRESS_LOADING_ERROR, content: reason
+      }, { root: true })
+    })
   }
 }
 
@@ -108,6 +122,9 @@ const mutations = {
   },
   setProjectCreationOptions (state, options) {
     state.projectCreationOptions = options
+  },
+  setSelectedProjectUserProgress (state, progress) {
+    state.selectedProjectUserProgress = progress
   }
 }
 

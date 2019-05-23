@@ -39,5 +39,10 @@ export default {
       description: shortDescription,
       long_description: longDescription
     })
+  },
+  getProjectUserProgress (projectId) {
+    return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/userprogress', {
+      data: {}
+    })
   }
 }
