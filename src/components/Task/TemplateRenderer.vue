@@ -31,18 +31,22 @@ export default {
       // the current project where is displayed the task presenter
       project: state => state.selectedProject.hasOwnProperty('id')
         ? state.selectedProject
-        : { id: 8, short_name: 'another_project' }, // default value for testing
+        : { id: 49, short_name: 'test_project' }, // default value for testing
+
       // user progress value in percent
       userProgress: state => state.selectedProjectUserProgress
     }),
+
     ...mapState('task', {
       // the currently displayed task in the presenter
       task: state => state.currentTask.hasOwnProperty('id')
         ? state.currentTask
         : { id: 70, info: { url_b: 'https://0000-images.s3.amazonaws.com/wfmmc/image-04-of-15.jpg' } },
+
       // the task presenter template loaded from the pybossa server
       presenter: state => state.taskPresenter
     }),
+
     ...mapGetters('project', {
       userProgressInPercent: 'getUserProgressInPercent'
     }),
@@ -57,17 +61,16 @@ export default {
     ...mapActions('task', [
       'getTaskPresenter', 'getNewTask', 'saveTaskRun'
     ]),
+
     ...mapActions('project', [
       'getUserProgress'
     ]),
 
     run () {
-      console.log(this.$refs.presenter)
       this.getUserProgress(this.project)
       this.newTask()
     },
 
-    // proxy method
     newTask () {
       this.getNewTask(this.project).then(value => {
         this.getUserProgress(this.project)
@@ -76,27 +79,20 @@ export default {
 
     saveTask (answer) {
       const taskRun = {
+        // required
         project_id: this.project.id,
         task_id: this.task.id,
         info: answer
+        // optional
+        // user_id: 1,
+        // external_uid: '',
+        // media_url: ''
       }
       this.saveTaskRun(JSON.stringify(taskRun)).then(value => {
         // load a new task when current task saved
         this.newTask()
       })
-    },
-
-    getCurrentTaskId () {
-      return this.task.id
     }
-
-    // taskLoaded () {
-    //
-    // },
-    //
-    // presentTask () {
-    //
-    // }
   }
 }
 </script>

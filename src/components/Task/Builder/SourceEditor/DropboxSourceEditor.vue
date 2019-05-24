@@ -16,7 +16,7 @@
         </b-list-group-item>
       </b-list-group>
 
-      <b-btn v-if="links.length > 0" @click="onSubmit" class="mt-4" variant="success" size="md">Continue</b-btn>
+      <b-btn ref="btn-submit" v-if="links.length > 0" @click="onSubmit" class="mt-4" variant="success" size="md">Continue</b-btn>
     </b-col>
 
     <b-col md="3">

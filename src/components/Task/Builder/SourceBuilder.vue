@@ -11,17 +11,17 @@
 
               <b-col md="4" v-for="source in materialSources[task.material]" :key="source">
 
-                <b-card v-if="source === sources.amazon" @click="onSourceSelected(source)" class="text-center material">
+                <b-card ref="card-amazon" v-if="source === sources.amazon" @click="onSourceSelected(source)" class="text-center material">
                   <i class="fab fa-aws fa-4x"></i>
                   <div class="m-2">Amazon S3 bucket</div>
                 </b-card>
 
-                <b-card v-if="source === sources.dropbox" @click="onSourceSelected(source)" class="text-center material">
+                <b-card ref="card-dropbox" v-if="source === sources.dropbox" @click="onSourceSelected(source)" class="text-center material">
                   <i class="fab fa-dropbox fa-4x"></i><br>
                   <div class="m-2">Dropbox</div>
                 </b-card>
 
-                <b-card v-if="source === sources.flickr" @click="onSourceSelected(source)" class="text-center material">
+                <b-card ref="card-flickr" v-if="source === sources.flickr" @click="onSourceSelected(source)" class="text-center material">
                   <i class="fab fa-flickr fa-4x"></i><br>
                   <div class="m-2">Flickr</div>
                 </b-card>
