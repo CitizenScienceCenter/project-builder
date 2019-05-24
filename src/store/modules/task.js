@@ -42,8 +42,8 @@ const actions = {
   },
   getNewTask ({ commit, rootState }, project) {
     return api.getNewTask(project.id).then(value => {
-      commit('setCurrentTask', value)
-      return value
+      commit('setCurrentTask', value.data)
+      return value.data
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.GET_CURRENT_TASK_LOADING_ERROR, content: reason

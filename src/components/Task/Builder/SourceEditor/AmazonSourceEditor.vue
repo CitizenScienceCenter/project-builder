@@ -6,8 +6,8 @@
         <b-input v-model="bucketName" placeholder="Name of the S3 bucket"></b-input>
       </b-form-group>
 
-      <b-btn @click="getBucketLinks(bucket.name)" variant="primary">Search in bucket</b-btn>
-      <b-btn @click="onSubmit" variant="success" size="lg" class="float-right" v-if="materialAuthorizedLinks.length > 0">Go!</b-btn>
+      <b-btn ref="btn-get-bucket-links" @click="getBucketLinks(bucket.name)" variant="primary">Search in bucket</b-btn>
+      <b-btn ref="btn-submit" @click="onSubmit" variant="success" size="lg" class="float-right" v-if="materialAuthorizedLinks.length > 0">Go!</b-btn>
 
       <LoadingSpinner class="mt-4" :id="loaders.GET_BUCKET_LINKS"></LoadingSpinner>
 

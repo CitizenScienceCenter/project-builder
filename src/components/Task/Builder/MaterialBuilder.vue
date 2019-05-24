@@ -12,21 +12,21 @@
         <b-row>
 
           <b-col md="4">
-            <b-card :class="{ 'material-selected': selectedMaterial === materials.image }" @click="onMaterialSelected(materials.image)" class="text-center material">
+            <b-card ref="card-image" :class="{ 'material-selected': selectedMaterial === materials.image }" @click="onMaterialSelected(materials.image)" class="text-center material">
               <i class="fas fa-images fa-4x"></i><br>
               <div class="m-2">Images</div>
             </b-card>
           </b-col>
 
           <b-col md="4">
-            <b-card :class="{ 'material-selected': selectedMaterial === materials.sound }" @click="onMaterialSelected(materials.sound)" class="text-center material">
+            <b-card ref="card-sound" :class="{ 'material-selected': selectedMaterial === materials.sound }" @click="onMaterialSelected(materials.sound)" class="text-center material">
               <i class="fas fa-music fa-4x"></i><br>
               <div class="m-2">Sounds</div>
             </b-card>
           </b-col>
 
           <b-col md="4">
-            <b-card :class="{ 'material-selected': selectedMaterial === materials.video }" @click="onMaterialSelected(materials.video)" class="text-center material">
+            <b-card ref="card-video" :class="{ 'material-selected': selectedMaterial === materials.video }" @click="onMaterialSelected(materials.video)" class="text-center material">
               <i class="fas fa-play fa-4x"></i><br>
               <div class="m-2">Videos</div>
             </b-card>
@@ -37,14 +37,14 @@
         <b-row class="mt-4">
 
           <b-col md="4">
-            <b-card :class="{ 'material-selected': selectedMaterial === materials.pdf }" @click="onMaterialSelected(materials.pdf)" class="text-center material">
+            <b-card ref="card-pdf" :class="{ 'material-selected': selectedMaterial === materials.pdf }" @click="onMaterialSelected(materials.pdf)" class="text-center material">
               <i class="fas fa-file-pdf fa-4x"></i><br>
               <div class="m-2">PDFs</div>
             </b-card>
           </b-col>
 
           <b-col md="4">
-            <b-card :class="{ 'material-selected': selectedMaterial === materials.tweet }" @click="onMaterialSelected(materials.tweet)" class="text-center material">
+            <b-card ref="card-tweet" :class="{ 'material-selected': selectedMaterial === materials.tweet }" @click="onMaterialSelected(materials.tweet)" class="text-center material">
               <i class="fab fa-twitter fa-4x"></i><br>
               <div class="m-2">Tweets</div>
             </b-card>
@@ -67,7 +67,7 @@
 
     <b-row class="mt-4">
       <b-col>
-        <b-btn @click="onSubmit" variant="success" size="lg">Done</b-btn>
+        <b-btn ref="btn-submit-material" v-if="selectedMaterial" @click="onSubmit" variant="success" size="lg">Done</b-btn>
       </b-col>
     </b-row>
   </div>
@@ -95,8 +95,10 @@ export default {
       this.selectedMaterial = materialType
     },
     onSubmit () {
-      this.setTaskMaterial(this.selectedMaterial)
-      this.setStep({ step: 'material', value: true })
+      if (Object.values(this.materials).some(m => m === this.selectedMaterial)) {
+        this.setTaskMaterial(this.selectedMaterial)
+        this.setStep({ step: 'material', value: true })
+      }
     }
   },
   computed: {

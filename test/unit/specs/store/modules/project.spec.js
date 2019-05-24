@@ -10,10 +10,10 @@ describe('store/modules/project', () => {
   //
   // ----------------------------------------------------------
 
-  it('test mutation: setProjects', () => {
-    expect(store.state.project.topProjects.length).to.equal(0)
-    expect(store.state.project.categories.length).to.equal(0)
-    expect(Object.values(store.state.project.categoriesProjects).length).to.equal(0)
+  it('test mutation: setProjects', done => {
+    // expect(store.state.project.topProjects.length).to.equal(0)
+    // expect(store.state.project.categories.length).to.equal(0)
+    // expect(Object.values(store.state.project.categoriesProjects).length).to.equal(0)
 
     store.commit('project/setProjects', {
       'top_projects': [{name: 'project_a'}, {name: 'project_b'}, {name: 'project_c'}],
@@ -31,12 +31,16 @@ describe('store/modules/project', () => {
     expect(store.state.project.topProjects.length).to.equal(3)
     expect(store.state.project.categories.length).to.equal(2)
     expect(Object.values(store.state.project.categoriesProjects).length).to.equal(2)
+
+    done()
   })
 
-  it('test mutation: setUserProjects', () => {
+  it('test mutation: setUserProjects', done => {
     expect(store.state.project.userProjects.length).to.equal(0)
     store.commit('project/setUserProjects', [{name: 'project1'}, {name: 'project2'}])
     expect(store.state.project.userProjects.length).to.equal(2)
+
+    done()
   })
 
   // ----------------------------------------------------------
@@ -56,7 +60,7 @@ describe('store/modules/project', () => {
                   {}
                 ]
               })
-            }, 100)
+            }, 10)
           })
         }
       }
@@ -75,7 +79,7 @@ describe('store/modules/project', () => {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               reject(error)
-            }, 100)
+            }, 10)
           })
         }
       }
@@ -100,7 +104,7 @@ describe('store/modules/project', () => {
 
                 }
               })
-            }, 100)
+            }, 10)
           })
         }
       }
@@ -119,7 +123,7 @@ describe('store/modules/project', () => {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               reject(error)
-            }, 100)
+            }, 10)
           })
         }
       }
@@ -135,36 +139,36 @@ describe('store/modules/project', () => {
     ], done)
   })
 
-  it('test action: project/createProject success', done => {
-    const project = actionsInjector({
-      '../../api/project': {
-        createProject (apiKey, builder) {
-          return new Promise((resolve, reject) => {
-            setTimeout(function () {
-              resolve({
-                data: {}
-              })
-            }, 100)
-          })
-        }
-      }
-    })
-
-    const projectBuilder = {
-      title: 'my new project',
-      shortDescription: 'a little description',
-      story: {
-        whatWhy: 'what, why...',
-        who: 'Someone',
-        how: 'I dont know',
-        keepTrack: 'Send an email'
-      }
-    }
-
-    testAction(project.default.actions.createProject, projectBuilder, project.default.state, store.state, [
-      // TODO : assert commit is done when create project will be fully implemented
-    ], done)
-  })
+  // it('test action: project/createProject success', done => {
+  //   const project = actionsInjector({
+  //     '../../api/project': {
+  //       createProject (apiKey, builder) {
+  //         return new Promise((resolve, reject) => {
+  //           setTimeout(function () {
+  //             resolve({
+  //               data: {}
+  //             })
+  //           }, 10)
+  //         })
+  //       }
+  //     }
+  //   })
+  //
+  //   const projectBuilder = {
+  //     title: 'my new project',
+  //     shortDescription: 'a little description',
+  //     story: {
+  //       whatWhy: 'what, why...',
+  //       who: 'Someone',
+  //       how: 'I dont know',
+  //       keepTrack: 'Send an email'
+  //     }
+  //   }
+  //
+  //   testAction(project.default.actions.createProject, projectBuilder, project.default.state, store.state, [
+  //     // TODO : assert commit is done when create project will be fully implemented
+  //   ], done)
+  // })
 
   it('test action: project/createProject error', done => {
     const error = new Error('HTTP ERROR')
@@ -175,7 +179,7 @@ describe('store/modules/project', () => {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               reject(error)
-            }, 100)
+            }, 10)
           })
         }
       }
@@ -208,7 +212,7 @@ describe('store/modules/project', () => {
   //
   // ----------------------------------------------------------
 
-  it('test getter: project/getFeaturedProjects', () => {
+  it('test getter: project/getFeaturedProjects', done => {
     store.commit('project/setProjects', {
       'top_projects': [{name: 'project_a'}, {name: 'project_b'}],
       'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}, {short_name: 'category_c'}],
@@ -234,9 +238,11 @@ describe('store/modules/project', () => {
       {name: 'project_a', featured: true},
       {name: 'project_d', featured: true}
     ])
+
+    done()
   })
 
-  it('test getter: project/getProjectsFor', () => {
+  it('test getter: project/getProjectsFor', done => {
     store.commit('project/setProjects', {
       'top_projects': [{name: 'project_a'}, {name: 'project_b'}],
       'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}, {short_name: 'category_c'}],
@@ -262,5 +268,7 @@ describe('store/modules/project', () => {
       {name: 'project_a', featured: true},
       {name: 'project_b', featured: false}
     ])
+
+    done()
   })
 })

@@ -3,7 +3,7 @@ const component =
   {
     /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
-      <b-row>
+      <b-row v-if="pybossa.userProgressInPercent < 100">
         <b-col md="6">
           <h2>{{ question }}</h2>
     
@@ -18,6 +18,11 @@ const component =
         <b-col md="6">
           <b-img thumbnail fluid-grow :src="pybossa.task.info.url_b"></b-img>
         </b-col>
+      </b-row>
+      <b-row v-else>
+        <b-col>
+          <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>
+        </b-col>
       </b-row>`,
 
     /* All template data */
@@ -28,7 +33,6 @@ const component =
 
     methods: {
       answer (answer) {
-        console.log(answer)
         this.pybossa.saveTask(answer)
       }
     },
