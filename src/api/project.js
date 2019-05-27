@@ -4,11 +4,25 @@ import slug from 'slug'
 axios.defaults.headers['Content-Type'] = 'application/json'
 
 export default {
-  getUserProjects (userInfos) {
-    return axios.get(process.env.BASE_API_URL + 'project?api_key=' + userInfos.apiKey)
+  // getAllProjects () {
+  //   return axios.get(process.env.BASE_ENDPOINT_URL, {
+  //     data: {}
+  //   })
+  // },
+  getCategories () {
+    return axios.get(process.env.BASE_API_URL + 'category')
   },
-  getAllProjects () {
-    return axios.get(process.env.BASE_ENDPOINT_URL, {
+  getUserProjects (userInfos) {
+    return axios.get(process.env.BASE_API_URL + 'project?api_key=' + userInfos.api_key)
+  },
+  getFeaturedProjects () {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/category/featured/', {
+      data: {},
+      withCredentials: true
+    })
+  },
+  getProjectById (id) {
+    return axios.get(process.env.BASE_API_URL + 'project/' + id, {
       data: {}
     })
   },
@@ -21,11 +35,6 @@ export default {
         : defaultThumbnail
     }
     return defaultThumbnail
-  },
-  getProjectById (id) {
-    return axios.get(process.env.BASE_API_URL + 'project/' + id, {
-      data: {}
-    })
   },
   getProjectCreationOptions () {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'project/new', {
