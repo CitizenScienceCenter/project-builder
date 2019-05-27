@@ -1,38 +1,82 @@
 import api from '@/api/user'
 
 const state = {
-  infos: {
-    id: 2,
-    apiKey: '3120c4af-757b-4958-8ab9-9765c88f8d56'
-  },
+  infos: {},
   logged: false,
-  authOptions: {}
+  loginOptions: {},
+  publishedProjects: [],
+  contributedProjects: [],
+  draftProjects: []
 }
 
 // filter methods on the state data
 const getters = {
-  getCsrfToken: state => {
-    return !!state.authOptions.form && !!state.authOptions.form.csrf ? state.authOptions.form.csrf : 'CSRF NOT AVAILABLE'
-  }
+  // getCsrfToken: state => {
+  //   return !!state.loginOptions.form && !!state.loginOptions.form.csrf ? state.loginOptions.form.csrf : 'CSRF NOT AVAILABLE'
+  // }
 }
 
 // async methods making mutations are placed here
 const actions = {
   signIn ({ commit, state }, { email, password }) {
-    api.signIn({ email, password, csrf: state.authOptions.form.csrf }).then(value => {
-      commit('setLogged')
+    return api.signIn({ email, password, csrf: state.loginOptions.form.csrf }).then(response => {
+      if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
+        commit('setLogged')
+        return response.data
+      }
+      return false
     }).catch(reason => {
       commit('notification/showError', {
         title: 'Error during user sign in', content: reason
       }, { root: true })
     })
   },
-  getAuthOptions ({ commit }) {
-    api.getAuthOptions().then(value => {
-      commit('setAuthOptions', value.data)
+  getLoginOptions ({ commit }) {
+    return api.getLoginOptions().then(value => {
+      commit('setLoginOptions', value.data)
+      return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Signin not available', content: reason
+        title: 'Sign in not available', content: reason
+      }, { root: true })
+    })
+  },
+  getAccountProfile ({ commit }) {
+    return api.getAccountProfile().then(value => {
+      if (value.data.hasOwnProperty('user')) {
+        commit('setUserInfos', value.data.user)
+        commit('setUserContributedProjects', value.data.projects_contrib)
+        commit('setUserDraftProjects', value.data.projects_draft)
+        commit('setUserPublishedProjects', value.data.projects_published)
+        commit('setLogged')
+        return value.data
+      }
+      commit('setLoggedOut')
+      return false
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: 'Impossible to get profile data', content: reason
+      }, { root: true })
+    })
+  },
+  signOut ({ commit }) {
+    return api.signOut().then(response => {
+      if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
+        commit('setLoggedOut')
+        commit('setUserInfos', {})
+        commit('setUserContributedProjects', [])
+        commit('setUserDraftProjects', [])
+        commit('setUserPublishedProjects', [])
+        commit('notification/showInfo', {
+          title: 'Signed out',
+          content: 'Your are now logged out'
+        }, { root: true })
+        return response.data
+      }
+      return false
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: 'Impossible to sign out', content: reason
       }, { root: true })
     })
   }
@@ -43,8 +87,23 @@ const mutations = {
   setLogged (state) {
     state.logged = true
   },
-  setAuthOptions (state, options) {
-    state.authOptions = options
+  setLoggedOut (state) {
+    state.logged = false
+  },
+  setLoginOptions (state, options) {
+    state.loginOptions = options
+  },
+  setUserInfos (state, infos) {
+    state.infos = infos
+  },
+  setUserContributedProjects (state, projects) {
+    state.contributedProjects = projects
+  },
+  setUserDraftProjects (state, projects) {
+    state.draftProjects = projects
+  },
+  setUserPublishedProjects (state, projects) {
+    state.publishedProjects = projects
   }
 }
 

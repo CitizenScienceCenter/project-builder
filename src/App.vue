@@ -17,12 +17,12 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
 
-            <b-nav-item :to="{ name: 'login' }">Login</b-nav-item>
+            <b-nav-item v-if="!userLogged" :to="{ name: 'login' }">Login</b-nav-item>
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown v-else right>
               <template slot="button-content">User</template>
-              <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'account' }">Profile</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'logout' }">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
 
           </b-navbar-nav>
@@ -76,20 +76,30 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'App',
+  created () {
+    // this.getAccountProfile()
+  },
   computed: mapState({
     errorNotifications: state => state.notification.errorNotifications,
     infoNotifications: state => state.notification.infoNotifications,
-    successNotifications: state => state.notification.successNotifications
+    successNotifications: state => state.notification.successNotifications,
+    userLogged: state => state.user.logged
   }),
-  methods: mapMutations({
-    closeError: 'notification/closeError',
-    closeInfo: 'notification/closeInfo',
-    closeSuccess: 'notification/closeSuccess'
-  })
+  methods: {
+    ...mapMutations({
+      closeError: 'notification/closeError',
+      closeInfo: 'notification/closeInfo',
+      closeSuccess: 'notification/closeSuccess'
+    }),
+
+    ...mapActions('user', [
+      'getAccountProfile'
+    ])
+  }
 }
 </script>
 

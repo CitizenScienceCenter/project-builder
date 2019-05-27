@@ -13,11 +13,22 @@ export default {
       }
     })
   },
-  getAuthOptions () {
+  getLoginOptions () {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'account/signin', {
       data: {},
       withCredentials: true
     })
+  },
+  getAccountProfile () {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/profile', {
+      data: {},
+      withCredentials: true
+    })
+  },
+  signOut () {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/signout', {
+      data: {},
+      withCredentials: true
+    })
   }
-
 }
