@@ -20,8 +20,8 @@ export default {
   getProjectsWithCategory ({ id }) {
     return axios.get(process.env.BASE_API_URL + 'project?category_id=' + id)
   },
-  getProjectById (id) {
-    return axios.get(process.env.BASE_API_URL + 'project/' + id, {
+  getProjectById (id, apiKey) {
+    return axios.get(process.env.BASE_API_URL + 'project/' + id + '?api_key=' + apiKey, {
       data: {}
     })
   },

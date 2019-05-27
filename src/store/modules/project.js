@@ -88,7 +88,7 @@ const actions = {
   },
 
   getProject ({ commit, state, rootState }, id) {
-    return api.getProjectById(id).then(value => {
+    return api.getProjectById(id, rootState.user.infos.api_key).then(value => {
       commit('setSelectedProject', value.data)
       return state.selectedProject
     }).catch(reason => {
@@ -100,7 +100,7 @@ const actions = {
   },
 
   createProject ({ commit, state, rootState }, builder) {
-    return api.createProject(rootState.user.infos.apiKey, builder).then(value => {
+    return api.createProject(rootState.user.infos.api_key, builder).then(value => {
       commit('setSelectedProject', value.data)
       return state.selectedProject
     }).catch(reason => {

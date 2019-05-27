@@ -12,7 +12,7 @@
         <div class="mt-4">
           <h4>Task Presenter</h4>
           <p>Edit the task presenter</p>
-          <b-btn variant="outline-primary" :to="{ name: 'project.task.presenter', params: { id: project.id } }">Editor</b-btn>
+          <b-btn variant="outline-primary" :to="{ name: 'project.task.presenter', params: { id: selectedProject.id } }">Editor</b-btn>
         </div>
 
         <div class="mt-4">
@@ -45,9 +45,26 @@
 <script>
 export default {
   name: 'ProjectTasksMenu',
+  mounted () {
+
+  },
+  data: () => {
+    return {
+      selectedProject: {
+        id: 0
+      }
+    }
+  },
   props: {
     project: {
-      required: false
+      required: true
+    }
+  },
+  watch: {
+    project (newVal, oldVal) {
+      if (typeof newVal !== 'undefined') {
+        this.selectedProject = newVal
+      }
     }
   }
 }
