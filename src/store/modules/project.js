@@ -7,18 +7,15 @@ const errors = {
   GET_PROJECT_LOADING_ERROR: 'Error during project loading',
   POST_PROJECT_ERROR: 'Error during project creation',
   GET_PROJECT_USER_PROGRESS_LOADING_ERROR: 'Error during project user progress loading',
-  GET_FEATURED_PROJECTS_LOADING_ERROR: 'Error during featured projects loading'
+  GET_FEATURED_PROJECTS_LOADING_ERROR: 'Error during featured projects loading',
+  GET_CATEGORIES_LOADING_ERROR: 'Error during categories loading'
 }
 
 // global state for this module
 
 const state = {
-  // userProjects: [],
-  // categories: [],
-  // categoriesProjects: {},
-  // topProjects: [],
-
   categories: [],
+  projects: [],
 
   featuredProjects: [],
 
@@ -33,22 +30,11 @@ const getters = {
   // thumbnail: () => project => {
   //   return api.getProjectThumbnail(project)
   // },
-  // getProjectsFor: state => category => {
-  //   return state.categoriesProjects[category.short_name]
-  // },
-  // getFeaturedProjects: state => {
-  //   let featuredProjects = []
-  //
-  //   if (state.categoriesProjects) {
-  //     featuredProjects = Object.values(state.categoriesProjects).reduce((previousValue, currentValue) => {
-  //       let result = currentValue.filter(project => {
-  //         return project.featured
-  //       })
-  //       return previousValue.concat(result)
-  //     }, [])
-  //   }
-  //   return featuredProjects
-  // },
+  getProjectsWithCategory: state => ({id}) => {
+    return state.projects.filter(project => {
+      return project.category_id === id
+    })
+  },
   getUserProgressInPercent: state => {
     return state.selectedProjectUserProgress.done / state.selectedProjectUserProgress.total * 100
   }
@@ -56,15 +42,7 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
-  // getAllPublishedProjects ({ commit }) {
-  //   api.getAllProjects().then(value => {
-  //     commit('setProjects', value.data)
-  //   }).catch(reason => {
-  //     commit('notification/showError', {
-  //       title: errors.GET_ALL_PROJECTS_LOADING_ERROR, content: reason
-  //     }, { root: true })
-  //   })
-  // },
+
   // getUserProjects ({ commit, rootState }) {
   //   api.getUserProjects(rootState.user.infos).then(value => {
   //     commit('setUserProjects', value.data)
@@ -76,10 +54,25 @@ const actions = {
   // },
 
   getCategories ({ commit }) {
-    api.getCategories().then(value => {
-
+    return api.getCategories().then(value => {
+      commit('setCategories', value.data)
+      return value.data
     }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_FEATURED_PROJECTS_LOADING_ERROR, content: reason
+      }, { root: true })
+    })
+  },
 
+  getAllProjects ({ commit }) {
+    return api.getAllProjects().then(value => {
+      commit('setProjects', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_ALL_PROJECTS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
     })
   },
 
@@ -102,6 +95,7 @@ const actions = {
       commit('notification/showError', {
         title: errors.GET_PROJECT_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
 
@@ -126,19 +120,24 @@ const actions = {
   getUserProgress ({ commit }, project) {
     return api.getProjectUserProgress(project.id).then(value => {
       commit('setSelectedProjectUserProgress', value.data)
+      return value.data
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.GET_PROJECT_USER_PROGRESS_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   }
 }
 
 // methods that change the state
 const mutations = {
-  // setCategories (state, categories) {
-  //   state.categories = categories
-  // },
+  setCategories (state, categories) {
+    state.categories = categories
+  },
+  setProjects (state, projects) {
+    state.projects = projects
+  },
   setFeaturedProjects (state, projects) {
     state.featuredProjects = projects
   },
