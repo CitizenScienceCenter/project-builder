@@ -5,13 +5,15 @@
       <b-col cols="12">
         <b-card no-body>
           <b-tabs pills card>
-            <b-tab title="Featured" active>
+
+            <!-- Featured projects -->
+            <b-tab :title="'Featured (' + featuredProjects.length + ')'" active>
               <b-row>
-                <b-col class="mt-3" :key="project.id" cols="4" v-for="project in getFeaturedProjects">
+                <b-col class="mt-3" :key="project.id" cols="4" v-for="project in featuredProjects">
 
                   <b-card
                           :title="project.name"
-                          :img-src="project.thumbnail ? project.thumbnail : '/static/img/placeholder.project.png'"
+                          :img-src="project.info.thumbnail_url"
                           img-alt="Image"
                           img-top
                           tag="article"
@@ -22,20 +24,21 @@
                       {{ project.description }}
                     </b-card-text>
 
-                    <b-button href="#" variant="primary">Go to project</b-button>
+                    <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
                   </b-card>
 
                 </b-col>
               </b-row>
-
             </b-tab>
-            <b-tab :key="category.short_name" :title="category.name" v-for="category in categories">
+
+            <!-- Other categories -->
+            <b-tab :key="category.short_name" :title="category.name + ' (' + getProjectsWithCategory(category).length + ')'" v-for="category in categories">
               <b-row>
-                <b-col class="mt-3" :key="project.id" cols="4" v-for="project in getProjectsFor(category)">
+                <b-col class="mt-3" :key="project.id" cols="4" v-for="project in getProjectsWithCategory(category)">
 
                   <b-card
                           :title="project.name"
-                          :img-src="thumbnail(project)"
+                          :img-src="project.info.thumbnail_url"
                           img-alt="Image"
                           img-top
                           tag="article"
@@ -61,21 +64,26 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Discover',
-  created () {
-    this.$store.dispatch('project/getAllPublishedProjects')
+  mounted () {
+    this.getCategories()
+    this.getFeaturedProjects()
+    this.getAllProjects()
+  },
+  methods: {
+    ...mapActions('project', [
+      'getCategories', 'getFeaturedProjects', 'getAllProjects'
+    ])
   },
   computed: {
-    ...mapState('project', {
-      categories: state => state.categories
-    }),
+    ...mapState('project', [
+      'categories', 'featuredProjects'
+    ]),
     ...mapGetters('project', [
-      'getProjectsFor',
-      'getFeaturedProjects',
-      'thumbnail'
+      'getProjectsWithCategory'
     ])
   }
 }
