@@ -10,7 +10,7 @@
           <b-card-text>
             Find a project that fascinate you, and help researchers analyse their data
           </b-card-text>
-          <b-button href="#" variant="outline-primary">Find a project</b-button>
+          <b-button :to="{ name: 'discover' }" variant="outline-primary">Find a project</b-button>
         </b-card>
       </b-col>
       <b-col cols="12" md="6" class="mt-4 mt-sm-0">
@@ -30,7 +30,7 @@
           <b-col class="mt-3" :key="project.id" cols="4" v-for="project in projects">
             <b-card
               :title="project.name"
-              :img-src="project.thumbnail ? project.thumbnail : '/static/img/placeholder.project.png'"
+              :img-src="project.info.thumbnail_url"
               img-alt="Image"
               img-top
               tag="article"
@@ -41,7 +41,7 @@
                 {{ project.description }}
               </b-card-text>
 
-              <b-button href="#" variant="primary">Go to project</b-button>
+              <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
             </b-card>
           </b-col>
         </b-row>
@@ -49,18 +49,20 @@
       </b-col>
     </b-row>
 
-    <hr>
-    <b-row>
-      <b-col>
+    <div id="test" v-if="false">
+      <hr>
+      <b-row>
+        <b-col>
           <TemplateRenderer></TemplateRenderer>
-      </b-col>
-    </b-row>
+        </b-col>
+      </b-row>
+    </div>
 
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
 
 export default {
@@ -69,14 +71,16 @@ export default {
     TemplateRenderer
   },
   created () {
-    this.$store.dispatch('project/getAllPublishedProjects')
+    this.getFeaturedProjects()
+  },
+  methods: {
+    ...mapActions('project', [
+      'getFeaturedProjects'
+    ])
   },
   computed: {
-    ...mapState({
-      projects: state => state.project.topProjects,
-    }),
-    ...mapGetters('project', {
-      getProjectThumbnail: 'thumbnail'
+    ...mapState('project', {
+      projects: state => state.featuredProjects
     })
   }
 }

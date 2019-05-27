@@ -6,16 +6,21 @@ const errors = {
   GET_USER_PROJECTS_LOADING_ERROR: 'Error during user projects loading',
   GET_PROJECT_LOADING_ERROR: 'Error during project loading',
   POST_PROJECT_ERROR: 'Error during project creation',
-  GET_PROJECT_USER_PROGRESS_LOADING_ERROR: 'Error during project user progress loading'
+  GET_PROJECT_USER_PROGRESS_LOADING_ERROR: 'Error during project user progress loading',
+  GET_FEATURED_PROJECTS_LOADING_ERROR: 'Error during featured projects loading'
 }
 
 // global state for this module
 
 const state = {
-  userProjects: [],
+  // userProjects: [],
+  // categories: [],
+  // categoriesProjects: {},
+  // topProjects: [],
+
   categories: [],
-  categoriesProjects: {},
-  topProjects: [],
+
+  featuredProjects: [],
 
   selectedProject: {},
   selectedProjectUserProgress: { done: 0, total: 0 },
@@ -25,25 +30,25 @@ const state = {
 
 // filter methods on the state data
 const getters = {
-  thumbnail: () => project => {
-    return api.getProjectThumbnail(project)
-  },
-  getProjectsFor: state => category => {
-    return state.categoriesProjects[category.short_name]
-  },
-  getFeaturedProjects: state => {
-    let featuredProjects = []
-
-    if (state.categoriesProjects) {
-      featuredProjects = Object.values(state.categoriesProjects).reduce((previousValue, currentValue) => {
-        let result = currentValue.filter(project => {
-          return project.featured
-        })
-        return previousValue.concat(result)
-      }, [])
-    }
-    return featuredProjects
-  },
+  // thumbnail: () => project => {
+  //   return api.getProjectThumbnail(project)
+  // },
+  // getProjectsFor: state => category => {
+  //   return state.categoriesProjects[category.short_name]
+  // },
+  // getFeaturedProjects: state => {
+  //   let featuredProjects = []
+  //
+  //   if (state.categoriesProjects) {
+  //     featuredProjects = Object.values(state.categoriesProjects).reduce((previousValue, currentValue) => {
+  //       let result = currentValue.filter(project => {
+  //         return project.featured
+  //       })
+  //       return previousValue.concat(result)
+  //     }, [])
+  //   }
+  //   return featuredProjects
+  // },
   getUserProgressInPercent: state => {
     return state.selectedProjectUserProgress.done / state.selectedProjectUserProgress.total * 100
   }
@@ -51,24 +56,44 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
-  getAllPublishedProjects ({ commit }) {
-    api.getAllProjects().then(value => {
-      commit('setProjects', value.data)
+  // getAllPublishedProjects ({ commit }) {
+  //   api.getAllProjects().then(value => {
+  //     commit('setProjects', value.data)
+  //   }).catch(reason => {
+  //     commit('notification/showError', {
+  //       title: errors.GET_ALL_PROJECTS_LOADING_ERROR, content: reason
+  //     }, { root: true })
+  //   })
+  // },
+  // getUserProjects ({ commit, rootState }) {
+  //   api.getUserProjects(rootState.user.infos).then(value => {
+  //     commit('setUserProjects', value.data)
+  //   }).catch(reason => {
+  //     commit('notification/showError', {
+  //       title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
+  //     }, { root: true })
+  //   })
+  // },
+
+  getCategories ({ commit }) {
+    api.getCategories().then(value => {
+
+    }).catch(reason => {
+
+    })
+  },
+
+  getFeaturedProjects ({ commit }) {
+    api.getFeaturedProjects().then(value => {
+      commit('setFeaturedProjects', value.data.projects)
+      return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.GET_ALL_PROJECTS_LOADING_ERROR, content: reason
+        title: errors.GET_FEATURED_PROJECTS_LOADING_ERROR, content: reason
       }, { root: true })
     })
   },
-  getUserProjects ({ commit, rootState }) {
-    api.getUserProjects(rootState.user.infos).then(value => {
-      commit('setUserProjects', value.data)
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
-      }, { root: true })
-    })
-  },
+
   getProject ({ commit, state, rootState }, id) {
     return api.getProjectById(id).then(value => {
       commit('setSelectedProject', value.data)
@@ -79,6 +104,7 @@ const actions = {
       }, { root: true })
     })
   },
+
   createProject ({ commit, state, rootState }, builder) {
     return api.createProject(rootState.user.infos.apiKey, builder).then(value => {
       commit('setSelectedProject', value.data)
@@ -96,6 +122,7 @@ const actions = {
       console.log(value.data)
     })
   },
+
   getUserProgress ({ commit }, project) {
     return api.getProjectUserProgress(project.id).then(value => {
       commit('setSelectedProjectUserProgress', value.data)
@@ -109,19 +136,20 @@ const actions = {
 
 // methods that change the state
 const mutations = {
-  setProjects (state, features) {
-    state.categoriesProjects = features.categories_projects
-    state.categories = features.categories
-    state.topProjects = features.top_projects
+  // setCategories (state, categories) {
+  //   state.categories = categories
+  // },
+  setFeaturedProjects (state, projects) {
+    state.featuredProjects = projects
   },
-  setUserProjects (state, projects) {
-    state.userProjects = projects
+  // setUserProjects (state, projects) {
+  //   state.userProjects = projects
+  // },
+  setProjectCreationOptions (state, options) {
+    state.projectCreationOptions = options
   },
   setSelectedProject (state, project) {
     state.selectedProject = project
-  },
-  setProjectCreationOptions (state, options) {
-    state.projectCreationOptions = options
   },
   setSelectedProjectUserProgress (state, progress) {
     state.selectedProjectUserProgress = progress
