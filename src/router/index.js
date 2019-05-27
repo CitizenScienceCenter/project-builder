@@ -8,10 +8,11 @@ import Project from '@/components/Project/Project'
 import ProjectBuilder from '@/components/Project/Builder/ProjectBuilder'
 import About from '@/components/About'
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
+import Account from '@/components/Account'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -25,6 +26,17 @@ export default new Router({
       component: Login
     },
     {
+      path: '/logout',
+      name: 'logout',
+      beforeEnter: (to, from, next) => {
+        store.dispatch('user/signOut').then(signedOut => {
+          if (signedOut) {
+            next({ name: 'home' })
+          }
+        })
+      }
+    },
+    {
       path: '/discover',
       name: 'discover',
       component: Discover
@@ -33,6 +45,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: Account
     },
 
     // Project related pages
@@ -176,3 +193,29 @@ export default new Router({
 
   ]
 })
+
+const publicRoutes = [
+  'home', 'login', 'logout', 'discover', 'about'
+]
+
+router.beforeEach((to, from, next) => {
+  if (store.state.user.logged) {
+    // user already logged (getAccountProfile already done) so he can access all the routes
+    next()
+  } else {
+    // test if the user can be logged with his session if not already logged
+    store.dispatch('user/getAccountProfile').then(() => {
+      // can go next also if not logged and if the route is public
+      if (store.state.user.logged || publicRoutes.includes(to.name)) {
+        next()
+      } else {
+        // if the route needs to be logged the user is redirected
+        from.name !== null ? next(false) : next({ name: 'login' })
+      }
+    }).catch(() => {
+      next({ name: 'home' })
+    })
+  }
+})
+
+export default router

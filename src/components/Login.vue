@@ -40,10 +40,26 @@
 </template>
 
 <script>
+import { mapActions, mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'Login',
   created () {
-    this.$store.dispatch('user/getAuthOptions')
+    // load the auth options
+    this.getLoginOptions().then(response => {
+      if (response) {
+
+        // if the user is already logged in, we can load his account data
+        if (!response.hasOwnProperty('auth')) {
+          this.getAccountProfile().then(response => {
+            if (this.logged) {
+              this.$router.push({ name: 'home' })
+            }
+          })
+        }
+
+      }
+    })
   },
   data: () => {
     return {
@@ -54,12 +70,30 @@ export default {
     }
   },
   methods: {
+    ...mapActions('user', [
+      'getLoginOptions',
+      'getAccountProfile',
+      'signIn'
+    ]),
+    ...mapMutations('notification', [
+      'showInfo', 'showError'
+    ]),
+
     onSubmit () {
-      this.$store.dispatch('user/signIn', this.form)
+      this.signIn(this.form).then(() => {
+        if (this.logged) {
+          this.getAccountProfile()
+          this.$router.push({ name: 'home' })
+        } else {
+          this.showError({ title: 'Wrong credentials', content: 'Your email and/or your password are incorrect' })
+        }
+      })
     }
   },
   computed: {
-
+    ...mapState('user', [
+      'logged'
+    ])
   }
 }
 </script>
