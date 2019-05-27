@@ -3,7 +3,8 @@
     <b-row class="mt-4">
 
       <b-col cols="4">
-        <b-img v-if="typeof project !== 'undefined'" :src="thumbnail(project)" thumbnail fluid-grow></b-img>
+        <b-img v-if="project.info && project.info.thumbnail" :src="project.info.thumbnail_url" thumbnail fluid-grow></b-img>
+        <b-img v-else blank-color="#777" :blank="true" thumbnail fluid-grow></b-img>
       </b-col>
 
       <b-col cols="8">
@@ -11,7 +12,7 @@
         <p>{{ project.description }}</p>
 
         <b-btn v-if="project.published" variant="success" size="lg">Contribute!</b-btn>
-        <b-btn v-else variant="success" size="lg">Draft, complete it!</b-btn><br>
+        <b-btn v-else :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
         <b-btn class="mt-2" variant="outline-success" size="sm">Subscribe</b-btn>
       </b-col>
 
@@ -48,7 +49,7 @@
               </b-col>
             </b-row>
 
-            <ProjectTasksMenu v-else></ProjectTasksMenu>
+            <ProjectTasksMenu v-else :project="project"></ProjectTasksMenu>
           </b-tab>
 
           <b-tab title="Statistics">
@@ -69,7 +70,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
 import ProjectTasksMenu from '@/components/Project/Menu/ProjectTasksMenu'
@@ -89,18 +90,27 @@ export default {
     ProjectStatisticsMenu
   },
   created () {
-    this.$store.dispatch('project/getProject', this.id)
-      .then(project => {
-        return this.$store.dispatch('task/getProjectTasks', project)
-      })
+    this.getProject(this.id).then(project => {
+      return this.getProjectTasks(project)
+    })
   },
   data: () => {
-    return {}
+    return {
+
+    }
   },
   props: {
     id: {
       required: true
     }
+  },
+  methods: {
+    ...mapActions('project', [
+      'getProject'
+    ]),
+    ...mapActions('task', [
+      'getProjectTasks'
+    ])
   },
   computed: {
     ...mapState('project', {
@@ -108,10 +118,7 @@ export default {
     }),
     ...mapState('task', {
       tasks: state => state.selectedProjectTasks
-    }),
-    ...mapGetters('project', [
-      'thumbnail'
-    ])
+    })
   }
 }
 </script>
