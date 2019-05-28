@@ -83,7 +83,7 @@ const actions = {
   },
 
   getFeaturedProjects ({ commit }) {
-    api.getFeaturedProjects().then(value => {
+    return api.getFeaturedProjects().then(value => {
       commit('setFeaturedProjects', value.data.projects)
       return value.data
     }).catch(reason => {
@@ -117,13 +117,6 @@ const actions = {
     })
   },
 
-  getProjectCreationOptions ({ commit, state, rootState }) {
-    return api.getProjectCreationOptions().then(value => {
-      commit.setProjectCreationOptions(value.data)
-      console.log(value.data)
-    })
-  },
-
   getUserProgress ({ commit }, project) {
     return api.getProjectUserProgress(project.id).then(value => {
       commit('setSelectedProjectUserProgress', value.data)
@@ -148,13 +141,19 @@ const actions = {
     })
   },
 
-  uploadAvatar ({ commit, state }, { project, image }) {
-    return api.uploadAvatar(state.projectUpdateOptions.upload_form.csrf, project.short_name, image).then(value => {
-      return value.data
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.UPLOAD_PROJECT_AVATAR_ERROR, content: reason
-      }, { root: true })
+  uploadAvatar ({ commit, state, dispatch }, { project, image }) {
+    return dispatch('getProjectUpdateOptions', project).then(response => {
+      if (response) {
+        return api.uploadAvatar(state.projectUpdateOptions.upload_form.csrf, project.short_name, image).then(value => {
+          // nothing to commit
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.UPLOAD_PROJECT_AVATAR_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
       return false
     })
   },
@@ -184,6 +183,7 @@ const actions = {
           commit('notification/showError', {
             title: errors.PUBLISH_PROJECT_ERROR, content: reason
           }, { root: true })
+          return false
         })
       }
       return false
@@ -204,9 +204,6 @@ const mutations = {
   },
   setUserProjects (state, projects) {
     state.userProjects = projects
-  },
-  setProjectCreationOptions (state, options) {
-    state.projectCreationOptions = options
   },
   setSelectedProject (state, project) {
     state.selectedProject = project

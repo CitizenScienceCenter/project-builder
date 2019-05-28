@@ -34,7 +34,7 @@ export default {
       resetTaskBuilder: 'reset'
     }),
     ...mapActions('project', [
-      'createProject', 'getProjectUpdateOptions', 'uploadAvatar'
+      'createProject', 'uploadAvatar'
     ]),
     ...mapMutations('notification', [
       'showError'
@@ -94,15 +94,9 @@ export default {
           // if project successfully created
           if (project) {
 
-            // upload the project avatar picture
-            this.getProjectUpdateOptions(project).then(response => {
-              // checks if the csrf token is present to send upload action
-              if (response.hasOwnProperty('upload_form') && response.upload_form.hasOwnProperty('csrf')) {
-                this.uploadAvatar({ project, image })
-              } else {
-                this.showError({ title: 'Avatar upload failed', content: 'Impossible to upload your project picture. You can try to upload it later...' })
-              }
-            })
+            // upload the project avatar picture (asynchronously)
+            // if it fails, a message will say to the user that he can update it again later...
+            this.uploadAvatar({ project, image })
 
             this.resetTaskBuilder()
             this.$router.push({name: 'project.builder.end'})

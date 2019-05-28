@@ -32,11 +32,17 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
+    // if the prop is a JSON string, it parses it
+    if (typeof this.content === 'string') {
+      this.description = JSON.parse(this.content)
+    }
   },
   watch: {
+    // watch the content prop is required if the prop is not already loaded when the component is displayed
     content (newValue, oldValue) {
-      if (typeof newValue !== 'undefined') {
+      console.log(newValue)
+      if (typeof newValue === 'string') {
         this.description = JSON.parse(this.content)
       }
     }

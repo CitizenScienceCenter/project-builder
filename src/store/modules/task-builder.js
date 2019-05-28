@@ -150,11 +150,13 @@ const actions = {
     return api.getBucketLinks(bucketName).then(value => {
       commit('notification/closeLoading', id, { root: true })
       commit('setBucketFiles', value.data)
+      return value.data
     }).catch(reason => {
       commit('notification/closeLoading', id, { root: true })
       commit('notification/showError', {
         title: errors.GET_BUCKET_FILES_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
   /**

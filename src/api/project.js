@@ -30,20 +30,12 @@ export default {
     })
   },
 
-  // eslint-disable-next-line camelcase
   getUserProjects (apiKey) {
-    // eslint-disable-next-line camelcase
     return axios.get(process.env.BASE_API_URL + 'project?api_key=' + apiKey)
   },
 
   getProjectUserProgress (projectId) {
     return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/userprogress', {
-      data: {}
-    })
-  },
-
-  getProjectCreationOptions () {
-    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/new', {
       data: {}
     })
   },

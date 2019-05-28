@@ -22,7 +22,7 @@ const state = {
   // the current task showed in the task presenter
   currentTask: {},
 
-  // contain data required to send froms
+  // contain data required to send forms
   taskPresenterImportationOptions: {},
   amazonS3TasksImportationOptions: {}
 }
@@ -35,14 +35,17 @@ const getters = {
 // async methods making mutations are placed here
 const actions = {
   getProjectTasks ({ commit }, project) {
-    api.getProjectTasks(project.id).then(value => {
+    return api.getProjectTasks(project.id).then(value => {
       commit('setProjectTasks', value.data)
+      return value.data
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.GET_PROJECT_TASKS_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
+
   getTaskPresenter ({ commit }, project) {
     return api.getTaskPresenter(project.short_name).then(value => {
       // checks if a task presenter is already set
@@ -58,6 +61,7 @@ const actions = {
       return false
     })
   },
+
   getTaskPresenterImportationOptions ({ commit }, project) {
     return api.getTaskPresenterImportationOptions(project.short_name).then(value => {
       commit('setTaskPresenterImportationOptions', value.data)
@@ -69,20 +73,28 @@ const actions = {
       return false
     })
   },
-  saveTaskPresenter ({ commit, state }, {project, template}) {
-    return api.saveTaskPresenter(
-      state.taskPresenterImportationOptions.form.csrf,
-      project.short_name,
-      template
-    ).then(value => {
-      return value.data
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.POST_TASK_PRESENTER_ERROR, content: reason
-      }, { root: true })
+
+  saveTaskPresenter ({ commit, state, dispatch }, {project, template}) {
+    return dispatch('getTaskPresenterImportationOptions', project).then(response => {
+      if (response) {
+        return api.saveTaskPresenter(
+          state.taskPresenterImportationOptions.form.csrf,
+          project.short_name,
+          template
+        ).then(value => {
+          // no commit
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.POST_TASK_PRESENTER_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
       return false
     })
   },
+
   getNewTask ({ commit, rootState }, project) {
     return api.getNewTask(project.id).then(value => {
       commit('setCurrentTask', value.data)
@@ -91,17 +103,22 @@ const actions = {
       commit('notification/showError', {
         title: errors.GET_CURRENT_TASK_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
+
   saveTaskRun ({ commit }, taskRun) {
     return api.saveTaskRun(taskRun).then(value => {
+      // no commit
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.POST_TASK_RUN_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
+
   getAmazonS3TasksImportationOptions ({ commit }, project) {
     return api.getAmazonS3TasksImportationOptions(project.short_name).then(value => {
       commit('setAmazonS3TasksImportationOptions', value.data)
@@ -113,18 +130,25 @@ const actions = {
       return false
     })
   },
-  importAmazonS3Tasks ({ commit, state }, { project, bucket, links }) {
-    return api.importAmazonS3Tasks(
-      state.amazonS3TasksImportationOptions.form.csrf,
-      project,
-      bucket,
-      links
-    ).then(value => {
-      return value.data
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.POST_AMAZON_S3_TASKS_ERROR, content: reason
-      }, { root: true })
+
+  importAmazonS3Tasks ({ commit, state, dispatch }, { project, bucket, files }) {
+    return dispatch('getAmazonS3TasksImportationOptions', project).then(response => {
+      if (response) {
+        return api.importAmazonS3Tasks(
+          state.amazonS3TasksImportationOptions.form.csrf,
+          project,
+          bucket,
+          files
+        ).then(value => {
+          // no commit required
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.POST_AMAZON_S3_TASKS_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
       return false
     })
   }
