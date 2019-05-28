@@ -3,9 +3,9 @@ import axios from 'axios'
 axios.defaults.headers['Content-Type'] = 'application/json'
 
 export default {
-  signIn ({ email, password, csrf }) {
+  signIn (csrf, email, password) {
     return axios.post(process.env.BASE_ENDPOINT_URL + 'account/signin', {
-      email, password, csrf: csrf
+      email, password, csrf
     }, {
       withCredentials: true,
       headers: {
@@ -13,18 +13,21 @@ export default {
       }
     })
   },
+
   getLoginOptions () {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'account/signin', {
       data: {},
       withCredentials: true
     })
   },
+
   getAccountProfile () {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'account/profile', {
       data: {},
       withCredentials: true
     })
   },
+
   signOut () {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'account/signout', {
       data: {},

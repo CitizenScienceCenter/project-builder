@@ -43,7 +43,7 @@
 
           <b-tab title="Tasks">
             <b-row v-if="project.published">
-              <b-col md="4">
+              <b-col >
                 <ul>
                   <li :key="task.id" v-for="task in tasks">
                     {{ task.info.question }}
@@ -51,7 +51,7 @@
                 </ul>
               </b-col>
               <b-col md="8">
-                <div v-if="project.info" v-html="project.info.task_presenter"></div>
+<!--                <TemplateRenderer></TemplateRenderer>-->
               </b-col>
             </b-row>
 
@@ -84,10 +84,12 @@ import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticsMe
 import ProjectUpdatesMenu from '@/components/Project/Menu/ProjectUpdatesMenu'
 import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultsMenu'
 import ProjectDescription from '@/components/Project/ProjectDescription'
+import TemplateRenderer from '@/components/Task/TemplateRenderer'
 
 export default {
   name: 'Project',
   components: {
+    TemplateRenderer,
     ProjectDescription,
     ProjectResultsMenu,
     ProjectUpdatesMenu,

@@ -12,22 +12,25 @@ const errors = {
   UPLOAD_PROJECT_AVATAR_ERROR: 'Error during project avatar upload',
   GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading',
   GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR: 'Error during project publish options loading',
-  PUBLISH_PROJECT_ERROR: 'Error during project publishing'
+  PUBLISH_PROJECT_ERROR: 'Error during project publishing',
+  GET_PROJECT_STATS_LOADING_ERROR: 'Error during project stats loading'
 }
 
 // global state for this module
 
 const state = {
+  // project lists
   categories: [],
   projects: [],
-
   featuredProjects: [],
-
   userProjects: [],
 
+  // selected project data
   selectedProject: {},
   selectedProjectUserProgress: { done: 0, total: 0 },
+  selectedProjectStats: {},
 
+  // form options
   projectCreationOptions: {},
   projectUpdateOptions: {},
   publishProjectOptions: {}
@@ -188,6 +191,18 @@ const actions = {
       }
       return false
     })
+  },
+
+  getStatistics ({ commit }, project) {
+    return api.getStatistics(project.short_name).then(value => {
+      commit('setSelectedProjectStats', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PROJECT_STATS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
   }
 }
 
@@ -219,6 +234,9 @@ const mutations = {
   },
   setPublishProjectOptions (state, options) {
     state.publishProjectOptions = options
+  },
+  setSelectedProjectStats (state, stats) {
+    state.selectedProjectStats = stats
   }
 }
 
