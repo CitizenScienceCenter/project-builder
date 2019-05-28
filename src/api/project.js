@@ -30,20 +30,12 @@ export default {
     })
   },
 
-  // eslint-disable-next-line camelcase
   getUserProjects (apiKey) {
-    // eslint-disable-next-line camelcase
     return axios.get(process.env.BASE_API_URL + 'project?api_key=' + apiKey)
   },
 
   getProjectUserProgress (projectId) {
     return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/userprogress', {
-      data: {}
-    })
-  },
-
-  getProjectCreationOptions () {
-    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/new', {
       data: {}
     })
   },
@@ -73,6 +65,22 @@ export default {
       withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
+  getPublishProjectOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/publish', {
+      withCredentials: true,
+      data: {}
+    })
+  },
+
+  publishProject (csrf, projectShortName) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/publish', {}, {
+      withCredentials: true,
+      headers: {
         'X-CSRFToken': csrf
       }
     })

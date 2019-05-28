@@ -52,8 +52,8 @@ export default {
   },
   methods: {
     ...mapActions('task', [
-      'getTaskPresenterImportationOptions', 'saveTaskPresenter',
-      'getAmazonS3TasksImportationOptions', 'importAmazonS3Tasks'
+      'saveTaskPresenter',
+      'importAmazonS3Tasks'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError'
@@ -157,14 +157,9 @@ export default {
       console.log(template)
 
       // store the generated template for the selected project
-      const templatePromise = this.getTaskPresenterImportationOptions(this.selectedProject).then(response => {
-        if (response.hasOwnProperty('form') && response.form.hasOwnProperty('csrf')) { // test if the csrf token is present
-          return this.saveTaskPresenter({
-            project: this.selectedProject,
-            template
-          })
-        }
-        return false
+      const templatePromise = this.saveTaskPresenter({
+        project: this.selectedProject,
+        template: template
       })
 
       /// Tasks importation depending on the selected source
@@ -172,15 +167,10 @@ export default {
 
       // Amazon S3
       if (this.task.source === this.sources.amazon) {
-        sourcePromise = this.getAmazonS3TasksImportationOptions(this.selectedProject).then(response => {
-          if (response.hasOwnProperty('form') && response.form.hasOwnProperty('csrf')) { // test if the csrf token is present
-            return this.importAmazonS3Tasks({
-              project: this.selectedProject,
-              bucket: this.bucket.name,
-              links: this.task.sourceContent
-            })
-          }
-          return false
+        sourcePromise = this.importAmazonS3Tasks({
+          project: this.selectedProject,
+          bucket: this.bucket.name,
+          files: this.task.sourceContent
         })
       } else {
         console.log(this.task.source + ' task importer not implemented')

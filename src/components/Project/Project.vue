@@ -11,13 +11,15 @@
         <h2>{{ project.name }}</h2>
         <p>{{ project.description }}</p>
 
-        <b-btn v-if="project.published" variant="success" size="lg">Contribute!</b-btn>
-        <b-btn v-else :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
-
-        <!-- Not present in the crowdcrafting app -->
-        <b-btn v-if="!project.published" :to="{ name: 'project.task.presenter' }" variant="outline-success" size="sm" class="mt-2">Test it!</b-btn>
-
-        <b-btn class="mt-2" variant="outline-success" size="sm">Subscribe</b-btn>
+        <div v-if="project.published">
+          <b-btn :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
+        </div>
+        <div v-else>
+          <b-btn :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+          <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-info" size="sm" class="mt-2">Test it!</b-btn>
+          <b-btn variant="outline-success" size="sm" class="mt-2" @click="publishProject(project)">Publish it!</b-btn>
+<!--          <b-btn class="mt-2" variant="outline-success" size="sm">Subscribe</b-btn>-->
+        </div>
       </b-col>
 
     </b-row>
@@ -110,7 +112,7 @@ export default {
   },
   methods: {
     ...mapActions('project', [
-      'getProject'
+      'getProject', 'publishProject', 'getPublishProjectOptions'
     ]),
     ...mapActions('task', [
       'getProjectTasks'

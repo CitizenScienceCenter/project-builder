@@ -10,7 +10,9 @@ const errors = {
   GET_FEATURED_PROJECTS_LOADING_ERROR: 'Error during featured projects loading',
   GET_CATEGORIES_LOADING_ERROR: 'Error during categories loading',
   UPLOAD_PROJECT_AVATAR_ERROR: 'Error during project avatar upload',
-  GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading error'
+  GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading',
+  GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR: 'Error during project publish options loading',
+  PUBLISH_PROJECT_ERROR: 'Error during project publishing'
 }
 
 // global state for this module
@@ -27,7 +29,8 @@ const state = {
   selectedProjectUserProgress: { done: 0, total: 0 },
 
   projectCreationOptions: {},
-  projectUpdateOptions: {}
+  projectUpdateOptions: {},
+  publishProjectOptions: {}
 }
 
 // filter methods on the state data
@@ -80,7 +83,7 @@ const actions = {
   },
 
   getFeaturedProjects ({ commit }) {
-    api.getFeaturedProjects().then(value => {
+    return api.getFeaturedProjects().then(value => {
       commit('setFeaturedProjects', value.data.projects)
       return value.data
     }).catch(reason => {
@@ -114,13 +117,6 @@ const actions = {
     })
   },
 
-  getProjectCreationOptions ({ commit, state, rootState }) {
-    return api.getProjectCreationOptions().then(value => {
-      commit.setProjectCreationOptions(value.data)
-      console.log(value.data)
-    })
-  },
-
   getUserProgress ({ commit }, project) {
     return api.getProjectUserProgress(project.id).then(value => {
       commit('setSelectedProjectUserProgress', value.data)
@@ -145,13 +141,51 @@ const actions = {
     })
   },
 
-  uploadAvatar ({ commit, state }, { project, image }) {
-    return api.uploadAvatar(state.projectUpdateOptions.upload_form.csrf, project.short_name, image).then(value => {
+  uploadAvatar ({ commit, state, dispatch }, { project, image }) {
+    return dispatch('getProjectUpdateOptions', project).then(response => {
+      if (response) {
+        return api.uploadAvatar(state.projectUpdateOptions.upload_form.csrf, project.short_name, image).then(value => {
+          // nothing to commit
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.UPLOAD_PROJECT_AVATAR_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
+      return false
+    })
+  },
+
+  getPublishProjectOptions ({ commit }, project) {
+    return api.getPublishProjectOptions(project.short_name).then(value => {
+      commit('setPublishProjectOptions', value.data)
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.UPLOAD_PROJECT_AVATAR_ERROR, content: reason
+        title: errors.GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
+    })
+  },
+
+  publishProject ({ commit, state, dispatch }, project) {
+    return dispatch('getPublishProjectOptions', project).then(response => {
+      if (response) {
+        return api.publishProject(state.publishProjectOptions.csrf, project.short_name).then(value => {
+          commit('updateSelectedProject', { published: true })
+          commit('notification/showSuccess', {
+            title: 'Project published!', content: 'The project ' + project.name + ' is now public'
+          }, { root: true })
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.PUBLISH_PROJECT_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
       return false
     })
   }
@@ -171,17 +205,20 @@ const mutations = {
   setUserProjects (state, projects) {
     state.userProjects = projects
   },
-  setProjectCreationOptions (state, options) {
-    state.projectCreationOptions = options
-  },
   setSelectedProject (state, project) {
     state.selectedProject = project
+  },
+  updateSelectedProject (state, projectData) {
+    state.selectedProject = { ...state.selectedProject, ...projectData }
   },
   setSelectedProjectUserProgress (state, progress) {
     state.selectedProjectUserProgress = progress
   },
   setProjectUpdateOptions (state, options) {
     state.projectUpdateOptions = options
+  },
+  setPublishProjectOptions (state, options) {
+    state.publishProjectOptions = options
   }
 }
 

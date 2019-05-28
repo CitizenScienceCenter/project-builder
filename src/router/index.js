@@ -67,7 +67,13 @@ const router = new Router({
       component: TemplateRenderer,
       props: true,
       beforeEnter: (to, from, next) => {
-        next()
+        if (!store.state.project.selectedProject.hasOwnProperty('id')) {
+          store.dispatch('project/getProject', to.params.id).then(() => {
+            next()
+          })
+        } else {
+          next()
+        }
       }
     },
 

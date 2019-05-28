@@ -1,10 +1,17 @@
 <template>
-  <div class="mt-4 mb-4">
-    <component ref="presenter" v-if="presenter" :is="presenterComponent" :pybossa="this"></component>
-    <div v-else class="text-center">
-      <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
-    </div>
-  </div>
+  <b-row class="mt-4 mb-4">
+    <b-col>
+
+      <component ref="presenter" v-if="presenter" :is="presenterComponent" :pybossa="this"></component>
+      <div v-else-if="taskPresenterExists" class="text-center">
+        <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
+      </div>
+      <div v-else>
+        <p>The selected project does not contains a task presenter</p>
+      </div>
+
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -18,20 +25,22 @@ export default {
   },
   mounted () {
     Vue.nextTick(() => {
-      this.getTaskPresenter(this.project)
+      this.getTaskPresenter(this.project).then(response => {
+        if (response) {
+          this.taskPresenterExists = true
+        }
+      })
     })
   },
   data: () => {
     return {
-
+      taskPresenterExists: false
     }
   },
   computed: {
     ...mapState('project', {
       // the current project where is displayed the task presenter
-      project: state => state.selectedProject.hasOwnProperty('id')
-        ? state.selectedProject
-        : { id: 49, short_name: 'test_project' }, // default value for testing
+      project: state => state.selectedProject,
 
       // user progress value in percent
       userProgress: state => state.selectedProjectUserProgress
@@ -39,9 +48,7 @@ export default {
 
     ...mapState('task', {
       // the currently displayed task in the presenter
-      task: state => state.currentTask.hasOwnProperty('id')
-        ? state.currentTask
-        : { id: 70, info: { url_b: 'https://0000-images.s3.amazonaws.com/wfmmc/image-04-of-15.jpg' } },
+      task: state => state.currentTask,
 
       // the task presenter template loaded from the pybossa server
       presenter: state => state.taskPresenter
