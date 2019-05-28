@@ -13,12 +13,17 @@ import NameBuilder from '@/components/Project/Builder/NameBuilder'
 import InformationBuilder from '@/components/Project/Builder/InformationBuilder'
 import StoryBuilder from '@/components/Project/Builder/StoryBuilder'
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import EndBuilder from '@/components/Project/Builder/EndBuilder'
 
 export default {
   name: 'ProjectBuilder',
-  components: {EndBuilder, StoryBuilder, InformationBuilder, NameBuilder},
+  components: {
+    EndBuilder,
+    StoryBuilder,
+    InformationBuilder,
+    NameBuilder
+  },
   data () {
     return {
 
@@ -27,11 +32,17 @@ export default {
   methods: {
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
-    })
+    }),
+    ...mapActions('project', [
+      'createProject', 'getProjectUpdateOptions', 'uploadAvatar'
+    ]),
+    ...mapMutations('notification', [
+      'showError'
+    ])
   },
   computed: {
     ...mapState('project/builder', [
-      'currentStep', 'steps', 'title', 'shortDescription', 'picture', 'story'
+      'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'croppedPicture'
     ]),
     items () {
       return [
@@ -67,7 +78,9 @@ export default {
 
       } else if (this.currentStep === 'story' && newVal['story'] === true) {
 
-        this.$store.dispatch('project/createProject', {
+        const image = this.croppedPicture
+
+        this.createProject({
           name: this.title,
           shortDescription: this.shortDescription,
           longDescription: JSON.stringify({
@@ -80,6 +93,17 @@ export default {
 
           // if project successfully created
           if (project) {
+
+            // upload the project avatar picture
+            this.getProjectUpdateOptions(project).then(response => {
+              // checks if the csrf token is present to send upload action
+              if (response.hasOwnProperty('upload_form') && response.upload_form.hasOwnProperty('csrf')) {
+                this.uploadAvatar({ project, image })
+              } else {
+                this.showError({ title: 'Avatar upload failed', content: 'Impossible to upload your project picture. You can try to upload it later...' })
+              }
+            })
+
             this.resetTaskBuilder()
             this.$router.push({name: 'project.builder.end'})
           }

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import slug from 'slug'
+import { dataURItoBlob } from '@/helper'
 
 axios.defaults.headers['Content-Type'] = 'application/json'
 
@@ -53,6 +54,27 @@ export default {
       short_name: slug(name, { lower: true, replacement: '_' }),
       description: shortDescription,
       long_description: longDescription
+    })
+  },
+
+  getProjectUpdateOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/update', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  uploadAvatar (csrf, projectShortName, file) {
+    const formData = new FormData()
+    formData.append('btn', 'Upload')
+    formData.append('avatar', dataURItoBlob(file))
+
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/update?response_format=json', formData, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrf
+      }
     })
   }
 }

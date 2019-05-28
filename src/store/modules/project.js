@@ -8,7 +8,9 @@ const errors = {
   POST_PROJECT_ERROR: 'Error during project creation',
   GET_PROJECT_USER_PROGRESS_LOADING_ERROR: 'Error during project user progress loading',
   GET_FEATURED_PROJECTS_LOADING_ERROR: 'Error during featured projects loading',
-  GET_CATEGORIES_LOADING_ERROR: 'Error during categories loading'
+  GET_CATEGORIES_LOADING_ERROR: 'Error during categories loading',
+  UPLOAD_PROJECT_AVATAR_ERROR: 'Error during project avatar upload',
+  GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading error'
 }
 
 // global state for this module
@@ -24,7 +26,8 @@ const state = {
   selectedProject: {},
   selectedProjectUserProgress: { done: 0, total: 0 },
 
-  projectCreationOptions: {}
+  projectCreationOptions: {},
+  projectUpdateOptions: {}
 }
 
 // filter methods on the state data
@@ -128,6 +131,29 @@ const actions = {
       }, { root: true })
       return false
     })
+  },
+
+  getProjectUpdateOptions ({ commit }, project) {
+    return api.getProjectUpdateOptions(project.short_name).then(value => {
+      commit('setProjectUpdateOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  uploadAvatar ({ commit, state }, { project, image }) {
+    return api.uploadAvatar(state.projectUpdateOptions.upload_form.csrf, project.short_name, image).then(value => {
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.UPLOAD_PROJECT_AVATAR_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
   }
 }
 
@@ -153,6 +179,9 @@ const mutations = {
   },
   setSelectedProjectUserProgress (state, progress) {
     state.selectedProjectUserProgress = progress
+  },
+  setProjectUpdateOptions (state, options) {
+    state.projectUpdateOptions = options
   }
 }
 
