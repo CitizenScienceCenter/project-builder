@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-4 mb-4">
     <component ref="presenter" v-if="presenter" :is="presenterComponent" :pybossa="this"></component>
     <div v-else class="text-center">
       <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
