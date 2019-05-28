@@ -9,6 +9,7 @@ import ProjectBuilder from '@/components/Project/Builder/ProjectBuilder'
 import About from '@/components/About'
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
 import Account from '@/components/Account'
+import TemplateRenderer from '@/components/Task/TemplateRenderer'
 
 Vue.use(Router)
 
@@ -63,7 +64,7 @@ const router = new Router({
     {
       path: '/project/:id/task-presenter',
       name: 'project.task.presenter',
-      component: Project,
+      component: TemplateRenderer,
       props: true,
       beforeEnter: (to, from, next) => {
         next()

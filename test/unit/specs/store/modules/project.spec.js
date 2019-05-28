@@ -11,33 +11,25 @@ describe('store/modules/project', () => {
   // ----------------------------------------------------------
 
   it('test mutation: setProjects', done => {
-    // expect(store.state.project.topProjects.length).to.equal(0)
-    // expect(store.state.project.categories.length).to.equal(0)
-    // expect(Object.values(store.state.project.categoriesProjects).length).to.equal(0)
+    expect(store.state.project.projects.length).to.equal(0)
 
-    store.commit('project/setProjects', {
-      'top_projects': [{name: 'project_a'}, {name: 'project_b'}, {name: 'project_c'}],
-      'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}],
-      'categories_projects': {
-        category_a: [
-          {name: 'project_a'}, {name: 'project_b'}
-        ],
-        category_b: [
-          {name: 'project_c'}
-        ]
-      }
-    })
+    store.commit('project/setProjects', [
+      { short_name: 'project_a' },
+      { short_name: 'project_b' },
+      { short_name: 'project_c' }
+    ])
 
-    expect(store.state.project.topProjects.length).to.equal(3)
-    expect(store.state.project.categories.length).to.equal(2)
-    expect(Object.values(store.state.project.categoriesProjects).length).to.equal(2)
+    expect(store.state.project.projects.length).to.equal(3)
 
     done()
   })
 
   it('test mutation: setUserProjects', done => {
     expect(store.state.project.userProjects.length).to.equal(0)
-    store.commit('project/setUserProjects', [{name: 'project1'}, {name: 'project2'}])
+    store.commit('project/setUserProjects', [
+      { name: 'project1' },
+      { name: 'project2' }
+    ])
     expect(store.state.project.userProjects.length).to.equal(2)
 
     done()
@@ -93,16 +85,14 @@ describe('store/modules/project', () => {
     }], done)
   })
 
-  it('test action: project/getAllPublishedProjects success', done => {
+  it('test action: project/getAllProjects success', done => {
     const project = actionsInjector({
       '../../api/project': {
         getAllProjects () {
           return new Promise((resolve, reject) => {
             setTimeout(function () {
               resolve({
-                data: {
-
-                }
+                data: []
               })
             }, 10)
           })
@@ -110,12 +100,12 @@ describe('store/modules/project', () => {
       }
     })
 
-    testAction(project.default.actions.getAllPublishedProjects, null, project.default.state, store.state, [
-      { type: 'setProjects', payload: {} }
+    testAction(project.default.actions.getAllProjects, null, project.default.state, store.state, [
+      { type: 'setProjects', payload: [] }
     ], done)
   })
 
-  it('test action: project/getAllPublishedProjects error', done => {
+  it('test action: project/getAllProjects error', done => {
     const error = new Error('HTTP ERROR')
     const project = actionsInjector({
       '../../api/project': {
@@ -129,7 +119,7 @@ describe('store/modules/project', () => {
       }
     })
 
-    testAction(project.default.actions.getAllPublishedProjects, null, project.default.state, store.state, [
+    testAction(project.default.actions.getAllProjects, null, project.default.state, store.state, [
       {
         type: 'notification/showError',
         payload: {
@@ -212,62 +202,35 @@ describe('store/modules/project', () => {
   //
   // ----------------------------------------------------------
 
-  it('test getter: project/getFeaturedProjects', done => {
-    store.commit('project/setProjects', {
-      'top_projects': [{name: 'project_a'}, {name: 'project_b'}],
-      'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}, {short_name: 'category_c'}],
-      'categories_projects': {
-        category_a: [
-          {name: 'project_a', featured: true}, {name: 'project_b', featured: false}
-        ],
-        category_b: [
-          {name: 'project_c', featured: false}
-        ],
-        category_c: [
-          {name: 'project_d', featured: true}
-        ]
-      }
-    })
+  it('test getter: project/getProjectsWithCategory', done => {
+    store.commit('project/setProjects', [
+      { short_name: 'project_1', category_id: 1 },
+      { short_name: 'project_2', category_id: 1 },
+      { short_name: 'project_3', category_id: 3 }
+    ])
 
-    let result = projectModule.getters.getFeaturedProjects(projectModule.state)
+    let result = projectModule.getters.getProjectsWithCategory(projectModule.state)({ id: 1 })
 
     // eslint-disable-next-line no-unused-expressions
     expect(result).to.be.an('array')
     expect(result.length).to.equal(2)
     expect(result).to.have.deep.members([
-      {name: 'project_a', featured: true},
-      {name: 'project_d', featured: true}
+      { short_name: 'project_1', category_id: 1 },
+      { short_name: 'project_2', category_id: 1 }
     ])
 
     done()
   })
 
-  it('test getter: project/getProjectsFor', done => {
-    store.commit('project/setProjects', {
-      'top_projects': [{name: 'project_a'}, {name: 'project_b'}],
-      'categories': [{short_name: 'category_a'}, {short_name: 'category_b'}, {short_name: 'category_c'}],
-      'categories_projects': {
-        category_a: [
-          {name: 'project_a', featured: true}, {name: 'project_b', featured: false}
-        ],
-        category_b: [
-          {name: 'project_c', featured: false}
-        ],
-        category_c: [
-          {name: 'project_d', featured: true}
-        ]
-      }
+  it('test getter: project/getUserProgressInPercent', done => {
+    store.commit('project/setSelectedProjectUserProgress', {
+      done: 2,
+      total: 8
     })
 
-    let result = projectModule.getters.getProjectsFor(projectModule.state)({short_name: 'category_a'})
+    const result = projectModule.getters.getUserProgressInPercent(projectModule.state)
 
-    // eslint-disable-next-line no-unused-expressions
-    expect(result).to.be.an('array')
-    expect(result.length).to.equal(2)
-    expect(result).to.have.deep.members([
-      {name: 'project_a', featured: true},
-      {name: 'project_b', featured: false}
-    ])
+    expect(result).to.equal(25)
 
     done()
   })

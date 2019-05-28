@@ -13,6 +13,10 @@
 
         <b-btn v-if="project.published" variant="success" size="lg">Contribute!</b-btn>
         <b-btn v-else :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+
+        <!-- Not present in the crowdcrafting app -->
+        <b-btn v-if="!project.published" :to="{ name: 'project.task.presenter' }" variant="outline-success" size="sm" class="mt-2">Test it!</b-btn>
+
         <b-btn class="mt-2" variant="outline-success" size="sm">Subscribe</b-btn>
       </b-col>
 

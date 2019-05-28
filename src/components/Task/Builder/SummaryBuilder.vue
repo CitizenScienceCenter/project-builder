@@ -14,10 +14,11 @@
           <li>Template: {{ task.template }}</li>
           <li>Source: {{ task.source }}</li>
           <li>
-            Links ({{ task.sourceContent.length }})
+            Files ({{ task.sourceContent.length }})
             <ul>
-              <li :key="link" v-for="link in task.sourceContent">
-                <b-link :href="link" target="_blank">{{ link }}</b-link>
+              <li :key="file" v-for="file in task.sourceContent">
+                <b-link v-if="task.source === sources.amazon" :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
+                <b-link v-else :href="file" target="_blank">{{ file }}</b-link>
               </li>
             </ul>
           </li>
@@ -30,7 +31,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
 import ImageCountTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
 import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescribeTemplate'
@@ -40,10 +41,24 @@ export default {
   name: 'SummaryBuilder',
   computed: {
     ...mapState('task/builder', [
-      'task', 'materials', 'jobs'
+      'task', 'materials', 'jobs', 'sources', 'bucket'
+    ]),
+    ...mapState('project', [
+      'selectedProject'
+    ]),
+    ...mapGetters('task/builder', [
+      'getBucketFileLink'
     ])
   },
   methods: {
+    ...mapActions('task', [
+      'getTaskPresenterImportationOptions', 'saveTaskPresenter',
+      'getAmazonS3TasksImportationOptions', 'importAmazonS3Tasks'
+    ]),
+    ...mapMutations('notification', [
+      'showSuccess', 'showError'
+    ]),
+
     buildTemplateFromModel (templateModel, templateData) {
       // escape template
       const template = JSON.stringify(templateModel.template)
@@ -80,7 +95,10 @@ export default {
     },
 
     onSubmit () {
+      // the generated template
       let template = null
+
+      /// Template generation depending on what the user has selected
 
       if (this.task.material === this.materials.image) {
 
@@ -101,9 +119,9 @@ export default {
       if (this.task.material === this.materials.sound) {
 
         if (this.task.job === this.jobs.classify) {
-
+          console.log('Sound classify template')
         } else if (this.task.job === this.jobs.describe) {
-
+          console.log('Sound describe template')
         }
 
       }
@@ -111,9 +129,9 @@ export default {
       if (this.task.material === this.materials.video) {
 
         if (this.task.job === this.jobs.classify) {
-
+          console.log('Video classify template')
         } else if (this.task.job === this.jobs.describe) {
-
+          console.log('Video describe template')
         }
 
       }
@@ -121,7 +139,7 @@ export default {
       if (this.task.material === this.materials.pdf) {
 
         if (this.task.job === this.jobs.describe) {
-
+          console.log('Pdf describe template')
         }
 
       }
@@ -129,15 +147,60 @@ export default {
       if (this.task.material === this.materials.tweet) {
 
         if (this.task.job === this.jobs.classify) {
-
+          console.log('Tweet classify template')
         } else if (this.task.job === this.jobs.describe) {
-
+          console.log('Tweet describe template')
         }
 
       }
 
       console.log(template)
-      // TODO : send generated template to Pybossa server
+
+      // store the generated template for the selected project
+      const templatePromise = this.getTaskPresenterImportationOptions(this.selectedProject).then(response => {
+        if (response.hasOwnProperty('form') && response.form.hasOwnProperty('csrf')) { // test if the csrf token is present
+          return this.saveTaskPresenter({
+            project: this.selectedProject,
+            template
+          })
+        }
+        return false
+      })
+
+      /// Tasks importation depending on the selected source
+      let sourcePromise = null
+
+      // Amazon S3
+      if (this.task.source === this.sources.amazon) {
+        sourcePromise = this.getAmazonS3TasksImportationOptions(this.selectedProject).then(response => {
+          if (response.hasOwnProperty('form') && response.form.hasOwnProperty('csrf')) { // test if the csrf token is present
+            return this.importAmazonS3Tasks({
+              project: this.selectedProject,
+              bucket: this.bucket.name,
+              links: this.task.sourceContent
+            })
+          }
+          return false
+        })
+      } else {
+        console.log(this.task.source + ' task importer not implemented')
+      }
+
+      // test if all calls have been done correctly and redirects to the project detail page
+      Promise.all([templatePromise, sourcePromise]).then(results => {
+        if (results.filter(el => el !== false).length === 2) {
+
+          this.showSuccess({ title: 'Task created', content: 'Your task has been submited' })
+          this.$router.push({ name: 'project', params: { id: this.selectedProject.id } })
+
+        } else {
+          this.showError({
+            title: 'Error during task creation',
+            content: 'We are not able to submit you tasks and your template for the moment'
+          })
+        }
+      })
+
     }
   }
 }
