@@ -41,7 +41,6 @@ export default {
   watch: {
     // watch the content prop is required if the prop is not already loaded when the component is displayed
     content (newValue, oldValue) {
-      console.log(newValue)
       if (typeof newValue === 'string') {
         this.description = JSON.parse(this.content)
       }

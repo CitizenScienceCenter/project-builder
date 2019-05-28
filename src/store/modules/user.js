@@ -11,26 +11,32 @@ const state = {
 
 // filter methods on the state data
 const getters = {
-  // getCsrfToken: state => {
-  //   return !!state.loginOptions.form && !!state.loginOptions.form.csrf ? state.loginOptions.form.csrf : 'CSRF NOT AVAILABLE'
-  // }
+
 }
 
 // async methods making mutations are placed here
 const actions = {
-  signIn ({ commit, state }, { email, password }) {
-    return api.signIn({ email, password, csrf: state.loginOptions.form.csrf }).then(response => {
-      if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
-        commit('setLogged')
-        return response.data
+  signIn ({ commit, state, dispatch }, { email, password }) {
+    return dispatch('getLoginOptions').then(value => {
+      if (value) {
+        return api.signIn(state.loginOptions.form.csrf, email, password).then(response => {
+          // checks if the user is authenticated (good credentials)
+          if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
+            commit('setLogged')
+            return response.data
+          }
+          return false
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: 'Error during user sign in', content: reason
+          }, { root: true })
+          return false
+        })
       }
       return false
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: 'Error during user sign in', content: reason
-      }, { root: true })
     })
   },
+
   getLoginOptions ({ commit }) {
     return api.getLoginOptions().then(value => {
       commit('setLoginOptions', value.data)
@@ -39,8 +45,10 @@ const actions = {
       commit('notification/showError', {
         title: 'Sign in not available', content: reason
       }, { root: true })
+      return false
     })
   },
+
   getAccountProfile ({ commit }) {
     return api.getAccountProfile().then(value => {
       if (value.data.hasOwnProperty('user')) {
@@ -57,8 +65,10 @@ const actions = {
       commit('notification/showError', {
         title: 'Impossible to get profile data', content: reason
       }, { root: true })
+      return false
     })
   },
+
   signOut ({ commit }) {
     return api.signOut().then(response => {
       if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
