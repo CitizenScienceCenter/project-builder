@@ -19,6 +19,8 @@ const state = {
 
   featuredProjects: [],
 
+  userProjects: [],
+
   selectedProject: {},
   selectedProjectUserProgress: { done: 0, total: 0 },
 
@@ -27,9 +29,6 @@ const state = {
 
 // filter methods on the state data
 const getters = {
-  // thumbnail: () => project => {
-  //   return api.getProjectThumbnail(project)
-  // },
   getProjectsWithCategory: state => ({id}) => {
     return state.projects.filter(project => {
       return project.category_id === id
@@ -43,15 +42,16 @@ const getters = {
 // async methods making mutations are placed here
 const actions = {
 
-  // getUserProjects ({ commit, rootState }) {
-  //   api.getUserProjects(rootState.user.infos).then(value => {
-  //     commit('setUserProjects', value.data)
-  //   }).catch(reason => {
-  //     commit('notification/showError', {
-  //       title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
-  //     }, { root: true })
-  //   })
-  // },
+  getUserProjects ({ commit, rootState }) {
+    return api.getUserProjects(rootState.user.infos.api_key).then(value => {
+      commit('setUserProjects', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
+      }, { root: true })
+    })
+  },
 
   getCategories ({ commit }) {
     return api.getCategories().then(value => {
@@ -110,6 +110,7 @@ const actions = {
       return false
     })
   },
+
   getProjectCreationOptions ({ commit, state, rootState }) {
     return api.getProjectCreationOptions().then(value => {
       commit.setProjectCreationOptions(value.data)
@@ -141,9 +142,9 @@ const mutations = {
   setFeaturedProjects (state, projects) {
     state.featuredProjects = projects
   },
-  // setUserProjects (state, projects) {
-  //   state.userProjects = projects
-  // },
+  setUserProjects (state, projects) {
+    state.userProjects = projects
+  },
   setProjectCreationOptions (state, options) {
     state.projectCreationOptions = options
   },

@@ -25,8 +25,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('project/builder', {
-      resetBuilder: 'reset'
+    ...mapActions('task/builder', {
+      resetTaskBuilder: 'reset'
     })
   },
   computed: {
@@ -80,6 +80,7 @@ export default {
 
           // if project successfully created
           if (project) {
+            this.resetTaskBuilder()
             this.$router.push({name: 'project.builder.end'})
           }
 

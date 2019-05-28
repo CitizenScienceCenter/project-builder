@@ -18,6 +18,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
   localVue.use(BootstrapVue)
 
   beforeEach(() => {
+    store.commit('user/setLogged')
     sandbox = sinon.sandbox.create()
   })
 
@@ -58,7 +59,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
 
     store.commit('task/builder/setStep', { step: 'job', value: true })
 
-    expect(spy.calledWithExactly({ name: 'task.builder.template' })).to.equal(true)
+    expect(spy.calledWith({ name: 'task.builder.template' })).to.equal(true)
   })
 
   it('should go to SourceBuilder component when setStep template is true', () => {
@@ -72,7 +73,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
 
     store.commit('task/builder/setStep', { step: 'template', value: true })
 
-    expect(spy.calledWithExactly({ name: 'task.builder.source' })).to.equal(true)
+    expect(spy.calledWith({ name: 'task.builder.source' })).to.equal(true)
   })
 
   it('should go to SummaryBuilder component when setStep source is true', () => {
@@ -95,5 +96,6 @@ describe('Task/Builder/TaskBuilder.vue', () => {
       store.commit('task/builder/setStep', { step: step, value: false })
     }
     sandbox.restore()
+    store.commit('user/setLogout')
   })
 })

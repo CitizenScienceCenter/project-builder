@@ -6,19 +6,19 @@
         <b-input v-model="bucketName" placeholder="Name of the S3 bucket"></b-input>
       </b-form-group>
 
-      <b-btn ref="btn-get-bucket-links" @click="getBucketLinks(bucket.name)" variant="primary">Search in bucket</b-btn>
-      <b-btn ref="btn-submit" @click="onSubmit" variant="success" size="lg" class="float-right" v-if="materialAuthorizedLinks.length > 0">Go!</b-btn>
+      <b-btn ref="btn-get-bucket-links" @click="getBucketFiles(bucket.name)" variant="primary">Search in bucket</b-btn>
+      <b-btn ref="btn-submit" @click="onSubmit" variant="success" size="lg" class="float-right" v-if="allowedFiles.length > 0">Go!</b-btn>
 
-      <LoadingSpinner class="mt-4" :id="loaders.GET_BUCKET_LINKS"></LoadingSpinner>
+      <LoadingSpinner class="mt-4" :id="loaders.GET_BUCKET_FILES"></LoadingSpinner>
 
       <b-list-group class="mt-4">
-        <b-list-group-item :key="link" v-for="link in materialAuthorizedLinks">
+        <b-list-group-item :key="file" v-for="file in allowedFiles">
           <div>
-            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="link"></b-img>
-            <b-link :href="link">{{ link }}</b-link>
+            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="getBucketFileLink(file)"></b-img>
+            <b-link :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
           </div>
          <div class="text-right">
-           <b-btn @click="deleteBucketLink(link)" variant="danger">Delete</b-btn>
+           <b-btn @click="deleteBucketFile(file)" variant="danger">Delete</b-btn>
          </div>
         </b-list-group-item>
       </b-list-group>
@@ -45,18 +45,22 @@ export default {
     }
   },
   mounted () {
-    this.setBucketLinks(Array.isArray(this.task.sourceContent) ? [...this.task.sourceContent] : [])
+    this.setBucketFiles(Array.isArray(this.task.sourceContent) ? [...this.task.sourceContent] : [])
   },
   computed: {
     ...mapState('task/builder', [
-      'bucketLinks', 'materialExtensions', 'task', 'sources', 'materials', 'bucket', 'loaders'
+      'bucketFiles', 'materialExtensions', 'task', 'sources', 'materials', 'bucket', 'loaders'
     ]),
     ...mapGetters('task/builder', [
-      'getBucketLinksWithExtensions'
+      'getBucketFilesWithExtensions', 'getBucketFileLink'
     ]),
 
-    materialAuthorizedLinks () {
-      return this.getBucketLinksWithExtensions(this.materialExtensions[this.task.material])
+    /**
+     * Only returns the files which have a material compatible extension
+     * @return {Function}
+     */
+    allowedFiles () {
+      return this.getBucketFilesWithExtensions(this.materialExtensions[this.task.material])
     },
 
     bucketName: {
@@ -70,15 +74,15 @@ export default {
   },
   methods: {
     ...mapActions('task/builder', [
-      'getBucketLinks'
+      'getBucketFiles'
     ]),
     ...mapMutations('task/builder', [
-      'setTaskSource', 'setTaskSourceContent', 'setStep', 'setBucketLinks', 'setBucketName', 'deleteBucketLink'
+      'setTaskSource', 'setTaskSourceContent', 'setStep', 'setBucketFiles', 'setBucketName', 'deleteBucketFile'
     ]),
 
     onSubmit () {
       this.setTaskSource(this.sources.amazon)
-      this.setTaskSourceContent([ ...this.materialAuthorizedLinks ])
+      this.setTaskSourceContent([ ...this.allowedFiles ])
       this.setStep({ step: 'source', value: true })
     }
   }

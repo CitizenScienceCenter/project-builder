@@ -1,7 +1,7 @@
 import api from '@/api/aws'
 
 const errors = {
-  GET_BUCKET_LINKS_ERROR: 'Error during bucket links loading'
+  GET_BUCKET_FILES_ERROR: 'Error during bucket files loading'
 }
 
 // all the types of data available for a task
@@ -117,17 +117,20 @@ const state = {
   // aws s3 bucket
   bucket: {
     name: '',
-    links: []
+    files: []
   },
   loaders: {
-    GET_BUCKET_LINKS: 'task-builder/GET_BUCKET_LINKS'
+    GET_BUCKET_FILES: 'task-builder/GET_BUCKET_FILES'
   }
 }
 
 // filter methods on the state data
 const getters = {
-  getBucketLinksWithExtensions: (state) => (extensions) => {
-    return state.bucket.links.filter(value => {
+  getBucketFileLink: (state) => (file) => {
+    return 'https://' + state.bucket.name + '.s3.amazonaws.com/' + file
+  },
+  getBucketFilesWithExtensions: (state) => (extensions) => {
+    return state.bucket.files.filter(value => {
       for (let extension of extensions) {
         if (value.endsWith(extension)) {
           return true
@@ -140,21 +143,39 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
-  getBucketLinks ({ state, commit }, bucketName) {
-    const id = state.loaders.GET_BUCKET_LINKS
+  getBucketFiles ({ state, commit }, bucketName) {
+    const id = state.loaders.GET_BUCKET_FILES
     commit('notification/showLoading', id, { root: true })
 
     return api.getBucketLinks(bucketName).then(value => {
       commit('notification/closeLoading', id, { root: true })
-      const links = value.data.map(link => {
-        return 'https://' + bucketName + '.s3.amazonaws.com/' + link
-      })
-      commit('setBucketLinks', links)
+      commit('setBucketFiles', value.data)
     }).catch(reason => {
       commit('notification/closeLoading', id, { root: true })
       commit('notification/showError', {
-        title: errors.GET_BUCKET_LINKS_ERROR, content: reason
+        title: errors.GET_BUCKET_FILES_ERROR, content: reason
       }, { root: true })
+    })
+  },
+  /**
+   * Reset all the builder data to have empty fields when creating a new task presenter
+   * @param commit
+   * @return {Promise<void>}
+   */
+  reset ({ commit }) {
+    return new Promise(resolve => {
+      commit('setStep', { step: 'material', value: false })
+      commit('setStep', { step: 'job', value: false })
+      commit('setStep', { step: 'template', value: false })
+      commit('setStep', { step: 'source', value: false })
+      commit('setStep', { step: 'summary', value: false })
+      commit('setCurrentStep', 'material')
+      commit('setTaskMaterial', null)
+      commit('setTaskJob', null)
+      commit('setTaskTemplate', null)
+      commit('setTaskSource', null)
+      commit('setTaskSourceContent', null)
+      resolve()
     })
   }
 }
@@ -185,14 +206,14 @@ const mutations = {
   setBucketName (state, name) {
     state.bucket = { ...state.bucket, name }
   },
-  setBucketLinks (state, links) {
-    state.bucket = { ...state.bucket, links }
+  setBucketFiles (state, files) {
+    state.bucket = { ...state.bucket, files }
   },
-  deleteBucketLink (state, link) {
+  deleteBucketFile (state, file) {
     state.bucket = {
       ...state.bucket,
-      links: state.bucket.links.filter(value => {
-        return value !== link
+      files: state.bucket.files.filter(value => {
+        return value !== file
       })
     }
   }

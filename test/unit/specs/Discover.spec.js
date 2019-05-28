@@ -18,14 +18,14 @@ describe('Discover.vue', () => {
     sandbox = sinon.sandbox.create()
   })
 
-  it('should dispatch project/getAllPublishedProjects action in create()', () => {
+  it('should dispatch project/getAllProjects action in create()', () => {
     const spy = sandbox.spy(store, 'dispatch')
 
     // prepare the vue instance
     shallowMount(Discover, { store, localVue, router })
 
     // eslint-disable-next-line no-unused-expressions
-    expect(spy.withArgs('project/getAllPublishedProjects').calledOnce).to.be.true
+    expect(spy.withArgs('project/getAllProjects').calledOnce).to.be.true
   })
 
   afterEach(() => {

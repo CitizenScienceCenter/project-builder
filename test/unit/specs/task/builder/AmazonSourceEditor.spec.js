@@ -24,7 +24,7 @@ describe('Task/Builder/AmazonSourceEditor.vue', () => {
     sandbox = sinon.sandbox.create()
   })
 
-  it('should display a list of links when the user specify a correct bucket name', done => {
+  it('should display a list of files when the user specify a correct bucket name', done => {
     const spy = sandbox.spy(store, 'dispatch')
 
     store.commit('task/builder/setTaskMaterial', taskBuilderState.materials.image)
@@ -39,7 +39,7 @@ describe('Task/Builder/AmazonSourceEditor.vue', () => {
 
     btnGetBucketLinks.trigger('click')
 
-    expect(spy.calledWith('task/builder/getBucketLinks', bucketName)).to.equal(true)
+    expect(spy.calledWith('task/builder/getBucketFiles', bucketName)).to.equal(true)
 
     done()
   })
@@ -53,7 +53,7 @@ describe('Task/Builder/AmazonSourceEditor.vue', () => {
       localVue,
       router,
       computed: {
-        materialAuthorizedLinks: links
+        allowedFiles: links
       }
     })
 
