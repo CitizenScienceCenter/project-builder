@@ -10,7 +10,9 @@ const errors = {
   GET_FEATURED_PROJECTS_LOADING_ERROR: 'Error during featured projects loading',
   GET_CATEGORIES_LOADING_ERROR: 'Error during categories loading',
   UPLOAD_PROJECT_AVATAR_ERROR: 'Error during project avatar upload',
-  GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading error'
+  GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading',
+  GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR: 'Error during project publish options loading',
+  PUBLISH_PROJECT_ERROR: 'Error during project publishing'
 }
 
 // global state for this module
@@ -27,7 +29,8 @@ const state = {
   selectedProjectUserProgress: { done: 0, total: 0 },
 
   projectCreationOptions: {},
-  projectUpdateOptions: {}
+  projectUpdateOptions: {},
+  publishProjectOptions: {}
 }
 
 // filter methods on the state data
@@ -154,6 +157,37 @@ const actions = {
       }, { root: true })
       return false
     })
+  },
+
+  getPublishProjectOptions ({ commit }, project) {
+    return api.getPublishProjectOptions(project.short_name).then(value => {
+      commit('setPublishProjectOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  publishProject ({ commit, state, dispatch }, project) {
+    return dispatch('getPublishProjectOptions', project).then(response => {
+      if (response) {
+        return api.publishProject(state.publishProjectOptions.csrf, project.short_name).then(value => {
+          commit('updateSelectedProject', { published: true })
+          commit('notification/showSuccess', {
+            title: 'Project published!', content: 'The project ' + project.name + ' is now public'
+          }, { root: true })
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.PUBLISH_PROJECT_ERROR, content: reason
+          }, { root: true })
+        })
+      }
+      return false
+    })
   }
 }
 
@@ -177,11 +211,17 @@ const mutations = {
   setSelectedProject (state, project) {
     state.selectedProject = project
   },
+  updateSelectedProject (state, projectData) {
+    state.selectedProject = { ...state.selectedProject, ...projectData }
+  },
   setSelectedProjectUserProgress (state, progress) {
     state.selectedProjectUserProgress = progress
   },
   setProjectUpdateOptions (state, options) {
     state.projectUpdateOptions = options
+  },
+  setPublishProjectOptions (state, options) {
+    state.publishProjectOptions = options
   }
 }
 

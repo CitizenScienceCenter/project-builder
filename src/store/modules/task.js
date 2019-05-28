@@ -44,12 +44,18 @@ const actions = {
     })
   },
   getTaskPresenter ({ commit }, project) {
-    api.getTaskPresenter(project.short_name).then(value => {
-      commit('setTaskPresenter', value.data.form.editor)
+    return api.getTaskPresenter(project.short_name).then(value => {
+      // checks if a task presenter is already set
+      if (value.data.hasOwnProperty('form') && value.data.form.hasOwnProperty('editor')) {
+        commit('setTaskPresenter', value.data.form.editor)
+        return value.data
+      }
+      return false
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.GET_PROJECT_TASK_PRESENTER_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
   getTaskPresenterImportationOptions ({ commit }, project) {

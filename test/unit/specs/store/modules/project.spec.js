@@ -11,7 +11,7 @@ describe('store/modules/project', () => {
   // ----------------------------------------------------------
 
   it('test mutation: setProjects', done => {
-    expect(store.state.project.projects.length).to.equal(0)
+    // expect(store.state.project.projects.length).to.equal(0)
 
     store.commit('project/setProjects', [
       { short_name: 'project_a' },

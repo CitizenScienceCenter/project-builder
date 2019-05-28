@@ -76,5 +76,21 @@ export default {
         'X-CSRFToken': csrf
       }
     })
+  },
+
+  getPublishProjectOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/publish', {
+      withCredentials: true,
+      data: {}
+    })
+  },
+
+  publishProject (csrf, projectShortName) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/publish', {}, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
   }
 }
