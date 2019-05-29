@@ -16,9 +16,9 @@
         </div>
         <div v-else>
           <b-btn :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
-          <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-info" size="sm" class="mt-2">Test it!</b-btn>
-          <b-btn variant="outline-success" size="sm" class="mt-2" @click="publishProject(project)">Publish it!</b-btn>
-<!--          <b-btn class="mt-2" variant="outline-success" size="sm">Subscribe</b-btn>-->
+          <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
+          <b-btn variant="outline-secondary" size="sm" class="mt-2" @click="publishProject(project)">Publish it!</b-btn><br>
+          <b-btn class="mt-2" variant="outline-secondary" size="sm">Subscribe</b-btn>
         </div>
       </b-col>
 

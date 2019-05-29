@@ -8,8 +8,8 @@ import Project from '@/components/Project/Project'
 import ProjectBuilder from '@/components/Project/Builder/ProjectBuilder'
 import About from '@/components/About'
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
-import Account from '@/components/Account'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
+import Profile from '@/components/Profile/Profile'
 
 Vue.use(Router)
 
@@ -48,9 +48,22 @@ const router = new Router({
       component: About
     },
     {
-      path: '/account',
-      name: 'account',
-      component: Account
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
+      beforeEnter: (to, from, next) => {
+        store.commit('user/isInProfileEditionMode', false)
+        next()
+      }
+    },
+    {
+      path: '/profile/edit',
+      name: 'profile.edition',
+      component: Profile,
+      beforeEnter: (to, from, next) => {
+        store.commit('user/isInProfileEditionMode', true)
+        next()
+      }
     },
 
     // Project related pages

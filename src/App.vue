@@ -21,7 +21,7 @@
 
             <b-nav-item-dropdown v-else right>
               <template slot="button-content">User</template>
-              <b-dropdown-item :to="{ name: 'account' }">Profile</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'profile' }">Profile</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'logout' }">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
 

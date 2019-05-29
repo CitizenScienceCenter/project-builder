@@ -9,7 +9,7 @@
             <!-- Featured projects -->
             <b-tab :title="'Featured (' + featuredProjects.length + ')'" active>
               <b-row>
-                <b-col class="mt-3" :key="project.id" cols="4" v-for="project in featuredProjects">
+                <b-col class="mt-3" :key="project.id" md="4" v-for="project in featuredProjects">
 
                   <b-card
                           :title="project.name"
@@ -34,7 +34,7 @@
             <!-- Other categories -->
             <b-tab :key="category.short_name" :title="category.name + ' (' + getProjectsWithCategory(category).length + ')'" v-for="category in categories">
               <b-row>
-                <b-col class="mt-3" :key="project.id" cols="4" v-for="project in getProjectsWithCategory(category)">
+                <b-col class="mt-3" :key="project.id" md="4" v-for="project in getProjectsWithCategory(category)">
 
                   <b-card
                           :title="project.name"
