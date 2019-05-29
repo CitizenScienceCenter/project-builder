@@ -20,7 +20,9 @@ const state = {
   taskPresenter: '',
 
   // the current task showed in the task presenter
-  currentTask: {},
+  currentTask: {
+    info: {}
+  },
 
   // contain data required to send forms
   taskPresenterImportationOptions: {},

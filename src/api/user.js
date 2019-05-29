@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { dataURItoBlob } from '@/helper'
 
 axios.defaults.headers['Content-Type'] = 'application/json'
 
@@ -30,6 +31,79 @@ export default {
 
   signOut () {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'account/signout', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  getProfileUpdateOptions (username) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/update', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  updateProfile (csrf, username, form) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/update', {
+      ...form, btn: 'Profile'
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
+  getResetApiKeyOptions (username) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/resetapikey', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  resetApiKey (csrf, username) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/resetapikey', {}, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
+  updateAvatar (csrf, username, avatar) {
+    const data = new FormData()
+    data.append('avatar', dataURItoBlob(avatar))
+    data.append('btn', 'Upload')
+
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/update?response_format=json', data, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
+  updatePassword (csrf, username, form) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/update', {
+      ...form, btn: 'Password'
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
+  deleteAccount (username) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/delete', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  exportAccountData (username) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/' + username + '/export', {
       data: {},
       withCredentials: true
     })
