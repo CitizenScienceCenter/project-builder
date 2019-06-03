@@ -27,7 +27,7 @@ const component =
 
     /* All template data */
     data: {
-      question: 'How many birds can you see ?',
+      question: '',
       count: 0
     },
 

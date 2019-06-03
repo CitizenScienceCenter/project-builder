@@ -1,6 +1,11 @@
 import api from '@/api/task'
 import builder from './task-builder'
 
+import { buildTemplateFromModel } from '@/helper'
+
+import ImageTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
+import BasicTemplate from '@/components/Task/Template/BasicTemplate'
+
 const errors = {
   GET_PROJECT_TASKS_LOADING_ERROR: 'Error during project tasks loading',
   GET_PROJECT_TASK_PRESENTER_LOADING_ERROR: 'Error during project task presenter loading',
@@ -16,12 +21,23 @@ const state = {
   // tasks list of the selected project
   projectTasks: [],
 
+  usingTemplate: null,
+
   // the currently loaded task presenter
   taskPresenter: '',
 
   // the current task showed in the task presenter
   currentTask: {
     info: {}
+  },
+
+  templates: {
+    basic: 'basic',
+    sound: 'sound',
+    image: 'image',
+    video: 'video',
+    geocoding: 'geocoding',
+    document: 'document'
   },
 
   // contain data required to send forms
@@ -48,20 +64,40 @@ const actions = {
     })
   },
 
-  getTaskPresenter ({ commit }, project) {
-    return api.getTaskPresenter(project.short_name).then(value => {
-      // checks if a task presenter is already set
-      if (value.data.hasOwnProperty('form') && value.data.form.hasOwnProperty('editor')) {
-        commit('setTaskPresenter', value.data.form.editor)
-        return value.data
+  getTaskPresenter ({ commit, state }, { project, template }) {
+    if (template === null) {
+      return api.getTaskPresenter(project.short_name).then(value => {
+        // checks if a task presenter is already set
+        if (value.data.hasOwnProperty('form') && value.data.form.hasOwnProperty('editor')) {
+          commit('setTaskPresenter', value.data.form.editor)
+          return value.data
+        }
+        return false
+      }).catch(reason => {
+        commit('notification/showError', {
+          title: errors.GET_PROJECT_TASK_PRESENTER_LOADING_ERROR, content: reason
+        }, { root: true })
+        return false
+      })
+    } else {
+      switch (template) {
+        case state.templates.image:
+          commit('setTaskPresenter', buildTemplateFromModel(ImageTemplate, {}))
+          break
+        case state.templates.sound:
+          break
+        case state.templates.video:
+          break
+        case state.templates.document:
+          break
+        case state.templates.geocoding:
+          break
+        default:
+          commit('setTaskPresenter', buildTemplateFromModel(BasicTemplate, {}))
+          break
       }
-      return false
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.GET_PROJECT_TASK_PRESENTER_LOADING_ERROR, content: reason
-      }, { root: true })
-      return false
-    })
+      return true
+    }
   },
 
   getTaskPresenterImportationOptions ({ commit }, project) {
@@ -76,7 +112,7 @@ const actions = {
     })
   },
 
-  saveTaskPresenter ({ commit, state, dispatch }, {project, template}) {
+  saveTaskPresenter ({ commit, state, dispatch }, { project, template }) {
     return dispatch('getTaskPresenterImportationOptions', project).then(response => {
       if (response) {
         return api.saveTaskPresenter(
@@ -84,8 +120,11 @@ const actions = {
           project.short_name,
           template
         ).then(value => {
-          // no commit
-          return value.data
+          if ('status' in value.data && value.data.status === 'success') {
+            commit('setTaskPresenter', template)
+            return value.data
+          }
+          return false
         }).catch(reason => {
           commit('notification/showError', {
             title: errors.POST_TASK_PRESENTER_ERROR, content: reason
@@ -172,6 +211,9 @@ const mutations = {
   },
   setTaskPresenterImportationOptions (state, options) {
     state.taskPresenterImportationOptions = options
+  },
+  setUsingTemplate (state, template) {
+    state.usingTemplate = template
   }
 }
 

@@ -18,7 +18,7 @@
           <b-btn :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn variant="outline-secondary" size="sm" class="mt-2" @click="publishProject(project)">Publish it!</b-btn><br>
-          <b-btn class="mt-2" variant="outline-secondary" size="sm">Subscribe</b-btn>
+          <!--<b-btn class="mt-2" variant="outline-secondary" size="sm">Subscribe</b-btn>-->
         </div>
       </b-col>
 
@@ -27,56 +27,57 @@
     <b-row class="mt-5">
       <b-col cols="12">
 
-        <b-tabs content-class="mt-5 mb-5">
+        <b-tabs content-class="mt-5 mb-5" >
 
-          <b-tab title="Info" active>
+          <b-tab title="Info" :active="currentTab === tabs.info" @click="setCurrentTab(tabs.info)">
             <ProjectInfoMenu></ProjectInfoMenu>
           </b-tab>
 
-          <b-tab title="Updates ({nb})">
+          <!--<b-tab title="Updates ({nb})">
             <ProjectUpdatesMenu></ProjectUpdatesMenu>
-          </b-tab>
+          </b-tab>-->
 
-          <b-tab title="Results ({nb})">
+          <b-tab title="Results ({nb})" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
             <ProjectResultsMenu></ProjectResultsMenu>
           </b-tab>
 
-          <b-tab title="Tasks">
+          <b-tab title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
+
+            <!-- TODO: find what to display when project published -->
             <b-row v-if="project.published">
-              <b-col >
+              <b-col>
                 <ul>
                   <li :key="task.id" v-for="task in tasks">
                     {{ task.info.question }}
                   </li>
                 </ul>
               </b-col>
-              <b-col md="8">
-<!--                <TemplateRenderer></TemplateRenderer>-->
-              </b-col>
             </b-row>
 
-            <ProjectTasksMenu v-else :project="project"></ProjectTasksMenu>
+            <ProjectTasksMenu v-else></ProjectTasksMenu>
           </b-tab>
 
-          <b-tab title="Statistics">
+          <b-tab title="Statistics" :active="currentTab === tabs.statistics" @click="setCurrentTab(tabs.statistics)">
             <ProjectStatisticsMenu></ProjectStatisticsMenu>
           </b-tab>
+
         </b-tabs>
 
         <hr>
 
         <b-row>
           <b-col>
-            <ProjectDescription :content="project.long_description"></ProjectDescription>
+            <ProjectDescription></ProjectDescription>
           </b-col>
         </b-row>
+
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
 import ProjectTasksMenu from '@/components/Project/Menu/ProjectTasksMenu'
@@ -114,10 +115,13 @@ export default {
   },
   methods: {
     ...mapActions('project', [
-      'getProject', 'publishProject', 'getPublishProjectOptions'
+      'getProject', 'publishProject'
     ]),
     ...mapActions('task', [
       'getProjectTasks'
+    ]),
+    ...mapMutations('project/menu', [
+      'setCurrentTab'
     ])
   },
   computed: {
@@ -126,7 +130,10 @@ export default {
     }),
     ...mapState('task', {
       tasks: state => state.selectedProjectTasks
-    })
+    }),
+    ...mapState('project/menu', [
+      'currentTab', 'tabs'
+    ])
   }
 }
 </script>

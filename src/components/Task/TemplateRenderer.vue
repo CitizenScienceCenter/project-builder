@@ -25,7 +25,7 @@ export default {
   },
   mounted () {
     Vue.nextTick(() => {
-      this.getTaskPresenter(this.project).then(response => {
+      this.getTaskPresenter({ project: this.project, template: null }).then(response => {
         if (response) {
           this.taskPresenterExists = true
         }

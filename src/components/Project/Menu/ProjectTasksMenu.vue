@@ -12,7 +12,8 @@
         <div class="mt-4">
           <h4>Task Presenter</h4>
           <p>Edit the task presenter</p>
-          <b-btn variant="outline-primary" :to="{ name: 'project.task.presenter', params: { id: selectedProject.id } }">Editor</b-btn>
+          <b-btn v-if="taskPresenter" variant="outline-primary" :to="{ name: 'project.task.presenter.editor', params: { id: selectedProject.id } }">Editor</b-btn>
+          <b-btn v-else variant="outline-primary" :to="{ name: 'project.task.presenter.settings', params: { id: selectedProject.id } }">Editor</b-btn>
         </div>
 
         <div class="mt-4">
@@ -43,27 +44,32 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'ProjectTasksMenu',
-  mounted () {
-
-  },
   data: () => {
     return {
-      selectedProject: {
-        id: 0
-      }
+
     }
   },
-  props: {
-    project: {
-      required: true
-    }
+  methods: {
+    ...mapActions('task', [
+      'getTaskPresenter'
+    ])
+  },
+  computed: {
+    ...mapState('project', [
+      'selectedProject'
+    ]),
+    ...mapState('task', [
+      'taskPresenter'
+    ])
   },
   watch: {
-    project (newVal, oldVal) {
-      if (typeof newVal !== 'undefined') {
-        this.selectedProject = newVal
+    selectedProject (project) {
+      if (Object.keys(project).length > 0) {
+        this.getTaskPresenter(project)
       }
     }
   }
