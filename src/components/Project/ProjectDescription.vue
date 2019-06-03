@@ -15,13 +15,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'ProjectDescription',
-  props: {
-    content: {
-      required: true
-    }
-  },
   data () {
     return {
       description: {
@@ -32,17 +29,16 @@ export default {
       }
     }
   },
-  mounted () {
-    // if the prop is a JSON string, it parses it
-    if (typeof this.content === 'string') {
-      this.description = JSON.parse(this.content)
-    }
+  computed: {
+    ...mapState('project', {
+      project: state => state.selectedProject
+    })
   },
   watch: {
-    // watch the content prop is required if the prop is not already loaded when the component is displayed
-    content (newValue, oldValue) {
-      if (typeof newValue === 'string') {
-        this.description = JSON.parse(this.content)
+    project (project) {
+      // test if the object is initialized
+      if (project.hasOwnProperty('long_description')) {
+        this.description = JSON.parse(project.long_description)
       }
     }
   }

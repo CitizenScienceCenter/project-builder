@@ -2,23 +2,23 @@
   <div>
     <b-row align-h="between" align-v="center">
       <b-col>
-        <b>{{ stats.overall_progress ? stats.overall_progress : 0 }}</b><br>
+        <b>{{ stats.hasOwnProperty('overall_progress') ? stats.overall_progress : 'NaN' }}</b><br>
         <span class="text-muted">published results</span>
       </b-col>
       <b-col>
-        <b>{{ stats.n_tasks ? stats.n_tasks : 0 }}</b><br>
+        <b>{{ stats.hasOwnProperty('n_tasks') ? stats.n_tasks : 'NaN' }}</b><br>
         <span class="text-muted">tasks</span>
       </b-col>
       <b-col>
-        <b>{{ stats.n_volunteers ? stats.n_volunteers : 0 }}</b><br>
+        <b>{{ stats.hasOwnProperty('n_volunteers') ? stats.n_volunteers : 'NaN' }}</b><br>
         <span class="text-muted">crafters</span>
       </b-col>
       <b-col>
-        <b>{{ stats.n_completed_tasks ? stats.n_completed_tasks : 0 }}</b><br>
+        <b>{{ stats.hasOwnProperty('n_completed_tasks') ? stats.n_completed_tasks : 'NaN' }}</b><br>
         <span class="text-muted">tasks done</span>
       </b-col>
       <b-col>
-        <b>{{ stats.n_tasks - stats.n_completed_tasks }}</b><br>
+        <b>{{ stats.hasOwnProperty('n_tasks') &&  stats.hasOwnProperty('n_completed_tasks') ? stats.n_tasks - stats.n_completed_tasks : 'NaN' }}</b><br>
         <span class="text-muted">pending tasks</span>
       </b-col>
     </b-row>
@@ -41,16 +41,11 @@ export default {
       stats: state => state.selectedProjectStats
     })
   },
-  mounted () {
-    if (this.project.hasOwnProperty('id')) {
-      this.getStatistics(this.project)
-    }
-  },
   watch: {
-    project (newVal, oldVal) {
-      // tests if the selected project is loaded and get his stats
-      if (newVal.hasOwnProperty('id')) {
-        this.getStatistics(newVal)
+    project (project) {
+      // tests if the selected project is loaded and get its stats
+      if (Object.keys(project).length > 0) {
+        this.getStatistics(project)
       }
     }
   }

@@ -60,7 +60,7 @@
           * You can only use images, sounds or videos for now but we're working hard to have the rest of options available very shortly.
           Sorry for the inconvenience!
         </p>
-        <p>Not what you were looking for? Try the <b-link>expert path</b-link> (not for beginners!)</p>
+        <p>Not what you were looking for? Try the <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link> (not for beginners!)</p>
       </b-col>
 
     </b-row>
@@ -104,6 +104,9 @@ export default {
   computed: {
     ...mapState('task/builder', [
       'materials', 'task'
+    ]),
+    ...mapState('project', [
+      'selectedProject'
     ])
   }
 }

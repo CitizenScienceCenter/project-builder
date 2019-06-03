@@ -13,7 +13,7 @@
       </b-col>
       <b-col md="3">
         <p>Formulate simple questions and provide even simpler answer options!</p>
-        <p>If our template doesn't exactly fit your project, you can always try our expert path. But remember: not for beginners!</p>
+        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link>. But remember: not for beginners!</p>
       </b-col>
     </b-row>
 
@@ -22,7 +22,7 @@
         <DescribeTemplateEditor></DescribeTemplateEditor>
       </b-col>
       <b-col md="3">
-        <p>If our template doesn't exactly fit your project, you can always try our expert path. But remember: not for beginners!</p>
+        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link>. But remember: not for beginners!</p>
       </b-col>
     </b-row>
 
@@ -32,7 +32,7 @@
       </b-col>
       <b-col md="3">
         <p>Explain briefly what users should be counting. They will then be able to locate the things to be counted with dots on the image.</p>
-        <p>If our template doesn't exactly fit your project, you can always try our expert path. But remember: not for beginners!</p>
+        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link>. But remember: not for beginners!</p>
       </b-col>
     </b-row>
   </div>
@@ -54,6 +54,9 @@ export default {
   computed: {
     ...mapState('task/builder', [
       'task', 'jobs'
+    ]),
+    ...mapState('project', [
+      'selectedProject'
     ])
   },
   methods: {

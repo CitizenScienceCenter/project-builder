@@ -1,5 +1,6 @@
 import api from '../../api/project'
 import builder from './project-builder'
+import menu from './project-menu'
 
 const errors = {
   GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
@@ -248,6 +249,7 @@ export default {
   mutations,
   errors,
   modules: {
-    builder
+    builder,
+    menu
   }
 }

@@ -10,6 +10,8 @@ import About from '@/components/About'
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
 import Profile from '@/components/Profile/Profile'
+import TaskPresenterMenu from '@/components/Project/Menu/Task/TaskPresenterMenu'
+import TaskPresenterEditor from '@/components/Project/TaskPresenterEditor'
 
 Vue.use(Router)
 
@@ -72,22 +74,61 @@ const router = new Router({
       path: '/project/:id',
       name: 'project',
       component: Project,
-      props: true
+      props: true,
+      beforeEnter: (to, from, next) => {
+        const selectedProjectId = store.state.project.selectedProject.id
+        if (parseInt(selectedProjectId) !== parseInt(to.params.id)) {
+          store.commit('project/menu/setCurrentTab', store.state.project.menu.tabs.info)
+        }
+        next()
+      }
     },
     {
       path: '/project/:id/task-presenter',
       name: 'project.task.presenter',
       component: TemplateRenderer,
-      props: true,
-      beforeEnter: (to, from, next) => {
-        if (!store.state.project.selectedProject.hasOwnProperty('id')) {
-          store.dispatch('project/getProject', to.params.id).then(() => {
-            next()
-          })
-        } else {
-          next()
-        }
-      }
+      props: true
+      // beforeEnter: (to, from, next) => {
+      //   const project = store.state.project.selectedProject
+      //   if (!project.hasOwnProperty('id') || project.id !== to.params.id) {
+      //     store.dispatch('project/getProject', to.params.id).then(() => {
+      //       next()
+      //     })
+      //   } else {
+      //     next()
+      //   }
+      // }
+    },
+    {
+      path: '/project/:id/task-presenter/settings',
+      name: 'project.task.presenter.settings',
+      component: TaskPresenterMenu,
+      props: true
+      // beforeEnter: (to, from, next) => {
+      //   if (!store.state.project.selectedProject.hasOwnProperty('id')) {
+      //     store.dispatch('project/getProject', to.params.id).then(() => {
+      //       next()
+      //     })
+      //   } else {
+      //     next()
+      //   }
+      // }
+    },
+    {
+      path: '/project/:id/task-presenter/editor',
+      name: 'project.task.presenter.editor',
+      component: TaskPresenterEditor,
+      props: true
+      // beforeEnter: (to, from, next) => {
+      //   const project = store.state.project.selectedProject
+      //   if (!project.hasOwnProperty('id') || project.id !== to.params.id) {
+      //     store.dispatch('project/getProject', to.params.id).then(() => {
+      //       next()
+      //     })
+      //   } else {
+      //     next()
+      //   }
+      // }
     },
 
     // Project builder steps
@@ -148,6 +189,8 @@ const router = new Router({
     },
 
     // Task builder steps
+
+    // TODO: add the project id in the URL
 
     {
       path: '/task/builder/material',

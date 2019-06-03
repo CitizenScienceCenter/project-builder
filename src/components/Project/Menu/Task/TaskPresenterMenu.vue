@@ -2,70 +2,57 @@
   <div>
     <b-row>
       <b-col>
-        <b-breadcrumb></b-breadcrumb>
-        <b-btn>Back to Tasks</b-btn>
-        <h3>Use one of the following available <b>templates</b> for your project</h3>
+        <b-breadcrumb :items="items"></b-breadcrumb>
+        <b-link :to="{ name: 'project', params: { id: this.selectedProject.id } }">Back to Tasks</b-link>
+        <h3 class="mt-2">Use one of the following available <b>templates</b> for your project</h3>
 
-        <b-row>
+        <b-row class="mt-4">
           <b-col>
 
-            <div>
+            <div class="mb-5">
               <h4>Basic</h4>
               <p>The most basic template</p>
               <p><b>Skills</b>: HTML and Javascript</p>
-              <b-btn variant="outline-primary">Use</b-btn>
+              <b-btn variant="outline-primary" @click="displayTemplate(templates.basic)">Use</b-btn>
             </div>
 
-            <div>
+            <div class="mb-5">
               <h4>Sound Pattern Recognition</h4>
               <p>Re-use the SoundCloud template</p>
               <p><b>Skills</b>: HTML and Javascript</p>
               <b-btn variant="outline-primary">Use</b-btn>
-              <b-btn variant="outline-primary">Download</b-btn>
             </div>
 
-            <div>
+            <div class="mb-5">
               <h4>Geo-coding</h4>
               <p>Re-use the Urban Park template</p>
               <p><b>Skills</b>: HTML, Javascript and Geo expertise</p>
               <b-btn variant="outline-primary">Use</b-btn>
-              <b-btn variant="outline-primary">Download</b-btn>
-            </div>
-
-            <div>
-              <h4>epiCollect+</h4>
-              <p>Re-use the epiCollect+ template</p>
-              <p><b>Skills</b>: HTML and Javascript</p>
-              <b-btn variant="outline-primary">Use</b-btn>
-              <b-btn variant="outline-primary">Download</b-btn>
             </div>
 
           </b-col>
 
           <b-col>
 
-            <div>
+            <div class="mb-5">
               <h4>Image Pattern Recognition</h4>
               <p>Re-use the Flickr Person Finder template</p>
               <p><b>Skills</b>: HTML and Javascript</p>
-              <b-btn variant="outline-primary">Use</b-btn>
-              <b-btn variant="outline-primary">Download</b-btn>
+              <b-btn variant="outline-primary" @click="displayTemplate(templates.image)">Use</b-btn>
             </div>
 
-            <div>
+            <div class="mb-5">
               <h4>Video Pattern Recognition</h4>
               <p>Re-use the Vimeo template</p>
               <p><b>Skills</b>: HTML and Javascript</p>
               <b-btn variant="outline-primary">Use</b-btn>
-              <b-btn variant="outline-primary">Download</b-btn>
             </div>
 
-            <div>
+            <div class="mb-5">
               <h4>Transcribing documents</h4>
               <p>Re-use the PDF transcription template</p>
               <p><b>Skills</b>: HTML, Javascript and Server side</p>
               <b-btn variant="outline-primary">Use</b-btn>
-              <b-btn variant="outline-primary">Download</b-btn>
             </div>
 
           </b-col>
@@ -76,8 +63,46 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-  name: 'TaskPresenterMenu'
+  name: 'TaskPresenterMenu',
+  data: () => {
+    return {
+
+    }
+  },
+  methods: {
+    ...mapMutations('task', [
+      'setUsingTemplate'
+    ]),
+
+    displayTemplate (name) {
+      this.setUsingTemplate(name)
+      this.$router.push({ name: 'project.task.presenter.editor', params: { id: this.selectedProject.id } })
+    }
+  },
+  computed: {
+    ...mapState('project', [
+      'selectedProject'
+    ]),
+    ...mapState('task', [
+      'templates'
+    ]),
+
+    items () {
+      return [
+        {
+          text: 'Tasks',
+          to: { name: 'project', params: { id: this.selectedProject.id } }
+        },
+        {
+          text: 'Presenter',
+          to: { name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }
+        }
+      ]
+    }
+  }
 }
 </script>
 

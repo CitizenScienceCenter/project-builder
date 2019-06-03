@@ -12,6 +12,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
+import 'codemirror/lib/codemirror.css'
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)

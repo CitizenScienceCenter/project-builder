@@ -35,7 +35,7 @@
 
       <b-col md="3" class="text-muted">
         <p>Choose any of the options.</p>
-        <p>Not what you were looking for? Try the <b-link>expert path</b-link> (not for beginners!)</p>
+        <p>Not what you were looking for? Try the <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link> (not for beginners!)</p>
       </b-col>
 
     </b-row>
@@ -64,6 +64,9 @@ export default {
   computed: {
     ...mapState('task/builder', [
       'task', 'jobs', 'materialJobs'
+    ]),
+    ...mapState('project', [
+      'selectedProject'
     ])
   },
   methods: {
