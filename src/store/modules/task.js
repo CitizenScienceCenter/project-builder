@@ -223,6 +223,7 @@ export default {
   getters,
   actions,
   mutations,
+  errors,
   modules: {
     builder
   }

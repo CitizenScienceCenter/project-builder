@@ -1,4 +1,4 @@
-export function testAction (action, payload, state, rootState, expectedMutations, done) {
+export function testAction (action, payload, state, rootState, expectedMutations, done, dispatch) {
   let count = 0
 
   // mock commit
@@ -21,7 +21,7 @@ export function testAction (action, payload, state, rootState, expectedMutations
   }
 
   // call the action with mocked store and arguments
-  action({ commit, state, rootState }, payload)
+  action({ commit, state, rootState, dispatch }, payload)
 
   // check if no mutations should have been dispatched
   if (expectedMutations.length === 0) {
