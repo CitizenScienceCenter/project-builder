@@ -8,7 +8,9 @@ const errors = {
   UPDATE_PASSWORD_ERROR: 'Error during password update',
   UPDATE_AVATAR_ERROR: 'Error during avatar update',
   DELETE_ACCOUNT_ERROR: 'Error during account delete',
-  EXPORT_ACCOUNT_DATA_ERROR: 'Error during account data export'
+  EXPORT_ACCOUNT_DATA_ERROR: 'Error during account data export',
+  GET_ACCOUNT_PROFILE_LOADING_ERROR: 'Impossible to get profile data',
+  SIGN_OUT_ERROR: 'Impossible to sign out'
 }
 
 const state = {
@@ -81,7 +83,7 @@ const actions = {
       return false
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Impossible to get profile data', content: reason
+        title: errors.GET_ACCOUNT_PROFILE_LOADING_ERROR, content: reason
       }, { root: true })
       return false
     })
@@ -97,14 +99,14 @@ const actions = {
         commit('setUserPublishedProjects', [])
         commit('notification/showInfo', {
           title: 'Signed out',
-          content: 'Your are now logged out'
+          content: 'You are now logged out'
         }, { root: true })
         return response.data
       }
       return false
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Impossible to sign out', content: reason
+        title: errors.SIGN_OUT_ERROR, content: reason
       }, { root: true })
       return false
     })
@@ -304,5 +306,6 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
+  errors
 }
