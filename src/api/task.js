@@ -3,9 +3,10 @@ import axios from 'axios'
 axios.defaults.headers['Content-Type'] = 'application/json'
 
 export default {
-  getProjectTasks (projectId) {
-    return axios.get(process.env.BASE_API_URL + 'task?project_id=' + projectId, {
-      data: {}
+  getProjectTasks (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/browse', {
+      data: {},
+      withCredentials: true
     })
   },
 

@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <b-breadcrumb :items="items"></b-breadcrumb>
-        <b-link :to="{ name: 'project', params: { id: this.selectedProject.id } }">Back to Tasks</b-link>
+        <b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Back to Tasks</b-link>
         <h3 class="mt-2">Use one of the following available <b>templates</b> for your project</h3>
 
         <b-row class="mt-4">
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'TaskPresenterMenu',
@@ -72,14 +72,27 @@ export default {
 
     }
   },
+  created () {
+    if (Object.keys(this.selectedProject).length === 0) {
+      this.getProject(this.id)
+    }
+  },
+  props: {
+    id: {
+      required: true
+    }
+  },
   methods: {
+    ...mapActions('project', [
+      'getProject'
+    ]),
     ...mapMutations('task', [
       'setUsingTemplate'
     ]),
 
     displayTemplate (name) {
       this.setUsingTemplate(name)
-      this.$router.push({ name: 'project.task.presenter.editor', params: { id: this.selectedProject.id } })
+      this.$router.push({ name: 'project.task.presenter.editor', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } })
     }
   },
   computed: {
@@ -94,11 +107,11 @@ export default {
       return [
         {
           text: 'Tasks',
-          to: { name: 'project', params: { id: this.selectedProject.id } }
+          to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         },
         {
           text: 'Presenter',
-          to: { name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }
+          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         }
       ]
     }

@@ -112,9 +112,7 @@ export default {
     ProjectStatisticsMenu
   },
   created () {
-    this.getProject(this.id).then(project => {
-      return this.getProjectTasks(project)
-    })
+    this.getProject(this.id)
   },
   data: () => {
     return {
