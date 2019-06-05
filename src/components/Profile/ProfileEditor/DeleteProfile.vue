@@ -6,11 +6,11 @@
         By deleting your account, all your personal data will be removed from the server and third party services.
         Your contributions will be anonymized. This operation cannot be undone!
         <div class="text-center">
-          <b-btn v-b-modal.delete-account variant="danger" class="mt-3 mb-3">Delete my account</b-btn>
+          <b-btn ref="btn-delete-account" v-b-modal.delete-account variant="danger" class="mt-3 mb-3">Delete my account</b-btn>
         </div>
       </b-alert>
 
-      <b-modal id="delete-account" title="Delete account" @ok="onSubmit">
+      <b-modal ref="modal-submit" id="delete-account" title="Delete account" @ok="onSubmit">
         Are you sure you want to delete your account ?
         This operation cannot be undone!
       </b-modal>

@@ -1,5 +1,5 @@
 <template>
-  <b-form @submit.prevent="onResetApiKey">
+  <b-form ref="form" @submit.prevent="onResetApiKey">
 
     <b-form-group
             label="Your api key"

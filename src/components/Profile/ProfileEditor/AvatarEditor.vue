@@ -3,7 +3,7 @@
     <b-col>
       <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :autoCrop="true" :view-mode="2" :aspectRatio="+1"></vue-cropper>
       <b-form-file @change="setImage" accept=".jpg, .png, .gif"></b-form-file>
-      <b-btn v-if="pictureSelected" variant="success" class="float-right mt-2" @click="onSubmit">Save avatar</b-btn>
+      <b-btn ref="btn-submit" v-if="pictureSelected" variant="success" class="float-right mt-2" @click="onSubmit">Save avatar</b-btn>
       <LoadingSpinner id="user/updateAvatar" class="mt-2"></LoadingSpinner>
     </b-col>
   </b-row>

@@ -1,5 +1,5 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
+  <b-form ref="form" @submit.prevent="onSubmit">
 
     <b-form-group
             label="Current password"

@@ -5,7 +5,7 @@
         We will get an email when the data is available to download.
         You will get access to your personal data, your contributions and the projects you have created
       </p>
-      <b-btn @click="onSubmit" variant="success" class="float-right">Export your data</b-btn>
+      <b-btn ref="btn-submit" @click="onSubmit" variant="success" class="float-right">Export your data</b-btn>
     </b-col>
   </b-row>
 </template>
