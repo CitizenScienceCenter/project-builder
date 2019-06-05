@@ -17,7 +17,20 @@
         <div v-else>
           <b-btn :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
-          <b-btn variant="outline-secondary" size="sm" class="mt-2" @click="publishProject(project)">Publish it!</b-btn><br>
+          <b-btn variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
+          <b-modal
+                  id="publish-project"
+                  title="Publish your project"
+                  ok-title="Yes, publish it"
+                  cancel-title="No, do not publish it!"
+                  @ok="publishProject(project)"
+          >
+            <b-alert variant="danger" :show="true">
+              You are about to publish your project. This CANNOT be undone! Once your project has been published, people will be able to contribute to it.
+              All the taskruns (answers) that may have been created during the test phase will be flushed and your project will start fresh.
+              That means that your project should be working properly, so please make sure it does. Otherwise you can work on it and publish it once it works fine.
+            </b-alert>
+          </b-modal>
           <!--<b-btn class="mt-2" variant="outline-secondary" size="sm">Subscribe</b-btn>-->
         </div>
       </b-col>
