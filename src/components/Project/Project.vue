@@ -18,20 +18,21 @@
           <b-btn :to="{ name: 'task.builder.material', params: { id: 'id' in project ? project.id : 0 } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
+          <!-- Publish project modal -->
           <b-modal
                   id="publish-project"
                   title="Publish your project"
                   ok-title="Yes, publish it"
                   cancel-title="No, do not publish it!"
-                  @ok="publishProject(project)"
-          >
+                  @ok="publishProject(project)">
+
             <b-alert variant="danger" :show="true">
               You are about to publish your project. This CANNOT be undone! Once your project has been published, people will be able to contribute to it.
               All the taskruns (answers) that may have been created during the test phase will be flushed and your project will start fresh.
               That means that your project should be working properly, so please make sure it does. Otherwise you can work on it and publish it once it works fine.
             </b-alert>
+
           </b-modal>
-          <!--<b-btn class="mt-2" variant="outline-secondary" size="sm">Subscribe</b-btn>-->
         </div>
       </b-col>
 
@@ -46,11 +47,7 @@
             <ProjectInfoMenu></ProjectInfoMenu>
           </b-tab>
 
-          <!--<b-tab title="Updates ({nb})">
-            <ProjectUpdatesMenu></ProjectUpdatesMenu>
-          </b-tab>-->
-
-          <b-tab title="Results ({nb})" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
+          <b-tab :title="'Results (' + results.n_results + ')'" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
             <ProjectResultsMenu></ProjectResultsMenu>
           </b-tab>
 
@@ -66,6 +63,7 @@
 
         <hr>
 
+        <!-- Project long description (story) -->
         <b-row>
           <b-col>
             <ProjectDescription></ProjectDescription>
@@ -83,7 +81,6 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
 import ProjectTasksMenu from '@/components/Project/Menu/ProjectTasksMenu'
 import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticsMenu'
-import ProjectUpdatesMenu from '@/components/Project/Menu/ProjectUpdatesMenu'
 import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultsMenu'
 import ProjectDescription from '@/components/Project/ProjectDescription'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
@@ -94,13 +91,18 @@ export default {
     TemplateRenderer,
     ProjectDescription,
     ProjectResultsMenu,
-    ProjectUpdatesMenu,
     ProjectInfoMenu,
     ProjectTasksMenu,
     ProjectStatisticsMenu
   },
   created () {
-    this.getProject(this.id)
+    // eager loading: load the project and finally get stats, results and the task presenter
+    // to have a fresh state for all sub components
+    this.getProject(this.id).then(project => {
+      this.getStatistics(project)
+      this.getResults(project)
+      this.getTaskPresenter({ project: project, template: null })
+    })
   },
   data: () => {
     return {
@@ -114,10 +116,10 @@ export default {
   },
   methods: {
     ...mapActions('project', [
-      'getProject', 'publishProject'
+      'getProject', 'publishProject', 'getResults', 'getStatistics'
     ]),
     ...mapActions('task', [
-      'getProjectTasks'
+      'getTaskPresenter'
     ]),
     ...mapMutations('project/menu', [
       'setCurrentTab'
@@ -125,10 +127,9 @@ export default {
   },
   computed: {
     ...mapState('project', {
-      project: state => state.selectedProject
-    }),
-    ...mapState('task', {
-      tasks: state => state.selectedProjectTasks
+      project: state => state.selectedProject,
+      results: state => state.selectedProjectResults,
+      stats: state => state.selectedProjectStats
     }),
     ...mapState('project/menu', [
       'currentTab', 'tabs'

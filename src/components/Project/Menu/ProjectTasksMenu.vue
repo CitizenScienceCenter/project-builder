@@ -12,8 +12,8 @@
         <div class="mt-4">
           <h4>Task Presenter</h4>
           <p>Edit the task presenter</p>
-          <b-btn v-if="taskPresenter" variant="outline-primary" :to="{ name: 'project.task.presenter.editor', params: { id: 'id' in selectedProject ? selectedProject.id : 0 } }">Editor</b-btn>
-          <b-btn v-else variant="outline-primary" :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in selectedProject ? selectedProject.id : 0 } }">Editor</b-btn>
+          <b-btn v-if="taskPresenter" variant="outline-primary" :to="{ name: 'project.task.presenter.editor', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
+          <b-btn v-else variant="outline-primary" :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
         </div>
 
         <div class="mt-4">
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProjectTasksMenu',
@@ -53,25 +53,14 @@ export default {
 
     }
   },
-  methods: {
-    ...mapActions('task', [
-      'getTaskPresenter'
-    ])
-  },
   computed: {
-    ...mapState('project', [
-      'selectedProject'
-    ]),
+    ...mapState('project', {
+      project: state => state.selectedProject
+    }),
+    // task presenter already loaded in the Project.vue component
     ...mapState('task', [
       'taskPresenter'
     ])
-  },
-  watch: {
-    selectedProject (project) {
-      if (Object.keys(project).length > 0) {
-        this.getTaskPresenter({ project: project, template: null })
-      }
-    }
   }
 }
 </script>

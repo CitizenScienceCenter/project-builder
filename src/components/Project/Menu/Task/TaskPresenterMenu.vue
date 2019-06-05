@@ -73,6 +73,7 @@ export default {
     }
   },
   created () {
+    // load the project if not already done
     if (Object.keys(this.selectedProject).length === 0) {
       this.getProject(this.id)
     }

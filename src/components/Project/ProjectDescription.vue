@@ -36,7 +36,7 @@ export default {
   },
   watch: {
     project (project) {
-      // test if the object is initialized
+      // test if the object is initialized to parse the long description
       if (project.hasOwnProperty('long_description')) {
         this.description = JSON.parse(project.long_description)
       }
