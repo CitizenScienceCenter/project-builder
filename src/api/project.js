@@ -91,5 +91,12 @@ export default {
       withCredentials: true,
       data: {}
     })
+  },
+
+  getResults (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/results', {
+      withCredentials: true,
+      data: {}
+    })
   }
 }

@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!--<b-jumbotron header="Pybossa">
-      <p>Some text...</p>
-    </b-jumbotron>-->
 
     <b-row class="mt-4">
       <b-col cols="12" md="6">
@@ -48,15 +45,6 @@
 
       </b-col>
     </b-row>
-
-    <div id="test" v-if="false">
-      <hr>
-      <b-row>
-        <b-col>
-          <TemplateRenderer></TemplateRenderer>
-        </b-col>
-      </b-row>
-    </div>
 
   </div>
 </template>

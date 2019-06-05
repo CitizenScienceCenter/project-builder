@@ -168,8 +168,6 @@ const router = new Router({
 
     // Task builder steps
 
-    // TODO: add the project id in the URL
-
     {
       path: '/project/:id/task/builder/material',
       name: 'task.builder.material',

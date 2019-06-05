@@ -14,7 +14,8 @@ const errors = {
   GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR: 'Error during project update options loading',
   GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR: 'Error during project publish options loading',
   PUBLISH_PROJECT_ERROR: 'Error during project publishing',
-  GET_PROJECT_STATS_LOADING_ERROR: 'Error during project stats loading'
+  GET_PROJECT_STATS_LOADING_ERROR: 'Error during project stats loading',
+  GET_PROJECT_RESULTS_LOADING_ERROR: 'Error during project results loading'
 }
 
 // global state for this module
@@ -30,6 +31,7 @@ const state = {
   selectedProject: {},
   selectedProjectUserProgress: { done: 0, total: 0 },
   selectedProjectStats: {},
+  selectedProjectResults: {},
 
   // form options
   projectCreationOptions: {},
@@ -204,6 +206,18 @@ const actions = {
       }, { root: true })
       return false
     })
+  },
+
+  getResults ({ commit }, project) {
+    return api.getResults(project.short_name).then(value => {
+      commit('setSelectedProjectResults', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PROJECT_RESULTS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
   }
 }
 
@@ -238,6 +252,9 @@ const mutations = {
   },
   setSelectedProjectStats (state, stats) {
     state.selectedProjectStats = stats
+  },
+  setSelectedProjectResults (state, results) {
+    state.selectedProjectResults = results
   }
 }
 
