@@ -52,9 +52,10 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
+
   getProjectTasks ({ commit }, project) {
-    return api.getProjectTasks(project.id).then(value => {
-      commit('setProjectTasks', value.data)
+    return api.getProjectTasks(project.short_name).then(value => {
+      commit('setProjectTasks', value.data.tasks)
       return value.data
     }).catch(reason => {
       commit('notification/showError', {

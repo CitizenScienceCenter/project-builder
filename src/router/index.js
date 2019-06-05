@@ -11,7 +11,8 @@ import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
 import Profile from '@/components/Profile/Profile'
 import TaskPresenterMenu from '@/components/Project/Menu/Task/TaskPresenterMenu'
-import TaskPresenterEditor from '@/components/Project/TaskPresenterEditor'
+import TaskPresenterEditor from '@/components/Project/Menu/Task/TaskPresenterEditor'
+import TaskList from '@/components/Project/Menu/Task/TaskList'
 
 Vue.use(Router)
 
@@ -88,47 +89,24 @@ const router = new Router({
       name: 'project.task.presenter',
       component: TemplateRenderer,
       props: true
-      // beforeEnter: (to, from, next) => {
-      //   const project = store.state.project.selectedProject
-      //   if (!project.hasOwnProperty('id') || project.id !== to.params.id) {
-      //     store.dispatch('project/getProject', to.params.id).then(() => {
-      //       next()
-      //     })
-      //   } else {
-      //     next()
-      //   }
-      // }
     },
     {
       path: '/project/:id/task-presenter/settings',
       name: 'project.task.presenter.settings',
       component: TaskPresenterMenu,
       props: true
-      // beforeEnter: (to, from, next) => {
-      //   if (!store.state.project.selectedProject.hasOwnProperty('id')) {
-      //     store.dispatch('project/getProject', to.params.id).then(() => {
-      //       next()
-      //     })
-      //   } else {
-      //     next()
-      //   }
-      // }
     },
     {
       path: '/project/:id/task-presenter/editor',
       name: 'project.task.presenter.editor',
       component: TaskPresenterEditor,
       props: true
-      // beforeEnter: (to, from, next) => {
-      //   const project = store.state.project.selectedProject
-      //   if (!project.hasOwnProperty('id') || project.id !== to.params.id) {
-      //     store.dispatch('project/getProject', to.params.id).then(() => {
-      //       next()
-      //     })
-      //   } else {
-      //     next()
-      //   }
-      // }
+    },
+    {
+      path: '/project/:id/tasks',
+      name: 'project.tasks.list',
+      component: TaskList,
+      props: true
     },
 
     // Project builder steps

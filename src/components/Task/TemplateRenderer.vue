@@ -2,12 +2,12 @@
   <b-row class="mt-4 mb-4">
     <b-col>
 
-      <component ref="presenter" v-if="presenter" :is="presenterComponent" :pybossa="this"></component>
+      <component ref="presenter" v-if="presenter.length > 0" :is="presenterComponent" :pybossa="this"></component>
       <div v-else-if="taskPresenterExists" class="text-center">
         <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
       </div>
       <div v-else>
-        <p>The selected project does not contains a task presenter</p>
+        <p>The project does not contains a task presenter</p>
       </div>
 
     </b-col>
@@ -15,22 +15,31 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'TemplateRenderer',
   props: {
-
+    id: {
+      required: true
+    }
   },
-  mounted () {
-    Vue.nextTick(() => {
-      this.getTaskPresenter({ project: this.project, template: null }).then(response => {
-        if (response) {
-          this.taskPresenterExists = true
-        }
-      })
+  created () {
+    const getTaskPresenter = (project) => this.getTaskPresenter({ project: project, template: null }).then(response => {
+      if (response) {
+        this.taskPresenterExists = true
+      }
     })
+
+    if (Object.keys(this.project).length === 0) {
+      // load the selected project (id in url) if not already done
+      this.getProject(this.id).then(() => {
+        getTaskPresenter(this.project)
+      })
+    } else {
+      getTaskPresenter(this.project)
+    }
+
   },
   data: () => {
     return {
@@ -70,7 +79,7 @@ export default {
     ]),
 
     ...mapActions('project', [
-      'getUserProgress'
+      'getUserProgress', 'getProject'
     ]),
 
     run () {

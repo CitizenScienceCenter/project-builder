@@ -23,10 +23,17 @@ export default {
     codemirror
   },
   created () {
-    // selected project get from router
-    this.getTaskPresenter({ project: this.selectedProject, template: this.usingTemplate }).then(() => {
+    const getTaskPresenter = (project) => this.getTaskPresenter({ project: project, template: this.usingTemplate }).then(() => {
       this.code = this.taskPresenter
     })
+
+    if (Object.keys(this.selectedProject).length === 0) {
+      this.getProject(this.id).then(() => {
+        getTaskPresenter(this.selectedProject)
+      })
+    } else {
+      getTaskPresenter(this.selectedProject)
+    }
   },
   data: () => {
     return {
@@ -40,9 +47,17 @@ export default {
       }
     }
   },
+  props: {
+    id: {
+      required: true
+    }
+  },
   methods: {
     ...mapActions('task', [
       'getTaskPresenter', 'saveTaskPresenter'
+    ]),
+    ...mapActions('project', [
+      'getProject'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError'
@@ -79,11 +94,11 @@ export default {
       return [
         {
           text: 'Tasks',
-          to: { name: 'project', params: { id: this.selectedProject.id } }
+          to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         },
         {
           text: 'Presenter',
-          to: { name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }
+          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         },
         {
           text: 'Editor',
