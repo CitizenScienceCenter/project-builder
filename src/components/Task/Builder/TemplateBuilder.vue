@@ -22,7 +22,7 @@
         <DescribeTemplateEditor></DescribeTemplateEditor>
       </b-col>
       <b-col md="3">
-        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link>. But remember: not for beginners!</p>
+        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">expert path</b-link>. But remember: not for beginners!</p>
       </b-col>
     </b-row>
 
@@ -32,7 +32,7 @@
       </b-col>
       <b-col md="3">
         <p>Explain briefly what users should be counting. They will then be able to locate the things to be counted with dots on the image.</p>
-        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: this.selectedProject.id } }">expert path</b-link>. But remember: not for beginners!</p>
+        <p>If our template doesn't exactly fit your project, you can always try our <b-link :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">expert path</b-link>. But remember: not for beginners!</p>
       </b-col>
     </b-row>
   </div>

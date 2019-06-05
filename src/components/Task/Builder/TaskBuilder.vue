@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import MaterialBuilder from '@/components/Task/Builder/MaterialBuilder'
 import JobBuilder from '@/components/Task/Builder/JobBuilder'
 import SourceBuilder from '@/components/Task/Builder/SourceBuilder'
@@ -26,7 +26,21 @@ export default {
     MaterialBuilder,
     TemplateBuilder
   },
+  created () {
+    console.log(this.id)
+    if (Object.keys(this.project).length === 0) {
+      this.getProject(this.id)
+    }
+  },
+  props: {
+    id: {
+      required: true
+    }
+  },
   computed: {
+    ...mapState('project', {
+      project: state => state.selectedProject
+    }),
     ...mapState('task/builder', [
       'currentStep', 'steps'
     ]),
@@ -67,6 +81,9 @@ export default {
   methods: {
     ...mapMutations('task/builder', [
       'setTaskJob'
+    ]),
+    ...mapActions('project', [
+      'getProject'
     ])
   },
   watch: {
@@ -74,22 +91,22 @@ export default {
       if (this.currentStep === 'material' && newValue['material'] === true) {
 
         // this.setTaskJob(null)
-        this.$router.push({name: 'task.builder.job'})
+        this.$router.push({ name: 'task.builder.job', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
       } else if (this.currentStep === 'job' && newValue['job'] === true) {
 
-        this.$router.push({name: 'task.builder.template'})
+        this.$router.push({ name: 'task.builder.template', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
       } else if (this.currentStep === 'template' && newValue['template'] === true) {
 
-        this.$router.push({name: 'task.builder.source'})
+        this.$router.push({ name: 'task.builder.source', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
       } else if (this.currentStep === 'source' && newValue['source'] === true) {
 
-        this.$router.push({name: 'task.builder.summary'})
+        this.$router.push({ name: 'task.builder.summary', params: { id: 'id' in this.project ? this.project.id : 0 }})
 
       } else {
-        this.$router.push({ name: 'task.builder.material' })
+        this.$router.push({ name: 'task.builder.material', params: { id: 'id' in this.project ? this.project.id : 0 } })
       }
     }
   }

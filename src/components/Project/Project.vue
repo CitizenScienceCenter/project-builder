@@ -15,7 +15,7 @@
           <b-btn :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
         <div v-else>
-          <b-btn :to="{ name: 'task.builder.material' }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+          <b-btn :to="{ name: 'task.builder.material', params: { id: 'id' in project ? project.id : 0 } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
           <b-modal
@@ -55,19 +55,7 @@
           </b-tab>
 
           <b-tab title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
-
-            <!-- TODO: find what to display when project published -->
-            <b-row v-if="project.published">
-              <b-col>
-                <ul>
-                  <li :key="task.id" v-for="task in tasks">
-                    {{ task.info.question }}
-                  </li>
-                </ul>
-              </b-col>
-            </b-row>
-
-            <ProjectTasksMenu v-else></ProjectTasksMenu>
+            <ProjectTasksMenu></ProjectTasksMenu>
           </b-tab>
 
           <b-tab title="Statistics" :active="currentTab === tabs.statistics" @click="setCurrentTab(tabs.statistics)">
