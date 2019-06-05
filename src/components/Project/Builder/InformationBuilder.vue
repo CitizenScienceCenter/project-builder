@@ -28,7 +28,7 @@
       <b-row class="mt-4">
         <b-col md="9">
           <h3 class="mt-3">Choose a nice picture</h3>
-          <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="+1"></vue-cropper>
+          <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
           <b-form-file @change="setImage" accept=".jpg, .png, .gif"></b-form-file>
         </b-col>
       </b-row>
