@@ -1,5 +1,5 @@
 <template>
-  <b-form @submit.prevent="onProfileSubmitted">
+  <b-form ref="form" @submit.prevent="onProfileSubmitted">
 
     <b-form-group
             label="Full name"

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import ProfileHeader from '@/components/Profile/ProfileHeader'
 import ProfileView from '@/components/Profile/ProfileView'
 import ProfileEditor from '@/components/Profile/ProfileEditor/ProfileEditor'
@@ -24,6 +24,14 @@ export default {
 
     }
   },
+  created () {
+    this.getAccountProfile()
+  },
+  methods: {
+    ...mapActions('user', [
+      'getAccountProfile'
+    ])
+  },
   computed: {
     ...mapState('user', {
       profile: state => state.infos,
@@ -32,9 +40,6 @@ export default {
       publishedProjects: state => state.publishedProjects,
       isInEditionMode: state => state.isInProfileEditionMode
     })
-  },
-  mounted () {
-
   }
 }
 </script>
