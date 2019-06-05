@@ -171,63 +171,68 @@ const router = new Router({
     // TODO: add the project id in the URL
 
     {
-      path: '/task/builder/material',
+      path: '/project/:id/task/builder/material',
       name: 'task.builder.material',
       component: TaskBuilder,
+      props: true,
       beforeEnter: (to, from, next) => {
         store.commit('task/builder/setCurrentStep', 'material')
         next()
       }
     },
     {
-      path: '/task/builder/job',
+      path: '/project/:id/task/builder/job',
       name: 'task.builder.job',
       component: TaskBuilder,
+      props: true,
       beforeEnter: (to, from, next) => {
         if (store.state.task.builder.steps.material === true) {
           store.commit('task/builder/setCurrentStep', 'job')
           next()
         } else {
-          next({ name: 'task.builder.material' })
+          next({ name: 'task.builder.material', params: { id: to.params.id } })
         }
       }
     },
     {
-      path: '/task/builder/template',
+      path: '/project/:id/task/builder/template',
       name: 'task.builder.template',
       component: TaskBuilder,
+      props: true,
       beforeEnter: (to, from, next) => {
         if (store.state.task.builder.steps.job === true) {
           store.commit('task/builder/setCurrentStep', 'template')
           next()
         } else {
-          next({ name: 'task.builder.job' })
+          next({ name: 'task.builder.job', params: { id: to.params.id } })
         }
       }
     },
     {
-      path: '/task/builder/source',
+      path: '/project/:id/task/builder/source',
       name: 'task.builder.source',
       component: TaskBuilder,
+      props: true,
       beforeEnter: (to, from, next) => {
         if (store.state.task.builder.steps.template === true) {
           store.commit('task/builder/setCurrentStep', 'source')
           next()
         } else {
-          next({ name: 'task.builder.template' })
+          next({ name: 'task.builder.template', params: { id: to.params.id } })
         }
       }
     },
     {
-      path: '/task/builder/summary',
+      path: '/project/:id/task/builder/summary',
       name: 'task.builder.summary',
+      props: true,
       component: TaskBuilder,
       beforeEnter: (to, from, next) => {
         if (store.state.task.builder.steps.source === true) {
           store.commit('task/builder/setCurrentStep', 'summary')
           next()
         } else {
-          next({ name: 'task.builder.source' })
+          next({ name: 'task.builder.source', params: { id: to.params.id } })
         }
       }
     }

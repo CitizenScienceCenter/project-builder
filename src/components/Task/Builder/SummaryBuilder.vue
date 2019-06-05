@@ -121,7 +121,7 @@ export default {
 
       }
 
-      console.log(template)
+      // console.log(template)
 
       // store the generated template for the selected project
       const templatePromise = this.saveTaskPresenter({
