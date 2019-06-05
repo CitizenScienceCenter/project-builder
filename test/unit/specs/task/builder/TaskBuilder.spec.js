@@ -19,6 +19,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
 
   beforeEach(() => {
     store.commit('user/setLogged')
+    store.commit('project/setSelectedProject', { id: 1 })
     sandbox = sinon.sandbox.create()
   })
 
@@ -38,14 +39,17 @@ describe('Task/Builder/TaskBuilder.vue', () => {
     mount(TaskBuilder, {
       store,
       localVue,
-      router
+      router,
+      props: {
+        id: 1
+      }
     })
 
     console.log(store.state.task.builder.steps)
 
     store.commit('task/builder/setStep', { step: 'material', value: true })
 
-    expect(spy.calledWithExactly({ name: 'task.builder.job' })).to.equal(true)
+    expect(spy.calledWith({ name: 'task.builder.job', params: { id: 1 } })).to.equal(true)
   })
 
   it('should go to TemplateBuilder component when setStep job is true', () => {
@@ -54,12 +58,15 @@ describe('Task/Builder/TaskBuilder.vue', () => {
     mount(TaskBuilder, {
       store,
       localVue,
-      router
+      router,
+      props: {
+        id: 1
+      }
     })
 
     store.commit('task/builder/setStep', { step: 'job', value: true })
 
-    expect(spy.calledWith({ name: 'task.builder.template' })).to.equal(true)
+    expect(spy.calledWith({ name: 'task.builder.template', params: { id: 1 } })).to.equal(true)
   })
 
   it('should go to SourceBuilder component when setStep template is true', () => {
@@ -68,12 +75,15 @@ describe('Task/Builder/TaskBuilder.vue', () => {
     mount(TaskBuilder, {
       store,
       localVue,
-      router
+      router,
+      props: {
+        id: 1
+      }
     })
 
     store.commit('task/builder/setStep', { step: 'template', value: true })
 
-    expect(spy.calledWith({ name: 'task.builder.source' })).to.equal(true)
+    expect(spy.calledWith({ name: 'task.builder.source', params: { id: 1 } })).to.equal(true)
   })
 
   it('should go to SummaryBuilder component when setStep source is true', () => {
@@ -82,12 +92,15 @@ describe('Task/Builder/TaskBuilder.vue', () => {
     mount(TaskBuilder, {
       store,
       localVue,
-      router
+      router,
+      props: {
+        id: 1
+      }
     })
 
     store.commit('task/builder/setStep', { step: 'source', value: true })
 
-    expect(spy.calledWithExactly({ name: 'task.builder.summary' })).to.equal(true)
+    expect(spy.calledWithExactly({ name: 'task.builder.summary', params: { id: 1 } })).to.equal(true)
   })
 
   afterEach(() => {

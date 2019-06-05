@@ -33,6 +33,9 @@ export default {
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
     }),
+    ...mapMutations('task', [
+      'setTaskPresenter'
+    ]),
     ...mapActions('project', [
       'createProject', 'uploadAvatar'
     ]),
@@ -99,6 +102,7 @@ export default {
             this.uploadAvatar({ project, image })
 
             this.resetTaskBuilder()
+            this.setTaskPresenter('')
             this.$router.push({name: 'project.builder.end'})
           }
 
