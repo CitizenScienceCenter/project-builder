@@ -50,3 +50,18 @@ export function buildTemplateFromModel (templateModel, templateData) {
   props: ` + props + `\n
 }`
 }
+
+export function getFormErrorsAsString (errors) {
+  console.log(errors)
+  const fields = Object.keys(errors)
+  let result = '<ul>'
+
+  for (let field in fields) {
+    result += '<li>' + fields[field] + ': '
+    result += errors[fields[field]]
+    result += '</li>'
+  }
+
+  result += '</ul>'
+  return result
+}

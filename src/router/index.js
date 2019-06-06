@@ -84,6 +84,12 @@ const router = new Router({
         next()
       }
     },
+    // {
+    //   path: '/project/:id/edit',
+    //   name: 'project.edition',
+    //   component: ProjectEditor,
+    //   props: true
+    // },
     {
       path: '/project/:id/task-presenter',
       name: 'project.task.presenter',

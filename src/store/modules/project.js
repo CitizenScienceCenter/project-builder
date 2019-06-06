@@ -15,21 +15,22 @@ const errors = {
   GET_PUBLISH_PROJECT_OPTIONS_LOADING_ERROR: 'Error during project publish options loading',
   PUBLISH_PROJECT_ERROR: 'Error during project publishing',
   GET_PROJECT_STATS_LOADING_ERROR: 'Error during project stats loading',
-  GET_PROJECT_RESULTS_LOADING_ERROR: 'Error during project results loading'
+  GET_PROJECT_RESULTS_LOADING_ERROR: 'Error during project results loading',
+  UPLOAD_PROJECT_ERROR: 'Error during project update'
 }
 
 // global state for this module
 
 const state = {
   // project lists
-  categories: [],
-  projects: [],
+  categories: [], // all categories
+  projects: [], // all projects
   featuredProjects: [],
-  userProjects: [],
+  // userProjects: [],
 
   // selected project data
   selectedProject: {},
-  selectedProjectUserProgress: { done: 0, total: 0 },
+  selectedProjectUserProgress: { done: 0, total: 0 }, // logged user progress
   selectedProjectStats: {},
   selectedProjectResults: {},
 
@@ -53,17 +54,6 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
-
-  getUserProjects ({ commit, rootState }) {
-    return api.getUserProjects(rootState.user.infos.api_key).then(value => {
-      commit('setUserProjects', value.data)
-      return value.data
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.GET_USER_PROJECTS_LOADING_ERROR, content: reason
-      }, { root: true })
-    })
-  },
 
   getCategories ({ commit }) {
     return api.getCategories().then(value => {
@@ -143,6 +133,23 @@ const actions = {
       commit('notification/showError', {
         title: errors.GET_PROJECT_UPDATE_OPTIONS_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
+    })
+  },
+
+  updateProject ({ commit, dispatch, state }, { project, form }) {
+    return dispatch('getProjectUpdateOptions', project).then(response => {
+      if (response) {
+        return api.updateProject(state.projectUpdateOptions.form.csrf, project.short_name, project.id, form).then(value => {
+          // nothing to commit
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.UPLOAD_PROJECT_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
       return false
     })
   },
@@ -231,9 +238,6 @@ const mutations = {
   },
   setFeaturedProjects (state, projects) {
     state.featuredProjects = projects
-  },
-  setUserProjects (state, projects) {
-    state.userProjects = projects
   },
   setSelectedProject (state, project) {
     state.selectedProject = project

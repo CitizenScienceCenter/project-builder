@@ -45,7 +45,7 @@
             @hidden="closeError(notification.id)"
             visible
             auto-hide-delay="10000">
-      <span>{{ notification.message.content }}</span>
+      <span v-html="notification.message.content"></span>
     </b-toast>
 
     <b-toast
@@ -57,7 +57,7 @@
             @hidden="closeInfo(notification.id)"
             visible
             auto-hide-delay="10000">
-      <span>{{ notification.message.content }}</span>
+      <span v-html="notification.message.content"></span>
     </b-toast>
 
     <b-toast
@@ -69,7 +69,7 @@
             @hidden="closeSuccess(notification.id)"
             visible
             auto-hide-delay="10000">
-      <span>{{ notification.message.content }}</span>
+      <span v-html="notification.message.content"></span>
     </b-toast>
 
   </div>
