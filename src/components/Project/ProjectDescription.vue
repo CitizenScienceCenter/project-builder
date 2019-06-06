@@ -34,6 +34,11 @@ export default {
       project: state => state.selectedProject
     })
   },
+  created () {
+    if (this.project.hasOwnProperty('long_description')) {
+      this.description = JSON.parse(this.project.long_description)
+    }
+  },
   watch: {
     project (project) {
       // test if the object is initialized to parse the long description

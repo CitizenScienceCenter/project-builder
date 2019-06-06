@@ -30,10 +30,6 @@ export default {
     })
   },
 
-  getUserProjects (apiKey) {
-    return axios.get(process.env.BASE_API_URL + 'project?api_key=' + apiKey)
-  },
-
   getProjectUserProgress (projectId) {
     return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/userprogress', {
       data: {}
@@ -53,6 +49,17 @@ export default {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/update', {
       data: {},
       withCredentials: true
+    })
+  },
+
+  updateProject (csrf, projectShortName, projectId, form) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/update', {
+      ...form, id: projectId
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
     })
   },
 

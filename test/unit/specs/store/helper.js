@@ -7,9 +7,7 @@ export function testAction (action, payload, state, rootState, expectedMutations
 
     try {
       expect(type).to.equal(mutation.type)
-      if (payload) {
-        expect(payload).to.deep.equal(mutation.payload)
-      }
+      expect(payload).to.deep.equal(mutation.payload)
     } catch (error) {
       done(error)
     }

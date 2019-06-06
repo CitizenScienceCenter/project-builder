@@ -15,7 +15,8 @@
           <b-btn :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
         <div v-else>
-          <b-btn :to="{ name: 'task.builder.material', params: { id: 'id' in project ? project.id : 0 } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+          <b-btn :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+          <!--<b-btn variant="primary" class="mt-2" :to="{ name: 'project.edition', params: { id } }">Edit</b-btn><br>-->
           <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
           <!-- Publish project modal -->
@@ -34,6 +35,7 @@
 
           </b-modal>
         </div>
+
       </b-col>
 
     </b-row>
@@ -41,7 +43,7 @@
     <b-row class="mt-5">
       <b-col cols="12">
 
-        <b-tabs content-class="mt-5 mb-5" >
+        <b-tabs content-class="mt-5 mb-5" fill>
 
           <b-tab title="Info" :active="currentTab === tabs.info" @click="setCurrentTab(tabs.info)">
             <ProjectInfoMenu></ProjectInfoMenu>
@@ -59,6 +61,11 @@
             <ProjectStatisticsMenu></ProjectStatisticsMenu>
           </b-tab>
 
+          <b-tab v-if="!project.published" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
+            <!-- v-if used to render the component only if the tab is active -->
+            <ProjectEditor v-if="currentTab === tabs.settings"></ProjectEditor>
+          </b-tab>
+
         </b-tabs>
 
         <hr>
@@ -72,6 +79,7 @@
 
       </b-col>
     </b-row>
+
   </div>
 </template>
 
@@ -84,10 +92,12 @@ import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticsMe
 import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultsMenu'
 import ProjectDescription from '@/components/Project/ProjectDescription'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
+import ProjectEditor from '@/components/Project/ProjectEditor'
 
 export default {
   name: 'Project',
   components: {
+    ProjectEditor,
     TemplateRenderer,
     ProjectDescription,
     ProjectResultsMenu,

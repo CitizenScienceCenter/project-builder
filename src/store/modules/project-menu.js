@@ -3,7 +3,8 @@ const state = {
     info: 'info',
     results: 'results',
     tasks: 'tasks',
-    statistics: 'statistics'
+    statistics: 'statistics',
+    settings: 'settings'
   },
   currentTab: 'info'
 }

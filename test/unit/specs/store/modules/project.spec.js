@@ -1,9 +1,17 @@
 import store from '@/store'
 import projectModule from '@/store/modules/project'
 import { testAction } from '../helper'
+import sinon from 'sinon'
 const actionsInjector = require('inject-loader!@/store/modules/project.js')
 
 describe('store/modules/project', () => {
+
+  let sandbox
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create()
+  })
+
   // ----------------------------------------------------------
   //
   //   MUTATIONS
@@ -11,8 +19,6 @@ describe('store/modules/project', () => {
   // ----------------------------------------------------------
 
   it('test mutation: setProjects', done => {
-    // expect(store.state.project.projects.length).to.equal(0)
-
     store.commit('project/setProjects', [
       { short_name: 'project_a' },
       { short_name: 'project_b' },
@@ -24,66 +30,11 @@ describe('store/modules/project', () => {
     done()
   })
 
-  it('test mutation: setUserProjects', done => {
-    expect(store.state.project.userProjects.length).to.equal(0)
-    store.commit('project/setUserProjects', [
-      { name: 'project1' },
-      { name: 'project2' }
-    ])
-    expect(store.state.project.userProjects.length).to.equal(2)
-
-    done()
-  })
-
   // ----------------------------------------------------------
   //
   //   ACTIONS
   //
   // ----------------------------------------------------------
-
-  it('test action: project/getUserProjects success', done => {
-    const project = actionsInjector({
-      '../../api/project': {
-        getUserProjects (userInfos) {
-          return new Promise((resolve, reject) => {
-            setTimeout(function () {
-              resolve({
-                data: [
-                  {}
-                ]
-              })
-            }, 10)
-          })
-        }
-      }
-    })
-
-    testAction(project.default.actions.getUserProjects, null, {}, store.state, [
-      { type: 'setUserProjects', payload: [{}] }
-    ], done)
-  })
-
-  it('test action: project/getUserProjects error', done => {
-    const error = new Error('HTTP ERROR')
-    const project = actionsInjector({
-      '../../api/project': {
-        getUserProjects (userInfos) {
-          return new Promise((resolve, reject) => {
-            setTimeout(function () {
-              reject(error)
-            }, 10)
-          })
-        }
-      }
-    })
-
-    testAction(project.default.actions.getUserProjects, null, project.default.state, store.state, [{
-      type: 'notification/showError',
-      payload: {
-        title: projectModule.errors.GET_USER_PROJECTS_LOADING_ERROR, content: error
-      }
-    }], done)
-  })
 
   it('test action: project/getAllProjects success', done => {
     const project = actionsInjector({
@@ -129,36 +80,36 @@ describe('store/modules/project', () => {
     ], done)
   })
 
-  // it('test action: project/createProject success', done => {
-  //   const project = actionsInjector({
-  //     '../../api/project': {
-  //       createProject (apiKey, builder) {
-  //         return new Promise((resolve, reject) => {
-  //           setTimeout(function () {
-  //             resolve({
-  //               data: {}
-  //             })
-  //           }, 10)
-  //         })
-  //       }
-  //     }
-  //   })
-  //
-  //   const projectBuilder = {
-  //     title: 'my new project',
-  //     shortDescription: 'a little description',
-  //     story: {
-  //       whatWhy: 'what, why...',
-  //       who: 'Someone',
-  //       how: 'I dont know',
-  //       keepTrack: 'Send an email'
-  //     }
-  //   }
-  //
-  //   testAction(project.default.actions.createProject, projectBuilder, project.default.state, store.state, [
-  //     // TODO : assert commit is done when create project will be fully implemented
-  //   ], done)
-  // })
+  it('test action: project/createProject success', done => {
+    const project = actionsInjector({
+      '../../api/project': {
+        createProject (apiKey, builder) {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              resolve({
+                data: {}
+              })
+            }, 10)
+          })
+        }
+      }
+    })
+
+    const projectBuilder = {
+      title: 'my new project',
+      shortDescription: 'a little description',
+      story: {
+        whatWhy: 'what, why...',
+        who: 'Someone',
+        how: 'I dont know',
+        keepTrack: 'Send an email'
+      }
+    }
+
+    testAction(project.default.actions.createProject, projectBuilder, project.default.state, store.state, [
+      { type: 'setSelectedProject', payload: {} }
+    ], done)
+  })
 
   it('test action: project/createProject error', done => {
     const error = new Error('HTTP ERROR')
@@ -195,6 +146,33 @@ describe('store/modules/project', () => {
       }
     ], done)
   })
+
+  // it('test action: project/updateProject error', done => {
+  //   const error = new Error('HTTP ERROR')
+  //
+  //   const dispatchStub = sandbox.stub().returns(new Promise(resolve => resolve(true)))
+  //
+  //   const project = actionsInjector({
+  //     '../../api/project': {
+  //       updateProject (csrf, projectShortName, projectId, form) {
+  //         return new Promise((resolve, reject) => {
+  //           setTimeout(function () {
+  //             reject(error)
+  //           }, 10)
+  //         })
+  //       }
+  //     }
+  //   })
+  //
+  //   testAction(project.default.actions.updateProject, { project: {}, form: {} }, project.default.state, store.state, [
+  //     {
+  //       type: 'notification/showError',
+  //       payload: {
+  //         title: projectModule.errors.UPLOAD_PROJECT_ERROR, content: error
+  //       }
+  //     }
+  //   ], done, dispatchStub)
+  // })
 
   // ----------------------------------------------------------
   //
@@ -233,5 +211,9 @@ describe('store/modules/project', () => {
     expect(result).to.equal(25)
 
     done()
+  })
+
+  afterEach(() => {
+    sandbox.restore()
   })
 })
