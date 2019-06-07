@@ -31,7 +31,9 @@ const state = {
 
 // filter methods on the state data
 const getters = {
-
+  isLoggedUserOwnerOfProject: state => (project) => {
+    return project.owner_id === state.infos.id
+  }
 }
 
 // async methods making mutations are placed here
