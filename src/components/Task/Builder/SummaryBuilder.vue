@@ -54,7 +54,9 @@ export default {
   },
   methods: {
     ...mapActions('task', [
-      'saveTaskPresenter',
+      'saveTaskPresenter'
+    ]),
+    ...mapActions('task/importer', [
       'importAmazonS3Tasks'
     ]),
     ...mapMutations('notification', [
@@ -120,8 +122,6 @@ export default {
         }
 
       }
-
-      // console.log(template)
 
       // store the generated template for the selected project
       const templatePromise = this.saveTaskPresenter({

@@ -1,5 +1,6 @@
 import api from '@/api/task'
 import builder from './task-builder'
+import importer from './task-importer'
 
 import { buildTemplateFromModel } from '@/helper'
 
@@ -11,8 +12,6 @@ const errors = {
   GET_PROJECT_TASK_PRESENTER_LOADING_ERROR: 'Error during project task presenter loading',
   GET_CURRENT_TASK_LOADING_ERROR: 'Error during current task loading',
   POST_TASK_RUN_ERROR: 'Error when saving the task run',
-  GET_AMAZON_S3_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading amazon s3 options',
-  POST_AMAZON_S3_TASKS_ERROR: 'Error when importing amazon s3 tasks',
   GET_TASK_PRESENTER_IMPORTATION_OPTIONS_LOADING_ERROR: 'Error when loading task presenter importation options',
   POST_TASK_PRESENTER_ERROR: 'Error during task presenter importation'
 }
@@ -53,6 +52,12 @@ const getters = {
 // async methods making mutations are placed here
 const actions = {
 
+  /**
+   * Returns the list of all the tasks for the given project
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getProjectTasks ({ commit }, project) {
     return api.getProjectTasks(project.short_name).then(value => {
       commit('setProjectTasks', value.data.tasks)
@@ -65,6 +70,15 @@ const actions = {
     })
   },
 
+  /**
+   * Returns the task presenter of the given project if template == null
+   * Else if returns the presenter template matching the given template
+   * @param commit
+   * @param state
+   * @param project
+   * @param template
+   * @return {boolean|Promise<T | boolean>}
+   */
   getTaskPresenter ({ commit, state }, { project, template }) {
     if (template === null) {
       return api.getTaskPresenter(project.short_name).then(value => {
@@ -101,6 +115,12 @@ const actions = {
     }
   },
 
+  /**
+   * Finds the CSRF token for the saveTaskPresenter method
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getTaskPresenterImportationOptions ({ commit }, project) {
     return api.getTaskPresenterImportationOptions(project.short_name).then(value => {
       commit('setTaskPresenterImportationOptions', value.data)
@@ -113,6 +133,15 @@ const actions = {
     })
   },
 
+  /**
+   * Save the given given task presenter (template) for the given project
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @param template
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   saveTaskPresenter ({ commit, state, dispatch }, { project, template }) {
     return dispatch('getTaskPresenterImportationOptions', project).then(response => {
       if (response) {
@@ -137,6 +166,13 @@ const actions = {
     })
   },
 
+  /**
+   * Gets a new task not already done for the logged user
+   * @param commit
+   * @param rootState
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getNewTask ({ commit, rootState }, project) {
     return api.getNewTask(project.id).then(value => {
       commit('setCurrentTask', value.data)
@@ -149,6 +185,12 @@ const actions = {
     })
   },
 
+  /**
+   * Saves a task run
+   * @param commit
+   * @param taskRun
+   * @return {Promise<T | boolean>}
+   */
   saveTaskRun ({ commit }, taskRun) {
     return api.saveTaskRun(taskRun).then(value => {
       // no commit
@@ -157,40 +199,6 @@ const actions = {
       commit('notification/showError', {
         title: errors.POST_TASK_RUN_ERROR, content: reason
       }, { root: true })
-      return false
-    })
-  },
-
-  getAmazonS3TasksImportationOptions ({ commit }, project) {
-    return api.getAmazonS3TasksImportationOptions(project.short_name).then(value => {
-      commit('setAmazonS3TasksImportationOptions', value.data)
-      return value.data
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.GET_AMAZON_S3_IMPORTER_OPTIONS_LOADING_ERROR, content: reason
-      }, { root: true })
-      return false
-    })
-  },
-
-  importAmazonS3Tasks ({ commit, state, dispatch }, { project, bucket, files }) {
-    return dispatch('getAmazonS3TasksImportationOptions', project).then(response => {
-      if (response) {
-        return api.importAmazonS3Tasks(
-          state.amazonS3TasksImportationOptions.form.csrf,
-          project,
-          bucket,
-          files
-        ).then(value => {
-          // no commit required
-          return value.data
-        }).catch(reason => {
-          commit('notification/showError', {
-            title: errors.POST_AMAZON_S3_TASKS_ERROR, content: reason
-          }, { root: true })
-          return false
-        })
-      }
       return false
     })
   }
@@ -206,9 +214,6 @@ const mutations = {
   },
   setCurrentTask (state, task) {
     state.currentTask = task
-  },
-  setAmazonS3TasksImportationOptions (state, options) {
-    state.amazonS3TasksImportationOptions = options
   },
   setTaskPresenterImportationOptions (state, options) {
     state.taskPresenterImportationOptions = options
@@ -226,6 +231,7 @@ export default {
   mutations,
   errors,
   modules: {
-    builder
+    builder,
+    importer
   }
 }

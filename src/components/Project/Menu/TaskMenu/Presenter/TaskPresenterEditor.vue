@@ -2,7 +2,9 @@
   <b-row>
     <b-col>
       <b-breadcrumb :items="items"></b-breadcrumb>
-      <div class="mt-4 clearfix">
+      <!--<b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Go back to the project</b-link>-->
+
+      <div class="mt-2 clearfix">
         <h2 class="float-left">Task presenter editor</h2>
         <b-btn variant="success" class="float-right" @click="updateTaskPresenter">Update task presenter</b-btn>
       </div>
@@ -93,11 +95,11 @@ export default {
     items () {
       return [
         {
-          text: 'Tasks',
+          text: this.selectedProject.name + ' project',
           to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         },
         {
-          text: 'Presenter',
+          text: 'Task presenter',
           to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         },
         {

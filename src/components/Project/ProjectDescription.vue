@@ -1,17 +1,19 @@
 <template>
-  <div>
-    <h4 class="mt-3">WHAT AND WHY</h4>
-    <p>{{ description.whatWhy }}</p>
+  <b-row>
+    <b-col>
+      <h4 class="mt-3">WHAT AND WHY</h4>
+      <p>{{ description.whatWhy }}</p>
 
-    <h4 class="mt-3">HOW</h4>
-    <p>{{ description.how }}</p>
+      <h4 class="mt-3">HOW</h4>
+      <p>{{ description.how }}</p>
 
-    <h4 class="mt-3">WHO</h4>
-    <p>{{ description.who }}</p>
+      <h4 class="mt-3">WHO</h4>
+      <p>{{ description.who }}</p>
 
-    <h4 class="mt-3">KEEP TRACK</h4>
-    <p>{{ description.keepTrack }}</p>
-  </div>
+      <h4 class="mt-3">KEEP TRACK</h4>
+      <p>{{ description.keepTrack }}</p>
+    </b-col>
+  </b-row>
 </template>
 
 <script>

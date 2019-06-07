@@ -38,6 +38,15 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
+  /**
+   * Log the user in
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param email
+   * @param password
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   signIn ({ commit, state, dispatch }, { email, password }) {
     return dispatch('getLoginOptions').then(value => {
       if (value) {
@@ -59,6 +68,11 @@ const actions = {
     })
   },
 
+  /**
+   * Gets a CSRF token for the signIn method
+   * @param commit
+   * @return {Promise<T | boolean>}
+   */
   getLoginOptions ({ commit }) {
     return api.getLoginOptions().then(value => {
       commit('setLoginOptions', value.data)
@@ -71,6 +85,11 @@ const actions = {
     })
   },
 
+  /**
+   * Returns all the data about the logged user (session login)
+   * @param commit
+   * @return {Promise<T | boolean>}
+   */
   getAccountProfile ({ commit }) {
     return api.getAccountProfile().then(value => {
       if (value.data.hasOwnProperty('user')) {
@@ -91,6 +110,11 @@ const actions = {
     })
   },
 
+  /**
+   * Logout the user and clear the state
+   * @param commit
+   * @return {Promise<T | boolean>}
+   */
   signOut ({ commit }) {
     return api.signOut().then(response => {
       if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
@@ -114,6 +138,12 @@ const actions = {
     })
   },
 
+  /**
+   * Gets the CSRF token to update the profile with the method updateProfile
+   * @param commit
+   * @param user
+   * @return {Promise<T | boolean>}
+   */
   getProfileUpdateOptions ({ commit }, user) {
     return api.getProfileUpdateOptions(user.name).then(value => {
       commit('setProfileUpdateOptions', value.data)
@@ -126,6 +156,15 @@ const actions = {
     })
   },
 
+  /**
+   * Allows to update the user profile data
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param user
+   * @param form
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   updateProfile ({ commit, dispatch, state }, { user, form }) {
     return dispatch('getProfileUpdateOptions', user).then(response => {
       if (response) {
@@ -145,6 +184,12 @@ const actions = {
     })
   },
 
+  /**
+   * Gets a CSRF token to update the api key of the given user
+   * @param commit
+   * @param user
+   * @return {Promise<T | boolean>}
+   */
   getResetApiKeyOptions ({ commit }, user) {
     return api.getResetApiKeyOptions(user.name).then(value => {
       commit('setResetApiKeyOptions', value.data)
@@ -157,6 +202,14 @@ const actions = {
     })
   },
 
+  /**
+   * Allows to reset the api key of the given user
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param user
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   resetApiKey ({ commit, dispatch, state }, user) {
     return dispatch('getResetApiKeyOptions', user).then(response => {
       if (response) {
@@ -179,6 +232,15 @@ const actions = {
     })
   },
 
+  /**
+   * Update the profile picture of the user
+   * The avatar must be a base64 url image
+   * @param commit
+   * @param dispatch
+   * @param user
+   * @param avatar
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   updateAvatar ({ commit, dispatch }, { user, avatar }) {
     commit('notification/showLoading', 'user/updateAvatar', { root: true })
     return dispatch('getProfileUpdateOptions', user).then(response => {
@@ -212,6 +274,14 @@ const actions = {
     })
   },
 
+  /**
+   * Allows to update the user password
+   * @param commit
+   * @param dispatch
+   * @param user
+   * @param form
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   updatePassword ({ commit, dispatch }, { user, form }) {
     return dispatch('getProfileUpdateOptions', user).then(response => {
       if (response) {
@@ -239,6 +309,13 @@ const actions = {
     })
   },
 
+  /**
+   * Deletes the user account and sign out the user directly
+   * @param commit
+   * @param dispatch
+   * @param user
+   * @return {Promise<boolean>}
+   */
   deleteAccount ({ commit, dispatch }, user) {
     return api.deleteAccount(user.name).then(value => {
       commit('notification/showSuccess', {
@@ -254,6 +331,13 @@ const actions = {
     })
   },
 
+  /**
+   * Informs the Pybossa server that the user wants his data
+   * Pybossa will send an email to the user with his data
+   * @param commit
+   * @param user
+   * @return {Promise<T | boolean>}
+   */
   exportAccountData ({ commit }, user) {
     return api.exportAccountData(user.name).then(value => {
       commit('notification/showSuccess', {

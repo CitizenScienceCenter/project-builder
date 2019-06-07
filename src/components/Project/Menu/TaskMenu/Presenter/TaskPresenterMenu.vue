@@ -3,7 +3,8 @@
     <b-row>
       <b-col>
         <b-breadcrumb :items="items"></b-breadcrumb>
-        <b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Back to Tasks</b-link>
+
+        <!--<b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Go back to the project</b-link>-->
         <h3 class="mt-2">Use one of the following available <b>templates</b> for your project</h3>
 
         <b-row class="mt-4">
@@ -107,11 +108,11 @@ export default {
     items () {
       return [
         {
-          text: 'Tasks',
+          text: this.selectedProject.name + ' project',
           to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         },
         {
-          text: 'Presenter',
+          text: 'Task presenter',
           to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
         }
       ]

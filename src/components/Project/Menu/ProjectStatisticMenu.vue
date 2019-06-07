@@ -1,6 +1,6 @@
 <template>
   <!-- TODO: find the differences with the info tab -->
-  <b-row align-h="between" align-v="center">
+  <b-row align-h="between" align-v="start">
     <b-col>
       <b>{{ stats.hasOwnProperty('overall_progress') ? stats.overall_progress : 'NaN' }}</b><br>
       <span class="text-muted">published results</span>

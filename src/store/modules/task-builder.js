@@ -143,6 +143,13 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
+  /**
+   * Returns the list of the files present in the given bucket
+   * @param state
+   * @param commit
+   * @param bucketName
+   * @return {Promise<T | boolean>}
+   */
   getBucketFiles ({ state, commit }, bucketName) {
     const id = state.loaders.GET_BUCKET_FILES
     commit('notification/showLoading', id, { root: true })
