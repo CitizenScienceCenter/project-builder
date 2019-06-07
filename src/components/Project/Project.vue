@@ -3,7 +3,7 @@
     <b-row class="mt-4">
 
       <b-col cols="4">
-        <b-img v-if="project.info && project.info.thumbnail" :src="project.info.thumbnail_url" thumbnail fluid-grow></b-img>
+        <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" thumbnail fluid-grow></b-img>
         <b-img v-else blank-color="#777" :blank="true" thumbnail fluid-grow></b-img>
       </b-col>
 
@@ -12,13 +12,12 @@
         <p>{{ project.description }}</p>
 
         <div v-if="project.published">
-          <b-btn :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
+          <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
-        <div v-else>
-          <b-btn :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
-          <!--<b-btn variant="primary" class="mt-2" :to="{ name: 'project.edition', params: { id } }">Edit</b-btn><br>-->
-          <b-btn :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
-          <b-btn variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
+        <div v-else-if="isLoggedUserOwnerOfProject(project)">
+          <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+          <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
+          <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
           <!-- Publish project modal -->
           <b-modal
                   id="publish-project"
@@ -53,7 +52,7 @@
             <ProjectResultsMenu></ProjectResultsMenu>
           </b-tab>
 
-          <b-tab title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
+          <b-tab ref="tab-tasks" v-if="isLoggedUserOwnerOfProject(project)" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
             <ProjectTasksMenu></ProjectTasksMenu>
           </b-tab>
 
@@ -61,7 +60,7 @@
             <ProjectStatisticsMenu></ProjectStatisticsMenu>
           </b-tab>
 
-          <b-tab v-if="!project.published" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
+          <b-tab ref="tab-settings" v-if="isLoggedUserOwnerOfProject(project)" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
             <!-- v-if used to render the component only if the tab is active -->
             <ProjectEditor v-if="currentTab === tabs.settings"></ProjectEditor>
           </b-tab>
@@ -84,7 +83,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
 import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
 import ProjectTasksMenu from '@/components/Project/Menu/ProjectTasksMenu'
@@ -111,7 +110,9 @@ export default {
     this.getProject(this.id).then(project => {
       this.getStatistics(project)
       this.getResults(project)
-      this.getTaskPresenter({ project: project, template: null })
+      if (this.isLoggedUserOwnerOfProject(project)) {
+        this.getTaskPresenter({ project: project, template: null })
+      }
     })
   },
   data: () => {
@@ -143,6 +144,9 @@ export default {
     }),
     ...mapState('project/menu', [
       'currentTab', 'tabs'
+    ]),
+    ...mapGetters('user', [
+      'isLoggedUserOwnerOfProject'
     ])
   }
 }
