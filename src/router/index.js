@@ -14,6 +14,7 @@ import TaskPresenterMenu from '@/components/Project/Menu/TaskMenu/Presenter/Task
 import TaskPresenterEditor from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterEditor'
 import TaskList from '@/components/Project/Menu/TaskMenu/TaskList'
 import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu'
+import Registration from '@/components/Registration/Registration'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Registration
     },
     {
       path: '/logout',
@@ -246,7 +252,7 @@ const router = new Router({
 })
 
 const publicRoutes = [
-  'home', 'login', 'logout', 'discover', 'about'
+  'home', 'login', 'register', 'logout', 'discover', 'about'
 ]
 
 router.beforeEach((to, from, next) => {
@@ -261,6 +267,10 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         // if the route needs to be logged the user is redirected
+        store.commit('notification/showInfo', {
+          title: 'Not authenticated',
+          content: 'You must be logged to access this page'
+        })
         from.name !== null ? next(false) : next({ name: 'login' })
       }
     }).catch(() => {

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar :sticky="true" toggleable="lg" type="dark" variant="dark">
 
       <b-container>
         <b-navbar-brand href="#">Pybossa</b-navbar-brand>
@@ -18,6 +18,7 @@
           <b-navbar-nav class="ml-auto">
 
             <b-nav-item v-if="!userLogged" :to="{ name: 'login' }">Login</b-nav-item>
+            <!--<b-nav-item v-if="!userLogged" :to="{ name: 'register' }">Register</b-nav-item>-->
 
             <b-nav-item-dropdown v-else right>
               <template slot="button-content">User</template>

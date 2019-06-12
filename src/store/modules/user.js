@@ -24,7 +24,9 @@ const state = {
   draftProjects: [],
 
   isInProfileEditionMode: false,
+  isBirthDateVerified: false,
 
+  registrationOptions: {},
   profileUpdateOptions: {},
   resetApiKeyOptions: {}
 }
@@ -38,6 +40,47 @@ const getters = {
 
 // async methods making mutations are placed here
 const actions = {
+  /**
+   * Gets a CSRF token for the register method
+   * @param commit
+   * @return {Promise<T | boolean>}
+   */
+  getRegistrationOptions ({ commit }) {
+    return api.getRegistrationOptions().then(value => {
+      commit('setRegistrationOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: 'Registration not available', content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  /**
+   * Register a new user
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param form
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
+  register ({ commit, state, dispatch }, form) {
+    return dispatch('getRegistrationOptions').then(value => {
+      if (value) {
+        return api.register(state.registrationOptions.form.csrf, form).then(response => {
+          return response.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: 'Error during registration', content: reason
+          }, { root: true })
+          return false
+        })
+      }
+      return false
+    })
+  },
+
   /**
    * Log the user in
    * @param commit
@@ -364,6 +407,9 @@ const mutations = {
   setLoginOptions (state, options) {
     state.loginOptions = options
   },
+  setRegistrationOptions (state, options) {
+    state.registrationOptions = options
+  },
   setUserInfos (state, infos) {
     state.infos = infos
   },
@@ -384,6 +430,9 @@ const mutations = {
   },
   setResetApiKeyOptions (state, options) {
     state.resetApiKeyOptions = options
+  },
+  setBirthDateVerified (state, value) {
+    state.isBirthDateVerified = value
   }
 }
 

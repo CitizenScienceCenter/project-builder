@@ -2,12 +2,12 @@
   <div>
     <b-row class="mt-4">
 
-      <b-col cols="4">
+      <b-col md="4">
         <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" thumbnail fluid-grow></b-img>
         <b-img v-else blank-color="#777" :blank="true" thumbnail fluid-grow></b-img>
       </b-col>
 
-      <b-col cols="8">
+      <b-col md="8">
         <h2>{{ project.name }}</h2>
         <p>{{ project.description }}</p>
 
