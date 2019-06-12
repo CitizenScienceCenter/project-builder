@@ -1,4 +1,5 @@
 import api from '@/api/task-importer'
+import aws from '@/api/aws'
 
 const errors = {
   GET_AMAZON_S3_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading amazon s3 options',
@@ -8,7 +9,8 @@ const errors = {
   GET_LOCAL_CSV_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading local csv importer options',
   POST_CSV_FILE_TASKS_ERROR: 'Error when importing csv file tasks',
   GET_ONLINE_CSV_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading online csv importer options',
-  POST_CSV_TASKS_ERROR: 'Error when importing csv tasks'
+  POST_CSV_TASKS_ERROR: 'Error when importing csv tasks',
+  GET_BUCKET_FILES_ERROR: 'Error during bucket files loading'
 }
 
 const state = {
@@ -17,19 +19,54 @@ const state = {
   isOnlineCsvImporterVisible: false,
   isAmazonS3ImporterVisible: false,
 
+  bucket: {
+    name: '',
+    files: []
+  },
+
   amazonS3TasksImportationOptions: {},
   googleDocsTasksImportationOptions: {},
   localCsvTasksImportationOptions: {},
-  onlineCsvTasksImportationOptions: {}
+  onlineCsvTasksImportationOptions: {},
+
+  loaders: {
+    GET_BUCKET_FILES: 'task/importer/getBucketFiles'
+  }
 }
 
 // filter methods on the state data
 const getters = {
-
+  getBucketFileLink: (state) => (file) => {
+    return 'https://' + state.bucket.name + '.s3.amazonaws.com/' + file
+  }
 }
 
 // async methods making mutations are placed here
 const actions = {
+  /**
+   * Returns the list of the files present in the given bucket
+   * @param state
+   * @param commit
+   * @param bucketName
+   * @return {Promise<T | boolean>}
+   */
+  getBucketFiles ({ state, commit }, bucketName) {
+    const id = state.loaders.GET_BUCKET_FILES
+    commit('notification/showLoading', id, { root: true })
+
+    return aws.getBucketLinks(bucketName).then(value => {
+      commit('notification/closeLoading', id, { root: true })
+      commit('setBucketFiles', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/closeLoading', id, { root: true })
+      commit('notification/showError', {
+        title: errors.GET_BUCKET_FILES_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
   /**
    * Gets the CSRF token for the importAmazonS3Tasks method
    * @param commit
@@ -67,8 +104,14 @@ const actions = {
           bucket,
           files
         ).then(value => {
-          // no commit required
-          return value.data
+          if ('status' in value.data && value.data.status === 'message') {
+            commit('notification/showSuccess', {
+              title: 'Success',
+              content: value.data.flash
+            }, { root: true })
+            return value.data
+          }
+          return false
         }).catch(reason => {
           commit('notification/showError', {
             title: errors.POST_AMAZON_S3_TASKS_ERROR, content: reason
@@ -279,6 +322,12 @@ const mutations = {
   },
   setAmazonS3ImporterVisible (state, value) {
     state.isAmazonS3ImporterVisible = value
+  },
+  setBucketFiles (state, files) {
+    state.bucket = { ...state.bucket, files }
+  },
+  setBucketName (state, name) {
+    state.bucket = { ...state.bucket, name }
   }
 }
 

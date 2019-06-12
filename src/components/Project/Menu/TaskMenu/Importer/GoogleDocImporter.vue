@@ -5,7 +5,7 @@
       <div class="m-2">Google spreadsheet</div>
     </b-card>
     <b-collapse id="google-doc-collapse" v-model="isGoogleDocVisible">
-      <b-form @submit.prevent="onSubmit" class="mt-4">
+      <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
         <b-form-group>
           <b-input placeholder="Google spreadsheet public url" v-model="googleDocLink"></b-input>
         </b-form-group>

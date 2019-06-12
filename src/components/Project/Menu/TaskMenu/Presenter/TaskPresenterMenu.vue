@@ -14,7 +14,7 @@
               <h4>Basic</h4>
               <p>The most basic template</p>
               <p><b>Skills</b>: HTML and Javascript</p>
-              <b-btn variant="outline-primary" @click="displayTemplate(templates.basic)">Use</b-btn>
+              <b-btn ref="btn-basic-template" variant="outline-primary" @click="displayTemplate(templates.basic)">Use</b-btn>
             </div>
 
             <div class="mb-5">

@@ -5,7 +5,7 @@
       <div class="m-2">Public csv link</div>
     </b-card>
     <b-collapse id="online-csv-collapse" v-model="isOnlineCsvVisible">
-      <b-form @submit.prevent="onSubmit" class="mt-4">
+      <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
         <b-form-group>
           <b-input placeholder="Csv public url" v-model="csvLink"></b-input>
         </b-form-group>

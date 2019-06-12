@@ -5,7 +5,7 @@
       <div class="m-2">CSV file</div>
     </b-card>
     <b-collapse id="csv-collapse" v-model="isLocalCsvVisible">
-      <b-form @submit.prevent="onSubmit" class="mt-4">
+      <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
         <b-form-group>
           <b-file placeholder="Select a CSV file..." accept=".csv" v-model="csvFile"></b-file>
         </b-form-group>

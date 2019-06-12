@@ -6,7 +6,7 @@
 
       <div class="mt-2 clearfix">
         <h2 class="float-left">Task presenter editor</h2>
-        <b-btn variant="success" class="float-right" @click="updateTaskPresenter">Update task presenter</b-btn>
+        <b-btn ref="btn-update-presenter" variant="success" class="float-right" @click="updateTaskPresenter">Update task presenter</b-btn>
       </div>
       <codemirror class="mt-3 float-none" ref="code-mirror" v-model="code" :options="cmOptions"></codemirror>
     </b-col>
