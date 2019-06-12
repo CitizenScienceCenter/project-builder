@@ -27,7 +27,6 @@ export default {
     TemplateBuilder
   },
   created () {
-    console.log(this.id)
     if (Object.keys(this.project).length === 0) {
       this.getProject(this.id)
     }

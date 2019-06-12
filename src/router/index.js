@@ -10,9 +10,10 @@ import About from '@/components/About'
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
 import Profile from '@/components/Profile/Profile'
-import TaskPresenterMenu from '@/components/Project/Menu/Task/TaskPresenterMenu'
-import TaskPresenterEditor from '@/components/Project/Menu/Task/TaskPresenterEditor'
-import TaskList from '@/components/Project/Menu/Task/TaskList'
+import TaskPresenterMenu from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterMenu'
+import TaskPresenterEditor from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterEditor'
+import TaskList from '@/components/Project/Menu/TaskMenu/TaskList'
+import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu'
 
 Vue.use(Router)
 
@@ -84,12 +85,12 @@ const router = new Router({
         next()
       }
     },
-    // {
-    //   path: '/project/:id/edit',
-    //   name: 'project.edition',
-    //   component: ProjectEditor,
-    //   props: true
-    // },
+    {
+      path: '/project/:id/task-importers',
+      name: 'project.task.importers',
+      component: TaskImporterMenu,
+      props: true
+    },
     {
       path: '/project/:id/task-presenter',
       name: 'project.task.presenter',

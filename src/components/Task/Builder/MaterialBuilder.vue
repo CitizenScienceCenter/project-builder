@@ -3,6 +3,7 @@
     <b-row class="mt-4">
       <b-col>
         <h2 class="text-center">Select the items that you'll work with</h2>
+        <b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Go back to the project</b-link>
       </b-col>
     </b-row>
     <b-row class="mt-4">
@@ -18,14 +19,14 @@
             </b-card>
           </b-col>
 
-          <b-col md="4">
+          <b-col md="4" class="mt-2 mt-md-0">
             <b-card ref="card-sound" :class="{ 'material-selected': selectedMaterial === materials.sound }" @click="onMaterialSelected(materials.sound)" class="text-center material">
               <i class="fas fa-music fa-4x"></i><br>
               <div class="m-2">Sounds</div>
             </b-card>
           </b-col>
 
-          <b-col md="4">
+          <b-col md="4" class="mt-2 mt-md-0">
             <b-card ref="card-video" :class="{ 'material-selected': selectedMaterial === materials.video }" @click="onMaterialSelected(materials.video)" class="text-center material">
               <i class="fas fa-play fa-4x"></i><br>
               <div class="m-2">Videos</div>
@@ -34,16 +35,16 @@
 
         </b-row>
 
-        <b-row class="mt-4">
+        <b-row class="mt-md-4">
 
-          <b-col md="4">
+          <b-col md="4" class="mt-2 mt-md-0">
             <b-card ref="card-pdf" :class="{ 'material-selected': selectedMaterial === materials.pdf }" @click="onMaterialSelected(materials.pdf)" class="text-center material">
               <i class="fas fa-file-pdf fa-4x"></i><br>
               <div class="m-2">PDFs</div>
             </b-card>
           </b-col>
 
-          <b-col md="4">
+          <b-col md="4" class="mt-2 mt-md-0">
             <b-card ref="card-tweet" :class="{ 'material-selected': selectedMaterial === materials.tweet }" @click="onMaterialSelected(materials.tweet)" class="text-center material">
               <i class="fab fa-twitter fa-4x"></i><br>
               <div class="m-2">Tweets</div>

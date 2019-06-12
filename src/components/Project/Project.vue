@@ -67,15 +67,6 @@
 
         </b-tabs>
 
-        <hr>
-
-        <!-- Project long description (story) -->
-        <b-row>
-          <b-col>
-            <ProjectDescription></ProjectDescription>
-          </b-col>
-        </b-row>
-
       </b-col>
     </b-row>
 
@@ -86,9 +77,9 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
 import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
-import ProjectTasksMenu from '@/components/Project/Menu/ProjectTasksMenu'
-import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticsMenu'
-import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultsMenu'
+import ProjectTasksMenu from '@/components/Project/Menu/ProjectTaskMenu'
+import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticMenu'
+import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultMenu'
 import ProjectDescription from '@/components/Project/ProjectDescription'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
 import ProjectEditor from '@/components/Project/ProjectEditor'

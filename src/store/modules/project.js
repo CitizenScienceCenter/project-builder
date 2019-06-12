@@ -55,6 +55,11 @@ const getters = {
 // async methods making mutations are placed here
 const actions = {
 
+  /**
+   * Gets all the available categories
+   * @param commit
+   * @return {Promise<T | never>}
+   */
   getCategories ({ commit }) {
     return api.getCategories().then(value => {
       commit('setCategories', value.data)
@@ -66,6 +71,11 @@ const actions = {
     })
   },
 
+  /**
+   * Gets all the published projects (draft projects are private)
+   * @param commit
+   * @return {Promise<T | boolean>}
+   */
   getAllProjects ({ commit }) {
     return api.getAllProjects().then(value => {
       commit('setProjects', value.data)
@@ -78,6 +88,11 @@ const actions = {
     })
   },
 
+  /**
+   * Gets all the featured projects
+   * @param commit
+   * @return {Promise<T | never>}
+   */
   getFeaturedProjects ({ commit }) {
     return api.getFeaturedProjects().then(value => {
       commit('setFeaturedProjects', value.data.projects)
@@ -89,6 +104,15 @@ const actions = {
     })
   },
 
+  /**
+   * Get a project by id
+   * The json results will be different depending on if you are the owner or not
+   * @param commit
+   * @param state
+   * @param rootState
+   * @param id
+   * @return {Promise<T | boolean>}
+   */
   getProject ({ commit, state, rootState }, id) {
     return api.getProjectById(id, rootState.user.infos.api_key).then(value => {
       commit('setSelectedProject', value.data)
@@ -101,6 +125,15 @@ const actions = {
     })
   },
 
+  /**
+   * Creates a project with the builder data
+   * It will not import a project avatar
+   * @param commit
+   * @param state
+   * @param rootState
+   * @param builder
+   * @return {Promise<T | boolean>}
+   */
   createProject ({ commit, state, rootState }, builder) {
     return api.createProject(rootState.user.infos.api_key, builder).then(value => {
       commit('setSelectedProject', value.data)
@@ -113,6 +146,12 @@ const actions = {
     })
   },
 
+  /**
+   * Returns the global user contribution progress for the given project
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getUserProgress ({ commit }, project) {
     return api.getProjectUserProgress(project.id).then(value => {
       commit('setSelectedProjectUserProgress', value.data)
@@ -125,6 +164,12 @@ const actions = {
     })
   },
 
+  /**
+   * Gets a CSRF token to update the project with the updateProject method
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getProjectUpdateOptions ({ commit }, project) {
     return api.getProjectUpdateOptions(project.short_name).then(value => {
       commit('setProjectUpdateOptions', value.data)
@@ -137,6 +182,15 @@ const actions = {
     })
   },
 
+  /**
+   * Update the project data with the given form
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param project
+   * @param form
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   updateProject ({ commit, dispatch, state }, { project, form }) {
     return dispatch('getProjectUpdateOptions', project).then(response => {
       if (response) {
@@ -154,6 +208,16 @@ const actions = {
     })
   },
 
+  /**
+   * Allows to upload an avatar for the given project
+   * The avatar image must be a base64 url
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @param image
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   uploadAvatar ({ commit, state, dispatch }, { project, image }) {
     return dispatch('getProjectUpdateOptions', project).then(response => {
       if (response) {
@@ -171,6 +235,12 @@ const actions = {
     })
   },
 
+  /**
+   * Gets a CSRF token to publish the project with the publishProject method
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getPublishProjectOptions ({ commit }, project) {
     return api.getPublishProjectOptions(project.short_name).then(value => {
       commit('setPublishProjectOptions', value.data)
@@ -183,6 +253,14 @@ const actions = {
     })
   },
 
+  /**
+   * Publish the given project
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
   publishProject ({ commit, state, dispatch }, project) {
     return dispatch('getPublishProjectOptions', project).then(response => {
       if (response) {
@@ -203,6 +281,12 @@ const actions = {
     })
   },
 
+  /**
+   * Returns all the stats about the given project
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getStatistics ({ commit }, project) {
     return api.getStatistics(project.short_name).then(value => {
       commit('setSelectedProjectStats', value.data)
@@ -215,6 +299,12 @@ const actions = {
     })
   },
 
+  /**
+   * Returns all the task results about the given project
+   * @param commit
+   * @param project
+   * @return {Promise<T | boolean>}
+   */
   getResults ({ commit }, project) {
     return api.getResults(project.short_name).then(value => {
       commit('setSelectedProjectResults', value.data)

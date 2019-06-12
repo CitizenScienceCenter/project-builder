@@ -6,7 +6,7 @@
         <div>
           <h4>Import Tasks</h4>
           <p>Import tasks from templates, GDrive, or CSV</p>
-          <b-btn variant="outline-primary">Import</b-btn>
+          <b-btn variant="outline-primary" :to="{ name: 'project.task.importers', params: { id: 'id' in project ? project.id : 0 } }">Import</b-btn>
         </div>
 
         <div class="mt-4">
