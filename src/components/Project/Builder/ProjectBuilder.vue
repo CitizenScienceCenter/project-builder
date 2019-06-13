@@ -4,7 +4,7 @@
     <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
     <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>
     <StoryBuilder v-if="currentStep === 'story'"></StoryBuilder>
-    <EndBuilder v-if="currentStep === 'end'"></EndBuilder>
+    <SummaryBuilder v-if="currentStep === 'end'"></SummaryBuilder>
   </div>
 </template>
 
@@ -14,12 +14,12 @@ import InformationBuilder from '@/components/Project/Builder/InformationBuilder'
 import StoryBuilder from '@/components/Project/Builder/StoryBuilder'
 
 import { mapState, mapActions, mapMutations } from 'vuex'
-import EndBuilder from '@/components/Project/Builder/EndBuilder'
+import SummaryBuilder from '@/components/Project/Builder/SummaryBuilder'
 
 export default {
   name: 'ProjectBuilder',
   components: {
-    EndBuilder,
+    SummaryBuilder,
     StoryBuilder,
     InformationBuilder,
     NameBuilder
@@ -33,6 +33,9 @@ export default {
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
     }),
+    ...mapMutations('project/builder', [
+      'setCurrentStep', 'setStep'
+    ]),
     ...mapMutations('task', [
       'setTaskPresenter'
     ]),
@@ -104,6 +107,9 @@ export default {
             this.resetTaskBuilder()
             this.setTaskPresenter('')
             this.$router.push({name: 'project.builder.end'})
+          } else {
+            this.setCurrentStep(this.steps.name)
+            this.setStep({ step: 'name', value: false })
           }
 
         })
