@@ -4,6 +4,22 @@ import { dataURItoBlob } from '@/helper'
 axios.defaults.headers['Content-Type'] = 'application/json'
 
 export default {
+  getRegistrationOptions () {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/register', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  register (csrf, form) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'account/register', form, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
   signIn (csrf, email, password) {
     return axios.post(process.env.BASE_ENDPOINT_URL + 'account/signin', {
       email, password, csrf

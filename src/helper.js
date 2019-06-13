@@ -52,16 +52,29 @@ export function buildTemplateFromModel (templateModel, templateData) {
 }
 
 export function getFormErrorsAsString (errors) {
-  console.log(errors)
+  // console.log(errors)
   const fields = Object.keys(errors)
   let result = '<ul>'
 
-  for (let field in fields) {
-    result += '<li>' + fields[field] + ': '
-    result += errors[fields[field]]
+  for (let fldIndex in fields) {
+    const fieldName = fields[fldIndex]
+    result += '<li>' + fieldName + ': '
+
+    // print field errors in a new list
+    result += '<ul>'
+    for (let error of errors[fieldName]) {
+      result += '<li>' + error + '</li>'
+    }
+    result += '</ul>'
+
     result += '</li>'
   }
 
   result += '</ul>'
   return result
+}
+
+export function validateEmail (email) {
+  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return regex.test(String(email).toLowerCase())
 }
