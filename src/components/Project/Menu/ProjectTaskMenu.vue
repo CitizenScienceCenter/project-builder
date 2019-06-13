@@ -29,7 +29,7 @@
         <div>
           <h4>Export Tasks</h4>
           <p>Export tasks to JSON, CSV, or a CKAN server</p>
-          <b-btn variant="outline-primary">Export</b-btn>
+          <b-btn :to="{ name: 'project.task.exporters', params: { id: 'id' in project ? project.id : 0 } }" variant="outline-primary">Export</b-btn>
         </div>
 
         <div class="mt-4">

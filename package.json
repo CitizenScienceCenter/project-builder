@@ -19,6 +19,7 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
     "es6-promise": "^4.2.6",
+    "file-saver": "^2.0.2",
     "moment": "^2.24.0",
     "portal-vue": "^2.1.4",
     "slug": "^1.1.0",

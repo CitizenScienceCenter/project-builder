@@ -15,6 +15,7 @@ import TaskPresenterEditor from '@/components/Project/Menu/TaskMenu/Presenter/Ta
 import TaskList from '@/components/Project/Menu/TaskMenu/TaskList'
 import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu'
 import Registration from '@/components/Registration/Registration'
+import TaskExporterMenu from '@/components/Project/Menu/TaskMenu/Exporter/TaskExporterMenu'
 
 Vue.use(Router)
 
@@ -95,6 +96,12 @@ const router = new Router({
       path: '/project/:id/task-importers',
       name: 'project.task.importers',
       component: TaskImporterMenu,
+      props: true
+    },
+    {
+      path: '/project/:id/task-exporters',
+      name: 'project.task.exporters',
+      component: TaskExporterMenu,
       props: true
     },
     {

@@ -1,6 +1,7 @@
 import api from '@/api/task'
 import builder from './task-builder'
 import importer from './task-importer'
+import exporter from './task-exporter'
 
 import { buildTemplateFromModel } from '@/helper'
 
@@ -232,6 +233,7 @@ export default {
   errors,
   modules: {
     builder,
-    importer
+    importer,
+    exporter
   }
 }

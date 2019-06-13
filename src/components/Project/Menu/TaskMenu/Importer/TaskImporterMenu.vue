@@ -80,7 +80,7 @@ export default {
     items () {
       return [
         {
-          text: this.project ? this.project.name : '' + ' project',
+          text: (this.project ? this.project.name : '') + ' project',
           to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {
