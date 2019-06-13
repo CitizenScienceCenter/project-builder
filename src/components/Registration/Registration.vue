@@ -7,7 +7,7 @@
 
           <h2>Registration</h2>
 
-          <b-form @submit.prevent="submitRegistration" class="mt-4">
+          <b-form ref="form-registration" @submit.prevent="submitRegistration" class="mt-4">
             <b-form-group
                     label="Full name"
                     label-for="fullname"
@@ -95,30 +95,41 @@ export default {
     ]),
 
     submitRegistration () {
-      this.register({
-        fullname: this.form.fullname,
-        name: this.form.username,
-        email_addr: this.form.email,
-        password: this.form.password,
-        confirm: this.form.passwordConfirmation
-      }).then(response => {
-        if ('form' in response && 'errors' in response.form) {
-          this.showError({
-            title: 'Incomplete form error',
-            content: getFormErrorsAsString(response.form.errors)
-          })
-        } else {
-          this.showSuccess({
-            title: 'Success',
-            content: response.flash
-          })
-          this.getAccountProfile().then(() => {
-            if (this.userLogged) {
-              this.$router.push({ name: 'home' })
-            }
-          })
-        }
-      })
+      if (this.nameValid(this.form.fullname) &&
+        this.nameValid(this.form.username) &&
+        this.emailValid &&
+        this.passwordsValid
+      ) {
+        this.register({
+          fullname: this.form.fullname,
+          name: this.form.username,
+          email_addr: this.form.email,
+          password: this.form.password,
+          confirm: this.form.passwordConfirmation
+        }).then(response => {
+          if ('form' in response && 'errors' in response.form) {
+            this.showError({
+              title: 'Incomplete form error',
+              content: getFormErrorsAsString(response.form.errors)
+            })
+          } else {
+            this.showSuccess({
+              title: 'Success',
+              content: response.flash
+            })
+            this.getAccountProfile().then(() => {
+              if (this.userLogged) {
+                this.$router.push({ name: 'home' })
+              }
+            })
+          }
+        })
+      } else {
+        this.showError({
+          title: 'Form incomplete',
+          content: 'Some fields are not validated'
+        })
+      }
     },
 
     nameValid (name) {

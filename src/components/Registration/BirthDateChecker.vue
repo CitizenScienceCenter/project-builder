@@ -33,7 +33,7 @@
         </b-col>
       </b-row>
 
-      <b-button @click="checkBirthDate" :disabled="!isBirthDateValid" variant="primary" class="mt-3">Continue</b-button>
+      <b-button ref="btn-check-birthdate" @click="checkBirthDate" :disabled="!isBirthDateValid" variant="primary" class="mt-3">Continue</b-button>
 
     </b-col>
   </b-row>
