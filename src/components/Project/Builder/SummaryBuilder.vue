@@ -16,7 +16,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'EndBuilder',
+  name: 'SummaryBuilder',
   computed: {
     ...mapState('project', [
       'selectedProject'

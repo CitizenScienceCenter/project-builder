@@ -139,9 +139,19 @@ const actions = {
       commit('setSelectedProject', value.data)
       return state.selectedProject
     }).catch(reason => {
+      const responseData = reason.response.data
+      if ('status' in responseData && responseData.status === 'failed') {
+        if (responseData.exception_cls && responseData.exception_cls === 'DBIntegrityError') {
+          // specific error message when duplicated project name
+          commit('notification/showError', {
+            title: 'Error', content: 'Project name already taken'
+          }, {root: true})
+          return false
+        }
+      }
       commit('notification/showError', {
         title: errors.POST_PROJECT_ERROR, content: reason
-      }, { root: true })
+      }, {root: true})
       return false
     })
   },

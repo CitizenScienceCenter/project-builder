@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'StoryBuilder',
@@ -94,13 +94,18 @@ export default {
       currentKeepTrack: ''
     }
   },
-  mounted () {
+  created () {
     this.currentWhatWhy = this.whatWhy
     this.currentHow = this.how
     this.currentWho = this.who
     this.currentKeepTrack = this.keepTrack
   },
   methods: {
+    ...mapMutations('project/builder', [
+      'setStory',
+      'setStep'
+    ]),
+
     onSubmit () {
       const fields = ['currentWhatWhy', 'currentHow', 'currentWho', 'currentKeepTrack']
       for (let field of fields) {
@@ -108,13 +113,13 @@ export default {
           return false
         }
       }
-      this.$store.commit('project/builder/setStory', {
+      this.setStory({
         whatWhy: this.currentWhatWhy,
         how: this.currentHow,
         who: this.currentWho,
         keepTrack: this.currentKeepTrack
       })
-      this.$store.commit('project/builder/setStep', { step: 'story', value: true })
+      this.setStep({ step: 'story', value: true })
     },
 
     validated (field) {

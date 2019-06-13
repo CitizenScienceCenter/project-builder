@@ -113,6 +113,7 @@ describe('store/modules/project', () => {
 
   it('test action: project/createProject error', done => {
     const error = new Error('HTTP ERROR')
+    error.response = { data: {} }
 
     const project = actionsInjector({
       '../../api/project': {

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'NameBuilder',
@@ -35,14 +35,19 @@ export default {
       currentTitle: ''
     }
   },
-  mounted () {
+  created () {
     this.currentTitle = this.title
   },
   methods: {
+    ...mapMutations('project/builder', [
+      'setTitle',
+      'setStep'
+    ]),
+
     onSubmit () {
       if (this.validated) {
-        this.$store.commit('project/builder/setTitle', this.currentTitle)
-        this.$store.commit('project/builder/setStep', { step: 'name', value: true })
+        this.setTitle(this.currentTitle)
+        this.setStep({ step: 'name', value: true })
       }
     }
   },
