@@ -20,7 +20,7 @@ export default {
   },
 
   exportTaskRunsInCsv (projectShortName) {
-    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/export?type=task_run&format=json', {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/export?type=task_run&format=csv', {
       responseType: 'blob',
       timeout: 20000,
       withCredentials: true
@@ -36,7 +36,7 @@ export default {
   },
 
   exportResultsInCsv (projectShortName) {
-    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/export?type=result&format=json', {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/export?type=result&format=csv', {
       responseType: 'blob',
       timeout: 20000,
       withCredentials: true

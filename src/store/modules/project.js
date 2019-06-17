@@ -26,7 +26,6 @@ const state = {
   categories: [], // all categories
   projects: [], // all projects
   featuredProjects: [],
-  // userProjects: [],
 
   // selected project data
   selectedProject: {},
@@ -68,6 +67,7 @@ const actions = {
       commit('notification/showError', {
         title: errors.GET_FEATURED_PROJECTS_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
 
@@ -101,6 +101,7 @@ const actions = {
       commit('notification/showError', {
         title: errors.GET_FEATURED_PROJECTS_LOADING_ERROR, content: reason
       }, { root: true })
+      return false
     })
   },
 

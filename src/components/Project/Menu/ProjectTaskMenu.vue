@@ -35,7 +35,7 @@
         <div class="mt-4">
           <h4>Settings</h4>
           <p>Configure the task scheduler, redundancy, etc.</p>
-          <b-btn variant="outline-primary">Settings</b-btn>
+          <b-btn :to="{ name: 'project.task.settings', params: { id: 'id' in project ? project.id : 0 } }" variant="outline-primary">Settings</b-btn>
         </div>
 
       </b-col>

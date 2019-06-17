@@ -36,13 +36,9 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'TaskList',
   created () {
-    if (Object.keys(this.selectedProject).length === 0) {
-      this.getProject(this.id).then(() => {
-        this.getProjectTasks(this.selectedProject)
-      })
-    } else {
-      this.getProjectTasks(this.selectedProject)
-    }
+    this.getProject(this.id).then(() => {
+      this.getProjectTasks(this.project)
+    })
   },
   props: {
     id: {
@@ -50,9 +46,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('project', [
-      'selectedProject'
-    ]),
+    ...mapState('project', {
+      project: state => state.selectedProject
+    }),
     ...mapState('task', [
       'projectTasks'
     ]),
@@ -60,12 +56,12 @@ export default {
     items () {
       return [
         {
-          text: this.selectedProject.name + ' project',
-          to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
+          text: '\'' + (this.project ? this.project.name : '') + '\' project',
+          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {
           text: 'Browse tasks',
-          to: { name: 'project.tasks.list', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } },
+          to: { name: 'project.tasks.list', params: { id: 'id' in this.project ? this.project.id : 0 } },
           active: true
         }
       ]

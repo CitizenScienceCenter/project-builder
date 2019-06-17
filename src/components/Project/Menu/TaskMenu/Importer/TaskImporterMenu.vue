@@ -43,9 +43,8 @@ export default {
     LocalCsvImporter
   },
   created () {
-    if (Object.keys(this.project).length === 0) {
-      this.getProject(this.id)
-    }
+    this.getProject(this.id)
+
     this.setGoogleDocImporterVisible(false)
     this.setLocalCsvImporterVisible(false)
     this.setOnlineCsvImporterVisible(false)
@@ -80,7 +79,7 @@ export default {
     items () {
       return [
         {
-          text: (this.project ? this.project.name : '') + ' project',
+          text: '\'' + (this.project ? this.project.name : '') + '\' project',
           to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {

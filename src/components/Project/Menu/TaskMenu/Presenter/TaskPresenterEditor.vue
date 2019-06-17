@@ -25,17 +25,11 @@ export default {
     codemirror
   },
   created () {
-    const getTaskPresenter = (project) => this.getTaskPresenter({ project: project, template: this.usingTemplate }).then(() => {
-      this.code = this.taskPresenter
-    })
-
-    if (Object.keys(this.selectedProject).length === 0) {
-      this.getProject(this.id).then(() => {
-        getTaskPresenter(this.selectedProject)
+    this.getProject(this.id).then(() => {
+      this.getTaskPresenter({ project: this.project, template: this.usingTemplate }).then(() => {
+        this.code = this.taskPresenter
       })
-    } else {
-      getTaskPresenter(this.selectedProject)
-    }
+    })
   },
   data: () => {
     return {
@@ -67,7 +61,7 @@ export default {
 
     updateTaskPresenter () {
       this.saveTaskPresenter({
-        project: this.selectedProject,
+        project: this.project,
         template: this.code
       }).then(response => {
         if (response) {
@@ -88,19 +82,19 @@ export default {
     ...mapState('task', [
       'taskPresenter', 'usingTemplate'
     ]),
-    ...mapState('project', [
-      'selectedProject'
-    ]),
+    ...mapState('project', {
+      project: state => state.selectedProject
+    }),
 
     items () {
       return [
         {
-          text: this.selectedProject.name + ' project',
-          to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
+          text: '\'' + (this.project ? this.project.name : '') + '\' project',
+          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {
           text: 'Task presenter',
-          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
+          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {
           text: 'Editor',
