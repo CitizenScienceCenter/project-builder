@@ -79,7 +79,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'MaterialBuilder',
-  mounted () {
+  created () {
     this.selectedMaterial = this.task.material
   },
   data: () => {

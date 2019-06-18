@@ -53,7 +53,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'JobSelector',
-  mounted () {
+  created () {
     this.selectedJob = this.task.job
   },
   data: () => {

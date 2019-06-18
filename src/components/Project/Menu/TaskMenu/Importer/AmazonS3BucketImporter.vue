@@ -35,7 +35,9 @@ import LoadingSpinner from '@/components/Helper/LoadingSpinner'
 
 export default {
   name: 'AmazonS3BucketImporter',
-  components: {LoadingSpinner},
+  components: {
+    LoadingSpinner
+  },
   data: () => {
     return {
       selectedFiles: []

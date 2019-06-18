@@ -49,7 +49,7 @@ import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'JobClassifyEditor',
-  mounted () {
+  created () {
     if (Array.isArray(this.task.template)) {
       // deep clone
       this.questions = JSON.parse(JSON.stringify(this.task.template))
