@@ -6,9 +6,10 @@ import settings from './task-settings'
 
 import { buildTemplateFromModel } from '@/helper'
 
-import ImageTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
 import BasicTemplate from '@/components/Task/Template/BasicTemplate'
-import VideoDescribeTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
+import ImageTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
+import VideoTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
+import SoundTemplate from '@/components/Task/Template/Sound/SoundDescribeTemplate'
 
 const errors = {
   GET_PROJECT_TASKS_LOADING_ERROR: 'Error during project tasks loading',
@@ -103,9 +104,10 @@ const actions = {
           commit('setTaskPresenter', buildTemplateFromModel(ImageTemplate, {}))
           break
         case state.templates.sound:
+          commit('setTaskPresenter', buildTemplateFromModel(SoundTemplate, {}))
           break
         case state.templates.video:
-          commit('setTaskPresenter', buildTemplateFromModel(VideoDescribeTemplate, {}))
+          commit('setTaskPresenter', buildTemplateFromModel(VideoTemplate, {}))
           break
         case state.templates.document:
           break

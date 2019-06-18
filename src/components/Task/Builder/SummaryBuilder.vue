@@ -40,6 +40,8 @@ import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescrib
 import ImageClassifyTemplate from '@/components/Task/Template/Image/ImageClassifyTemplate'
 import VideoClassifyTemplate from '@/components/Task/Template/Video/VideoClassifyTemplate'
 import VideoDescribeTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
+import SoundClassifyTemplate from '@/components/Task/Template/Sound/SoundClassifyTemplate'
+import SoundDescribeTemplate from '@/components/Task/Template/Sound/SoundDescribeTemplate'
 
 export default {
   name: 'SummaryBuilder',
@@ -90,9 +92,11 @@ export default {
       if (this.task.material === this.materials.sound) {
 
         if (this.task.job === this.jobs.classify) {
-          console.log('Sound classify template')
+          template = buildTemplateFromModel(SoundClassifyTemplate, {
+            questions: this.task.template
+          })
         } else if (this.task.job === this.jobs.describe) {
-          console.log('Sound describe template')
+          template = buildTemplateFromModel(SoundDescribeTemplate, this.task.template)
         }
 
       }
