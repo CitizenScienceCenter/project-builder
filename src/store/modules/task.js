@@ -8,6 +8,7 @@ import { buildTemplateFromModel } from '@/helper'
 
 import ImageTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
 import BasicTemplate from '@/components/Task/Template/BasicTemplate'
+import VideoDescribeTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
 
 const errors = {
   GET_PROJECT_TASKS_LOADING_ERROR: 'Error during project tasks loading',
@@ -104,6 +105,7 @@ const actions = {
         case state.templates.sound:
           break
         case state.templates.video:
+          commit('setTaskPresenter', buildTemplateFromModel(VideoDescribeTemplate, {}))
           break
         case state.templates.document:
           break

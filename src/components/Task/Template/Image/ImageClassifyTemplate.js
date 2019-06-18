@@ -27,7 +27,7 @@ const component =
             
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
-        <b-col md="6">
+        <b-col md="6" class="mt-4 mt-md-0">
           <b-img thumbnail fluid-grow :src="pybossa.task.info.url_b"></b-img>
         </b-col>
       </b-row>
