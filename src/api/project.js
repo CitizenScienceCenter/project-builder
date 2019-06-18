@@ -45,6 +45,22 @@ export default {
     })
   },
 
+  getProjectDeletionOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/delete', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  deleteProject (csrf, projectShortName) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/delete', {}, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
   getProjectUpdateOptions (projectShortName) {
     return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/update', {
       data: {},

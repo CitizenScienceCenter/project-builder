@@ -183,6 +183,40 @@ describe('Project/ProjectEditor.vue', () => {
     expect(result).to.equal(true)
   })
 
+  it('should calls deleteProject action when deletion modal accepted', function () {
+    const actionSpy = sandbox.spy(store, 'dispatch')
+
+    const wrapper = mount(ProjectEditor, {
+      store,
+      localVue,
+      router
+    })
+
+    wrapper.vm.onDeleteProjectSubmit()
+
+    expect(actionSpy.calledWith('project/deleteProject')).to.equal(true)
+  })
+
+  // TODO: find a way to test code inside promise
+
+  // it('should redirects to the profile page when the project is deleted', function () {
+  //   const deletionStub = sandbox.stub().returns(Promise.resolve(true))
+  //   const routerSpy = sandbox.spy(router, 'push')
+  //
+  //   const wrapper = mount(ProjectEditor, {
+  //     store,
+  //     localVue,
+  //     router,
+  //     methods: {
+  //       deleteProject: deletionStub
+  //     }
+  //   })
+  //
+  //   wrapper.vm.onDeleteProjectSubmit()
+  //
+  //   expect(routerSpy.calledWith({ name: 'profile' })).to.equal(true)
+  // })
+
   afterEach(() => {
     sandbox.restore()
   })

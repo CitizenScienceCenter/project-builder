@@ -118,7 +118,10 @@ export default {
   },
   methods: {
     ...mapActions('project', [
-      'getProject', 'publishProject', 'getResults', 'getStatistics'
+      'getProject',
+      'publishProject',
+      'getResults',
+      'getStatistics'
     ]),
     ...mapActions('task', [
       'getTaskPresenter'
