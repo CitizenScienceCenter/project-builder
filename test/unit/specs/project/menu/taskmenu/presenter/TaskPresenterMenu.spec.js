@@ -52,7 +52,7 @@ describe('Project/Menu/TaskMenu/Presenter/TaskPresenterMenu.vue', () => {
         id: projectId // project id
       },
       computed: {
-        selectedProject: stubbedProject
+        project: stubbedProject
       }
     })
     const componentSpy = sandbox.spy(wrapper.vm, 'displayTemplate')

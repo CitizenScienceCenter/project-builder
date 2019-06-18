@@ -16,6 +16,11 @@ import TaskList from '@/components/Project/Menu/TaskMenu/TaskList'
 import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu'
 import Registration from '@/components/Registration/Registration'
 import TaskExporterMenu from '@/components/Project/Menu/TaskMenu/Exporter/TaskExporterMenu'
+import TaskSettingsMenu from '@/components/Project/Menu/TaskMenu/Settings/TaskSettingsMenu'
+import DeleteTaskSetting from '@/components/Project/Menu/TaskMenu/Settings/DeleteTaskSetting'
+import TaskSchedulerSetting from '@/components/Project/Menu/TaskMenu/Settings/TaskSchedulerSetting'
+import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskRedundancySetting'
+import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting'
 
 Vue.use(Router)
 
@@ -102,6 +107,36 @@ const router = new Router({
       path: '/project/:id/task-exporters',
       name: 'project.task.exporters',
       component: TaskExporterMenu,
+      props: true
+    },
+    {
+      path: '/project/:id/task-settings',
+      name: 'project.task.settings',
+      component: TaskSettingsMenu,
+      props: true
+    },
+    {
+      path: '/project/:id/task-settings/delete',
+      name: 'project.task.settings.delete',
+      component: DeleteTaskSetting,
+      props: true
+    },
+    {
+      path: '/project/:id/task-settings/scheduler',
+      name: 'project.task.settings.scheduler',
+      component: TaskSchedulerSetting,
+      props: true
+    },
+    {
+      path: '/project/:id/task-settings/redundancy',
+      name: 'project.task.settings.redundancy',
+      component: TaskRedundancySetting,
+      props: true
+    },
+    {
+      path: '/project/:id/task-settings/priority',
+      name: 'project.task.settings.priority',
+      component: TaskPrioritySetting,
       props: true
     },
     {

@@ -74,10 +74,7 @@ export default {
     }
   },
   created () {
-    // load the project if not already done
-    if (Object.keys(this.selectedProject).length === 0) {
-      this.getProject(this.id)
-    }
+    this.getProject(this.id)
   },
   props: {
     id: {
@@ -94,13 +91,13 @@ export default {
 
     displayTemplate (name) {
       this.setUsingTemplate(name)
-      this.$router.push({ name: 'project.task.presenter.editor', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } })
+      this.$router.push({ name: 'project.task.presenter.editor', params: { id: 'id' in this.project ? this.project.id : 0 } })
     }
   },
   computed: {
-    ...mapState('project', [
-      'selectedProject'
-    ]),
+    ...mapState('project', {
+      project: state => state.selectedProject
+    }),
     ...mapState('task', [
       'templates'
     ]),
@@ -108,12 +105,12 @@ export default {
     items () {
       return [
         {
-          text: this.selectedProject.name + ' project',
-          to: { name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
+          text: '\'' + (this.project ? this.project.name : '') + '\' project',
+          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {
           text: 'Task presenter',
-          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }
+          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.project ? this.project.id : 0 } }
         }
       ]
     }

@@ -108,9 +108,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'TaskExporterMenu',
   created () {
-    if (Object.keys(this.project).length === 0) {
-      this.getProject(this.id)
-    }
+    this.getProject(this.id)
   },
   data: () => {
     return {
@@ -143,7 +141,7 @@ export default {
     items () {
       return [
         {
-          text: (this.project ? this.project.name : '') + ' project',
+          text: '\'' + (this.project ? this.project.name : '') + '\' project',
           to: { name: 'project', params: { id: this.id } }
         },
         {
