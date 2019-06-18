@@ -46,7 +46,7 @@
               <h4>Video Pattern Recognition</h4>
               <p>Re-use the Vimeo template</p>
               <p><b>Skills</b>: HTML and Javascript</p>
-              <b-btn variant="outline-primary">Use</b-btn>
+              <b-btn variant="outline-primary" @click="displayTemplate(templates.video)">Use</b-btn>
             </div>
 
             <div class="mb-5">

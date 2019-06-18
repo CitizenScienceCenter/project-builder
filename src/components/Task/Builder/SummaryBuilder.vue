@@ -38,6 +38,8 @@ import { buildTemplateFromModel } from '@/helper'
 import ImageCountTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
 import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescribeTemplate'
 import ImageClassifyTemplate from '@/components/Task/Template/Image/ImageClassifyTemplate'
+import VideoClassifyTemplate from '@/components/Task/Template/Video/VideoClassifyTemplate'
+import VideoDescribeTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
 
 export default {
   name: 'SummaryBuilder',
@@ -98,9 +100,11 @@ export default {
       if (this.task.material === this.materials.video) {
 
         if (this.task.job === this.jobs.classify) {
-          console.log('Video classify template')
+          template = buildTemplateFromModel(VideoClassifyTemplate, {
+            questions: this.task.template
+          })
         } else if (this.task.job === this.jobs.describe) {
-          console.log('Video describe template')
+          template = buildTemplateFromModel(VideoDescribeTemplate, this.task.template)
         }
 
       }

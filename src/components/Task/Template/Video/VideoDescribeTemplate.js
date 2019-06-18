@@ -4,7 +4,7 @@ const component =
     /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
     <b-row v-if="pybossa.userProgressInPercent < 100">
-      <b-col md="6">
+      <b-col md="4">
         <h2>{{ question }}</h2>
   
         <b-button :key="index" v-for="(description, index) in descriptions" @click="answer(description)" variant="primary" class="m-3">{{ description }}</b-button>
@@ -14,8 +14,10 @@ const component =
         
         <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
       </b-col>
-      <b-col md="6" class="mt-4 mt-md-0">
-        <b-img thumbnail fluid-grow :src="pybossa.task.info.url_b"></b-img>
+      <b-col md="8" class="mt-4 mt-md-0">
+        <b-embed v-if="pybossa.task.info && pybossa.task.info.video_url" type="iframe" allowfullscreen :src="pybossa.task.info.video_url"></b-embed>
+        <div v-else-if="pybossa.task.info && pybossa.task.info.oembed" v-html="pybossa.task.info.oembed"></div>
+        <b-alert v-else :show="true" variant="danger">Video media not available</b-alert>
       </b-col>
     </b-row>
     <b-row v-else>
@@ -25,7 +27,7 @@ const component =
     </b-row>`,
 
     data: {
-      question: 'What do you see on this picture ?',
+      question: 'What do you see on this video ?',
       descriptions: [
         'A human',
         'A car',
