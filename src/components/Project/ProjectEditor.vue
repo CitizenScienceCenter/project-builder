@@ -1,94 +1,112 @@
 <template>
-  <b-row class="mt-4">
-    <b-col md="7" class="mb-2">
+  <div>
+    <b-row class="mt-4 mb-4">
 
-      <b-form ref="project-form" @submit.prevent="onSubmit">
+      <b-col md="7">
+        <b-form ref="project-form" @submit.prevent="onSubmit">
 
-        <b-form-group>
+          <b-form-group>
 
-          <b-form-group
-                  label="Project name"
-                  :valid-feedback="validFeedback('name')"
-                  :invalid-feedback="invalidFeedback('name')"
-                  :state="validated('name')">
-            <b-input placeholder="Name" v-model="form.name"></b-input>
+            <b-form-group
+              label="Project name"
+              :valid-feedback="validFeedback('name')"
+              :invalid-feedback="invalidFeedback('name')"
+              :state="validated('name')">
+              <b-input placeholder="Name" v-model="form.name"></b-input>
+            </b-form-group>
+
+            <b-form-group
+              label="Project short description"
+              :valid-feedback="validFeedback('shortDescription')"
+              :invalid-feedback="invalidFeedback('shortDescription')"
+              :state="validated('shortDescription')">
+              <b-textarea placeholder="Short description" v-model="form.shortDescription"></b-textarea>
+            </b-form-group>
+
+            <b-form-group label="Project category">
+              <b-select v-model="form.category" :options="selectCategories"></b-select>
+            </b-form-group>
+
           </b-form-group>
 
           <b-form-group
-                  label="Project short description"
-                  :valid-feedback="validFeedback('shortDescription')"
-                  :invalid-feedback="invalidFeedback('shortDescription')"
-                  :state="validated('shortDescription')">
-            <b-textarea placeholder="Short description" v-model="form.shortDescription"></b-textarea>
+            label-size="lg"
+            label-class="font-weight-bold mb-3"
+            label="Project long description">
+
+            <b-form-group
+              label="WHAT & WHY"
+              :valid-feedback="validFeedback('whatWhy')"
+              :invalid-feedback="invalidFeedback('whatWhy')"
+              :state="validated('whatWhy')">
+              <b-textarea v-model="form.whatWhy"></b-textarea>
+            </b-form-group>
+
+            <b-form-group
+              label="HOW"
+              :valid-feedback="validFeedback('how')"
+              :invalid-feedback="invalidFeedback('how')"
+              :state="validated('how')">
+              <b-textarea v-model="form.how"></b-textarea>
+            </b-form-group>
+
+            <b-form-group
+              label="WHO"
+              :valid-feedback="validFeedback('who')"
+              :invalid-feedback="invalidFeedback('who')"
+              :state="validated('who')">
+              <b-textarea v-model="form.who"></b-textarea>
+            </b-form-group>
+
+            <b-form-group
+              label="KEEP TRACK"
+              :valid-feedback="validFeedback('keepTrack')"
+              :invalid-feedback="invalidFeedback('keepTrack')"
+              :state="validated('keepTrack')">
+              <b-textarea v-model="form.keepTrack"></b-textarea>
+            </b-form-group>
+
           </b-form-group>
 
-          <b-form-group label="Project category">
-            <b-select v-model="form.category" :options="selectCategories"></b-select>
+          <div class="text-center">
+            <b-button type="submit" variant="primary" class="">Update project data</b-button>
+          </div>
+
+        </b-form>
+      </b-col>
+
+      <b-col md="5" class="mt-md-0 mt-4">
+        <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
+          <b-form-group>
+
+            <vue-cropper ref="cropper" :src="picture" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
+            <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
+
           </b-form-group>
 
-        </b-form-group>
+          <div class="text-center">
+            <b-button type="submit" variant="primary">Update project avatar</b-button>
+          </div>
+        </b-form>
+      </b-col>
 
-        <b-form-group
-                label-size="lg"
-                label-class="font-weight-bold mb-3"
-                label="Project long description">
+    </b-row>
 
-          <b-form-group
-                  label="WHAT & WHY"
-                  :valid-feedback="validFeedback('whatWhy')"
-                  :invalid-feedback="invalidFeedback('whatWhy')"
-                  :state="validated('whatWhy')">
-            <b-textarea v-model="form.whatWhy"></b-textarea>
-          </b-form-group>
+    <hr>
 
-          <b-form-group
-                  label="HOW"
-                  :valid-feedback="validFeedback('how')"
-                  :invalid-feedback="invalidFeedback('how')"
-                  :state="validated('how')">
-            <b-textarea v-model="form.how"></b-textarea>
-          </b-form-group>
+    <b-row class="mt-4 mb-4">
+      <b-col>
+        <b-alert :show="true" variant="danger" class="text-center">
+          <b>Danger Zone!</b> If you delete the project and its tasks, it will be gone forever!<br>
+          <b-button v-b-modal.modal-delete-project variant="danger" class="mt-3">Delete Project</b-button>
+        </b-alert>
+        <b-modal  @ok="onDeleteProjectSubmit" id="modal-delete-project" title="Delete the project">
+          Are you sure you want to delete this project and all its tasks and associated task runs?
+        </b-modal>
+      </b-col>
+    </b-row>
+  </div>
 
-          <b-form-group
-                  label="WHO"
-                  :valid-feedback="validFeedback('who')"
-                  :invalid-feedback="invalidFeedback('who')"
-                  :state="validated('who')">
-            <b-textarea v-model="form.who"></b-textarea>
-          </b-form-group>
-
-          <b-form-group
-                  label="KEEP TRACK"
-                  :valid-feedback="validFeedback('keepTrack')"
-                  :invalid-feedback="invalidFeedback('keepTrack')"
-                  :state="validated('keepTrack')">
-            <b-textarea v-model="form.keepTrack"></b-textarea>
-          </b-form-group>
-
-        </b-form-group>
-
-        <b-button type="submit" variant="primary" class="float-right">Update project data</b-button>
-
-      </b-form>
-
-    </b-col>
-
-    <b-col md="5" class="mb-2">
-
-      <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
-
-        <b-form-group>
-
-          <vue-cropper ref="cropper" :src="picture" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
-          <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
-
-        </b-form-group>
-
-        <b-button type="submit" variant="primary" class="float-right">Update project avatar</b-button>
-      </b-form>
-
-    </b-col>
-  </b-row>
 </template>
 
 <script>
@@ -152,7 +170,11 @@ export default {
   },
   methods: {
     ...mapActions('project', [
-      'getProject', 'uploadAvatar', 'updateProject', 'getCategories'
+      'getProject',
+      'deleteProject',
+      'uploadAvatar',
+      'updateProject',
+      'getCategories'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError', 'showInfo'
@@ -235,6 +257,14 @@ export default {
           content: 'You must select a picture to upload it'
         })
       }
+    },
+
+    onDeleteProjectSubmit () {
+      this.deleteProject(this.project).then(response => {
+        if (response) {
+          this.$router.push({ name: 'profile' })
+        }
+      })
     },
 
     setImage (event) {

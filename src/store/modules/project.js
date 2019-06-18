@@ -16,7 +16,9 @@ const errors = {
   PUBLISH_PROJECT_ERROR: 'Error during project publishing',
   GET_PROJECT_STATS_LOADING_ERROR: 'Error during project stats loading',
   GET_PROJECT_RESULTS_LOADING_ERROR: 'Error during project results loading',
-  UPLOAD_PROJECT_ERROR: 'Error during project update'
+  UPLOAD_PROJECT_ERROR: 'Error during project update',
+  GET_PROJECT_DELETION_OPTIONS_LOADING_ERROR: 'Error during project deletion options loading',
+  DELETE_PROJECT_ERROR: 'Error during project deletion'
 }
 
 // global state for this module
@@ -36,7 +38,8 @@ const state = {
   // form options
   projectCreationOptions: {},
   projectUpdateOptions: {},
-  publishProjectOptions: {}
+  publishProjectOptions: {},
+  projectDeletionOptions: {}
 }
 
 // filter methods on the state data
@@ -153,6 +156,53 @@ const actions = {
       commit('notification/showError', {
         title: errors.POST_PROJECT_ERROR, content: reason
       }, {root: true})
+      return false
+    })
+  },
+
+  /**
+   * Gets a CSRF token to delete the project
+   * @param commit
+   * @param project
+   * @returns {Promise<T | boolean>}
+   */
+  getProjectDeletionOptions ({ commit }, project) {
+    return api.getProjectDeletionOptions(project.short_name).then(value => {
+      commit('setProjectDeletionOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_PROJECT_DELETION_OPTIONS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  /**
+   * Allow to delete the given project
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @returns {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
+   */
+  deleteProject ({ commit, state, dispatch }, project) {
+    return dispatch('getProjectDeletionOptions', project).then(response => {
+      if (response) {
+        return api.deleteProject(state.projectDeletionOptions.csrf, project.short_name).then(value => {
+          commit('notification/showSuccess', {
+            title: 'Success',
+            content: value.data.flash
+          }, { root: true })
+          return value.data
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.DELETE_PROJECT_ERROR,
+            content: reason
+          }, { root: true })
+          return false
+        })
+      }
       return false
     })
   },
@@ -360,6 +410,9 @@ const mutations = {
   },
   setSelectedProjectResults (state, results) {
     state.selectedProjectResults = results
+  },
+  setProjectDeletionOptions (state, options) {
+    state.projectDeletionOptions = options
   }
 }
 
