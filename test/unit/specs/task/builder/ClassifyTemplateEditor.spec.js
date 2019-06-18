@@ -136,6 +136,30 @@ describe('Task/Builder/ClassifyTemplateEditor.vue', () => {
     expect(validationResult).to.equal(false)
   })
 
+  it('each question should have at least 2 answers', function () {
+    const wrapper = mount(ClassifyTemplateEditor, {
+      store,
+      localVue,
+      router
+    })
+
+    expect(wrapper.vm.$data.questions[0].answers.length).to.equal(2)
+  })
+
+  it('should not delete an answer if it remains only 2 answers for the question', function () {
+    const wrapper = mount(ClassifyTemplateEditor, {
+      store,
+      localVue,
+      router
+    })
+
+    expect(wrapper.vm.$data.questions[0].answers.length).to.equal(2)
+
+    wrapper.vm.deleteAnswer(wrapper.vm.$data.questions[0], 0)
+
+    expect(wrapper.vm.$data.questions[0].answers.length).to.equal(2)
+  })
+
   afterEach(() => {
     sandbox.restore()
   })
