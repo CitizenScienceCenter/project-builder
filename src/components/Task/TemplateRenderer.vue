@@ -25,21 +25,13 @@ export default {
     }
   },
   created () {
-    const getTaskPresenter = (project) => this.getTaskPresenter({ project: project, template: null }).then(response => {
-      if (response) {
-        this.taskPresenterExists = true
-      }
-    })
-
-    if (Object.keys(this.project).length === 0) {
-      // load the selected project (id in url) if not already done
-      this.getProject(this.id).then(() => {
-        getTaskPresenter(this.project)
+    this.getProject(this.id).then(project => {
+      this.getTaskPresenter({ project: project, template: null }).then(response => {
+        if (response) {
+          this.taskPresenterExists = true
+        }
       })
-    } else {
-      getTaskPresenter(this.project)
-    }
-
+    })
   },
   data: () => {
     return {

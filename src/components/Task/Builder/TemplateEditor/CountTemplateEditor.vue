@@ -18,7 +18,7 @@ import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'JobCountEditor',
-  mounted () {
+  created () {
     if (typeof this.task.template === 'string') {
       this.question = this.task.template
     }

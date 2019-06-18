@@ -27,9 +27,7 @@ export default {
     TemplateBuilder
   },
   created () {
-    if (Object.keys(this.project).length === 0) {
-      this.getProject(this.id)
-    }
+    this.getProject(this.id)
   },
   props: {
     id: {

@@ -39,7 +39,7 @@ import { mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'JobDescribeEditor',
-  mounted () {
+  created () {
     if (this.task.template && typeof this.task.template === 'object') {
       this.question = this.task.template.question
       this.descriptions = this.task.template.descriptions.slice(0)

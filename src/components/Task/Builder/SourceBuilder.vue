@@ -68,7 +68,7 @@ export default {
       selectedSource: null
     }
   },
-  mounted () {
+  created () {
     this.selectedSource = this.task.source
   },
   methods: {
