@@ -112,6 +112,30 @@ describe('Task/Builder/DescribeTemplateEditor.vue', () => {
     expect(validationResult).to.equal(false)
   })
 
+  it('should contains 2 descriptions by default', function () {
+    const wrapper = mount(DescribeTemplateEditor, {
+      store,
+      localVue,
+      router
+    })
+
+    expect(wrapper.vm.$data.descriptions.length).to.equal(2)
+  })
+
+  it('should not delete a description if it remains only 2 descriptions', function () {
+    const wrapper = mount(DescribeTemplateEditor, {
+      store,
+      localVue,
+      router
+    })
+
+    expect(wrapper.vm.$data.descriptions.length).to.equal(2)
+
+    wrapper.vm.deleteDescription(0)
+
+    expect(wrapper.vm.$data.descriptions.length).to.equal(2)
+  })
+
   afterEach(() => {
     sandbox.restore()
   })

@@ -30,7 +30,7 @@
                     :state="answerValidated(answer)">
 
               <b-input v-model="question.answers[answerKey]"></b-input>
-              <b-btn @click="deleteAnswer(question, answerKey)" v-if="question.answers.length > 1" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete answer</b-btn>
+              <b-btn @click="deleteAnswer(question, answerKey)" v-if="question.answers.length > 2" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete answer</b-btn>
 
             </b-form-group>
 
@@ -63,7 +63,7 @@ export default {
         {
           question: '',
           answers: [
-            ''
+            '', ''
           ]
         }
       ]
@@ -81,7 +81,7 @@ export default {
       this.questions.push({
         question: '',
         answers: [
-          ''
+          '', ''
         ]
       })
     },
@@ -94,7 +94,7 @@ export default {
       question.answers.push('')
     },
     deleteAnswer (question, key) {
-      if (question.answers.length > 1) {
+      if (question.answers.length > 2) {
         question.answers.splice(key, 1)
       }
     },
