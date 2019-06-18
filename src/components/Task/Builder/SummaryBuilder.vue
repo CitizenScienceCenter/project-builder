@@ -42,6 +42,7 @@ import VideoClassifyTemplate from '@/components/Task/Template/Video/VideoClassif
 import VideoDescribeTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
 import SoundClassifyTemplate from '@/components/Task/Template/Sound/SoundClassifyTemplate'
 import SoundDescribeTemplate from '@/components/Task/Template/Sound/SoundDescribeTemplate'
+import PdfDescribeTemplate from '@/components/Task/Template/Document/PdfDescribeTemplate'
 
 export default {
   name: 'SummaryBuilder',
@@ -116,7 +117,7 @@ export default {
       if (this.task.material === this.materials.pdf) {
 
         if (this.task.job === this.jobs.describe) {
-          console.log('Pdf describe template')
+          template = buildTemplateFromModel(PdfDescribeTemplate, this.task.template)
         }
 
       }

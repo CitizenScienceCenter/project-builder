@@ -4,7 +4,6 @@
       <b-col>
         <b-breadcrumb :items="items"></b-breadcrumb>
 
-        <!--<b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Go back to the project</b-link>-->
         <h3 class="mt-2">Use one of the following available <b>templates</b> for your project</h3>
 
         <b-row class="mt-4">
@@ -53,7 +52,7 @@
               <h4>Transcribing documents</h4>
               <p>Re-use the PDF transcription template</p>
               <p><b>Skills</b>: HTML, Javascript and Server side</p>
-              <b-btn variant="outline-primary">Use</b-btn>
+              <b-btn variant="outline-primary" @click="displayTemplate(templates.document)">Use</b-btn>
             </div>
 
           </b-col>

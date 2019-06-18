@@ -10,6 +10,7 @@ import BasicTemplate from '@/components/Task/Template/BasicTemplate'
 import ImageTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
 import VideoTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
 import SoundTemplate from '@/components/Task/Template/Sound/SoundDescribeTemplate'
+import DocumentTemplate from '@/components/Task/Template/Document/PdfDescribeTemplate'
 
 const errors = {
   GET_PROJECT_TASKS_LOADING_ERROR: 'Error during project tasks loading',
@@ -110,6 +111,7 @@ const actions = {
           commit('setTaskPresenter', buildTemplateFromModel(VideoTemplate, {}))
           break
         case state.templates.document:
+          commit('setTaskPresenter', buildTemplateFromModel(DocumentTemplate, {}))
           break
         case state.templates.geocoding:
           break

@@ -16,6 +16,8 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import pdf from 'vue-pdf'
+import Vue from 'vue'
 
 export default {
   name: 'TemplateRenderer',
@@ -32,6 +34,9 @@ export default {
         }
       })
     })
+
+    // make the pdf reader available for the dynamic presenter component
+    Vue.component('pdf', pdf)
   },
   data: () => {
     return {
