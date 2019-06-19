@@ -36,13 +36,13 @@ import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { buildTemplateFromModel } from '@/helper'
 
 import ImageCountTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
-import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescribeTemplate'
-import ImageClassifyTemplate from '@/components/Task/Template/Image/ImageClassifyTemplate'
-import VideoClassifyTemplate from '@/components/Task/Template/Video/VideoClassifyTemplate'
-import VideoDescribeTemplate from '@/components/Task/Template/Video/VideoDescribeTemplate'
-import SoundClassifyTemplate from '@/components/Task/Template/Sound/SoundClassifyTemplate'
-import SoundDescribeTemplate from '@/components/Task/Template/Sound/SoundDescribeTemplate'
-import PdfDescribeTemplate from '@/components/Task/Template/Document/PdfDescribeTemplate'
+import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescriptionTemplate'
+import ImageClassificationTemplate from '@/components/Task/Template/Image/ImageClassificationTemplate'
+import VideoClassificationTemplate from '@/components/Task/Template/Video/VideoClassificationTemplate'
+import VideoDescriptionTemplate from '@/components/Task/Template/Video/VideoDescriptionTemplate'
+import SoundClassificationTemplate from '@/components/Task/Template/Sound/SoundClassificationTemplate'
+import SoundDescriptionTemplate from '@/components/Task/Template/Sound/SoundDescriptionTemplate'
+import PdfDescriptionTemplate from '@/components/Task/Template/Document/PdfDescriptionTemplate'
 
 export default {
   name: 'SummaryBuilder',
@@ -81,9 +81,12 @@ export default {
             question: this.task.template
           })
         } else if (this.task.job === this.jobs.describe) {
-          template = buildTemplateFromModel(ImageDescribeTemplate, this.task.template)
+          template = buildTemplateFromModel(ImageDescribeTemplate, {
+            question: this.task.template.question,
+            descriptions: this.task.template.descriptions
+          })
         } else if (this.task.job === this.jobs.classify) {
-          template = buildTemplateFromModel(ImageClassifyTemplate, {
+          template = buildTemplateFromModel(ImageClassificationTemplate, {
             questions: this.task.template
           })
         }
@@ -93,11 +96,14 @@ export default {
       if (this.task.material === this.materials.sound) {
 
         if (this.task.job === this.jobs.classify) {
-          template = buildTemplateFromModel(SoundClassifyTemplate, {
+          template = buildTemplateFromModel(SoundClassificationTemplate, {
             questions: this.task.template
           })
         } else if (this.task.job === this.jobs.describe) {
-          template = buildTemplateFromModel(SoundDescribeTemplate, this.task.template)
+          template = buildTemplateFromModel(SoundDescriptionTemplate, {
+            question: this.task.template.question,
+            descriptions: this.task.template.descriptions
+          })
         }
 
       }
@@ -105,11 +111,14 @@ export default {
       if (this.task.material === this.materials.video) {
 
         if (this.task.job === this.jobs.classify) {
-          template = buildTemplateFromModel(VideoClassifyTemplate, {
+          template = buildTemplateFromModel(VideoClassificationTemplate, {
             questions: this.task.template
           })
         } else if (this.task.job === this.jobs.describe) {
-          template = buildTemplateFromModel(VideoDescribeTemplate, this.task.template)
+          template = buildTemplateFromModel(VideoDescriptionTemplate, {
+            question: this.task.template.question,
+            descriptions: this.task.template.descriptions
+          })
         }
 
       }
@@ -117,7 +126,10 @@ export default {
       if (this.task.material === this.materials.pdf) {
 
         if (this.task.job === this.jobs.describe) {
-          template = buildTemplateFromModel(PdfDescribeTemplate, this.task.template)
+          template = buildTemplateFromModel(PdfDescriptionTemplate, {
+            question: this.task.template.question,
+            descriptions: this.task.template.descriptions
+          })
         }
 
       }

@@ -35,6 +35,9 @@ export function buildTemplateFromModel (templateModel, templateData) {
   }
   methods = '{\n' + methods + '  }'
 
+  // gets the created function in string
+  const created = templateModel.created.toString()
+
   // gets the mounted function in string
   const mounted = templateModel.mounted.toString()
 
@@ -46,6 +49,7 @@ export function buildTemplateFromModel (templateModel, templateData) {
   template: ` + template + `,\n
   data: ` + data + `,\n
   methods: ` + methods + `,\n
+  created: ` + created + `,\n
   mounted: ` + mounted + `,\n
   props: ` + props + `\n
 }`

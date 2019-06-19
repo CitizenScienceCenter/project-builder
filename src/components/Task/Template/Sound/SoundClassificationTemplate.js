@@ -79,12 +79,12 @@ const component =
       }
     },
 
+    created () {
+      this.questions.forEach(() => this.answers.push(null))
+    },
+
     mounted () {
       this.pybossa.run()
-      /* initialize the answer */
-      Vue.nextTick(() => {
-        this.questions.forEach(() => this.answers.push(null))
-      })
     },
 
     props: {
