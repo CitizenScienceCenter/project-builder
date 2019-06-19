@@ -79,6 +79,10 @@ export default {
       'getUserProgress', 'getProject'
     ]),
 
+    ...mapActions('osm', [
+      'qetLocalizationsWithQuery'
+    ]),
+
     run () {
       this.getUserProgress(this.project)
       this.newTask()

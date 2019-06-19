@@ -35,6 +35,24 @@ export function buildTemplateFromModel (templateModel, templateData) {
   }
   methods = '{\n' + methods + '  }'
 
+  // generates all computed properties
+  let computed = ''
+  for (let property in templateModel.computed) {
+    if (templateModel.computed.hasOwnProperty(property)) {
+      computed += '\t' + property + ': ' + templateModel.computed[property].toString() + ',\n'
+    }
+  }
+  computed = '{\n' + computed + '  }'
+
+  // generates all watchers
+  let watch = ''
+  for (let property in templateModel.watch) {
+    if (templateModel.watch.hasOwnProperty(property)) {
+      watch += '\t' + property + ': ' + templateModel.watch[property].toString() + ',\n'
+    }
+  }
+  watch = '{\n' + watch + '  }'
+
   // gets the created function in string
   const created = templateModel.created.toString()
 
@@ -49,6 +67,8 @@ export function buildTemplateFromModel (templateModel, templateData) {
   template: ` + template + `,\n
   data: ` + data + `,\n
   methods: ` + methods + `,\n
+  computed: ` + computed + `,\n
+  watch: ` + watch + `,\n
   created: ` + created + `,\n
   mounted: ` + mounted + `,\n
   props: ` + props + `\n

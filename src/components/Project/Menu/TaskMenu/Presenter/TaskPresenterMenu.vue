@@ -27,7 +27,7 @@
               <h4>Geo-coding</h4>
               <p>Re-use the Urban Park template</p>
               <p><b>Skills</b>: HTML, Javascript and Geo expertise</p>
-              <b-btn variant="outline-primary">Use</b-btn>
+              <b-btn variant="outline-primary" @click="displayTemplate(templates.geocoding)">Use</b-btn>
             </div>
 
           </b-col>
