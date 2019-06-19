@@ -12,9 +12,9 @@ import * as helper from '@/helper'
 
 import SummaryBuilder from '@/components/Task/Builder/SummaryBuilder'
 
-import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescribeTemplate'
+import ImageDescribeTemplate from '@/components/Task/Template/Image/ImageDescriptionTemplate'
 import ImageCountTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
-import ImageClassifyTemplate from '@/components/Task/Template/Image/ImageClassifyTemplate'
+import ImageClassifyTemplate from '@/components/Task/Template/Image/ImageClassificationTemplate'
 
 const localVue = createLocalVue()
 
@@ -75,7 +75,7 @@ describe('Task/Builder/SummaryBuilder.vue', () => {
     done()
   })
 
-  it('should generate an ImageClassifyTemplate', done => {
+  it('should generate an ImageClassificationTemplate', done => {
 
     store.commit('task/builder/setTaskMaterial', taskBuilderState.materials.image)
     store.commit('task/builder/setTaskJob', taskBuilderState.jobs.classify)

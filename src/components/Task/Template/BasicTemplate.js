@@ -11,6 +11,10 @@ const component =
 
     },
 
+    created () {
+
+    },
+
     mounted () {
       this.pybossa.run()
     },

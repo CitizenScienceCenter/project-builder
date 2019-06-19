@@ -16,7 +16,8 @@ const component =
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
         <b-col md="6" class="mt-4 mt-md-0">
-          <b-img thumbnail fluid-grow :src="pybossa.task.info.url_b"></b-img>
+          <b-img v-if="pybossa.task.info && pybossa.task.info.url" thumbnail fluid-grow :src="pybossa.task.info.url"></b-img>
+          <b-alert v-else :show="true" variant="danger">Picture not available</b-alert>
         </b-col>
       </b-row>
       <b-row v-else>
@@ -35,6 +36,10 @@ const component =
       answer (answer) {
         this.pybossa.saveTask(answer)
       }
+    },
+
+    created () {
+
     },
 
     mounted () {
