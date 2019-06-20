@@ -43,7 +43,7 @@ export default {
       // the current project where is displayed the task presenter
       project: state => state.selectedProject,
 
-      // user progress value in percent
+      // user task progress
       userProgress: state => state.selectedProjectUserProgress
     }),
 
@@ -53,6 +53,12 @@ export default {
 
       // the task presenter template loaded from the pybossa server
       presenter: state => state.taskPresenter
+    }),
+
+    // user data
+    ...mapState('user', {
+      isUserLogged: state => state.logged,
+      userId: state => state.infos.id
     }),
 
     ...mapGetters('project', {
@@ -79,7 +85,6 @@ export default {
     ]),
 
     run () {
-      this.getUserProgress(this.project)
       this.newTask()
     },
 
@@ -99,6 +104,9 @@ export default {
         // user_id: 1,
         // external_uid: '',
         // media_url: ''
+      }
+      if (this.isUserLogged) {
+        taskRun.user_id = this.userId
       }
       this.saveTaskRun(JSON.stringify(taskRun)).then(value => {
         // load a new task when current task saved
