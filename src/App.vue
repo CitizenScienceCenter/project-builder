@@ -3,7 +3,7 @@
     <b-navbar :sticky="true" toggleable="lg" type="dark" variant="dark">
 
       <b-container>
-        <b-navbar-brand href="#">Pybossa</b-navbar-brand>
+        <b-navbar-brand :to="{ name: 'home' }">Pybossa</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -21,10 +21,17 @@
             <!--<b-nav-item v-if="!userLogged" :to="{ name: 'register' }">Register</b-nav-item>-->
 
             <b-nav-item-dropdown v-else right>
-              <template slot="button-content">User</template>
+              <template slot="button-content">
+                <b-img v-if="userProfile.info" height="40" width="40" rounded="circle" :src="userProfile.info.avatar_url"></b-img>&ensp;
+                {{ userProfile.fullname }}
+              </template>
               <b-dropdown-item :to="{ name: 'profile' }">Profile</b-dropdown-item>
               <b-dropdown-item :to="{ name: 'logout' }">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
+
+            <b-nav-item v-if="userLogged" :to="{ name: 'project.builder.name' }">
+              <b-button>Create your project</b-button>
+            </b-nav-item>
 
           </b-navbar-nav>
         </b-collapse>
@@ -88,7 +95,9 @@ export default {
     errorNotifications: state => state.notification.errorNotifications,
     infoNotifications: state => state.notification.infoNotifications,
     successNotifications: state => state.notification.successNotifications,
-    userLogged: state => state.user.logged
+
+    userLogged: state => state.user.logged,
+    userProfile: state => state.user.infos
   }),
   methods: {
     ...mapMutations({
