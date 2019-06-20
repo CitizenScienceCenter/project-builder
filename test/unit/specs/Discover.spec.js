@@ -4,7 +4,7 @@ import router from '@/router'
 import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
-import {createLocalVue, shallowMount} from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
@@ -18,14 +18,29 @@ describe('Discover.vue', () => {
     sandbox = sinon.sandbox.create()
   })
 
-  it('should dispatch project/getAllProjects action in create()', () => {
+  it('should dispatch project/getCategories action in create()', () => {
     const spy = sandbox.spy(store, 'dispatch')
 
     // prepare the vue instance
     shallowMount(Discover, { store, localVue, router })
 
-    // eslint-disable-next-line no-unused-expressions
-    expect(spy.withArgs('project/getAllProjects').calledOnce).to.be.true
+    expect(spy.calledWith('project/getCategories')).to.equal(true)
+  })
+
+  it('should should dispatch project/getProjectsWithCategory when page changes', function () {
+    const spy = sandbox.spy(store, 'dispatch')
+
+    // prepare the vue instance
+    const wrapper = shallowMount(Discover, { store, localVue, router })
+
+    wrapper.vm.pageChange(2, {
+      short_name: 'a_category'
+    })
+
+    expect(spy.calledWith('project/getProjectsWithCategory', {
+      category: { short_name: 'a_category' },
+      page: 2
+    })).to.equal(true)
   })
 
   afterEach(() => {

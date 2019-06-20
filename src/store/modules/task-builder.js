@@ -184,6 +184,8 @@ const actions = {
       commit('setTaskTemplate', null)
       commit('setTaskSource', null)
       commit('setTaskSourceContent', null)
+      commit('setBucketFiles', [])
+      commit('setBucketName', '')
       resolve()
     })
   }

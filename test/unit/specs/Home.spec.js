@@ -4,7 +4,7 @@ import router from '@/router'
 import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
-import {createLocalVue, shallowMount} from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 // https://vue-test-utils.vuejs.org/api/#createlocalvue
 // returns a Vue class for you to add components, mixins and install plugins without polluting the global Vue class.
@@ -20,14 +20,14 @@ describe('Home.vue', () => {
     sandbox = sinon.sandbox.create()
   })
 
-  it('should dispatch project/getFeaturedProjects action in create()', () => {
+  it('should dispatch project/getProjectsWithCategory action in create()', () => {
     const spy = sandbox.spy(store, 'dispatch')
 
     // prepare the vue instance
     shallowMount(Home, { store, localVue, router })
 
     // eslint-disable-next-line no-unused-expressions
-    expect(spy.withArgs('project/getFeaturedProjects').calledOnce).to.be.true
+    expect(spy.calledWith('project/getProjectsWithCategory', { category: { short_name: 'featured' } })).to.equal(true)
   })
 
   afterEach(() => {
