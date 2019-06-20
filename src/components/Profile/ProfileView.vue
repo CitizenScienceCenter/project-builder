@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Draft projects -->
     <b-row>
       <b-col>
@@ -9,20 +8,19 @@
         <b-row align-v="start" class="justify-content-center">
           <b-col class="mt-3" :key="project.id" md="4" v-for="project in draftProjects">
 
-            <b-card
-                    :title="project.name"
-                    :img-src="project.info.thumbnail_url"
-                    img-alt="Image"
-                    img-top
-                    tag="article"
-                    style="max-width: 20rem;"
-                    class="mb-2">
+            <b-card no-body tag="article" class="mb-2 h-100">
+              <b-card-img v-if="project.info.thumbnail_url" :top="true" :src="project.info.thumbnail_url"></b-card-img>
+              <b-img v-else :blank="true" blank-color="grey" class="w-100" height="250"></b-img>
 
-              <b-card-text>
-                {{ project.description }}
-              </b-card-text>
+              <b-card-body>
+                <b-card-title :title="project.name"></b-card-title>
 
-              <b-btn variant="primary" :to="{ name: 'project', params: { id: project.id } }">Go to project</b-btn>
+                <b-card-text>
+                  {{ project.description }}
+                </b-card-text>
+
+                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+              </b-card-body>
             </b-card>
 
           </b-col>
@@ -40,19 +38,19 @@
         <b-row align-v="start" class="justify-content-center">
           <b-col class="mt-3" :key="project.id" md="4" v-for="project in contributedProjects">
 
-            <b-card
-                    :title="project.name"
-                    :img-src="project.info.thumbnail_url"
-                    img-alt="Image"
-                    img-top
-                    tag="article"
-                    style="max-width: 20rem;"
-                    class="mb-2">
+            <b-card no-body tag="article" class="mb-2 h-100">
+              <b-card-img v-if="project.info.thumbnail_url" :top="true" :src="project.info.thumbnail_url"></b-card-img>
+              <b-img v-else :blank="true" blank-color="grey" class="w-100" height="250"></b-img>
 
-              <b-card-text>
-                {{ project.description }}
-              </b-card-text>
+              <b-card-body>
+                <b-card-title :title="project.name"></b-card-title>
 
+                <b-card-text>
+                  {{ project.description }}
+                </b-card-text>
+
+                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+              </b-card-body>
             </b-card>
 
           </b-col>

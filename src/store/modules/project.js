@@ -24,10 +24,11 @@ const errors = {
 // global state for this module
 
 const state = {
-  // project lists
   categories: [], // all categories
   projects: [], // all projects
-  featuredProjects: [],
+
+  categoryProjects: {}, // projects ordered by category
+  categoryPagination: {}, // contains a pagination object for each category
 
   // selected project data
   selectedProject: {},
@@ -44,6 +45,11 @@ const state = {
 
 // filter methods on the state data
 const getters = {
+  /**
+   * Filters the loaded projects by category
+   * @param state
+   * @return {function({id: *}): T[]}
+   */
   getProjectsWithCategory: state => ({id}) => {
     return state.projects.filter(project => {
       return project.category_id === id
@@ -92,17 +98,27 @@ const actions = {
   },
 
   /**
-   * Gets all the featured projects
+   * Get all projects with a pagination system for the given category
+   * Can also get the featured projects with the category short name 'featured'
    * @param commit
-   * @return {Promise<T | never>}
+   * @param category
+   * @param page
+   * @return {Promise<T | boolean>}
    */
-  getFeaturedProjects ({ commit }) {
-    return api.getFeaturedProjects().then(value => {
-      commit('setFeaturedProjects', value.data.projects)
+  getProjectsWithCategory ({ commit }, { category, page }) {
+    return api.getProjectsWithCategory(category.short_name, page).then(value => {
+      commit('setProjectsForCategory', {
+        category: value.data.active_cat.short_name,
+        projects: value.data.projects
+      })
+      commit('setPaginationForCategory', {
+        category: value.data.active_cat.short_name,
+        pagination: value.data.pagination
+      })
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.GET_FEATURED_PROJECTS_LOADING_ERROR, content: reason
+        title: 'Error', content: reason
       }, { root: true })
       return false
     })
@@ -387,9 +403,6 @@ const mutations = {
   setProjects (state, projects) {
     state.projects = projects
   },
-  setFeaturedProjects (state, projects) {
-    state.featuredProjects = projects
-  },
   setSelectedProject (state, project) {
     state.selectedProject = project
   },
@@ -405,14 +418,26 @@ const mutations = {
   setPublishProjectOptions (state, options) {
     state.publishProjectOptions = options
   },
+  setProjectDeletionOptions (state, options) {
+    state.projectDeletionOptions = options
+  },
   setSelectedProjectStats (state, stats) {
     state.selectedProjectStats = stats
   },
   setSelectedProjectResults (state, results) {
     state.selectedProjectResults = results
   },
-  setProjectDeletionOptions (state, options) {
-    state.projectDeletionOptions = options
+  setProjectsForCategory (state, { category, projects }) {
+    state.categoryProjects = {
+      ...state.categoryProjects,
+      [category]: projects
+    }
+  },
+  setPaginationForCategory (state, { category, pagination }) {
+    state.categoryPagination = {
+      ...state.categoryPagination,
+      [category]: pagination
+    }
   }
 }
 

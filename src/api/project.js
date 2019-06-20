@@ -13,15 +13,11 @@ export default {
     return axios.get(process.env.BASE_API_URL + 'project')
   },
 
-  getFeaturedProjects () {
-    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/category/featured/', {
+  getProjectsWithCategory (categoryShortName, page) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/category/' + categoryShortName + '/' + (typeof page !== 'undefined' ? 'page/' + page + '/' : ''), {
       data: {},
       withCredentials: true
     })
-  },
-
-  getProjectsWithCategory (categoryId) {
-    return axios.get(process.env.BASE_API_URL + 'project?category_id=' + categoryId)
   },
 
   getProjectById (id, apiKey) {
