@@ -2,10 +2,13 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+
 import store from './store'
 import router from './router'
+
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
+import Pdf from 'vue-pdf'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -23,6 +26,8 @@ Vue.use(BootstrapVue)
 Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
 })
+
+Vue.component('pdf', Pdf)
 
 window.Vue = Vue
 
