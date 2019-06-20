@@ -21,14 +21,14 @@ const component =
           You must complete the form to submit
         </b-alert>
         
-        <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ pybossa.task.id }}</b-badge></p>
+        <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ task.id }}</b-badge></p>
         <p>You have completed: <b-badge variant="primary">{{ pybossa.userProgress.done }}</b-badge> tasks from</p>
           
         <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
       </b-col>
       <b-col md="8" class="mt-4 mt-md-0">
-        <b-embed v-if="pybossa.task.info && pybossa.task.info.video_url" type="iframe" allowfullscreen :src="pybossa.task.info.video_url"></b-embed>
-        <div v-else-if="pybossa.task.info && pybossa.task.info.oembed" v-html="pybossa.task.info.oembed"></div>
+        <b-embed v-if="taskInfo.video_url" type="iframe" allowfullscreen :src="taskInfo.video_url"></b-embed>
+        <div v-else-if="taskInfo && taskInfo.oembed" v-html="taskInfo.oembed"></div>
         <b-alert v-else :show="true" variant="danger">Video media not available</b-alert>
       </b-col>
     </b-row>
@@ -64,6 +64,15 @@ const component =
       },
       isFormValid () {
         return this.answers.length === this.questions.length && !this.answers.some(el => typeof el === 'undefined' || el == null)
+      }
+    },
+
+    computed: {
+      task () {
+        return this.pybossa.task
+      },
+      taskInfo () {
+        return this.task.info
       }
     },
 
