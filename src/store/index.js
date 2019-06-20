@@ -7,6 +7,7 @@ import notification from './modules/notification'
 import project from './modules/project'
 import user from './modules/user'
 import task from './modules/task'
+import osm from './modules/osm'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     notification,
     project,
     user,
-    task
+    task,
+    osm
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

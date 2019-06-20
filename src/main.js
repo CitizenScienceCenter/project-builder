@@ -5,6 +5,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
+import VueLayers from 'vuelayers'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -14,9 +15,14 @@ import '@fortawesome/fontawesome-free/js/all'
 
 import 'codemirror/lib/codemirror.css'
 
+import 'vuelayers/lib/style.css'
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
+Vue.use(VueLayers, {
+  dataProjection: 'EPSG:4326'
+})
 
 window.Vue = Vue
 
