@@ -79,7 +79,7 @@
         <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
           <b-form-group>
 
-            <vue-cropper ref="cropper" :src="picture" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
+            <vue-cropper ref="cropper" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
             <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
 
           </b-form-group>
@@ -113,7 +113,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import VueCropper from 'vue-cropperjs'
 import slug from 'slug'
-import { getFormErrorsAsString } from '@/helper'
+import { getFormErrorsAsString, uuid } from '@/helper'
 
 export default {
   name: 'ProjectEditor',
@@ -188,7 +188,8 @@ export default {
       this.form = { ...this.form, ...JSON.parse(project.long_description) }
 
       if ('info' in project && 'thumbnail_url' in project.info) {
-        this.picture = project.info.thumbnail_url
+        // uuid used to avoid cache loading which make CORS issues
+        this.picture = project.info.thumbnail_url + '?id=' + uuid()
         this.$refs.cropper.replace(this.picture)
       }
     },
