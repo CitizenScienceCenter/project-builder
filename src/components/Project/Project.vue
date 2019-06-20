@@ -14,6 +14,7 @@
         <div v-if="project.published">
           <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
+
         <div v-else-if="isLoggedUserOwnerOfProject(project)">
           <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
@@ -24,14 +25,13 @@
                   title="Publish your project"
                   ok-title="Yes, publish it"
                   cancel-title="No, do not publish it!"
-                  @ok="publishProject(project)">
-
+                  @ok="publish"
+          >
             <b-alert variant="danger" :show="true">
               You are about to publish your project. This CANNOT be undone! Once your project has been published, people will be able to contribute to it.
               All the taskruns (answers) that may have been created during the test phase will be flushed and your project will start fresh.
               That means that your project should be working properly, so please make sure it does. Otherwise you can work on it and publish it once it works fine.
             </b-alert>
-
           </b-modal>
         </div>
 
@@ -103,6 +103,7 @@ export default {
       this.getResults(project)
       if (this.isLoggedUserOwnerOfProject(project)) {
         this.getTaskPresenter({ project: project, template: null })
+        this.getProjectTasks(this.project)
       }
     })
   },
@@ -124,11 +125,33 @@ export default {
       'getStatistics'
     ]),
     ...mapActions('task', [
-      'getTaskPresenter'
+      'getTaskPresenter',
+      'getProjectTasks'
     ]),
     ...mapMutations('project/menu', [
       'setCurrentTab'
-    ])
+    ]),
+    ...mapMutations('notification', [
+      'showError'
+    ]),
+
+    publish () {
+      if (this.taskPresenter.length > 0) {
+        if (this.projectTasks.length > 0) {
+          this.publishProject(this.project)
+        } else {
+          this.showError({
+            title: 'Impossible to publish the project',
+            content: 'You must add at least one task to the project'
+          })
+        }
+      } else {
+        this.showError({
+          title: 'Impossible to publish the project',
+          content: 'You must provide a task presenter to publish the project'
+        })
+      }
+    }
   },
   computed: {
     ...mapState('project', {
@@ -136,6 +159,10 @@ export default {
       results: state => state.selectedProjectResults,
       stats: state => state.selectedProjectStats
     }),
+    ...mapState('task', [
+      'taskPresenter',
+      'projectTasks'
+    ]),
     ...mapState('project/menu', [
       'currentTab', 'tabs'
     ]),
