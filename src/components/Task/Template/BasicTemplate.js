@@ -11,6 +11,19 @@ const component =
 
     },
 
+    methods: {
+
+    },
+
+    computed: {
+      task () {
+        return this.pybossa.task
+      },
+      taskInfo () {
+        return this.task.info
+      }
+    },
+
     created () {
 
     },

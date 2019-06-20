@@ -22,13 +22,13 @@ const component =
             You must complete the form to submit
           </b-alert>
           
-          <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ pybossa.task.id }}</b-badge></p>
+          <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ task.id }}</b-badge></p>
           <p>You have completed: <b-badge variant="primary">{{ pybossa.userProgress.done }}</b-badge> tasks from</p>
             
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
         <b-col md="6" class="mt-4 mt-md-0">
-          <b-img v-if="pybossa.task.info && pybossa.task.info.url" thumbnail fluid-grow :src="pybossa.task.info.url"></b-img>
+          <b-img v-if="taskInfo.url" thumbnail fluid-grow :src="taskInfo.url"></b-img>
         <b-alert v-else :show="true" variant="danger">Picture not available</b-alert>
         </b-col>
       </b-row>
@@ -64,6 +64,15 @@ const component =
       },
       isFormValid () {
         return this.answers.length === this.questions.length && !this.answers.some(el => typeof el === 'undefined' || el == null)
+      }
+    },
+
+    computed: {
+      task () {
+        return this.pybossa.task
+      },
+      taskInfo () {
+        return this.task.info
       }
     },
 
