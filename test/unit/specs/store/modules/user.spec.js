@@ -11,34 +11,44 @@ describe('store/modules/user', () => {
   //
   // ----------------------------------------------------------
 
-  // it('test action: user/signIn success', done => {
-  //   const credentials = {
-  //     login: '',
-  //     password: ''
-  //   }
-  //
-  //   const dispatchStub = function () {
-  //     return new Promise(resolve => resolve(true))
-  //   }
-  //
-  //   const user = actionsInjector({
-  //     '@/api/user': {
-  //       signIn (params) {
-  //         return new Promise((resolve, reject) => {
-  //           setTimeout(function () {
-  //             resolve({
-  //               data: {}
-  //             })
-  //           }, 10)
-  //         })
-  //       }
-  //     }
-  //   })
-  //
-  //   testAction(user.default.actions.signIn, credentials, user.default.state, store.state, [
-  //     { type: 'setLogged', payload: null }
-  //   ], done, dispatchStub)
-  // })
+  it('test action: user/signIn success', done => {
+    const credentials = {
+      login: '',
+      password: ''
+    }
+
+    const state = {
+      loginOptions: {
+        form: {
+          csrf: 'csrf_token'
+        }
+      }
+    }
+
+    const dispatchStub = function () {
+      return Promise.resolve(true)
+    }
+
+    const user = actionsInjector({
+      '@/api/user': {
+        signIn (params) {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              resolve({
+                data: {
+                  status: 'success'
+                }
+              })
+            }, 10)
+          })
+        }
+      }
+    })
+
+    testAction(user.default.actions.signIn, credentials, state, store.state, [
+      { type: 'setLogged' }
+    ], done, dispatchStub)
+  })
 
   it('test action: user/getAccountProfile with authenticated session success', done => {
     const user = actionsInjector({

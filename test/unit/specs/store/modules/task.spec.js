@@ -86,35 +86,41 @@ describe('store/modules/task', () => {
     ], done)
   })
 
-  // TODO : find a way to test a dispatch inside another dispatch...
+  it('test acton: task/saveTaskPresenter success', function (done) {
+    const taskPresenter = '<h1>Task presenter</h1><p>...</p>'
 
-  // it('test acton: task/saveTaskPresenter success', function (done) {
-  //   const taskPresenter = '<h1>Task presenter</h1><p>...</p>'
-  //
-  //   const dispatchStub = function () {
-  //     return new Promise(resolve => resolve(true))
-  //   }
-  //
-  //   const task = actionsInjector({
-  //     '@/api/task': {
-  //       saveTaskPresenter (param) {
-  //         return new Promise((resolve, reject) => {
-  //           setTimeout(function () {
-  //             resolve({
-  //               data: {
-  //                 status: 'success'
-  //               }
-  //             })
-  //           }, 10)
-  //         })
-  //       }
-  //     }
-  //   })
-  //
-  //   testAction(task.default.actions.saveTaskPresenter, { project: {}, template: taskPresenter }, task.default.state, store.state, [
-  //     { type: 'setTaskPresenter', payload: taskPresenter }
-  //   ], done, dispatchStub)
-  // })
+    const state = {
+      taskPresenterImportationOptions: {
+        form: {
+          csrf: 'csrf_token'
+        }
+      }
+    }
+
+    const dispatchStub = function () {
+      return new Promise(resolve => resolve(true))
+    }
+
+    const task = actionsInjector({
+      '@/api/task': {
+        saveTaskPresenter (param) {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              resolve({
+                data: {
+                  status: 'success'
+                }
+              })
+            }, 10)
+          })
+        }
+      }
+    })
+
+    testAction(task.default.actions.saveTaskPresenter, { project: {}, template: taskPresenter }, state, store.state, [
+      { type: 'setTaskPresenter', payload: taskPresenter }
+    ], done, dispatchStub)
+  })
 
   it('test action: task/getNewTask', function (done) {
     const newTask = { id: 23, info: {} }

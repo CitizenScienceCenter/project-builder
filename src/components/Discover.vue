@@ -26,21 +26,20 @@
 
             <!-- The list of projects -->
             <b-row>
-              <b-col class="mt-3" :key="project.id" md="4" v-for="project in categoryProjects[category.short_name]">
+              <b-col :key="project.id" v-for="project in categoryProjects[category.short_name]" md="4" class="mt-3">
 
-                <b-card no-body tag="article" class="mb-2 h-100">
-                  <b-card-img v-if="project.info.thumbnail_url" :top="true" :src="project.info.thumbnail_url"></b-card-img>
-                  <b-img v-else :blank="true" blank-color="grey" class="w-100" height="250"></b-img>
+                <b-card no-body tag="article" class="h-100">
+                  <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+                  <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
 
                   <b-card-body>
                     <b-card-title :title="project.name"></b-card-title>
-
-                    <b-card-text>
-                      {{ project.description }}
-                    </b-card-text>
-
-                    <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                    <b-card-text>{{ project.description }}</b-card-text>
                   </b-card-body>
+
+                  <b-card-footer class="text-center">
+                    <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                  </b-card-footer>
                 </b-card>
 
               </b-col>
