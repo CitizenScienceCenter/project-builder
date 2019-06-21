@@ -79,7 +79,7 @@
         <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
           <b-form-group>
 
-            <vue-cropper ref="cropper" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
+            <vue-cropper ref="cropper" :view-mode="2" :autoCropArea="1" :aspectRatio="4/3"></vue-cropper>
             <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
 
           </b-form-group>

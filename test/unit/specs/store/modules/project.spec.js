@@ -148,32 +148,40 @@ describe('store/modules/project', () => {
     ], done)
   })
 
-  // it('test action: project/updateProject error', done => {
-  //   const error = new Error('HTTP ERROR')
-  //
-  //   const dispatchStub = sandbox.stub().returns(new Promise(resolve => resolve(true)))
-  //
-  //   const project = actionsInjector({
-  //     '../../api/project': {
-  //       updateProject (csrf, projectShortName, projectId, form) {
-  //         return new Promise((resolve, reject) => {
-  //           setTimeout(function () {
-  //             reject(error)
-  //           }, 10)
-  //         })
-  //       }
-  //     }
-  //   })
-  //
-  //   testAction(project.default.actions.updateProject, { project: {}, form: {} }, project.default.state, store.state, [
-  //     {
-  //       type: 'notification/showError',
-  //       payload: {
-  //         title: projectModule.errors.UPLOAD_PROJECT_ERROR, content: error
-  //       }
-  //     }
-  //   ], done, dispatchStub)
-  // })
+  it('test action: project/updateProject error', done => {
+    const error = new Error('HTTP ERROR')
+
+    const state = {
+      projectUpdateOptions: {
+        form: {
+          csrf: 'csrf_token'
+        }
+      }
+    }
+
+    const dispatchStub = sandbox.stub().returns(Promise.resolve(true))
+
+    const project = actionsInjector({
+      '../../api/project': {
+        updateProject (csrf, projectShortName, projectId, form) {
+          return new Promise((resolve, reject) => {
+            setTimeout(function () {
+              reject(error)
+            }, 10)
+          })
+        }
+      }
+    })
+
+    testAction(project.default.actions.updateProject, { project: {}, form: {} }, state, store.state, [
+      {
+        type: 'notification/showError',
+        payload: {
+          title: projectModule.errors.UPLOAD_PROJECT_ERROR, content: error
+        }
+      }
+    ], done, dispatchStub)
+  })
 
   // ----------------------------------------------------------
   //
