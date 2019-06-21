@@ -66,7 +66,7 @@
 
     </b-row>
 
-    <b-row class="mt-4">
+    <b-row class="mt-4 mb-4">
       <b-col>
         <b-btn ref="btn-submit-material" v-if="selectedMaterial" @click="onSubmit" variant="success" size="lg">Done</b-btn>
       </b-col>

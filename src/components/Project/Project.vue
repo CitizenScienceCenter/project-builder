@@ -48,7 +48,8 @@
             <ProjectInfoMenu></ProjectInfoMenu>
           </b-tab>
 
-          <b-tab :title="'Results (' + results.n_results + ')'" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
+          <!-- Temporary removed -->
+          <b-tab v-if="false" :title="'Results (' + results.n_results + ')'" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
             <ProjectResultsMenu></ProjectResultsMenu>
           </b-tab>
 
@@ -56,7 +57,8 @@
             <ProjectTasksMenu></ProjectTasksMenu>
           </b-tab>
 
-          <b-tab title="Statistics" :active="currentTab === tabs.statistics" @click="setCurrentTab(tabs.statistics)">
+          <!-- Temporary removed -->
+          <b-tab v-if="false" title="Statistics" :active="currentTab === tabs.statistics" @click="setCurrentTab(tabs.statistics)">
             <ProjectStatisticsMenu></ProjectStatisticsMenu>
           </b-tab>
 

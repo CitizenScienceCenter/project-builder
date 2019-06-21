@@ -108,7 +108,8 @@ describe('store/modules/task', () => {
             setTimeout(function () {
               resolve({
                 data: {
-                  status: 'success'
+                  status: 'success',
+                  flash: 'perfect !'
                 }
               })
             }, 10)
@@ -118,7 +119,14 @@ describe('store/modules/task', () => {
     })
 
     testAction(task.default.actions.saveTaskPresenter, { project: {}, template: taskPresenter }, state, store.state, [
-      { type: 'setTaskPresenter', payload: taskPresenter }
+      { type: 'setTaskPresenter', payload: taskPresenter },
+      {
+        type: 'notification/showSuccess',
+        payload: {
+          title: 'Success',
+          content: 'perfect !'
+        }
+      }
     ], done, dispatchStub)
   })
 

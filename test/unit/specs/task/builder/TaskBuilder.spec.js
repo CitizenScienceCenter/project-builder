@@ -4,7 +4,7 @@ import store from '@/store'
 import BootstrapVue from 'bootstrap-vue'
 
 import sinon from 'sinon'
-import { createLocalVue, mount } from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
 import MaterialBuilder from '@/components/Task/Builder/MaterialBuilder'
@@ -36,7 +36,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
   it('should go to JobBuilder component when setStep material is true', () => {
     const spy = sandbox.spy(router, 'push')
 
-    mount(TaskBuilder, {
+    shallowMount(TaskBuilder, {
       store,
       localVue,
       router,
@@ -44,8 +44,6 @@ describe('Task/Builder/TaskBuilder.vue', () => {
         id: 1
       }
     })
-
-    console.log(store.state.task.builder.steps)
 
     store.commit('task/builder/setStep', { step: 'material', value: true })
 
@@ -55,7 +53,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
   it('should go to TemplateBuilder component when setStep job is true', () => {
     const spy = sandbox.spy(router, 'push')
 
-    mount(TaskBuilder, {
+    shallowMount(TaskBuilder, {
       store,
       localVue,
       router,
@@ -72,7 +70,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
   it('should go to SourceBuilder component when setStep template is true', () => {
     const spy = sandbox.spy(router, 'push')
 
-    mount(TaskBuilder, {
+    shallowMount(TaskBuilder, {
       store,
       localVue,
       router,
@@ -89,7 +87,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
   it('should go to SummaryBuilder component when setStep source is true', () => {
     const spy = sandbox.spy(router, 'push')
 
-    mount(TaskBuilder, {
+    shallowMount(TaskBuilder, {
       store,
       localVue,
       router,
@@ -100,7 +98,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
 
     store.commit('task/builder/setStep', { step: 'source', value: true })
 
-    expect(spy.calledWithExactly({ name: 'task.builder.summary', params: { id: 1 } })).to.equal(true)
+    expect(spy.calledWith({ name: 'task.builder.summary', params: { id: 1 } })).to.equal(true)
   })
 
   afterEach(() => {

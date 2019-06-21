@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-4">
     <b-breadcrumb :items="items"></b-breadcrumb>
     <MaterialBuilder v-if="currentStep === 'material'"></MaterialBuilder>
     <JobBuilder v-if="currentStep === 'job'"></JobBuilder>
@@ -39,10 +39,15 @@ export default {
       project: state => state.selectedProject
     }),
     ...mapState('task/builder', [
-      'currentStep', 'steps'
+      'currentStep',
+      'steps'
     ]),
     items () {
       return [
+        {
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          to: { name: 'project', params: { id: this.id } }
+        },
         {
           text: 'Material',
           to: { name: 'task.builder.material' },
@@ -52,25 +57,25 @@ export default {
           text: 'Job',
           to: { name: 'task.builder.job' },
           active: this.currentStep === 'job',
-          disabled: this.currentStep === 'material'
+          disabled: this.steps.material === false
         },
         {
           text: 'Template',
           to: { name: 'task.builder.template' },
           active: this.currentStep === 'template',
-          disabled: this.currentStep === 'job' || this.currentStep === 'material'
+          disabled: this.steps.job === false
         },
         {
           text: 'Source',
           to: { name: 'task.builder.source' },
           active: this.currentStep === 'source',
-          disabled: this.currentStep === 'job' || this.currentStep === 'material' || this.currentStep === 'template'
+          disabled: this.steps.template === false
         },
         {
           text: 'Summary',
           to: { name: 'task.builder.summary' },
           active: this.currentStep === 'summary',
-          disabled: true
+          disabled: this.steps.source === false
         }
       ]
     }
@@ -84,26 +89,27 @@ export default {
     ])
   },
   watch: {
-    steps (newValue, oldValue) {
-      if (this.currentStep === 'material' && newValue['material'] === true) {
+    steps (steps) {
+      if (this.currentStep === 'material' && steps['material'] === true) {
 
-        // this.setTaskJob(null)
         this.$router.push({ name: 'task.builder.job', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
-      } else if (this.currentStep === 'job' && newValue['job'] === true) {
+      } else if (this.currentStep === 'job' && steps['job'] === true) {
 
         this.$router.push({ name: 'task.builder.template', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
-      } else if (this.currentStep === 'template' && newValue['template'] === true) {
+      } else if (this.currentStep === 'template' && steps['template'] === true) {
 
         this.$router.push({ name: 'task.builder.source', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
-      } else if (this.currentStep === 'source' && newValue['source'] === true) {
+      } else if (this.currentStep === 'source' && steps['source'] === true) {
 
-        this.$router.push({ name: 'task.builder.summary', params: { id: 'id' in this.project ? this.project.id : 0 }})
+        this.$router.push({ name: 'task.builder.summary', params: { id: 'id' in this.project ? this.project.id : 0 } })
 
       } else {
+
         this.$router.push({ name: 'task.builder.material', params: { id: 'id' in this.project ? this.project.id : 0 } })
+
       }
     }
   }

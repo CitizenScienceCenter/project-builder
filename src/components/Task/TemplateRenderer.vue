@@ -2,12 +2,13 @@
   <b-row class="mt-4 mb-4">
     <b-col>
 
-      <component ref="presenter" v-if="presenter.length > 0" :is="presenterComponent" :pybossa="this"></component>
-      <div v-else-if="taskPresenterExists" class="text-center">
+      <div v-if="!taskPresenterLoaded" class="text-center">
         <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
       </div>
-      <div v-else>
-        <p>The project does not contains a task presenter</p>
+
+      <component ref="presenter" v-if="taskPresenterExists" :is="presenterComponent" :pybossa="this"></component>
+      <div v-else-if="taskPresenterLoaded">
+        <b-alert :show="true" variant="warning">The project does not contains a task presenter</b-alert>
       </div>
 
     </b-col>
@@ -26,8 +27,9 @@ export default {
   },
   created () {
     this.getProject(this.id).then(project => {
-      this.getTaskPresenter({ project: project, template: null }).then(response => {
-        if (response) {
+      this.getTaskPresenter({ project: project, template: null }).then(success => {
+        this.taskPresenterLoaded = true
+        if (success) {
           this.taskPresenterExists = true
         }
       })
@@ -35,7 +37,8 @@ export default {
   },
   data: () => {
     return {
-      taskPresenterExists: false
+      taskPresenterExists: false,
+      taskPresenterLoaded: false
     }
   },
   computed: {
