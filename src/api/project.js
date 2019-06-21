@@ -14,7 +14,7 @@ export default {
   },
 
   getProjectsWithCategory (categoryShortName, page) {
-    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/category/' + categoryShortName + '/' + (typeof page !== 'undefined' ? 'page/' + page + '/' : ''), {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/category/' + categoryShortName + '/' + (typeof page !== 'undefined' && page !== 1 ? 'page/' + page + '/' : ''), {
       data: {},
       withCredentials: true
     })
