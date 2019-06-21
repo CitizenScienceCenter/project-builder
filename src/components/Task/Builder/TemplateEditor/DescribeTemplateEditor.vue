@@ -23,7 +23,7 @@
               :state="descriptionValidated(description)">
 
         <b-input v-model="descriptions[key]" placeholder="Describe what?"></b-input>
-        <b-btn @click="deleteDescription(key)" v-if="descriptions.length > 2" variant="danger" size="sm" class="mt-1 mb-1 float-right">Delete</b-btn>
+        <b-btn @click="deleteDescription(key)" v-if="descriptions.length > 1" variant="danger" size="sm" class="mt-1 mb-1 float-right">Delete</b-btn>
 
       </b-form-group>
 
@@ -52,7 +52,7 @@ export default {
 
       question: '',
       descriptions: [
-        '', ''
+        ''
       ]
     }
   },
@@ -73,7 +73,7 @@ export default {
       this.descriptions.push('')
     },
     deleteDescription (key) {
-      if (this.descriptions.length > 2) {
+      if (this.descriptions.length > 1) {
         this.descriptions.splice(key, 1)
       }
     },

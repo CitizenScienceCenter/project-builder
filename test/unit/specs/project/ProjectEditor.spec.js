@@ -19,7 +19,12 @@ describe('Project/ProjectEditor.vue', () => {
   })
 
   it('should call initForm when the project is loaded', () => {
-    store.commit('project/setSelectedProject', { id: 1 })
+    store.commit('project/setSelectedProject', {
+      id: 1,
+      info: {
+        thumbnail_url: 'src...'
+      }
+    })
     const initFormStub = sandbox.stub()
 
     mount(ProjectEditor, {
@@ -104,7 +109,6 @@ describe('Project/ProjectEditor.vue', () => {
     form.trigger('submit')
 
     expect(uploadAvatarStub.calledOnce).to.equal(true)
-    // expect(showSuccessStub.calledOnce).to.equal(true)
   })
 
   it('should not update project if the form is invalid', function () {

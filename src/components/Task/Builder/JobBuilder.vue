@@ -15,7 +15,7 @@
           <b-col md="4" v-for="job in materialJobs[task.material]" :key="job">
 
             <b-card ref="card-describe" :class="{ 'material-selected': selectedJob === jobs.describe }" v-if="job === jobs.describe" @click="onJobSelected(job)" class="text-center material mt-2 mt-md-0">
-              <i class="far fa-edit fa-4x"></i>
+              <i class="fas fa-edit fa-4x"></i>
               <div class="m-2">Describe</div>
             </b-card>
 
@@ -40,7 +40,7 @@
 
     </b-row>
 
-    <b-row class="mt-4">
+    <b-row class="mt-4 mb-4">
       <b-col>
         <b-btn ref="btn-submit-job" v-if="selectedJob" @click="onSubmit" variant="success" size="lg">Yup!</b-btn>
       </b-col>

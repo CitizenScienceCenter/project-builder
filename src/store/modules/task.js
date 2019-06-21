@@ -161,7 +161,12 @@ const actions = {
           template
         ).then(value => {
           if ('status' in value.data && value.data.status === 'success') {
+            console.log(value.data)
             commit('setTaskPresenter', template)
+            commit('notification/showSuccess', {
+              title: 'Success',
+              content: value.data.flash
+            }, { root: true })
             return value.data
           }
           return false

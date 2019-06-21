@@ -83,7 +83,7 @@ export default {
     items () {
       return [
         {
-          text: '\'' + (this.project ? this.project.name : '') + '\' project',
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
           to: { name: 'project', params: { id: this.id } }
         },
         {

@@ -33,6 +33,7 @@ describe('Task/Builder/SummaryBuilder.vue', () => {
 
     store.commit('task/builder/setTaskMaterial', taskBuilderState.materials.image)
     store.commit('task/builder/setTaskJob', taskBuilderState.jobs.describe)
+    store.commit('task/builder/setTaskSource', taskBuilderState.sources.amazon)
     store.commit('task/builder/setTaskSourceContent', [ 'link_1', 'link_2' ])
     const template = { question: '???', descriptions: ['Yes', 'No'] }
     store.commit('task/builder/setTaskTemplate', template)
@@ -56,6 +57,7 @@ describe('Task/Builder/SummaryBuilder.vue', () => {
 
     store.commit('task/builder/setTaskMaterial', taskBuilderState.materials.image)
     store.commit('task/builder/setTaskJob', taskBuilderState.jobs.count)
+    store.commit('task/builder/setTaskSource', taskBuilderState.sources.amazon)
     store.commit('task/builder/setTaskSourceContent', [ 'link_1', 'link_2' ])
     const template = 'How many tests can you see ?'
     store.commit('task/builder/setTaskTemplate', template)
@@ -79,6 +81,7 @@ describe('Task/Builder/SummaryBuilder.vue', () => {
 
     store.commit('task/builder/setTaskMaterial', taskBuilderState.materials.image)
     store.commit('task/builder/setTaskJob', taskBuilderState.jobs.classify)
+    store.commit('task/builder/setTaskSource', taskBuilderState.sources.amazon)
     store.commit('task/builder/setTaskSourceContent', [ 'link_1', 'link_2' ])
     const template = [
       {
