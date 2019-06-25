@@ -29,7 +29,12 @@
         <b-col md="9">
           <h3 class="mt-3">Choose a nice picture</h3>
           <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
-          <b-form-file @change="setImage" accept=".jpg, .png, .gif"></b-form-file>
+          <b-form-group
+                  :state="selectedPictureSizeInMB <= maxPictureSizeInMB"
+                  invalid-feedback="The picture is too big"
+                  :description="'The picture must not exceed ' + maxPictureSizeInMB + ' MB'">
+            <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Select a picture..."></b-form-file>
+          </b-form-group>
         </b-col>
       </b-row>
       <b-row class="mt-4">
@@ -55,7 +60,9 @@ export default {
       maxNbCharacters: 120,
       currentShortDescription: '',
       selectedPicture: '',
-      pictureSelected: false
+      pictureSelected: false,
+      selectedPictureSize: 0,
+      maxPictureSizeInMB: 3
     }
   },
   mounted () {
@@ -77,14 +84,24 @@ export default {
       'setCropData'
     ]),
 
+    ...mapMutations('notification', [
+      'showError'
+    ]),
+
     onSubmit () {
-      if (this.validated) {
+      // const base64Head = 'data:image/png;base64,'
+      // const croppedPictureSizeInMegaBytes = Math.round((croppedPicture.length - base64Head.length) * 6 / 8) / 1000000
+
+      if (this.validated && this.selectedPictureSizeInMB <= this.maxPictureSizeInMB) {
         this.setShortDescription(this.currentShortDescription)
         this.setStep({ step: 'information', value: true })
 
         if (this.selectedPicture) {
           this.setPicture(this.selectedPicture)
-          this.setCroppedPicture(this.$refs.cropper.getCroppedCanvas().toDataURL())
+
+          const croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
+          this.setCroppedPicture(croppedPicture)
+
           this.setCropData(this.$refs.cropper.getData(true))
         }
       }
@@ -97,6 +114,8 @@ export default {
         alert('Please select an image file')
         return
       }
+
+      this.selectedPictureSize = file.size
 
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
@@ -119,6 +138,10 @@ export default {
       croppedPicture: state => state.croppedPicture,
       cropData: state => state.cropData
     }),
+
+    selectedPictureSizeInMB () {
+      return this.selectedPictureSize / 1000000
+    },
 
     /**
      * Returns true if the short description is validated
