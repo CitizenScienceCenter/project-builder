@@ -7,7 +7,7 @@
         <h3 class="mt-2">Use one of the following available <b>templates</b> for your project</h3>
 
         <b-row class="mt-4">
-          <b-col>
+          <b-col md="6" cols="12">
 
             <div class="mb-5">
               <h4>Basic</h4>
@@ -32,7 +32,7 @@
 
           </b-col>
 
-          <b-col>
+          <b-col md="6" cols="12">
 
             <div class="mb-5">
               <h4>Image Pattern Recognition</h4>
