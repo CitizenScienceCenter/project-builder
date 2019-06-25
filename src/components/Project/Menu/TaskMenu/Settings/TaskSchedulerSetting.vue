@@ -13,11 +13,15 @@
           <li><b>Depth First All</b>: returns a task where the current user has not participated. It does not take into account the task.state.</li>
         </ul>
 
-        <b-form-group label="Task scheduler">
+        <b-form-group
+                label="Task scheduler"
+                :state="selected !== 'None'"
+                invalid-feedback="The project does not use a task scheduler currently"
+        >
           <b-form-select v-model="selected" :options="schedulers"></b-form-select>
         </b-form-group>
 
-        <b-btn ref="btn-submit" @click="onSubmit" variant="primary">Set</b-btn>
+        <b-btn ref="btn-submit" @click="onSubmit" variant="primary" :disabled="selected === 'None'">Set</b-btn>
       </b-col>
     </b-row>
   </div>
@@ -39,6 +43,7 @@ export default {
     return {
       selected: 'default',
       schedulers: [
+        { value: 'None', text: 'Select a task scheduler...', disabled: true },
         { value: 'default', text: 'Default' },
         { value: 'breadth_first', text: 'Breadth first' },
         { value: 'depth_first', text: 'Depth first' },
