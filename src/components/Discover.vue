@@ -3,7 +3,7 @@
     <b-col>
 
       <b-card no-body>
-        <b-tabs pills card>
+        <b-tabs pills card align="center">
 
           <!-- A tab for each category -->
           <b-tab

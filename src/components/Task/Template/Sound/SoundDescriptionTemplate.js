@@ -11,6 +11,7 @@ const component =
         <b-form-group
             :key="index"
             v-for="(description, index) in descriptions"
+            label-size="lg"
             :label="description"
             :state="isFieldValid(answers[index])"
             invalid-feedback="This field is required"
@@ -26,7 +27,7 @@ const component =
         </b-alert>
         
         <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ task.id }}</b-badge></p>
-        <p>You have completed: <b-badge variant="primary">{{ pybossa.userProgress.done }}</b-badge> tasks from</p>
+        <p>You have completed: <b-badge variant="primary">{{ pybossa.userProgress.done }}</b-badge> tasks from <b-badge variant="primary">{{ pybossa.userProgress.total }}</b-badge></p>
         
         <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
       </b-col>

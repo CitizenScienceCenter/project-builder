@@ -3,11 +3,11 @@
     <b-row class="mt-4">
 
       <b-col md="4">
-        <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" thumbnail fluid-grow></b-img>
-        <b-img v-else blank-color="#777" :blank="true" thumbnail fluid-grow></b-img>
+        <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" class="shadow" rounded fluid-grow></b-img>
+        <b-img v-else blank-color="#777" :blank="true" class="shadow" rounded fluid-grow></b-img>
       </b-col>
 
-      <b-col md="8">
+      <b-col md="8" class="mt-4 mt-md-0">
         <h2>{{ project.name }}</h2>
         <p>{{ project.description }}</p>
 
@@ -42,7 +42,7 @@
     <b-row class="mt-5">
       <b-col cols="12">
 
-        <b-tabs content-class="mt-5 mb-5" fill>
+        <b-tabs content-class="mt-5 mb-5" active-nav-item-class="font-weight-bold" fill>
 
           <b-tab title="Info" :active="currentTab === tabs.info" @click="setCurrentTab(tabs.info)">
             <ProjectInfoMenu></ProjectInfoMenu>

@@ -26,7 +26,7 @@
                   label="Priority"
                   description="Priority value between 0.0 and 1.0"
           >
-            <b-form-input v-model="priority" type="number" step="any" min="0" max="1" placeholder="Priority value between 0.0 and 1.0"></b-form-input>
+            <b-form-input v-model="priority" type="number" step="0.01" min="0" max="1" placeholder="Priority value between 0.0 and 1.0"></b-form-input>
           </b-form-group>
 
           <b-button type="onSubmit" variant="primary">Change</b-button>

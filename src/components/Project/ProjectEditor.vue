@@ -5,7 +5,11 @@
       <b-col md="7">
         <b-form ref="project-form" @submit.prevent="onSubmit">
 
-          <b-form-group>
+          <b-form-group
+                  label="Project data"
+                  label-size="lg"
+                  label-class="font-weight-bold mb-3"
+          >
 
             <b-form-group
               label="Project name"
@@ -31,8 +35,9 @@
 
           <b-form-group
             label-size="lg"
-            label-class="font-weight-bold mb-3"
-            label="Project long description">
+            label-class="mb-3"
+            label="Project long description"
+          >
 
             <b-form-group
               label="WHAT & WHY"
@@ -75,7 +80,7 @@
         </b-form>
       </b-col>
 
-      <b-col md="5" class="mt-md-0 mt-4">
+      <b-col md="5" class="mt-md-0 mt-5">
         <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
           <b-form-group>
 
@@ -92,9 +97,7 @@
 
     </b-row>
 
-    <hr>
-
-    <b-row class="mt-4 mb-4">
+    <b-row class="mt-5 mb-4">
       <b-col>
         <b-alert :show="true" variant="danger" class="text-center">
           <b>Danger Zone!</b> If you delete the project and its tasks, it will be gone forever!<br>
