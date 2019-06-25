@@ -56,7 +56,7 @@ export default {
 
         // if the user is already logged in, we can load his account data
         if (!response.hasOwnProperty('auth')) {
-          this.getAccountProfile().then(response => {
+          this.getAccountProfile().then(() => {
             if (this.logged) {
               this.$router.push({ name: 'home' })
             }
@@ -88,6 +88,10 @@ export default {
       this.signIn(this.form).then(() => {
         if (this.logged) {
           this.getAccountProfile()
+          this.showInfo({
+            title: 'Welcome',
+            content: 'We are happy to see you again!'
+          })
           this.$router.push({ name: 'home' })
         } else {
           this.showError({ title: 'Wrong credentials', content: 'Your email and/or your password are incorrect' })

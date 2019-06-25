@@ -1,13 +1,14 @@
 <template>
   <b-row class="mt-4 mb-4">
     <b-col>
+      <b-link :to="{ name: 'project', params: { id: this.id } }">Go back to the project</b-link>
 
-      <div v-if="!taskPresenterLoaded" class="text-center">
+      <div v-if="!taskPresenterLoaded" class="mt-4 text-center">
         <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
       </div>
 
-      <component ref="presenter" v-if="taskPresenterExists" :is="presenterComponent" :pybossa="this"></component>
-      <div v-else-if="taskPresenterLoaded">
+      <component class="mt-4" ref="presenter" v-if="taskPresenterExists" :is="presenterComponent" :pybossa="this"></component>
+      <div class="mt-4" v-else-if="taskPresenterLoaded">
         <b-alert :show="true" variant="warning">The project does not contains a task presenter</b-alert>
       </div>
 

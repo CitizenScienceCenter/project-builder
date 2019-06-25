@@ -43,7 +43,7 @@ export default {
       'steps'
     ]),
     items () {
-      return [
+      const items = [
         {
           html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
           to: { name: 'project', params: { id: this.id } }
@@ -52,32 +52,46 @@ export default {
           text: 'Material',
           to: { name: 'task.builder.material' },
           active: this.currentStep === 'material'
-        },
-        {
+        }
+      ]
+
+      if (this.steps.material) {
+        items.push({
           text: 'Job',
           to: { name: 'task.builder.job' },
           active: this.currentStep === 'job',
           disabled: this.steps.material === false
-        },
-        {
+        })
+      }
+
+      if (this.steps.job) {
+        items.push({
           text: 'Template',
           to: { name: 'task.builder.template' },
           active: this.currentStep === 'template',
           disabled: this.steps.job === false
-        },
-        {
+        })
+      }
+
+      if (this.steps.template) {
+        items.push({
           text: 'Source',
           to: { name: 'task.builder.source' },
           active: this.currentStep === 'source',
           disabled: this.steps.template === false
-        },
-        {
+        })
+      }
+
+      if (this.steps.source) {
+        items.push({
           text: 'Summary',
           to: { name: 'task.builder.summary' },
           active: this.currentStep === 'summary',
           disabled: this.steps.source === false
-        }
-      ]
+        })
+      }
+
+      return items
     }
   },
   methods: {

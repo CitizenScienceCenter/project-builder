@@ -11,10 +11,18 @@
 
       <LoadingSpinner class="mt-4" :id="loaders.GET_BUCKET_FILES"></LoadingSpinner>
 
-      <b-form-checkbox :key="file" v-model="selectedFiles" v-for="file in allowedFiles" :value="file" class="mb-3">
-        <b-img v-if="task.material === materials.image" width="200" height="170" :src="getBucketFileLink(file)"></b-img>
-        <b-link :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
-      </b-form-checkbox>
+      <!-- Content list displayed with 3 cols -->
+      <b-row>
+        <b-col md="4" sm="6" cols="12" class="mt-4" :key="file" v-for="file in allowedFiles">
+          <b-form-checkbox v-model="selectedFiles" :value="file" class="w-100">
+            <b-img thumbnail v-if="task.material === materials.image" class="w-100" :src="getBucketFileLink(file)"></b-img>
+            <div>
+              <b-link :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
+            </div>
+          </b-form-checkbox>
+        </b-col>
+      </b-row>
+
     </b-col>
 
     <b-col md="3">
