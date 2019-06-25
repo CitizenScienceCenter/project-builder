@@ -88,7 +88,7 @@ describe('Project/Project.vue', () => {
     const btnDraftCompleteIt = wrapper.find({ ref: 'btn-draft-complete-it' })
     const btnTestIt = wrapper.find({ ref: 'btn-test-it' })
     const btnPublishIt = wrapper.find({ ref: 'btn-publish-it' })
-    const btnContribute = wrapper.find({ ref: 'btn-contribute' })
+    // const btnContribute = wrapper.find({ ref: 'btn-contribute' })
 
     const tabTasks = wrapper.find({ ref: 'tab-tasks' })
     const tabSettings = wrapper.find({ ref: 'tab-settings' })
@@ -100,7 +100,9 @@ describe('Project/Project.vue', () => {
     expect(tabTasks.exists()).to.equal(false)
     expect(tabSettings.exists()).to.equal(false)
 
-    expect(btnContribute.exists()).to.equal(false)
+    // The contribute button is always displayed when the user is not the owner
+    // He cannot accesses the project page if the project is not published
+    // expect(btnContribute.exists()).to.equal(false)
   })
 
   it('should show the contribute button if the project is published', function () {

@@ -26,13 +26,11 @@ export default {
     }
   },
   created () {
-    this.getProject(this.id).then(project => {
-      this.getTaskPresenter({ project: project, template: null }).then(success => {
-        this.taskPresenterLoaded = true
-        if (success) {
-          this.taskPresenterExists = true
-        }
-      })
+    this.getProject(this.id).then(() => {
+      this.taskPresenterLoaded = true
+      if (this.presenter) {
+        this.taskPresenterExists = true
+      }
     })
   },
   data: () => {
@@ -76,7 +74,7 @@ export default {
   },
   methods: {
     ...mapActions('task', [
-      'getTaskPresenter', 'getNewTask', 'saveTaskRun'
+      'getNewTask', 'saveTaskRun'
     ]),
 
     ...mapActions('project', [
