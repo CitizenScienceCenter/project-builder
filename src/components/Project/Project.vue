@@ -11,11 +11,7 @@
         <h2>{{ project.name }}</h2>
         <p>{{ project.description }}</p>
 
-        <div v-if="project.published">
-          <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
-        </div>
-
-        <div v-else-if="isLoggedUserOwnerOfProject(project)">
+        <div v-if="isLoggedUserOwnerOfProject(project) && !project.published">
           <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
@@ -33,6 +29,10 @@
               That means that your project should be working properly, so please make sure it does. Otherwise you can work on it and publish it once it works fine.
             </b-alert>
           </b-modal>
+        </div>
+
+        <div v-else>
+          <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
 
       </b-col>
@@ -98,15 +98,11 @@ export default {
     ProjectStatisticsMenu
   },
   created () {
-    // eager loading: load the project and finally get stats, results and the task presenter
+    // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
     this.getProject(this.id).then(project => {
       this.getStatistics(project)
       this.getResults(project)
-      if (this.isLoggedUserOwnerOfProject(project)) {
-        this.getTaskPresenter({ project: project, template: null })
-        this.getProjectTasks(this.project)
-      }
     })
   },
   data: () => {
@@ -127,7 +123,6 @@ export default {
       'getStatistics'
     ]),
     ...mapActions('task', [
-      'getTaskPresenter',
       'getProjectTasks'
     ]),
     ...mapMutations('project/menu', [

@@ -136,7 +136,13 @@ const actions = {
   getProject ({ commit, state, rootState }, id) {
     return api.getProjectById(id, rootState.user.infos.api_key).then(value => {
       commit('setSelectedProject', value.data)
-      return state.selectedProject
+      // stores the task presenter directly in the task store
+      if ('task_presenter' in value.data.info) {
+        commit('task/setTaskPresenter', value.data.info.task_presenter, { root: true })
+      } else {
+        commit('task/setTaskPresenter', '', { root: true })
+      }
+      return value.data
     }).catch(reason => {
       commit('notification/showError', {
         title: errors.GET_PROJECT_LOADING_ERROR, content: reason
