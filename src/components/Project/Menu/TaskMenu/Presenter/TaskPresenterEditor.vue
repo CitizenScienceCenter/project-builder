@@ -26,6 +26,7 @@ export default {
   },
   created () {
     this.getProject(this.id).then(() => {
+      // loads the project template if it is already set or get the asked model template
       this.getTaskPresenter({ project: this.project, template: this.usingTemplate }).then(() => {
         this.code = this.taskPresenter
       })
@@ -64,12 +65,7 @@ export default {
         project: this.project,
         template: this.code
       }).then(response => {
-        if (response) {
-          this.showSuccess({
-            title: 'Success',
-            content: 'Task presenter updated'
-          })
-        } else {
+        if (!response) {
           this.showError({
             title: 'Error',
             content: 'Impossible to update the task presenter'

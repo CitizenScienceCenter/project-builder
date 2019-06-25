@@ -26,9 +26,10 @@ const state = {
   // tasks list of the selected project
   projectTasks: [],
 
+  // state which shows if an user wants to load a predefined template in the task presenter editor
   usingTemplate: null,
 
-  // the currently loaded task presenter
+  // the currently loaded task presenter (of the selected project)
   taskPresenter: '',
 
   // the current task showed in the task presenter
@@ -45,7 +46,7 @@ const state = {
     document: 'document'
   },
 
-  // contain data required to send forms
+  // contains data required to send forms
   taskPresenterImportationOptions: {},
   amazonS3TasksImportationOptions: {}
 }
@@ -78,7 +79,11 @@ const actions = {
 
   /**
    * Returns the task presenter of the given project if template == null
-   * Else if returns the presenter template matching the given template
+   * Else it returns the presenter template matching the given template
+   *
+   * WARNING: this method can only be called by the project owner if the template parameter is set to null
+   * (else it will returns a status code 403)
+   *
    * @param commit
    * @param state
    * @param project
@@ -126,7 +131,7 @@ const actions = {
   },
 
   /**
-   * Finds the CSRF token for the saveTaskPresenter method
+   * Finds the CSRF token for the 'saveTaskPresenter' method
    * @param commit
    * @param project
    * @return {Promise<T | boolean>}
@@ -145,6 +150,9 @@ const actions = {
 
   /**
    * Save the given given task presenter (template) for the given project
+   *
+   * WARNING: this method can only be called by the project owner!
+   *
    * @param commit
    * @param state
    * @param dispatch
@@ -161,7 +169,6 @@ const actions = {
           template
         ).then(value => {
           if ('status' in value.data && value.data.status === 'success') {
-            console.log(value.data)
             commit('setTaskPresenter', template)
             commit('notification/showSuccess', {
               title: 'Success',
