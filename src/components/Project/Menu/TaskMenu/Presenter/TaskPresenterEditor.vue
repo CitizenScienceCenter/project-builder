@@ -102,8 +102,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  @import '~bootstrap/scss/bootstrap.scss';
+
   .CodeMirror {
     height: auto !important;
+    border: 1px solid $input-disabled-bg;
+    margin-bottom: 20px;
+    @extend .shadow;
   }
 </style>
