@@ -103,7 +103,12 @@ export default {
     this.getProject(this.id).then(project => {
       this.getStatistics(project)
       this.getResults(project)
+      if (this.isLoggedUserOwnerOfProject(project)) {
+        // has to be loaded to know if the project can be published
+        this.getProjectTasks(project)
+      }
     })
+
   },
   data: () => {
     return {
