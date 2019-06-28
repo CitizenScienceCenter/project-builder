@@ -5,7 +5,7 @@ const component =
     template: `
       <b-row v-if="pybossa.userProgressInPercent < 100">
         <!-- Form zone -->
-        <b-col md="4">
+        <b-col md="4" class="mt-4 mt-md-0 order-2 order-md-1">
           <h2>{{ question }}</h2>
     
           <b-form-group
@@ -31,14 +31,16 @@ const component =
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
         <!-- Media -->
-        <b-col md="8" class="mt-4 mt-md-0">
-           <pdf
-              v-if="taskInfo.pdf_url && taskInfo.page.length > 0"
-              style="border: 1px solid black"
-              class="w-100"
-              :src="taskInfo.pdf_url"
-              :page="parseInt(taskInfo.page)">
-          </pdf>
+        <b-col md="8" class="order-1 order-md-2">
+          <div v-if="taskInfo.pdf_url && taskInfo.page.length > 0" class="text-center">
+            <pdf
+                v-if="pybossa.taskLoaded"
+                class="w-100 shadow"
+                :src="taskInfo.pdf_url"
+                :page="parseInt(taskInfo.page)">
+            </pdf>
+            <b-spinner v-else style="width: 4rem; height: 4rem;" variant="primary" label="Pdf loading..."></b-spinner>
+          </div>
           <b-alert v-else :show="true" variant="danger">Document not available</b-alert>
         </b-col>
       </b-row>

@@ -37,7 +37,8 @@ export default {
   data: () => {
     return {
       taskPresenterExists: false,
-      taskPresenterLoaded: false
+      taskPresenterLoaded: false,
+      taskLoaded: false
     }
   },
   computed: {
@@ -92,12 +93,15 @@ export default {
     },
 
     newTask () {
+      this.taskLoaded = false
       this.getNewTask(this.project).then(() => {
         this.getUserProgress(this.project)
+        this.taskLoaded = true
       })
     },
 
     saveTask (answer) {
+      this.taskLoaded = false
       const taskRun = {
         // required
         project_id: this.project.id,
