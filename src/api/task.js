@@ -35,13 +35,13 @@ export default {
     })
   },
 
-  getNewTask (projectId) {
-    return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/newtask', {
+  getNewTask (projectId, apiKey) {
+    return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/newtask' + (apiKey ? '?api_key=' + apiKey : ''), {
       data: {}
     })
   },
 
-  saveTaskRun (taskRun) {
-    return axios.post(process.env.BASE_API_URL + 'taskrun', taskRun)
+  saveTaskRun (taskRun, apiKey) {
+    return axios.post(process.env.BASE_API_URL + 'taskrun' + (apiKey ? '?api_key=' + apiKey : ''), taskRun)
   }
 }
