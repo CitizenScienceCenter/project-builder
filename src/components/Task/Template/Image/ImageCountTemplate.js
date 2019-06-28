@@ -4,7 +4,7 @@ const component =
     /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
       <b-row v-if="pybossa.userProgressInPercent < 100">
-        <b-col md="6">
+        <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
           <h2>{{ question }}</h2>
     
            <b-input v-model="count" type="number"></b-input>
@@ -15,10 +15,13 @@ const component =
           
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
-        <b-col md="6" class="mt-4 mt-md-0">
-          <b-img v-if="taskInfo.url" thumbnail fluid-grow :src="taskInfo.url"></b-img>
+        <b-col md="6" class="order-1 order-md-2">
+          <div v-if="taskInfo.url" class="text-center">
+            <b-img v-if="pybossa.taskLoaded" fluid-grow :src="taskInfo.url" class="shadow" style="min-height: 120px; background-color: grey" alt="Image loading..."></b-img>
+            <b-spinner v-else style="width: 4rem; height: 4rem;" variant="primary" label="Image loading..."></b-spinner>
+          </div>
           <b-alert v-else :show="true" variant="danger">Picture not available</b-alert>
-        </b-col>
+      </b-col>
       </b-row>
       <b-row v-else>
         <b-col>

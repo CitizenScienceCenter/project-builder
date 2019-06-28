@@ -4,7 +4,9 @@ const component =
     /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
       <b-row>
-        
+        <b-col>
+          <h1>Basic template</h1>
+        </b-col>
       </b-row>`,
 
     data: {

@@ -5,7 +5,7 @@ const component =
     template: `
     <b-row v-if="pybossa.userProgressInPercent < 100">
       <!-- Form zone -->
-      <b-col md="4">
+      <b-col md="4" class="mt-4 mt-md-0 order-2 order-md-1">
         <h2>{{ question }}</h2>
   
         <b-form-group
@@ -32,10 +32,15 @@ const component =
         <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
       </b-col>
       <!-- Media -->
-      <b-col md="8" class="mt-4 mt-md-0">
-        <b-embed v-if="taskInfo.video_url" type="iframe" allowfullscreen :src="taskInfo.video_url"></b-embed>
-        <div v-else-if="taskInfo.oembed" v-html="taskInfo.oembed"></div>
-        <b-alert v-else :show="true" variant="danger">Video media not available</b-alert>
+      <b-col md="8" class="order-1 order-md-2">
+        <div v-if="pybossa.taskLoaded">
+          <b-embed v-if="taskInfo.video_url" type="iframe" allowfullscreen :src="taskInfo.video_url"></b-embed>
+          <div v-else-if="taskInfo && taskInfo.oembed" v-html="taskInfo.oembed"></div>
+          <b-alert v-else :show="true" variant="danger">Video media not available</b-alert>
+        </div>
+        <div v-else class="text-center">
+          <b-spinner style="width: 4rem; height: 4rem;" variant="primary" label="Video loading..."></b-spinner>
+        </div>
       </b-col>
     </b-row>
     <b-row v-else>
