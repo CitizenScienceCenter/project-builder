@@ -232,11 +232,15 @@ const actions = {
   /**
    * Returns the global user contribution progress for the given project
    * @param commit
+   * @param rootState
    * @param project
    * @return {Promise<T | boolean>}
    */
-  getUserProgress ({ commit }, project) {
-    return api.getProjectUserProgress(project.id).then(value => {
+  getUserProgress ({ commit, rootState }, project) {
+    return api.getProjectUserProgress(
+      project.id,
+      rootState.user.logged ? rootState.user.infos.api_key : false
+    ).then(value => {
       commit('setSelectedProjectUserProgress', value.data)
       return value.data
     }).catch(reason => {

@@ -60,7 +60,8 @@ export default {
     // user data
     ...mapState('user', {
       isUserLogged: state => state.logged,
-      userId: state => state.infos.id
+      userId: state => state.infos.id,
+      userApiKey: state => state.infos.api_key
     }),
 
     ...mapGetters('project', {
@@ -91,7 +92,7 @@ export default {
     },
 
     newTask () {
-      this.getNewTask(this.project).then(value => {
+      this.getNewTask(this.project).then(() => {
         this.getUserProgress(this.project)
       })
     },
@@ -110,7 +111,7 @@ export default {
       if (this.isUserLogged) {
         taskRun.user_id = this.userId
       }
-      this.saveTaskRun(JSON.stringify(taskRun)).then(value => {
+      this.saveTaskRun(JSON.stringify(taskRun)).then(() => {
         // load a new task when current task saved
         this.newTask()
       })

@@ -26,8 +26,8 @@ export default {
     })
   },
 
-  getProjectUserProgress (projectId) {
-    return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/userprogress', {
+  getProjectUserProgress (projectId, apiKey) {
+    return axios.get(process.env.BASE_API_URL + 'project/' + projectId + '/userprogress' + (apiKey ? '?api_key=' + apiKey : ''), {
       data: {}
     })
   },

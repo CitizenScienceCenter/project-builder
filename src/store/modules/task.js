@@ -196,7 +196,10 @@ const actions = {
    * @return {Promise<T | boolean>}
    */
   getNewTask ({ commit, rootState }, project) {
-    return api.getNewTask(project.id).then(value => {
+    return api.getNewTask(
+      project.id,
+      rootState.user.logged ? rootState.user.infos.api_key : false
+    ).then(value => {
       commit('setCurrentTask', value.data)
       return value.data
     }).catch(reason => {
@@ -210,11 +213,15 @@ const actions = {
   /**
    * Saves a task run
    * @param commit
+   * @param rootState
    * @param taskRun
    * @return {Promise<T | boolean>}
    */
-  saveTaskRun ({ commit }, taskRun) {
-    return api.saveTaskRun(taskRun).then(value => {
+  saveTaskRun ({ commit, rootState }, taskRun) {
+    return api.saveTaskRun(
+      taskRun,
+      rootState.user.logged ? rootState.user.infos.api_key : false
+    ).then(value => {
       // no commit
       return value.data
     }).catch(reason => {
