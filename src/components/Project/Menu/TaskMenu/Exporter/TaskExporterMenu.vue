@@ -71,7 +71,7 @@
 
           <b-col md="4" class="mt-4 mt-md-0">
             <b-card
-                    header="Tasks"
+                    header="Task Runs"
                     border-variant="primary"
                     header-bg-variant="primary"
                     header-text-variant="white"
