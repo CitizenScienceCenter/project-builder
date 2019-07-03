@@ -8,5 +8,12 @@ export default {
       data: {},
       withCredentials: true
     })
+  },
+
+  revokeAccess () {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'flickr/revoke-access', {
+      data: {},
+      withCredentials: true
+    })
   }
 }

@@ -34,7 +34,9 @@ export default {
       'setAmazonS3ImporterVisible',
       'setGoogleDocImporterVisible',
       'setLocalCsvImporterVisible',
-      'setOnlineCsvImporterVisible'
+      'setOnlineCsvImporterVisible',
+      'setFlickrImporterVisible',
+      'setDropboxImporterVisible'
     ]),
 
     onSubmit () {
@@ -48,6 +50,8 @@ export default {
       this.setGoogleDocImporterVisible(false)
       this.setLocalCsvImporterVisible(false)
       this.setAmazonS3ImporterVisible(false)
+      this.setFlickrImporterVisible(false)
+      this.setDropboxImporterVisible(false)
     }
   },
   computed: {

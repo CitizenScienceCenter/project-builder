@@ -6,6 +6,10 @@
         <b-btn :href="baseUrl + 'flickr/?next=' + callbackUrl" target="_blank" @click="listenForAccess">Log in Flickr</b-btn>
       </b-form-group>
 
+      <b-form-group v-else description="You can revoke the access to your Flickr account at anytime">
+        <b-btn variant="warning" @click="revokeFlickerAccess">Revoke access</b-btn>
+      </b-form-group>
+
       <b-row>
         <b-col :key="album.id" v-for="album in albums" md="4">
           <b-media tag="div" class="text-center">
@@ -64,7 +68,8 @@ export default {
       'showError'
     ]),
     ...mapActions('task/importer', [
-      'getFlickrAlbums'
+      'getFlickrAlbums',
+      'revokeFlickerAccess'
     ]),
 
     onSubmit (albumId) {

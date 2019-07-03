@@ -23,6 +23,15 @@
         </b-col>
       </b-row>
 
+      <b-row class="mt-4">
+        <b-col md="6">
+          <FlickrImporter></FlickrImporter>
+        </b-col>
+        <b-col md="6" class="mt-md-0 mt-4">
+          <DropboxImporter></DropboxImporter>
+        </b-col>
+      </b-row>
+
     </b-col>
   </b-row>
 </template>
@@ -33,10 +42,14 @@ import GoogleDocImporter from '@/components/Project/Menu/TaskMenu/Importer/Googl
 import LocalCsvImporter from '@/components/Project/Menu/TaskMenu/Importer/LocalCsvImporter'
 import OnlineCsvImporter from '@/components/Project/Menu/TaskMenu/Importer/OnlineCsvImporter'
 import AmazonS3BucketImporter from '@/components/Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter'
+import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrImporter'
+import DropboxImporter from '@/components/Project/Menu/TaskMenu/Importer/DropboxImporter'
 
 export default {
   name: 'TaskImportersMenu',
   components: {
+    DropboxImporter,
+    FlickrImporter,
     AmazonS3BucketImporter,
     OnlineCsvImporter,
     GoogleDocImporter,
@@ -49,6 +62,8 @@ export default {
     this.setLocalCsvImporterVisible(false)
     this.setOnlineCsvImporterVisible(false)
     this.setAmazonS3ImporterVisible(false)
+    this.setFlickrImporterVisible(false)
+    this.setDropboxImporterVisible(false)
   },
   props: {
     id: {
@@ -68,7 +83,9 @@ export default {
       'setGoogleDocImporterVisible',
       'setLocalCsvImporterVisible',
       'setOnlineCsvImporterVisible',
-      'setAmazonS3ImporterVisible'
+      'setAmazonS3ImporterVisible',
+      'setFlickrImporterVisible',
+      'setDropboxImporterVisible'
     ])
   },
   computed: {

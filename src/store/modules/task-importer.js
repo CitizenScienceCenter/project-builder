@@ -24,6 +24,8 @@ const state = {
   isLocalCsvImporterVisible: false,
   isOnlineCsvImporterVisible: false,
   isAmazonS3ImporterVisible: false,
+  isFlickrImporterVisible: false,
+  isDropboxImporterVisible: false,
 
   bucket: {
     name: '',
@@ -433,6 +435,22 @@ const actions = {
       }, { root: true })
       return false
     })
+  },
+
+  /**
+   * Revoke the access to the user flickr account and reset the album list be reloading it
+   * @param dispatch
+   * @param commit
+   * @returns {Promise<T | never>}
+   */
+  revokeFlickerAccess ({ dispatch, commit }) {
+    return flickr.revokeAccess().then(() => {
+      commit('notification/showSuccess', {
+        title: 'Success',
+        content: 'Your flicker account access is now revoked'
+      }, { root: true })
+      return dispatch('getFlickrAlbums')
+    })
   }
 
 }
@@ -471,6 +489,12 @@ const mutations = {
   },
   setAmazonS3ImporterVisible (state, value) {
     state.isAmazonS3ImporterVisible = value
+  },
+  setFlickrImporterVisible (state, value) {
+    state.isFlickrImporterVisible = value
+  },
+  setDropboxImporterVisible (state, value) {
+    state.isDropboxImporterVisible = value
   },
   setBucketFiles (state, files) {
     state.bucket = { ...state.bucket, files }

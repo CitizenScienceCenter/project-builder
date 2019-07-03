@@ -49,6 +49,8 @@ export default {
       'setGoogleDocImporterVisible',
       'setLocalCsvImporterVisible',
       'setOnlineCsvImporterVisible',
+      'setFlickrImporterVisible',
+      'setDropboxImporterVisible',
       'setBucketName',
       'setBucketFiles'
     ]),
@@ -65,6 +67,8 @@ export default {
       this.setGoogleDocImporterVisible(false)
       this.setLocalCsvImporterVisible(false)
       this.setOnlineCsvImporterVisible(false)
+      this.setFlickrImporterVisible(false)
+      this.setDropboxImporterVisible(false)
     },
 
     search () {
