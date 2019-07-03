@@ -4,19 +4,19 @@
     <b-col md="9">
       <div class="mt-3 mb-3" id="dropbox-button"></div>
 
-      <b-list-group>
-        <b-list-group-item v-for="(file, key) in files" :key="file.id">
-          <div>
-            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="file.thumbnailLink"></b-img>
-            <b-link :href="file.thumbnailLink" target="_blank">{{ file.name }}</b-link>
-          </div>
-          <div class="text-right">
-            <b-btn @click="deleteLink(key)" variant="danger">Delete</b-btn>
-          </div>
-        </b-list-group-item>
-      </b-list-group>
+      <!-- Content list displayed with 3 cols -->
+      <b-row>
+        <b-col md="4" sm="6" cols="12" class="mt-4" :key="file.id" v-for="file in files">
+          <b-form-checkbox v-model="selectedFiles" :value="file" class="w-100">
+            <b-img fluid-grow class="shadow" :src="file.link"></b-img>
+            <div>
+              <b-link :href="file.link" target="_blank">{{ file.name }}</b-link>
+            </div>
+          </b-form-checkbox>
+        </b-col>
+      </b-row>
 
-      <b-btn ref="btn-submit" v-if="files.length > 0" @click="onSubmit" class="mt-4" variant="success" size="md">Continue</b-btn>
+      <b-btn ref="btn-submit" v-if="selectedFiles.length > 0" @click="onSubmit" class="mt-4" variant="success" size="md">Continue</b-btn>
     </b-col>
 
     <b-col md="3">
@@ -33,19 +33,21 @@ export default {
   name: 'DropboxSourceEditor',
   data: () => {
     return {
-      files: []
+      files: [],
+      selectedFiles: []
     }
   },
   mounted () {
     const dropbox = window.Dropbox
     const button = dropbox.createChooseButton({
       success: (files) => {
-        console.log(files)
+        this.selectedFiles = files
         this.files = files
+        console.log(files)
       },
       extensions: this.materialExtensions[this.task.material],
       // sizeLimit: 1024,
-      // linkType: 'direct',
+      linkType: 'direct',
       multiselect: true
       // folderselect: true
     })
@@ -53,6 +55,7 @@ export default {
 
     if (Array.isArray(this.task.sourceContent)) {
       this.files = this.task.sourceContent
+      this.selectedFiles = this.task.sourceContent
     }
   },
   methods: {
@@ -62,13 +65,10 @@ export default {
 
     onSubmit () {
       this.setTaskSource(this.sources.dropbox)
-      this.setTaskSourceContent(this.files)
+      this.setTaskSourceContent(this.selectedFiles)
       this.setStep({ step: 'source', value: true })
-    },
-
-    deleteLink (key) {
-      this.files.splice(key, 1)
     }
+
   },
   computed: {
     ...mapState('task/builder', [

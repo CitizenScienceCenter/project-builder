@@ -15,7 +15,7 @@
       <b-row>
         <b-col md="4" sm="6" cols="12" class="mt-4" :key="file" v-for="file in allowedFiles">
           <b-form-checkbox v-model="selectedFiles" :value="file" class="w-100">
-            <b-img thumbnail v-if="task.material === materials.image" class="w-100" :src="getBucketFileLink(file)"></b-img>
+            <b-img v-if="task.material === materials.image" fluid-grow class="shadow" :src="getBucketFileLink(file)"></b-img>
             <div>
               <b-link :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
             </div>
