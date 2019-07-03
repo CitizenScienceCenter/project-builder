@@ -28,8 +28,11 @@ const component =
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
         <b-col md="6" class="order-1 order-md-2">
-          <div v-if="taskInfo.url" class="text-center">
-            <b-img v-if="pybossa.taskLoaded" fluid-grow :src="taskInfo.url" class="shadow" style="min-height: 120px; background-color: grey" alt="Image loading..."></b-img>
+          <div v-if="taskInfo.url || taskInfo.link_raw" class="text-center">
+            <div v-if="pybossa.taskLoaded">
+              <b-img v-if="taskInfo.url" fluid-grow :src="taskInfo.url" class="shadow" style="min-height: 120px; background-color: grey" alt="Image loading..."></b-img>
+              <b-img v-else fluid-grow :src="taskInfo.link_raw" class="shadow" style="min-height: 120px; background-color: grey" alt="Image loading..."></b-img>
+            </div>
             <b-spinner v-else style="width: 4rem; height: 4rem;" variant="primary" label="Image loading..."></b-spinner>
           </div>
           <b-alert v-else :show="true" variant="danger">Picture not available</b-alert>

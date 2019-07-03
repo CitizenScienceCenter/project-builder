@@ -127,8 +127,9 @@
         <span v-if="task.source !== sources.flickr"><b>{{ task.sourceContent.length }}</b> tasks</span>
 
         <ul v-if="task.source !== sources.flickr">
-          <li :key="file" v-for="file in task.sourceContent">
+          <li :key="key" v-for="(file, key) in task.sourceContent">
             <b-link v-if="task.source === sources.amazon" :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
+            <b-link v-else-if="task.source === sources.dropbox" :href="file.link" target="_blank">{{ file.name }}</b-link>
             <b-link v-else :href="file" target="_blank">{{ file }}</b-link>
           </li>
         </ul>

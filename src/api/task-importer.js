@@ -90,18 +90,23 @@ export default {
   },
 
   importDropboxTasks (csrf, projectShortName, files) {
-    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=dropbox', {
+    const data = {
       form_name: 'dropbox',
       ...files.reduce((result, item, index) => {
-        result['files-' + index] = item
+        result['files-' + index] = JSON.stringify(item)
         return result
       }, {})
-    }, {
-      withCredentials: true,
-      headers: {
-        'X-CSRFToken': csrf
-      }
-    })
+    }
+
+    return axios.post(
+      process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=dropbox',
+      data,
+      {
+        withCredentials: true,
+        headers: {
+          'X-CSRFToken': csrf
+        }
+      })
   },
 
   getFlickrTasksImportationOptions (projectShortName) {

@@ -330,7 +330,7 @@ const actions = {
   },
 
   /**
-   * Imports the given dropbox file links as Pybossa tasks
+   * Imports the given dropbox file files as Pybossa tasks
    * @param commit
    * @param state
    * @param dispatch
@@ -384,7 +384,7 @@ const actions = {
   },
 
   /**
-   * Imports the given dropbox file links as Pybossa tasks
+   * Imports the given dropbox file files as Pybossa tasks
    * @param commit
    * @param state
    * @param dispatch

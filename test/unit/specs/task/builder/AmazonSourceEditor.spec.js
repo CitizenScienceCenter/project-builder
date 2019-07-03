@@ -35,7 +35,7 @@ describe('Task/Builder/AmazonSourceEditor.vue', () => {
 
     const wrapper = mount(AmazonSourceEditor, { store, localVue, router })
 
-    const btnGetBucketLinks = wrapper.find({ ref: 'btn-get-bucket-links' })
+    const btnGetBucketLinks = wrapper.find({ ref: 'btn-get-bucket-files' })
 
     btnGetBucketLinks.trigger('click')
 

@@ -5,10 +5,10 @@
       <div class="mt-3 mb-3" id="dropbox-button"></div>
 
       <b-list-group>
-        <b-list-group-item v-for="(link, key) in links" :key="link">
+        <b-list-group-item v-for="(file, key) in files" :key="file.id">
           <div>
-            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="link"></b-img>
-            <b-link :href="link" target="_blank">{{ link }}</b-link>
+            <b-img v-if="task.material === materials.image" thumbnail style="width: 200px" :src="file.thumbnailLink"></b-img>
+            <b-link :href="file.thumbnailLink" target="_blank">{{ file.name }}</b-link>
           </div>
           <div class="text-right">
             <b-btn @click="deleteLink(key)" variant="danger">Delete</b-btn>
@@ -16,7 +16,7 @@
         </b-list-group-item>
       </b-list-group>
 
-      <b-btn ref="btn-submit" v-if="links.length > 0" @click="onSubmit" class="mt-4" variant="success" size="md">Continue</b-btn>
+      <b-btn ref="btn-submit" v-if="files.length > 0" @click="onSubmit" class="mt-4" variant="success" size="md">Continue</b-btn>
     </b-col>
 
     <b-col md="3">
@@ -33,7 +33,7 @@ export default {
   name: 'DropboxSourceEditor',
   data: () => {
     return {
-      links: []
+      files: []
     }
   },
   mounted () {
@@ -41,9 +41,7 @@ export default {
     const button = dropbox.createChooseButton({
       success: (files) => {
         console.log(files)
-        this.links = files.map(value => {
-          return value.link
-        })
+        this.files = files
       },
       extensions: this.materialExtensions[this.task.material],
       // sizeLimit: 1024,
@@ -54,7 +52,7 @@ export default {
     document.getElementById('dropbox-button').appendChild(button)
 
     if (Array.isArray(this.task.sourceContent)) {
-      this.links = this.task.sourceContent
+      this.files = this.task.sourceContent
     }
   },
   methods: {
@@ -64,12 +62,12 @@ export default {
 
     onSubmit () {
       this.setTaskSource(this.sources.dropbox)
-      this.setTaskSourceContent(this.links)
+      this.setTaskSourceContent(this.files)
       this.setStep({ step: 'source', value: true })
     },
 
     deleteLink (key) {
-      this.links.splice(key, 1)
+      this.files.splice(key, 1)
     }
   },
   computed: {
