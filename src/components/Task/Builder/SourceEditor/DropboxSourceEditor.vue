@@ -40,13 +40,14 @@ export default {
     const dropbox = window.Dropbox
     const button = dropbox.createChooseButton({
       success: (files) => {
+        console.log(files)
         this.links = files.map(value => {
           return value.link
         })
       },
       extensions: this.materialExtensions[this.task.material],
       // sizeLimit: 1024,
-      linkType: 'direct',
+      // linkType: 'direct',
       multiselect: true
       // folderselect: true
     })

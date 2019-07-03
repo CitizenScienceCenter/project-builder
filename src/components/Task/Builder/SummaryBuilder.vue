@@ -124,13 +124,16 @@
           </b-media>
         </ul>
 
-        <b>{{ task.sourceContent.length }}</b> tasks
-        <ul>
+        <span v-if="task.source !== sources.flickr"><b>{{ task.sourceContent.length }}</b> tasks</span>
+
+        <ul v-if="task.source !== sources.flickr">
           <li :key="file" v-for="file in task.sourceContent">
             <b-link v-if="task.source === sources.amazon" :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
             <b-link v-else :href="file" target="_blank">{{ file }}</b-link>
           </li>
         </ul>
+        <p v-else>One album to import (<span class="font-italic">{{ task.sourceContent }}</span>)</p>
+
       </b-col>
     </b-row>
   </div>
@@ -168,7 +171,9 @@ export default {
       'saveTaskPresenter'
     ]),
     ...mapActions('task/importer', [
-      'importAmazonS3Tasks'
+      'importAmazonS3Tasks',
+      'importDropboxTasks',
+      'importFlickrTasks'
     ]),
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
@@ -277,6 +282,16 @@ export default {
           project: this.selectedProject,
           bucket: this.bucket.name,
           files: this.task.sourceContent
+        })
+      } else if (this.task.source === this.sources.dropbox) {
+        sourcePromise = this.importDropboxTasks({
+          project: this.selectedProject,
+          files: this.task.sourceContent
+        })
+      } else if (this.task.source === this.sources.flickr) {
+        sourcePromise = this.importFlickrTasks({
+          project: this.selectedProject,
+          albumId: this.task.sourceContent
         })
       } else {
         console.log(this.task.source + ' task importer not implemented')

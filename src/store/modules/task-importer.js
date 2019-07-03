@@ -1,5 +1,6 @@
 import api from '@/api/task-importer'
 import aws from '@/api/aws'
+import flickr from '@/api/flickr'
 
 const errors = {
   GET_AMAZON_S3_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading amazon s3 options',
@@ -10,7 +11,12 @@ const errors = {
   POST_CSV_FILE_TASKS_ERROR: 'Error when importing csv file tasks',
   GET_ONLINE_CSV_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading online csv importer options',
   POST_CSV_TASKS_ERROR: 'Error when importing csv tasks',
-  GET_BUCKET_FILES_ERROR: 'Error during bucket files loading'
+  GET_BUCKET_FILES_ERROR: 'Error during bucket files loading',
+  GET_DROPBOX_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading dropbox importer options',
+  POST_DROPBOX_TASKS_ERROR: 'Error when importing dropbox tasks',
+  GET_FLICKR_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading flickr importer options',
+  POST_FLICKR_TASKS_ERROR: 'Error when importing flickr tasks',
+  LOAD_FLICKR_ALBUMS_ERROR: 'Impossible to load your Flickr albums. Ensure that Pybossa is authorized to access your account'
 }
 
 const state = {
@@ -24,10 +30,13 @@ const state = {
     files: []
   },
 
+  flickrAlbums: [],
+
   amazonS3TasksImportationOptions: {},
   googleDocsTasksImportationOptions: {},
   localCsvTasksImportationOptions: {},
   onlineCsvTasksImportationOptions: {},
+  dropboxTasksImportationOptions: {},
 
   loaders: {
     GET_BUCKET_FILES: 'task/importer/getBucketFiles'
@@ -241,6 +250,12 @@ const actions = {
     })
   },
 
+  /**
+   * Gets the CSRF token to import online csv tasks
+   * @param commit
+   * @param project
+   * @returns {Promise<T | boolean>}
+   */
   getOnlineCsvTasksImportationOptions ({ commit }, project) {
     return api.getOnlineCsvTasksImportationOptions(project.short_name).then(value => {
       commit('setOnlineCsvTasksImportationOptions', value.data)
@@ -292,6 +307,132 @@ const actions = {
       }
       return false
     })
+  },
+
+  /**
+   * Gets the CSRF token to import dropbox tasks
+   * @param commit
+   * @param project
+   * @returns {Promise<T | boolean>}
+   */
+  getDropboxTasksImportationOptions ({ commit }, project) {
+    return api.getDropboxTasksImportationOptions(project.short_name).then(value => {
+      commit('setDropboxTasksImportationOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_DROPBOX_IMPORTER_OPTIONS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  /**
+   * Imports the given dropbox file links as Pybossa tasks
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @param files
+   * @returns {*}
+   */
+  importDropboxTasks ({ commit, state, dispatch }, { project, files }) {
+    return dispatch('getDropboxTasksImportationOptions', project).then(response => {
+      if (response) {
+        return api.importDropboxTasks(
+          state.dropboxTasksImportationOptions.form.csrf,
+          project.short_name,
+          files
+        ).then(value => {
+          if ('status' in value.data && value.data.status === 'message') {
+            commit('notification/showSuccess', {
+              title: 'Success',
+              content: value.data.flash
+            }, { root: true })
+            return value.data
+          }
+          return false
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.POST_DROPBOX_TASKS_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
+      return false
+    })
+  },
+
+  /**
+   * Gets the CSRF token to import flickr tasks
+   * @param commit
+   * @param project
+   * @returns {Promise<T | boolean>}
+   */
+  getFlickrTasksImportationOptions ({ commit }, project) {
+    return api.getFlickrTasksImportationOptions(project.short_name).then(value => {
+      commit('setFlickrTasksImportationOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_FLICKR_IMPORTER_OPTIONS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  /**
+   * Imports the given dropbox file links as Pybossa tasks
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @param albumId
+   * @param files
+   * @returns {*}
+   */
+  importFlickrTasks ({ commit, state, dispatch }, { project, albumId }) {
+    return dispatch('getFlickrTasksImportationOptions', project).then(response => {
+      if (response) {
+        return api.importFlickrTasks(
+          state.flickrTasksImportationOptions.form.csrf,
+          project.short_name,
+          albumId
+        ).then(value => {
+          if ('status' in value.data && value.data.status === 'message') {
+            commit('notification/showSuccess', {
+              title: 'Success',
+              content: value.data.flash
+            }, { root: true })
+            return value.data
+          }
+          return false
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.POST_FLICKR_TASKS_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
+      return false
+    })
+  },
+
+  /**
+   * Finds all the flickr albums of the logged user if he has authorized Pybossa to access to his Flickr account
+   * @param commit
+   * @returns {Promise<T | boolean>}
+   */
+  getFlickrAlbums ({ commit }) {
+    return flickr.getAlbums().then(response => {
+      commit('setFlickrAlbums', response.data)
+      return response.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.LOAD_FLICKR_ALBUMS_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
   }
 
 }
@@ -310,7 +451,15 @@ const mutations = {
   setOnlineCsvTasksImportationOptions (state, options) {
     state.onlineCsvTasksImportationOptions = options
   },
-
+  setDropboxTasksImportationOptions (state, options) {
+    state.dropboxTasksImportationOptions = options
+  },
+  setFlickrTasksImportationOptions (state, options) {
+    state.flickrTasksImportationOptions = options
+  },
+  setFlickrAlbums (state, albums) {
+    state.flickrAlbums = albums
+  },
   setGoogleDocImporterVisible (state, value) {
     state.isGoogleDocImporterVisible = value
   },

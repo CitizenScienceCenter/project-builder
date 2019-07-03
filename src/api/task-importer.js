@@ -80,6 +80,47 @@ export default {
         'X-CSRFToken': csrf
       }
     })
+  },
+
+  getDropboxTasksImportationOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=dropbox', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  importDropboxTasks (csrf, projectShortName, files) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=dropbox', {
+      form_name: 'dropbox',
+      ...files.reduce((result, item, index) => {
+        result['files-' + index] = item
+        return result
+      }, {})
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+  },
+
+  getFlickrTasksImportationOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=flickr', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  importFlickrTasks (csrf, projectShortName, albumId) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=flickr', {
+      form_name: 'flickr',
+      album_id: albumId
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
   }
 
 }

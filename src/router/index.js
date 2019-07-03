@@ -21,6 +21,7 @@ import DeleteTaskSetting from '@/components/Project/Menu/TaskMenu/Settings/Delet
 import TaskSchedulerSetting from '@/components/Project/Menu/TaskMenu/Settings/TaskSchedulerSetting'
 import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskRedundancySetting'
 import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting'
+import FlickrCallback from '@/components/Task/Builder/FlickrCallback'
 
 Vue.use(Router)
 
@@ -291,6 +292,12 @@ const router = new Router({
           next({ name: 'task.builder.source', params: { id: to.params.id } })
         }
       }
+    },
+    {
+      path: '/flickr/callback',
+      name: 'flickr.callback',
+      props: true,
+      component: FlickrCallback
     }
 
   ]
