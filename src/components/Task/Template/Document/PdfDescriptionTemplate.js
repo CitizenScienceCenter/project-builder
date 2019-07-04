@@ -32,13 +32,27 @@ const component =
         </b-col>
         <!-- Media -->
         <b-col md="8" class="order-1 order-md-2">
-          <div v-if="taskInfo.pdf_url && taskInfo.page.length > 0" class="text-center">
+          <div v-if="taskInfo.pdf_url" class="text-center">
             <pdf
-                v-if="pybossa.taskLoaded"
+                v-if="pybossa.taskLoaded && taskInfo.page && taskInfo.page.length > 0"
                 class="w-100 shadow"
                 :src="taskInfo.pdf_url"
                 :page="parseInt(taskInfo.page)">
             </pdf>
+            <div v-else-if="pybossa.taskLoaded">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="pageCount"
+                :per-page="1"
+                align="center">
+              </b-pagination>
+              <pdf
+                  class="w-100 shadow"
+                  @num-pages="pageCount = $event"
+                  :src="taskInfo.pdf_url"
+                  :page="currentPage">
+              </pdf>
+            </div>
             <b-spinner v-else style="width: 4rem; height: 4rem;" variant="primary" label="Pdf loading..."></b-spinner>
           </div>
           <b-alert v-else :show="true" variant="danger">Document not available</b-alert>
@@ -57,7 +71,9 @@ const component =
         'Write here the transcription'
       ],
       answers: [],
-      showAlert: false
+      showAlert: false,
+      pageCount: 0,
+      currentPage: 1
     },
 
     methods: {
@@ -87,6 +103,10 @@ const component =
       taskInfo () {
         return this.task.info
       }
+    },
+
+    watch: {
+
     },
 
     created () {

@@ -35,9 +35,8 @@ describe('Task/Builder/AmazonSourceEditor.vue', () => {
 
     const wrapper = mount(AmazonSourceEditor, { store, localVue, router })
 
-    const btnGetBucketLinks = wrapper.find({ ref: 'btn-get-bucket-links' })
-
-    btnGetBucketLinks.trigger('click')
+    const form = wrapper.find({ ref: 'search-form' })
+    form.trigger('submit')
 
     expect(spy.calledWith('task/builder/getBucketFiles', bucketName)).to.equal(true)
 

@@ -26,10 +26,10 @@
           <b-media no-body tag="li" vertical-align="center" class="mb-4">
             <b-media-aside style="width: 100px; font-size: 50px" class="pr-4 justify-content-end">
               <i v-if="task.material === materials.image" class="fas fa-images"></i>
-              <i v-if="task.material === materials.sound" class="fas fa-music fa-4x"></i>
-              <i v-if="task.material === materials.video" class="fas fa-play fa-4x"></i>
-              <i v-if="task.material === materials.pdf" class="fas fa-file-pdf fa-4x"></i>
-              <i v-if="task.material === materials.tweet" class="fab fa-twitter fa-4x"></i>
+              <i v-if="task.material === materials.sound" class="fas fa-music"></i>
+              <i v-if="task.material === materials.video" class="fas fa-play"></i>
+              <i v-if="task.material === materials.pdf" class="fas fa-file-pdf"></i>
+              <i v-if="task.material === materials.tweet" class="fab fa-twitter"></i>
             </b-media-aside>
 
             <b-media-body>
@@ -124,13 +124,17 @@
           </b-media>
         </ul>
 
-        <b>{{ task.sourceContent.length }}</b> tasks
-        <ul>
-          <li :key="file" v-for="file in task.sourceContent">
+        <span v-if="task.source !== sources.flickr"><b>{{ task.sourceContent.length }}</b> tasks</span>
+
+        <ul v-if="task.source !== sources.flickr">
+          <li :key="key" v-for="(file, key) in task.sourceContent">
             <b-link v-if="task.source === sources.amazon" :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
+            <b-link v-else-if="task.source === sources.dropbox" :href="file.link" target="_blank">{{ file.name }}</b-link>
             <b-link v-else :href="file" target="_blank">{{ file }}</b-link>
           </li>
         </ul>
+        <p v-else>One album to import (<span class="font-italic">{{ task.sourceContent }}</span>)</p>
+
       </b-col>
     </b-row>
   </div>
@@ -168,7 +172,9 @@ export default {
       'saveTaskPresenter'
     ]),
     ...mapActions('task/importer', [
-      'importAmazonS3Tasks'
+      'importAmazonS3Tasks',
+      'importDropboxTasks',
+      'importFlickrTasks'
     ]),
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
@@ -277,6 +283,16 @@ export default {
           project: this.selectedProject,
           bucket: this.bucket.name,
           files: this.task.sourceContent
+        })
+      } else if (this.task.source === this.sources.dropbox) {
+        sourcePromise = this.importDropboxTasks({
+          project: this.selectedProject,
+          files: this.task.sourceContent
+        })
+      } else if (this.task.source === this.sources.flickr) {
+        sourcePromise = this.importFlickrTasks({
+          project: this.selectedProject,
+          albumId: this.task.sourceContent
         })
       } else {
         console.log(this.task.source + ' task importer not implemented')

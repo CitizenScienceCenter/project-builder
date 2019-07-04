@@ -68,8 +68,8 @@ describe('Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter.vue', () => {
       }
     })
 
-    const searchButton = wrapper.find({ ref: 'btn-search' })
-    searchButton.trigger('click')
+    const form = wrapper.find({ ref: 'search-form' })
+    form.trigger('submit')
 
     expect(actionSpy.calledWith('task/importer/getBucketFiles')).to.equal(true)
   })

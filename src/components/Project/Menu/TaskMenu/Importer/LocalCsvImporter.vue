@@ -31,7 +31,9 @@ export default {
       'setAmazonS3ImporterVisible',
       'setLocalCsvImporterVisible',
       'setGoogleDocImporterVisible',
-      'setOnlineCsvImporterVisible'
+      'setOnlineCsvImporterVisible',
+      'setFlickrImporterVisible',
+      'setDropboxImporterVisible'
     ]),
     ...mapActions('task/importer', [
       'importLocalCsvTasks'
@@ -48,6 +50,8 @@ export default {
       this.setGoogleDocImporterVisible(false)
       this.setOnlineCsvImporterVisible(false)
       this.setAmazonS3ImporterVisible(false)
+      this.setFlickrImporterVisible(false)
+      this.setDropboxImporterVisible(false)
     }
   },
   computed: {

@@ -6,24 +6,29 @@
     </b-card>
     <b-collapse id="amazon-s3-collapse" v-model="isAmazonS3Visible" class="mb-3">
 
-      <b-input placeholder="Bucket name" v-model="bucketName" class="mt-4"></b-input>
-
-        <b-button ref="btn-search" @click="search" class="mt-3" variant="primary">Find bucket files</b-button>
+      <b-form ref="search-form" @submit.prevent="search">
+        <b-input placeholder="Bucket name" v-model="bucketName" class="mt-4"></b-input>
+        <b-button type="submit" ref="btn-search" class="mt-3" variant="primary">Find bucket files</b-button>
         <b-button ref="btn-add-files" @click="addFiles" v-if="selectedFiles.length > 0" class="mt-3 float-right" variant="success">Add the selected files</b-button>
+      </b-form>
 
-        <LoadingSpinner :id="loaders.GET_BUCKET_FILES"></LoadingSpinner>
+      <LoadingSpinner :id="loaders.GET_BUCKET_FILES"></LoadingSpinner>
 
-        <b-list-group class="mt-3">
-          <b-form-checkbox-group v-model="selectedFiles">
-
-            <b-list-group-item :key="file" v-for="file in bucket.files">
-              <b-form-checkbox :value="file">
-                <b-link :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
-              </b-form-checkbox>
-            </b-list-group-item>
-
-          </b-form-checkbox-group>
-        </b-list-group>
+      <b-row>
+        <b-col md="4" sm="6" cols="12" class="mt-5" :key="file" v-for="file in bucket.files" align="center">
+          <b-form-checkbox v-model="selectedFiles" :value="file" class="w-100">
+            {{ file }}
+          </b-form-checkbox>
+          <div class="mt-2">
+            <b-img v-if="getMaterialForFilename(getBucketFileLink(file)) === materials.image" fluid-grow class="shadow" :src="getBucketFileLink(file)"></b-img>
+            <audio v-if="getMaterialForFilename(getBucketFileLink(file)) === materials.sound" :src="getBucketFileLink(file)" class="w-100" controls></audio>
+            <b-embed v-if="getMaterialForFilename(getBucketFileLink(file)) === materials.video" type="video" allowfullscreen controls :src="getBucketFileLink(file)"></b-embed>
+            <b-link v-if="getMaterialForFilename(getBucketFileLink(file)) === materials.pdf" :href="getBucketFileLink(file)" title="Open file" target="_blank">
+              <i class="fas fa-file-pdf fa-8x"></i>
+            </b-link>
+          </div>
+        </b-col>
+      </b-row>
 
     </b-collapse>
   </div>
@@ -49,6 +54,8 @@ export default {
       'setGoogleDocImporterVisible',
       'setLocalCsvImporterVisible',
       'setOnlineCsvImporterVisible',
+      'setFlickrImporterVisible',
+      'setDropboxImporterVisible',
       'setBucketName',
       'setBucketFiles'
     ]),
@@ -65,6 +72,8 @@ export default {
       this.setGoogleDocImporterVisible(false)
       this.setLocalCsvImporterVisible(false)
       this.setOnlineCsvImporterVisible(false)
+      this.setFlickrImporterVisible(false)
+      this.setDropboxImporterVisible(false)
     },
 
     search () {
@@ -100,6 +109,12 @@ export default {
     }),
     ...mapGetters('task/importer', [
       'getBucketFileLink'
+    ]),
+    ...mapState('task/builder', [
+      'materials'
+    ]),
+    ...mapGetters('task/builder', [
+      'getMaterialForFilename'
     ]),
 
     isAmazonS3Visible: {

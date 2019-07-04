@@ -20,7 +20,7 @@ const jobs = {
   count: 'count'
 }
 
-// the list of sources available to import links
+// the list of sources available to import files
 const sources = {
   dropbox: 'dropbox',
   amazon: 'amazon',
@@ -35,7 +35,7 @@ const state = {
     job: null, // the kind of task (classify, describe...)
     template: null, // configuration of the task
     source: null, // contains the selected source (dropbox, flickr...)
-    sourceContent: null // contains the links got from the source
+    sourceContent: null // contains the files got from the source
   },
   // steps info
   currentStep: 'material',
@@ -138,6 +138,15 @@ const getters = {
       }
       return false
     })
+  },
+  getMaterialForFilename: (state) => (filename) => {
+    const extension = '.' + filename.split('.').pop()
+    for (let material in state.materialExtensions) {
+      if (state.materialExtensions[material].includes(extension)) {
+        return material
+      }
+    }
+    return null
   }
 }
 

@@ -2,24 +2,30 @@
   <b-row class="mt-4">
 
     <b-col md="9">
-      <b-form-group>
-        <b-input v-model="bucketName" placeholder="Name of the S3 bucket"></b-input>
-      </b-form-group>
+      <b-form ref="search-form" @submit.prevent="search">
+        <b-form-group>
+          <b-input v-model="bucketName" placeholder="Name of the S3 bucket"></b-input>
+        </b-form-group>
 
-      <b-btn ref="btn-get-bucket-links" @click="search" variant="primary">Search in bucket</b-btn>
-      <b-btn ref="btn-submit" @click="onSubmit" variant="success" size="lg" class="float-right" v-if="allowedFiles.length > 0">Go!</b-btn>
+        <b-button type="submit" ref="btn-get-bucket-links" variant="primary">Search in bucket</b-button>
+        <b-btn ref="btn-submit" @click="onSubmit" variant="success" size="lg" class="float-right" v-if="allowedFiles.length > 0">Go!</b-btn>
+      </b-form>
 
       <LoadingSpinner class="mt-4" :id="loaders.GET_BUCKET_FILES"></LoadingSpinner>
 
-      <!-- Content list displayed with 3 cols -->
       <b-row>
-        <b-col md="4" sm="6" cols="12" class="mt-4" :key="file" v-for="file in allowedFiles">
+        <b-col md="4" sm="6" cols="12" class="mt-5" :key="file" v-for="file in allowedFiles" align="center">
           <b-form-checkbox v-model="selectedFiles" :value="file" class="w-100">
-            <b-img thumbnail v-if="task.material === materials.image" class="w-100" :src="getBucketFileLink(file)"></b-img>
-            <div>
-              <b-link :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
-            </div>
+            {{ file }}
           </b-form-checkbox>
+          <div class="mt-2">
+            <b-img v-if="task.material === materials.image" fluid-grow class="shadow" :src="getBucketFileLink(file)"></b-img>
+            <audio v-if="task.material === materials.sound" :src="getBucketFileLink(file)" class="w-100" controls></audio>
+            <b-embed v-if="task.material === materials.video" type="video" allowfullscreen controls :src="getBucketFileLink(file)"></b-embed>
+            <b-link v-if="task.material === materials.pdf" :href="getBucketFileLink(file)" title="Open file" target="_blank">
+              <i class="fas fa-file-pdf fa-8x"></i>
+            </b-link>
+          </div>
         </b-col>
       </b-row>
 
