@@ -98,22 +98,26 @@ export default {
       ]
     }
   },
-  mounted () {
-    this.form.fullname = this.profile.fullname
-    this.form.email = this.profile.email_addr
-    this.form.username = this.profile.name
-    this.form.language = this.profile.locale
-    this.form.privacy = this.profile.restrict
-    this.form.emailNotification = this.profile.confirmation_email_sent
+  created () {
+    this.getProfileUpdateOptions(this.profile).then(() => {
+      this.form.fullname = this.formOptions.fullname
+      this.form.email = this.formOptions.email_addr
+      this.form.username = this.formOptions.name
+      this.form.language = this.formOptions.locale
+      this.form.privacy = this.formOptions.privacy_mode
+      this.form.emailNotification = this.formOptions.subscribed
+    })
   },
   computed: {
     ...mapState('user', {
-      profile: state => state.infos
+      profile: state => state.infos,
+      formOptions: state => state.profileUpdateOptions.form ? state.profileUpdateOptions.form : {}
     })
   },
   methods: {
     ...mapActions('user', [
-      'updateProfile'
+      'updateProfile',
+      'getProfileUpdateOptions'
     ]),
 
     onProfileSubmitted () {
