@@ -31,7 +31,7 @@ const state = {
     name: '',
     files: []
   },
-
+  dropboxFiles: [],
   flickrAlbums: [],
 
   amazonS3TasksImportationOptions: {},
@@ -501,6 +501,9 @@ const mutations = {
   },
   setBucketName (state, name) {
     state.bucket = { ...state.bucket, name }
+  },
+  setDropboxFiles (state, files) {
+    state.dropboxFiles = files
   }
 }
 

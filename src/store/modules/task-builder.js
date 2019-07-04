@@ -138,6 +138,15 @@ const getters = {
       }
       return false
     })
+  },
+  getMaterialForFilename: (state) => (filename) => {
+    const extension = '.' + filename.split('.').pop()
+    for (let material in state.materialExtensions) {
+      if (state.materialExtensions[material].includes(extension)) {
+        return material
+      }
+    }
+    return null
   }
 }
 

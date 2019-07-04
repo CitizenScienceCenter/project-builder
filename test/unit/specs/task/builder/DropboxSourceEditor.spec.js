@@ -44,7 +44,8 @@ describe('Task/Builder/DropboxSourceEditor.vue', () => {
 
     const links = [ 'img_1.jpg', 'img_2.jpg' ]
     wrapper.setData({
-      files: links
+      files: links,
+      selectedFiles: links
     })
 
     const btnSubmit = wrapper.find({ ref: 'btn-submit' })

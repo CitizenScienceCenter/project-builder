@@ -6,11 +6,20 @@
       <h2 class="mt-2">Tasks importation</h2>
 
       <b-row class="mt-4">
-        <b-col md="6">
+        <b-col>
           <AmazonS3BucketImporter></AmazonS3BucketImporter>
         </b-col>
-        <b-col md="6" class="mt-md-0 mt-4">
-          <GoogleDocImporter></GoogleDocImporter>
+      </b-row>
+
+      <b-row class="mt-4">
+        <b-col>
+          <FlickrImporter></FlickrImporter>
+        </b-col>
+      </b-row>
+
+      <b-row class="mt-4">
+        <b-col>
+          <DropboxImporter></DropboxImporter>
         </b-col>
       </b-row>
 
@@ -25,10 +34,7 @@
 
       <b-row class="mt-4">
         <b-col md="6">
-          <FlickrImporter></FlickrImporter>
-        </b-col>
-        <b-col md="6" class="mt-md-0 mt-4">
-          <DropboxImporter></DropboxImporter>
+          <GoogleDocImporter></GoogleDocImporter>
         </b-col>
       </b-row>
 

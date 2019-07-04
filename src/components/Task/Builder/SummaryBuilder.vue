@@ -26,10 +26,10 @@
           <b-media no-body tag="li" vertical-align="center" class="mb-4">
             <b-media-aside style="width: 100px; font-size: 50px" class="pr-4 justify-content-end">
               <i v-if="task.material === materials.image" class="fas fa-images"></i>
-              <i v-if="task.material === materials.sound" class="fas fa-music fa-4x"></i>
-              <i v-if="task.material === materials.video" class="fas fa-play fa-4x"></i>
-              <i v-if="task.material === materials.pdf" class="fas fa-file-pdf fa-4x"></i>
-              <i v-if="task.material === materials.tweet" class="fab fa-twitter fa-4x"></i>
+              <i v-if="task.material === materials.sound" class="fas fa-music"></i>
+              <i v-if="task.material === materials.video" class="fas fa-play"></i>
+              <i v-if="task.material === materials.pdf" class="fas fa-file-pdf"></i>
+              <i v-if="task.material === materials.tweet" class="fab fa-twitter"></i>
             </b-media-aside>
 
             <b-media-body>
