@@ -100,9 +100,11 @@ export default {
           // if project successfully created
           if (project) {
 
-            // upload the project avatar picture (asynchronously)
+            // upload the project avatar picture (asynchronously) if provided
             // if it fails, a message will say to the user that he can update it again later...
-            this.uploadAvatar({ project, image })
+            if (image.length > 0) {
+              this.uploadAvatar({ project, image })
+            }
 
             this.resetTaskBuilder()
             this.setTaskPresenter('')

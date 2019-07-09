@@ -17,7 +17,7 @@ const errors = {
   GET_PROJECT_STATS_LOADING_ERROR: 'Error during project stats loading',
   GET_PROJECT_RESULTS_LOADING_ERROR: 'Error during project results loading',
   UPLOAD_PROJECT_ERROR: 'Error during project update',
-  GET_PROJECT_DELETION_OPTIONS_LOADING_ERROR: 'Error during project deletion options loading',
+  GET_PROJECT_DELETION_OPTIONS_LOADING_ERROR: 'Error during project deletion',
   DELETE_PROJECT_ERROR: 'Error during project deletion'
 }
 
@@ -193,8 +193,10 @@ const actions = {
       commit('setProjectDeletionOptions', value.data)
       return value.data
     }).catch(reason => {
+      const response = reason.response.data
       commit('notification/showError', {
-        title: errors.GET_PROJECT_DELETION_OPTIONS_LOADING_ERROR, content: reason
+        title: errors.GET_PROJECT_DELETION_OPTIONS_LOADING_ERROR,
+        content: 'description' in response ? response.description : reason
       }, { root: true })
       return false
     })
