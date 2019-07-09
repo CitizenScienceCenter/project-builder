@@ -60,6 +60,9 @@ export default {
     // loads all the flickr albums of the logged user
     this.getFlickrAlbums()
   },
+  destroyed () {
+    clearInterval(this.flickrAccessListenerHandlerId)
+  },
   methods: {
     ...mapMutations('task/builder', [
       'setTaskSource', 'setTaskSourceContent', 'setStep'
@@ -77,11 +80,13 @@ export default {
         this.setTaskSource(this.sources.flickr)
         this.setTaskSourceContent(albumId)
         this.setStep({ step: 'source', value: true })
+        return true
       } else {
         this.showError({
           title: 'Incomplete form',
           content: 'You must provide a flickr album ID'
         })
+        return false
       }
     },
 
@@ -94,9 +99,6 @@ export default {
         }
       }, 2000)
     }
-  },
-  destroyed () {
-    clearInterval(this.flickrAccessListenerHandlerId)
   },
   computed: {
     ...mapState('task/builder', [

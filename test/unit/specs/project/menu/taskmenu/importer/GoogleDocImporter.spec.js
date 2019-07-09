@@ -54,6 +54,8 @@ describe('Project/Menu/TaskMenu/Importer/GoogleDocImporter.vue', () => {
     expect(store.state.task.importer.isLocalCsvImporterVisible).to.equal(false)
     expect(store.state.task.importer.isOnlineCsvImporterVisible).to.equal(false)
     expect(store.state.task.importer.isAmazonS3ImporterVisible).to.equal(false)
+    expect(store.state.task.importer.isDropboxImporterVisible).to.equal(false)
+    expect(store.state.task.importer.isFlickrImporterVisible).to.equal(false)
   })
 
   it('should call importGoogleDocsTasks on submit', function () {
