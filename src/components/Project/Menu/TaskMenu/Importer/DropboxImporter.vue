@@ -60,7 +60,7 @@ export default {
     ]),
 
     onSubmit () {
-      this.importDropboxTasks({
+      return this.importDropboxTasks({
         project: this.project,
         files: this.selectedFiles
       }).then(success => {

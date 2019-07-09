@@ -54,6 +54,8 @@ describe('Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter.vue', () => {
     expect(store.state.task.importer.isLocalCsvImporterVisible).to.equal(false)
     expect(store.state.task.importer.isOnlineCsvImporterVisible).to.equal(false)
     expect(store.state.task.importer.isGoogleDocImporterVisible).to.equal(false)
+    expect(store.state.task.importer.isDropboxImporterVisible).to.equal(false)
+    expect(store.state.task.importer.isFlickrImporterVisible).to.equal(false)
   })
 
   it('should call getBucketFiles when search button clicked', function () {

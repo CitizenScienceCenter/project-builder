@@ -9,6 +9,8 @@ import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
 import { createLocalVue, mount } from '@vue/test-utils'
+import DropboxImporter from '@/components/Project/Menu/TaskMenu/Importer/DropboxImporter'
+import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrImporter'
 
 const localVue = createLocalVue()
 
@@ -22,7 +24,7 @@ describe('Project/Menu/TaskMenu/Importer/TaskImporterMenu.vue', () => {
     sandbox = sinon.sandbox.create()
   })
 
-  it('should displays 4 importers options', () => {
+  it('should displays 6 importers options', () => {
     const wrapper = mount(TaskImporterMenu, {
       store,
       localVue,
@@ -36,11 +38,15 @@ describe('Project/Menu/TaskMenu/Importer/TaskImporterMenu.vue', () => {
     const googleDocImporter = wrapper.find(GoogleDocImporter)
     const onlineCsvImporter = wrapper.find(OnlineCsvImporter)
     const localCsvImporter = wrapper.find(LocalCsvImporter)
+    const dropboxImporter = wrapper.find(DropboxImporter)
+    const flickrImporter = wrapper.find(FlickrImporter)
 
     expect(amazonS3Importer.exists()).to.equal(true)
     expect(googleDocImporter.exists()).to.equal(true)
     expect(onlineCsvImporter.exists()).to.equal(true)
     expect(localCsvImporter.exists()).to.equal(true)
+    expect(dropboxImporter.exists()).to.equal(true)
+    expect(flickrImporter.exists()).to.equal(true)
   })
 
   it('should reset the visibility of all the importers', function () {
@@ -59,6 +65,8 @@ describe('Project/Menu/TaskMenu/Importer/TaskImporterMenu.vue', () => {
     expect(mutationSpy.calledWith('task/importer/setLocalCsvImporterVisible', false)).to.equal(true)
     expect(mutationSpy.calledWith('task/importer/setOnlineCsvImporterVisible', false)).to.equal(true)
     expect(mutationSpy.calledWith('task/importer/setAmazonS3ImporterVisible', false)).to.equal(true)
+    expect(mutationSpy.calledWith('task/importer/setDropboxImporterVisible', false)).to.equal(true)
+    expect(mutationSpy.calledWith('task/importer/setFlickrImporterVisible', false)).to.equal(true)
   })
 
   it('should load the project if not already done', function () {

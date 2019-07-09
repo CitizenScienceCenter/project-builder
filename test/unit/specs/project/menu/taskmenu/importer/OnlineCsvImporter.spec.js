@@ -54,6 +54,8 @@ describe('Project/Menu/TaskMenu/Importer/OnlineCsvImporter.vue', () => {
     expect(store.state.task.importer.isLocalCsvImporterVisible).to.equal(false)
     expect(store.state.task.importer.isGoogleDocImporterVisible).to.equal(false)
     expect(store.state.task.importer.isAmazonS3ImporterVisible).to.equal(false)
+    expect(store.state.task.importer.isDropboxImporterVisible).to.equal(false)
+    expect(store.state.task.importer.isFlickrImporterVisible).to.equal(false)
   })
 
   it('should call importOnlineCsvTasks on submit', function () {

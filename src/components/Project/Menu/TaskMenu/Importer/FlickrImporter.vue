@@ -84,7 +84,7 @@ export default {
 
     onSubmit (albumId) {
       if (albumId.length > 0) {
-        this.importFlickrTasks({
+        return this.importFlickrTasks({
           project: this.project,
           albumId: albumId
         }).then(success => {
@@ -97,6 +97,7 @@ export default {
           title: 'Incomplete form',
           content: 'You must provide a flickr album ID'
         })
+        return false
       }
     },
 
