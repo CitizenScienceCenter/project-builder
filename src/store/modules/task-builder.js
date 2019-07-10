@@ -114,11 +114,14 @@ const state = {
       '.mp4'
     ]
   },
+
   // aws s3 bucket
   bucket: {
     name: '',
     files: []
   },
+  dropboxFiles: [],
+
   loaders: {
     GET_BUCKET_FILES: 'task-builder/GET_BUCKET_FILES'
   }
@@ -195,6 +198,7 @@ const actions = {
       commit('setTaskSourceContent', null)
       commit('setBucketFiles', [])
       commit('setBucketName', '')
+      commit('setDropboxFiles', [])
       resolve()
     })
   }
@@ -236,6 +240,9 @@ const mutations = {
         return value !== file
       })
     }
+  },
+  setDropboxFiles (state, files) {
+    state.dropboxFiles = files
   }
 }
 
