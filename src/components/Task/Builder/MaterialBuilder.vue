@@ -51,6 +51,13 @@
             </b-card>
           </b-col>
 
+          <b-col md="4" class="mt-2 mt-md-0" v-b-tooltip.hover title="It will redirect you to the template editor and set the default geo-coding template (expert path)">
+            <b-card ref="card-geo-coding" @click="selectGeoCoding" class="text-center material">
+              <i class="fas fa-map-marked-alt fa-4x"></i><br>
+              <div class="m-2">Geo-coding</div>
+            </b-card>
+          </b-col>
+
         </b-row>
 
       </b-col>
@@ -75,7 +82,10 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
+import { buildTemplateFromModel } from '@/helper'
+
+import GeoCodingTemplate from '@/components/Task/Template/GeoCoding/GeoCodingTemplate'
 
 export default {
   name: 'MaterialBuilder',
@@ -91,7 +101,22 @@ export default {
     ...mapMutations('task/builder', [
       'setTaskMaterial', 'setStep'
     ]),
+    ...mapMutations('task', [
+      'setTaskTemplate'
+    ]),
+    ...mapActions('task', [
+      'saveTaskPresenter'
+    ]),
 
+    selectGeoCoding () {
+      const template = buildTemplateFromModel(GeoCodingTemplate, {})
+      this.saveTaskPresenter({
+        project: this.selectedProject,
+        template: template
+      }).then(() => {
+        this.$router.push({ name: 'project.task.presenter.editor', params: { id: this.selectedProject.id } })
+      })
+    },
     onMaterialSelected (materialType) {
       this.selectedMaterial = materialType
     },

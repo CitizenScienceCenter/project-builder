@@ -31,7 +31,8 @@ describe('Task/Builder/MaterialBuilder.vue', () => {
     const storeMaterials = Object.values(store.state.task.builder.materials)
     const cards = wrapper.findAll(BCard)
 
-    expect(cards.length).to.equal(storeMaterials.length)
+    // + 1 for geo coding shortcut
+    expect(cards.length).to.equal(storeMaterials.length + 1)
   })
 
   it('should update selected material on click', function () {
