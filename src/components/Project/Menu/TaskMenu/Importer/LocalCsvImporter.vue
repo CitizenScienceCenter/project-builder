@@ -5,6 +5,16 @@
       <div class="m-2">CSV file</div>
     </b-card>
     <b-collapse id="csv-collapse" v-model="isLocalCsvVisible">
+
+      <p class="mt-4">You can download some CSV examples to know how to write it for each kind of template:</p>
+      <ul>
+        <li><b-link :href="csvSamples.image" download="image-sample.csv">Image example</b-link></li>
+        <li><b-link :href="csvSamples.sound" download="sound-sample.csv">Sound example</b-link></li>
+        <li><b-link :href="csvSamples.video" download="video-sample.csv">Video example</b-link></li>
+        <li><b-link :href="csvSamples.pdf" download="pdf-sample.csv">PDF example</b-link></li>
+        <li><b-link :href="csvSamples.geoCoding" download="geo-coding-sample.csv">Geo-coding example</b-link></li>
+      </ul>
+
       <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
         <b-form-group>
           <b-file placeholder="Select a CSV file..." accept=".csv" v-model="csvFile"></b-file>
@@ -19,11 +29,24 @@
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex'
 
+import video from '@/assets/csv-samples/video.csv'
+import image from '@/assets/csv-samples/image.csv'
+import sound from '@/assets/csv-samples/sound.csv'
+import pdf from '@/assets/csv-samples/pdf.csv'
+import geoCoding from '@/assets/csv-samples/geo-coding.csv'
+
 export default {
   name: 'LocalCsvImporter',
   data: () => {
     return {
-      csvFile: ''
+      csvFile: '',
+      csvSamples: {
+        video,
+        image,
+        sound,
+        pdf,
+        geoCoding
+      }
     }
   },
   methods: {
