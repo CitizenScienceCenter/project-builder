@@ -98,6 +98,9 @@ export default {
     ...mapMutations('task/builder', [
       'setTaskJob'
     ]),
+    ...mapMutations('task/importer', [
+      'setDropboxFiles'
+    ]),
     ...mapActions('project', [
       'getProject'
     ])

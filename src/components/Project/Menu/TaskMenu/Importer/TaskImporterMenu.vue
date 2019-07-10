@@ -1,5 +1,5 @@
 <template>
-  <b-row>
+  <b-row class="mb-4">
     <b-col>
       <b-breadcrumb :items="items"></b-breadcrumb>
 
@@ -24,17 +24,17 @@
       </b-row>
 
       <b-row class="mt-4">
-        <b-col md="6">
-          <OnlineCsvImporter></OnlineCsvImporter>
-        </b-col>
-        <b-col md="6" class="mt-md-0 mt-4">
-          <LocalCsvImporter></LocalCsvImporter>
+        <b-col>
+          <GoogleDocImporter></GoogleDocImporter>
         </b-col>
       </b-row>
 
       <b-row class="mt-4">
         <b-col md="6">
-          <GoogleDocImporter></GoogleDocImporter>
+          <OnlineCsvImporter></OnlineCsvImporter>
+        </b-col>
+        <b-col md="6" class="mt-md-0 mt-4">
+          <LocalCsvImporter></LocalCsvImporter>
         </b-col>
       </b-row>
 

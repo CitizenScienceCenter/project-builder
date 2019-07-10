@@ -49,9 +49,7 @@ export default {
     ...mapMutations('task/builder', [
       'setTaskSource',
       'setTaskSourceContent',
-      'setStep'
-    ]),
-    ...mapMutations('task/importer', [
+      'setStep',
       'setDropboxFiles'
     ]),
 
@@ -85,7 +83,7 @@ export default {
       'sources',
       'materials'
     ]),
-    ...mapState('task/importer', {
+    ...mapState('task/builder', {
       files: state => state.dropboxFiles
     })
   }
