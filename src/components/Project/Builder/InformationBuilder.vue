@@ -1,9 +1,17 @@
 <template>
   <div>
+
+    <b-row class="mt-4">
+      <b-col>
+        <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>
+      </b-col>
+    </b-row>
+
     <b-form ref="form" @submit.prevent="onSubmit">
-      <b-row class="mt-4">
+
+      <b-row>
+
         <b-col md="9">
-          <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>
           <h3 class="mt-3">{{ title }} in a few words</h3>
           <b-form-group
                   id="fieldset-description"
@@ -20,12 +28,15 @@
             </b-form-textarea>
           </b-form-group>
         </b-col>
-        <b-col md="3" align-self="end">
-          <p>Only 120 characters so we can tweet it.</p>
+
+        <b-col md="3" align-self="start">
           <p>TIP: Take your time, this will be your business card.</p>
         </b-col>
+
       </b-row>
+
       <b-row class="mt-4">
+
         <b-col md="9">
           <h3 class="mt-3">Choose a nice picture</h3>
           <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
@@ -36,12 +47,15 @@
             <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Select a picture..."></b-form-file>
           </b-form-group>
         </b-col>
+
       </b-row>
+
       <b-row class="mt-4">
         <b-col>
           <b-button type="submit" variant="success">Next Step</b-button>
         </b-col>
       </b-row>
+
     </b-form>
   </div>
 </template>

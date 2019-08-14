@@ -1,14 +1,21 @@
 <template>
   <div>
+    <b-row class="mt-4">
+      <b-col>
+        <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>
+      </b-col>
+    </b-row>
+
     <b-form ref="form" @submit.prevent="onSubmit">
-      <b-row class="mt-4">
+      <b-row>
         <b-col md="9">
-          <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>
           <h3 class="mt-3 mb-3">We want to know all about your project!</h3>
+
           <b-form-group
                   id="fieldset-what-why"
                   label="WHAT & WHY"
                   label-for="what-why"
+                  description="Explain what is the purpose of your project and why you have created it"
                   :valid-feedback="validFeedback('currentWhatWhy')"
                   :invalid-feedback="invalidFeedback('currentWhatWhy')"
                   :state="validated('currentWhatWhy')"
@@ -25,6 +32,7 @@
                   id="fieldset-how"
                   label="HOW"
                   label-for="how"
+                  description="Explain how you will use the contribution results"
                   :valid-feedback="validFeedback('currentHow')"
                   :invalid-feedback="invalidFeedback('currentHow')"
                   :state="validated('currentHow')"
@@ -41,6 +49,7 @@
                   id="fieldset-who"
                   label="WHO"
                   label-for="who"
+                  description="Explain who should contribute to this project"
                   :valid-feedback="validFeedback('currentWho')"
                   :invalid-feedback="invalidFeedback('currentWho')"
                   :state="validated('currentWho')"
@@ -57,6 +66,7 @@
                   id="fieldset-keep-track"
                   label="KEEP TRACK"
                   label-for="keep-track"
+                  description="Give some details about how contributors can contact or follow you"
                   :valid-feedback="validFeedback('currentKeepTrack')"
                   :invalid-feedback="invalidFeedback('currentKeepTrack')"
                   :state="validated('currentKeepTrack')"
@@ -70,11 +80,13 @@
           </b-form-group>
         </b-col>
       </b-row>
+
       <b-row class="mt-4">
         <b-col>
           <b-button type="submit" variant="success">Next Step</b-button>
         </b-col>
       </b-row>
+
     </b-form>
   </div>
 </template>
