@@ -2,11 +2,18 @@
   <b-row>
     <b-col>
       <b-breadcrumb :items="items"></b-breadcrumb>
-      <!--<b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Go back to the project</b-link>-->
 
       <div class="mt-2 clearfix">
         <h2 class="float-left">Task presenter editor</h2>
-        <b-btn ref="btn-update-presenter" variant="success" class="float-right" @click="updateTaskPresenter">Update task presenter</b-btn>
+        <b-btn
+          v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you do."
+          ref="btn-update-presenter"
+          variant="success"
+          class="float-right"
+          @click="updateTaskPresenter"
+        >
+          Update task presenter
+        </b-btn>
       </div>
       <codemirror class="mt-3 float-none" ref="code-mirror" v-model="code" :options="cmOptions"></codemirror>
     </b-col>
