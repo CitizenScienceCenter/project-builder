@@ -2,7 +2,7 @@
   <b-row class="mt-4 justify-content-center">
     <b-col md="6" md-offset="3">
 
-      <b-row v-if="isBirthDateVerified">
+      <b-row>
         <b-col>
 
           <h2>Registration</h2>
@@ -58,7 +58,7 @@
         </b-col>
       </b-row>
 
-      <BirthDateChecker v-else></BirthDateChecker>
+      <!-- <BirthDateChecker</BirthDateChecker> -->
 
     </b-col>
   </b-row>
@@ -67,13 +67,9 @@
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
 import { getFormErrorsAsString, validateEmail } from '@/helper'
-import BirthDateChecker from '@/components/Registration/BirthDateChecker'
 
 export default {
   name: 'Registration',
-  components: {
-    BirthDateChecker
-  },
   data: () => {
     return {
       form: {
