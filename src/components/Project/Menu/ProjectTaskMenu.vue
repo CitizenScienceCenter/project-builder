@@ -12,8 +12,10 @@
         <div class="mt-4">
           <h4>Task Presenter</h4>
           <p>Edit the task presenter</p>
-          <b-btn v-if="taskPresenter" variant="outline-primary" :to="{ name: 'project.task.presenter.editor', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
-          <b-btn v-else variant="outline-primary" :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
+          <div class="d-inline-block" v-b-tooltip.hover title="This section is reserved for expert users having 'coding' skills">
+            <b-btn v-if="taskPresenter" variant="outline-primary" :to="{ name: 'project.task.presenter.editor', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
+            <b-btn v-else variant="outline-primary" :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
+          </div>
         </div>
 
         <div class="mt-4">
