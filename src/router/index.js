@@ -304,7 +304,7 @@ const router = new Router({
 })
 
 const publicRoutes = [
-  'home', 'login', 'register', 'logout', 'discover', 'about'
+  'home', 'login', 'register', 'logout', 'discover', 'about', 'project', 'project.task.presenter'
 ]
 
 router.beforeEach((to, from, next) => {

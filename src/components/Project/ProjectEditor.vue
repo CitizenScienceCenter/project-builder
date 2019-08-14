@@ -31,8 +31,13 @@
               <b-select v-model="form.category" :options="selectCategories"></b-select>
             </b-form-group>
 
+            <b-form-checkbox v-model="form.allowAnonymousContributors">
+              Allow anonymous contributors
+            </b-form-checkbox>
+
           </b-form-group>
 
+          <!-- WhatWhy, How, Who, Keep Track -->
           <b-form-group
             label-size="lg"
             label-class="mb-3"
@@ -80,6 +85,7 @@
         </b-form>
       </b-col>
 
+      <!-- Avatar update -->
       <b-col md="5" class="mt-md-0 mt-5">
         <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
           <b-form-group>
@@ -97,6 +103,7 @@
 
     </b-row>
 
+    <!-- Delete project -->
     <b-row class="mt-5 mb-4">
       <b-col>
         <b-alert :show="true" variant="danger" class="text-center">
@@ -108,6 +115,7 @@
         </b-modal>
       </b-col>
     </b-row>
+
   </div>
 
 </template>
@@ -145,7 +153,8 @@ export default {
         whatWhy: '',
         how: '',
         who: '',
-        keepTrack: ''
+        keepTrack: '',
+        allowAnonymousContributors: true
       },
       picture: '',
       croppedPicture: '',
@@ -187,6 +196,7 @@ export default {
       this.form.name = project.name
       this.form.shortDescription = project.description
       this.form.category = project.category_id
+      this.form.allowAnonymousContributors = project.allow_anonymous_contributors
 
       this.form = { ...this.form, ...JSON.parse(project.long_description) }
 
@@ -212,7 +222,8 @@ export default {
               how: this.form.how,
               who: this.form.who,
               keepTrack: this.form.keepTrack
-            })
+            }),
+            allow_anonymous_contributors: this.form.allowAnonymousContributors
           }
         }).then(response => {
           if ('form' in response && 'errors' in response.form) {
@@ -292,7 +303,8 @@ export default {
     },
 
     isFormValid () {
-      const formKeys = Object.keys(this.form).filter(el => el !== 'category')
+      const formKeys = Object.keys(this.form).filter(el => el !== 'category' && el !== 'allowAnonymousContributors')
+      console.log(formKeys)
       let isValidated = true
       for (let field of formKeys) {
         if (!this.validated(field)) {
