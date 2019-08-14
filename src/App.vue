@@ -46,8 +46,10 @@
     <!-- Notification toasts -->
     <b-toast
             :key="notification.id"
+            header-class="h5"
+            body-class="h6"
             v-for="notification in errorNotifications"
-            toaster="b-toaster-bottom-center"
+            toaster="b-toaster-top-center"
             :title="notification.message.title"
             variant="danger"
             @hidden="closeError(notification.id)"
@@ -58,8 +60,10 @@
 
     <b-toast
             :key="notification.id"
+            header-class="h5"
+            body-class="h6"
             v-for="notification in infoNotifications"
-            toaster="b-toaster-bottom-center"
+            toaster="b-toaster-top-center"
             :title="notification.message.title"
             variant="info"
             @hidden="closeInfo(notification.id)"
@@ -70,8 +74,10 @@
 
     <b-toast
             :key="notification.id"
+            header-class="h5"
+            body-class="h6"
             v-for="notification in successNotifications"
-            toaster="b-toaster-bottom-center"
+            toaster="b-toaster-top-center"
             :title="notification.message.title"
             variant="success"
             @hidden="closeSuccess(notification.id)"
