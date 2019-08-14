@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'TemplateRenderer',
@@ -88,15 +88,27 @@ export default {
       'qetLocalizationsWithQuery'
     ]),
 
+    ...mapMutations('notification', [
+      'showError'
+    ]),
+
     run () {
       this.newTask()
     },
 
     newTask () {
       this.taskLoaded = false
-      this.getNewTask(this.project).then(() => {
-        this.getUserProgress(this.project)
-        this.taskLoaded = true
+      this.getNewTask(this.project).then(allowed => {
+        if (!allowed) {
+          this.showError({
+            title: 'You are not allowed to contribute',
+            content: 'This project does not allow anonymous contributors'
+          })
+          this.$router.push({ name: 'project', params: { id: this.project.id } })
+        } else {
+          this.getUserProgress(this.project)
+          this.taskLoaded = true
+        }
       })
     },
 

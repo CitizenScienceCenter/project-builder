@@ -2,15 +2,18 @@
   <div>
     <b-row class="mt-4">
 
+      <!-- Avatar -->
       <b-col md="4">
         <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" class="shadow" rounded fluid-grow></b-img>
         <b-img v-else blank-color="#777" :blank="true" class="shadow" rounded fluid-grow></b-img>
       </b-col>
 
+      <!-- Header -->
       <b-col md="8" class="mt-4 mt-md-0">
         <h2>{{ project.name }}</h2>
         <p>{{ project.description }}</p>
 
+        <!-- Owner actions -->
         <div v-if="isLoggedUserOwnerOfProject(project) && !project.published">
           <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
@@ -31,7 +34,7 @@
           </b-modal>
         </div>
 
-        <div v-else>
+        <div v-else-if="isAnonymousProject">
           <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
 
@@ -101,8 +104,14 @@ export default {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
     this.getProject(this.id).then(project => {
+      // load some stats
       this.getStatistics(project)
       this.getResults(project)
+      // checks if the project is open for anonymous users or not
+      this.getNewTask(project).then(allowed => {
+        this.isAnonymousProject = !!allowed
+        // TODO: should go to the home screen?
+      })
       if (this.isLoggedUserOwnerOfProject(project)) {
         // has to be loaded to know if the project can be published
         this.getProjectTasks(project)
@@ -112,7 +121,7 @@ export default {
   },
   data: () => {
     return {
-
+      isAnonymousProject: true
     }
   },
   props: {
@@ -128,7 +137,8 @@ export default {
       'getStatistics'
     ]),
     ...mapActions('task', [
-      'getProjectTasks'
+      'getProjectTasks',
+      'getNewTask'
     ]),
     ...mapMutations('project/menu', [
       'setCurrentTab'

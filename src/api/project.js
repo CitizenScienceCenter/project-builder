@@ -21,7 +21,7 @@ export default {
   },
 
   getProjectById (id, apiKey) {
-    return axios.get(process.env.BASE_API_URL + 'project/' + id + '?api_key=' + apiKey, {
+    return axios.get(process.env.BASE_API_URL + 'project/' + id + (apiKey ? '?api_key=' + apiKey : ''), {
       data: {}
     })
   },
