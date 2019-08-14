@@ -13,21 +13,36 @@
         <b-row>
 
           <b-col md="4">
-            <b-card ref="card-image" :class="{ 'material-selected': selectedMaterial === materials.image }" @click="onMaterialSelected(materials.image)" class="text-center material">
+            <b-card ref="card-image"
+                    :class="{ 'material-selected': selectedMaterial === materials.image }"
+                    @click="onMaterialSelected(materials.image)"
+                    class="text-center material"
+                    v-b-popover.hover.bottom="'This task allows you to present images to an user in order for him to either describe them, classify them or count them'"
+            >
               <i class="fas fa-images fa-4x"></i><br>
               <div class="m-2">Images</div>
             </b-card>
           </b-col>
 
           <b-col md="4" class="mt-2 mt-md-0">
-            <b-card ref="card-sound" :class="{ 'material-selected': selectedMaterial === materials.sound }" @click="onMaterialSelected(materials.sound)" class="text-center material">
+            <b-card ref="card-sound"
+                    :class="{ 'material-selected': selectedMaterial === materials.sound }"
+                    @click="onMaterialSelected(materials.sound)"
+                    class="text-center material"
+                    v-b-popover.hover.bottom="'This task allows you to present sounds to an user in order for him to either describe them or classify them'"
+            >
               <i class="fas fa-music fa-4x"></i><br>
               <div class="m-2">Sounds</div>
             </b-card>
           </b-col>
 
           <b-col md="4" class="mt-2 mt-md-0">
-            <b-card ref="card-video" :class="{ 'material-selected': selectedMaterial === materials.video }" @click="onMaterialSelected(materials.video)" class="text-center material">
+            <b-card ref="card-video"
+                    :class="{ 'material-selected': selectedMaterial === materials.video }"
+                    @click="onMaterialSelected(materials.video)"
+                    class="text-center material"
+                    v-b-popover.hover.bottom="'This task allows you to present videos to an user in order for him to either describe them or classify them'"
+            >
               <i class="fas fa-play fa-4x"></i><br>
               <div class="m-2">Videos</div>
             </b-card>
@@ -38,21 +53,38 @@
         <b-row class="mt-md-4">
 
           <b-col md="4" class="mt-2 mt-md-0">
-            <b-card ref="card-pdf" :class="{ 'material-selected': selectedMaterial === materials.pdf }" @click="onMaterialSelected(materials.pdf)" class="text-center material">
+            <b-card ref="card-pdf"
+                    :class="{ 'material-selected': selectedMaterial === materials.pdf }"
+                    @click="onMaterialSelected(materials.pdf)"
+                    class="text-center material"
+                    v-b-popover.hover.bottom="'This task allows you to present pdf documents to an user in order for him to describe or translate them'"
+            >
               <i class="fas fa-file-pdf fa-4x"></i><br>
               <div class="m-2">PDFs</div>
             </b-card>
           </b-col>
 
-          <b-col md="4" class="mt-2 mt-md-0">
-            <b-card ref="card-tweet" :class="{ 'material-selected': selectedMaterial === materials.tweet }" @click="onMaterialSelected(materials.tweet)" class="text-center material">
+          <b-col v-if="false" md="4" class="mt-2 mt-md-0">
+            <b-card ref="card-tweet"
+                    :class="{ 'material-selected': selectedMaterial === materials.tweet }"
+                    @click="onMaterialSelected(materials.tweet)"
+                    class="text-center material"
+            >
               <i class="fab fa-twitter fa-4x"></i><br>
               <div class="m-2">Tweets</div>
+
+              <template v-if="selectedMaterial === materials.tweet" slot="footer">
+                Tweeter footer
+              </template>
             </b-card>
           </b-col>
 
           <b-col md="4" class="mt-2 mt-md-0" v-b-tooltip.hover title="It will redirect you to the template editor and set the default geo-coding template (expert path)">
-            <b-card ref="card-geo-coding" @click="selectGeoCoding" class="text-center material">
+            <b-card ref="card-geo-coding"
+                    @click="selectGeoCoding"
+                    class="text-center material"
+                    v-b-popover.hover.bottom="'This task allows you to present places on a map to an user. The user can answer your question by placing a marker on the map that will give you some coordinates.'"
+            >
               <i class="fas fa-map-marked-alt fa-4x"></i><br>
               <div class="m-2">Geo-coding</div>
             </b-card>
@@ -63,12 +95,12 @@
       </b-col>
 
       <b-col md="3" class="text-muted">
-        <p>Select the type of files that you'll use for your project.</p>
+        <p>Select the type of files that you will use for your project.</p>
         <p>
-          * You can only use images, sounds or videos for now but we're working hard to have the rest of options available very shortly.
-          Sorry for the inconvenience!
+          You can use images, sounds, videos and PDFs files.
+          The geo-coding template is also available and will allow you to get answers about places with a map.
         </p>
-        <p>Not what you were looking for? Try the <b-link :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">expert path</b-link> (not for beginners!)</p>
+        <p>Not what you were looking for? Try the <b-link :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">expert path</b-link> (not for beginners)</p>
       </b-col>
 
     </b-row>
