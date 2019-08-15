@@ -56,7 +56,7 @@
     <b-form-group
             label="Privacy"
             label-for="privacy"
-            description="">
+            description="If enabled, it locks all the public pages related to you and lock your statistics.">
       <b-form-checkbox v-model="form.privacy" id="privacy" switch>
         Privacy setting {{ form.privacy ? 'enabled' : 'disabled' }}
       </b-form-checkbox>
@@ -65,7 +65,7 @@
     <b-form-group
             label="Get email notifications"
             label-for="email-notification"
-            description="">
+            description="When a Pybossa project publishes a blog post, users will get an email with the update.">
       <b-form-checkbox v-model="form.emailNotification" id="email-notification" switch>
         Email notifications {{ form.emailNotification ? 'enabled' : 'disabled' }}
       </b-form-checkbox>
