@@ -4,7 +4,7 @@ import store from '@/store'
 import BootstrapVue from 'bootstrap-vue'
 
 import sinon from 'sinon'
-import { createLocalVue, mount } from '@vue/test-utils'
+import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 
 import TemplateBuilder from '@/components/Task/Builder/TemplateBuilder'
 import DescribeTemplateEditor from '@/components/Task/Builder/TemplateEditor/DescribeTemplateEditor'
@@ -25,7 +25,7 @@ describe('Task/Builder/TemplateBuilder.vue', () => {
   })
 
   it('should display the correct template editor depending on the selected job in state', done => {
-    const wrapper = mount(TemplateBuilder, {
+    const wrapper = shallowMount(TemplateBuilder, {
       store,
       localVue,
       router
