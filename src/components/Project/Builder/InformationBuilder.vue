@@ -11,6 +11,7 @@
 
       <b-row>
 
+        <!-- Project description -->
         <b-col md="9">
           <h3 class="mt-3">{{ title }} in a few words</h3>
           <b-form-group
@@ -35,19 +36,21 @@
 
       </b-row>
 
+      <!-- Image upload -->
       <b-row class="mt-4">
-
         <b-col md="9">
           <h3 class="mt-3">Choose a nice picture</h3>
+
           <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
           <b-form-group
                   :state="selectedPictureSizeInMB <= maxPictureSizeInMB"
                   invalid-feedback="The picture is too big"
-                  :description="'The picture must not exceed ' + maxPictureSizeInMB + ' MB'">
-            <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Select a picture..."></b-form-file>
+                  :description="'Authorized formats: .jpg, .png, .gif, .svg. The picture must not exceed ' + maxPictureSizeInMB + ' MB.'"
+          >
+            <b-form-file @change="setImage" accept=".jpg, .png, .gif, .svg" placeholder="Select a picture..."></b-form-file>
           </b-form-group>
-        </b-col>
 
+        </b-col>
       </b-row>
 
       <b-row class="mt-4">
@@ -78,7 +81,7 @@ export default {
       selectedPicture: '',
       pictureSelected: false,
       selectedPictureSize: 0,
-      maxPictureSizeInMB: 3
+      maxPictureSizeInMB: 1
     }
   },
   mounted () {
@@ -105,9 +108,6 @@ export default {
     ]),
 
     onSubmit () {
-      // const base64Head = 'data:image/png;base64,'
-      // const croppedPictureSizeInMegaBytes = Math.round((croppedPicture.length - base64Head.length) * 6 / 8) / 1000000
-
       this.descriptionFirstInteraction = false
 
       if (this.validated && this.selectedPictureSizeInMB <= this.maxPictureSizeInMB) {

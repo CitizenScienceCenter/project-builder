@@ -88,11 +88,12 @@
       <!-- Avatar update -->
       <b-col md="5" class="mt-md-0 mt-5">
         <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
-          <b-form-group>
-
-            <vue-cropper v-show=" 'info' in project && 'thumbnail_url' in project.info " ref="cropper" :view-mode="2" :autoCropArea="1" :aspectRatio="4/3"></vue-cropper>
-            <b-form-file @change="setImage" accept=".jpg, .png, .gif" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
-
+          <b-form-group :description="'Authorized formats: .jpg, .png, .gif, .svg. Maximum file size: ' + maxPictureSizeInMb + 'MB.'"
+                        :state="pictureSizeInMb <= maxPictureSizeInMb"
+                        invalid-feedback="The picture is too big"
+          >
+            <vue-cropper v-show="(('info' in project) && ('thumbnail_url' in project.info)) || picture" ref="cropper" :view-mode="2" :autoCropArea="1" :aspectRatio="4/3"></vue-cropper>
+            <b-form-file @change="setImage" accept=".jpg, .png, .gif, .svg" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
           </b-form-group>
 
           <div class="text-center">
@@ -156,8 +157,12 @@ export default {
         keepTrack: '',
         allowAnonymousContributors: true
       },
+
       picture: '',
       croppedPicture: '',
+      pictureSize: 0,
+      maxPictureSizeInMb: 2,
+
       validation: {
         name: {
           maxLength: 25
@@ -207,6 +212,9 @@ export default {
       }
     },
 
+    /**
+     * Update the project data
+     */
     onSubmit () {
       if (this.isFormValid()) {
 
@@ -244,28 +252,39 @@ export default {
           title: 'Incomplete form',
           content: 'All the fields must be validated to update the project data'
         })
-
       }
+
     },
 
+    /**
+     * Update the project avatar
+     */
     onPictureSubmit () {
+      // check if a picture is selected
       if (this.picture) {
+        // check if the size of the picture is correct
+        if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
+          this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
 
-        this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
-
-        this.uploadAvatar({
-          project: this.project,
-          image: this.croppedPicture
-        }).then(response => {
-          if (response) {
-            this.showSuccess({
-              title: 'Success',
-              content: 'Project picture updated'
-            })
-            this.getProject(this.project.id)
-            this.$refs.cropper.replace(this.croppedPicture)
-          }
-        })
+          this.uploadAvatar({
+            project: this.project,
+            image: this.croppedPicture
+          }).then(response => {
+            if (response) {
+              this.showSuccess({
+                title: 'Success',
+                content: 'Project picture updated'
+              })
+              this.getProject(this.project.id)
+              this.$refs.cropper.replace(this.croppedPicture)
+            }
+          })
+        } else {
+          this.showError({
+            title: 'Picture too big',
+            content: 'Your picture must be less than ' + this.maxPictureSizeInMb + 'MB'
+          })
+        }
       } else {
         this.showError({
           title: 'Picture not selected',
@@ -274,6 +293,9 @@ export default {
       }
     },
 
+    /**
+     * Delete the current project
+     */
     onDeleteProjectSubmit () {
       this.deleteProject(this.project).then(response => {
         if (response) {
@@ -282,6 +304,10 @@ export default {
       })
     },
 
+    /**
+     * Called each time a new picture is selected
+     * @param event
+     */
     setImage (event) {
       const file = event.target.files[0]
 
@@ -289,6 +315,8 @@ export default {
         alert('Please select an image file')
         return
       }
+
+      this.pictureSize = file.size
 
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
@@ -302,6 +330,10 @@ export default {
       }
     },
 
+    /**
+     * Check if the project data form is valid
+     * @returns {boolean}
+     */
     isFormValid () {
       const formKeys = Object.keys(this.form).filter(el => el !== 'category' && el !== 'allowAnonymousContributors')
       let isValidated = true
@@ -337,6 +369,10 @@ export default {
           text: category.name
         }
       })
+    },
+
+    pictureSizeInMb () {
+      return this.pictureSize / 1000000
     }
   }
 }
