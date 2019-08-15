@@ -48,7 +48,7 @@ describe('Project/Registration/Registration.vue', () => {
     expect(registerStub.calledOnce).to.equal(true)
   })
 
-  it('should not if the form is incomplete', function () {
+  it('should not register if the form is incomplete', function () {
     const registerStub = sandbox.stub().returns(new Promise(() => true))
 
     const wrapper = mount(Registration, {
@@ -76,7 +76,7 @@ describe('Project/Registration/Registration.vue', () => {
     expect(registerStub.calledOnce).to.equal(false)
   })
 
-  it('should show the birth date checker if not already done', function () {
+  /* it('should show the birth date checker if not already done', function () {
     store.commit('user/setBirthDateVerified', false)
 
     const wrapper = mount(Registration, {
@@ -89,7 +89,7 @@ describe('Project/Registration/Registration.vue', () => {
 
     expect(birthDateChecker.exists()).to.equal(true)
     expect(birthDateChecker.isVisible()).to.equal(true)
-  })
+  }) */
 
   afterEach(() => {
     sandbox.restore()

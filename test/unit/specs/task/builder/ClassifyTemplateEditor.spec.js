@@ -121,6 +121,16 @@ describe('Task/Builder/ClassifyTemplateEditor.vue', () => {
             'Yes', ''
           ]
         }
+      ],
+      firstInteractions: [
+        {
+          question: false,
+          answers: [false, false]
+        },
+        {
+          question: false,
+          answers: [false, false]
+        }
       ]
     }
 
@@ -155,7 +165,7 @@ describe('Task/Builder/ClassifyTemplateEditor.vue', () => {
 
     expect(wrapper.vm.$data.questions[0].answers.length).to.equal(2)
 
-    wrapper.vm.deleteAnswer(wrapper.vm.$data.questions[0], 0)
+    wrapper.vm.deleteAnswer(0, 0)
 
     expect(wrapper.vm.$data.questions[0].answers.length).to.equal(2)
   })
