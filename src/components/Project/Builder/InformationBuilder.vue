@@ -73,6 +73,8 @@ export default {
     return {
       maxNbCharacters: 120,
       currentShortDescription: '',
+      descriptionFirstInteraction: true,
+
       selectedPicture: '',
       pictureSelected: false,
       selectedPictureSize: 0,
@@ -106,7 +108,10 @@ export default {
       // const base64Head = 'data:image/png;base64,'
       // const croppedPictureSizeInMegaBytes = Math.round((croppedPicture.length - base64Head.length) * 6 / 8) / 1000000
 
+      this.descriptionFirstInteraction = false
+
       if (this.validated && this.selectedPictureSizeInMB <= this.maxPictureSizeInMB) {
+
         this.setShortDescription(this.currentShortDescription)
         this.setStep({ step: 'information', value: true })
 
@@ -162,7 +167,8 @@ export default {
      * @return {boolean}
      */
     validated () {
-      return this.currentShortDescription.length > 0 && this.currentShortDescription.length <= this.maxNbCharacters
+      return this.descriptionFirstInteraction ||
+        (this.currentShortDescription.length > 0 && this.currentShortDescription.length <= this.maxNbCharacters)
     },
     /**
      * Returns a valid feedback message that will be displayed in the form
@@ -177,6 +183,11 @@ export default {
      */
     invalidFeedback () {
       return this.currentShortDescription.length === 0 ? 'You must set a description for your project' : 'The description length should not exceed ' + this.maxNbCharacters + ' characters'
+    }
+  },
+  watch: {
+    currentShortDescription () {
+      this.descriptionFirstInteraction = false
     }
   }
 }

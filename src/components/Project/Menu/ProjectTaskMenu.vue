@@ -6,15 +6,28 @@
         <div>
           <h4>Import Tasks</h4>
           <p>Import tasks from templates, GDrive, or CSV</p>
-          <b-btn variant="outline-primary" :to="{ name: 'project.task.importers', params: { id: 'id' in project ? project.id : 0 } }">Import</b-btn>
+          <b-btn variant="outline-primary" :to="{ name: 'project.task.importers', params: { id: ('id' in project) ? project.id : 0 } }">Import</b-btn>
         </div>
 
         <div class="mt-4">
           <h4>Task Presenter</h4>
           <p>Edit the task presenter</p>
           <div class="d-inline-block" v-b-tooltip.hover title="This section is reserved for expert users having 'coding' skills">
-            <b-btn v-if="taskPresenter" variant="outline-primary" :to="{ name: 'project.task.presenter.editor', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
-            <b-btn v-else variant="outline-primary" :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in project ? project.id : 0 } }">Editor</b-btn>
+
+            <b-button v-if="taskPresenter"
+                      variant="outline-primary"
+                      @click="goToEditor"
+            >
+              Editor
+            </b-button>
+
+            <b-button v-else
+                      variant="outline-primary"
+                      :to="{ name: 'project.task.presenter.settings', params: { id: ('id' in project) ? project.id : 0 } }"
+            >
+              Editor
+            </b-button>
+
           </div>
         </div>
 
@@ -31,13 +44,13 @@
         <div>
           <h4>Export Tasks</h4>
           <p>Export tasks to JSON, CSV, or a CKAN server</p>
-          <b-btn :to="{ name: 'project.task.exporters', params: { id: 'id' in project ? project.id : 0 } }" variant="outline-primary">Export</b-btn>
+          <b-btn :to="{ name: 'project.task.exporters', params: { id: ('id' in project) ? project.id : 0 } }" variant="outline-primary">Export</b-btn>
         </div>
 
         <div class="mt-4">
           <h4>Settings</h4>
           <p>Configure the task scheduler, redundancy, etc.</p>
-          <b-btn :to="{ name: 'project.task.settings', params: { id: 'id' in project ? project.id : 0 } }" variant="outline-primary">Settings</b-btn>
+          <b-btn :to="{ name: 'project.task.settings', params: { id: ('id' in project) ? project.id : 0 } }" variant="outline-primary">Settings</b-btn>
         </div>
 
       </b-col>
@@ -46,7 +59,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'ProjectTasksMenu',
@@ -63,6 +76,16 @@ export default {
     ...mapState('task', [
       'taskPresenter'
     ])
+  },
+  methods: {
+    ...mapMutations('task', [
+      'setUsingTemplate'
+    ]),
+
+    goToEditor () {
+      this.setUsingTemplate(null)
+      this.$router.push({ name: 'project.task.presenter.editor', params: { id: 'id' in this.project ? this.project.id : 0 } })
+    }
   }
 }
 </script>

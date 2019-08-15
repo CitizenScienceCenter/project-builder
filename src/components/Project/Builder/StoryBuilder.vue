@@ -103,7 +103,14 @@ export default {
       currentWhatWhy: '',
       currentHow: '',
       currentWho: '',
-      currentKeepTrack: ''
+      currentKeepTrack: '',
+
+      firstInteraction: {
+        currentWhatWhy: true,
+        currentHow: true,
+        currentWho: true,
+        currentKeepTrack: true
+      }
     }
   },
   created () {
@@ -120,22 +127,31 @@ export default {
 
     onSubmit () {
       const fields = ['currentWhatWhy', 'currentHow', 'currentWho', 'currentKeepTrack']
+      let isValid = true
+
       for (let field of fields) {
+        this.firstInteraction[field] = false
         if (!this.validated(field)) {
-          return false
+          isValid = false
         }
       }
+
+      if (!isValid) {
+        return false
+      }
+
       this.setStory({
         whatWhy: this.currentWhatWhy,
         how: this.currentHow,
         who: this.currentWho,
         keepTrack: this.currentKeepTrack
       })
+
       this.setStep({ step: 'story', value: true })
     },
 
     validated (field) {
-      return this.$data[field].length > 0 && this.$data[field].length <= this.maxNbCharacters
+      return this.firstInteraction[field] || (this.$data[field].length > 0 && this.$data[field].length <= this.maxNbCharacters)
     },
     validFeedback (field) {
       return this.maxNbCharacters - this.$data[field].length + ' characters left'
@@ -151,6 +167,20 @@ export default {
       who: state => state.story.who,
       keepTrack: state => state.story.keepTrack
     })
+  },
+  watch: {
+    currentWhatWhy () {
+      this.firstInteraction.currentWhatWhy = false
+    },
+    currentHow () {
+      this.firstInteraction.currentHow = false
+    },
+    currentWho () {
+      this.firstInteraction.currentWho = false
+    },
+    currentKeepTrack () {
+      this.firstInteraction.currentKeepTrack = false
+    }
   }
 }
 </script>

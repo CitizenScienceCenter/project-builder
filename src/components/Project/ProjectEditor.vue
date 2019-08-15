@@ -304,8 +304,8 @@ export default {
 
     isFormValid () {
       const formKeys = Object.keys(this.form).filter(el => el !== 'category' && el !== 'allowAnonymousContributors')
-      console.log(formKeys)
       let isValidated = true
+
       for (let field of formKeys) {
         if (!this.validated(field)) {
           isValidated = false

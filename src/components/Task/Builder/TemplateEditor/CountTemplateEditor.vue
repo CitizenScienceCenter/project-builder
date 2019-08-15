@@ -26,7 +26,8 @@ export default {
   data: () => {
     return {
       maxNbCharacters: 75,
-      question: ''
+      question: '',
+      isFirstInteraction: true
     }
   },
   methods: {
@@ -38,11 +39,13 @@ export default {
     ]),
 
     onSubmit () {
+      this.isFirstInteraction = false
+
       if (this.validated) {
         this.setTaskTemplate(JSON.parse(JSON.stringify(this.question)))
         this.setStep({ step: 'template', value: true })
       } else {
-        this.showError({ title: 'Form incomplete', content: 'You have to provide a correct question' })
+        this.showError({ title: 'Incomplete form', content: 'You have to provide a correct question' })
       }
     },
 
@@ -78,7 +81,12 @@ export default {
       return this.question.length > 0 ? 'Too many characters in the question' : 'The question should not be empty'
     },
     validated () {
-      return this.question.length > 0 && this.question.length <= this.maxNbCharacters
+      return (this.isFirstInteraction || this.question.length > 0) && this.question.length <= this.maxNbCharacters
+    }
+  },
+  watch: {
+    question () {
+      this.isFirstInteraction = false
     }
   }
 }
