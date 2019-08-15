@@ -306,7 +306,8 @@ const actions = {
           return value.data
         }).catch(reason => {
           commit('notification/showError', {
-            title: errors.UPDATE_AVATAR_ERROR, content: reason
+            title: errors.UPDATE_AVATAR_ERROR,
+            content: 'Your picture is certainly too big. Ensure it size is less than 1MB'
           }, { root: true })
           commit('notification/closeLoading', 'user/updateAvatar', { root: true })
           return false

@@ -2,7 +2,12 @@
   <b-row>
     <b-col>
       <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :autoCrop="true" :view-mode="2" :aspectRatio="+1"></vue-cropper>
-      <b-form-file @change="setImage" accept=".jpg, .png, .gif"></b-form-file>
+      <b-form-group :description="'Authorized formats: .jpg, .png, .gif, .svg. Maximum file size: ' + maxPictureSizeInMb + 'MB.'"
+                    :state="pictureSizeInMb <= maxPictureSizeInMb"
+                    invalid-feedback="The picture is too big"
+      >
+        <b-form-file @change="setImage" accept=".jpg, .png, .gif, .svg"></b-form-file>
+      </b-form-group>
       <b-btn ref="btn-submit" v-if="pictureSelected" variant="success" class="float-right mt-2" @click="onSubmit">Save avatar</b-btn>
       <LoadingSpinner id="user/updateAvatar" class="mt-2"></LoadingSpinner>
     </b-col>
@@ -10,7 +15,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import VueCropper from 'vue-cropperjs'
 import LoadingSpinner from '@/components/Helper/LoadingSpinner'
 
@@ -19,7 +24,9 @@ export default {
   data: () => {
     return {
       pictureSelected: false,
-      selectedPicture: ''
+      selectedPicture: '',
+      pictureSize: 0,
+      maxPictureSizeInMb: 2
     }
   },
   components: {
@@ -29,11 +36,19 @@ export default {
   computed: {
     ...mapState('user', {
       profile: state => state.infos
-    })
+    }),
+
+    pictureSizeInMb () {
+      return this.pictureSize / 1000000
+    }
   },
   methods: {
     ...mapActions('user', [
       'updateAvatar'
+    ]),
+
+    ...mapMutations('notification', [
+      'showError'
     ]),
 
     setImage (event) {
@@ -43,6 +58,8 @@ export default {
         alert('Please select an image file')
         return
       }
+
+      this.pictureSize = file.size
 
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
@@ -58,15 +75,23 @@ export default {
     },
 
     onSubmit () {
-      this.updateAvatar({
-        user: this.profile,
-        avatar: this.$refs.cropper.getCroppedCanvas().toDataURL()
-      }).then(response => {
-        if (response) {
-          this.$refs.cropper.reset()
-          this.pictureSelected = false
-        }
-      })
+      // check if the size of the picture is correct
+      if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
+        this.updateAvatar({
+          user: this.profile,
+          avatar: this.$refs.cropper.getCroppedCanvas().toDataURL()
+        }).then(response => {
+          if (response) {
+            this.$refs.cropper.reset()
+            this.pictureSelected = false
+          }
+        })
+      } else {
+        this.showError({
+          title: 'Picture too big',
+          content: 'Your picture must be less than ' + this.maxPictureSizeInMb + 'MB'
+        })
+      }
     }
   }
 }
