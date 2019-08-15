@@ -32,7 +32,8 @@ export default {
   data: () => {
     return {
       maxNbCharacters: 25,
-      currentTitle: ''
+      currentTitle: '',
+      titleFirstInteraction: true
     }
   },
   created () {
@@ -45,6 +46,7 @@ export default {
     ]),
 
     onSubmit () {
+      this.titleFirstInteraction = false
       if (this.validated) {
         this.setTitle(this.currentTitle)
         this.setStep({ step: 'name', value: true })
@@ -53,7 +55,7 @@ export default {
   },
   computed: {
     validated () {
-      return this.currentTitle.length > 0 && this.currentTitle.length <= this.maxNbCharacters
+      return this.titleFirstInteraction || (this.currentTitle.length > 0 && this.currentTitle.length <= this.maxNbCharacters)
     },
     validFeedback () {
       return this.maxNbCharacters - this.currentTitle.length + ' characters left'
@@ -64,6 +66,11 @@ export default {
     ...mapState('project/builder', {
       title: state => state.title
     })
+  },
+  watch: {
+    currentTitle () {
+      this.titleFirstInteraction = false
+    }
   }
 }
 </script>

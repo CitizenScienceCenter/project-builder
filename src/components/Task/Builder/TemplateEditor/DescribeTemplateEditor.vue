@@ -20,9 +20,9 @@
               :label="'Description ' + (key + 1)"
               :valid-feedback="validDescriptionFeedback(description)"
               :invalid-feedback="invalidDescriptionFeedback(description)"
-              :state="descriptionValidated(description)">
+              :state="descriptionValidated(key)">
 
-        <b-input v-model="descriptions[key]" placeholder="Describe what?"></b-input>
+        <b-input v-model="descriptions[key]" @input="descriptionUpdated(key)" placeholder="Describe what?"></b-input>
         <b-btn @click="deleteDescription(key)" v-if="descriptions.length > 1" variant="danger" size="sm" class="mt-1 mb-1 float-right">Delete</b-btn>
 
       </b-form-group>
@@ -53,7 +53,10 @@ export default {
       question: '',
       descriptions: [
         ''
-      ]
+      ],
+
+      questionFirstInteraction: true,
+      descriptionsFirstInteraction: [true]
     }
   },
   computed: {
@@ -70,15 +73,20 @@ export default {
     ]),
 
     addDescription () {
+      this.descriptionsFirstInteraction.push(true)
       this.descriptions.push('')
     },
     deleteDescription (key) {
       if (this.descriptions.length > 1) {
         this.descriptions.splice(key, 1)
+        this.descriptionsFirstInteraction.splice(key, 1)
       }
     },
 
     onSubmit () {
+      this.questionFirstInteraction = false
+      this.descriptionsFirstInteraction = new Array(this.descriptionsFirstInteraction.length).fill(false)
+
       if (this.isFormValid()) {
         this.setTaskTemplate({
           question: this.question,
@@ -93,8 +101,8 @@ export default {
     isFormValid () {
       let nbInvalidDescriptions = 0
 
-      for (let description of this.descriptions) {
-        if (!this.descriptionValidated(description)) {
+      for (let descriptionKey in this.descriptions) {
+        if (!this.descriptionValidated(descriptionKey)) {
           nbInvalidDescriptions++
         }
       }
@@ -109,7 +117,7 @@ export default {
       return question.length > 0 ? 'Too many characters in this question' : 'The question should not be empty'
     },
     questionValidated (question) {
-      return question.length > 0 && question.length <= this.maxNbCharactersQuestions
+      return (this.questionFirstInteraction || question.length > 0) && question.length <= this.maxNbCharactersQuestions
     },
 
     validDescriptionFeedback (description) {
@@ -118,8 +126,18 @@ export default {
     invalidDescriptionFeedback (description) {
       return description.length > 0 ? 'Too many characters in this description' : 'The description should not be empty'
     },
-    descriptionValidated (description) {
-      return description.length > 0 && description.length <= this.maxNbCharactersDescriptions
+    descriptionValidated (descriptionKey) {
+      const description = this.descriptions[descriptionKey]
+      return (this.descriptionsFirstInteraction[descriptionKey] || description.length > 0) && description.length <= this.maxNbCharactersDescriptions
+    },
+
+    descriptionUpdated (descriptionKey) {
+      this.descriptionsFirstInteraction[descriptionKey] = false
+    }
+  },
+  watch: {
+    question () {
+      this.questionFirstInteraction = false
     }
   }
 }

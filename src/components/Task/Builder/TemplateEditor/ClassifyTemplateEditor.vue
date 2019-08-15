@@ -14,9 +14,9 @@
                     :label="'Question ' + (questionKey + 1)"
                     :valid-feedback="validQuestionFeedback(question.question)"
                     :invalid-feedback="invalidQuestionFeedback(question.question)"
-                    :state="questionValidated(question.question)">
+                    :state="questionValidated(questionKey)">
 
-              <b-input v-model="question.question"></b-input>
+              <b-input v-model="question.question" @input="questionUpdated(questionKey)"></b-input>
               <b-btn @click="deleteQuestion(questionKey)" v-if="questions.length > 1" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete question</b-btn>
 
             </b-form-group>
@@ -27,14 +27,14 @@
                     :label="'Answer ' + (answerKey + 1)"
                     :valid-feedback="validAnswerFeedback(answer)"
                     :invalid-feedback="invalidAnswerFeedback(answer)"
-                    :state="answerValidated(answer)">
+                    :state="answerValidated(questionKey, answerKey)">
 
-              <b-input v-model="question.answers[answerKey]"></b-input>
-              <b-btn @click="deleteAnswer(question, answerKey)" v-if="question.answers.length > 2" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete answer</b-btn>
+              <b-input v-model="question.answers[answerKey]" @input="answerUpdated(questionKey, answerKey)"></b-input>
+              <b-btn @click="deleteAnswer(questionKey, answerKey)" v-if="question.answers.length > 2" variant="danger" size="sm" class="float-right mt-1 mb-1">Delete answer</b-btn>
 
             </b-form-group>
 
-            <b-btn @click="addAnswer(question)" class="float-right ">Add answer</b-btn>
+            <b-btn @click="addAnswer(questionKey)" class="float-right ">Add answer</b-btn>
           </b-tab>
         </b-tabs>
 
@@ -58,13 +58,23 @@ export default {
   data: () => {
     return {
       maxNbCharactersQuestions: 75,
-      maxNbCharactersAnswers: 15,
+      maxNbCharactersAnswers: 30,
+
       questions: [
         {
           question: '',
           answers: [
             '', ''
           ]
+        }
+      ],
+
+      // store all the interactions with the fields
+      // if a field is updated, the first interaction is set to false
+      firstInteractions: [
+        {
+          question: true,
+          answers: [true, true]
         }
       ]
     }
@@ -77,7 +87,12 @@ export default {
       'showError'
     ]),
 
+    // question methods
     addQuestion () {
+      this.firstInteractions.push({
+        question: true,
+        answers: [true, true]
+      })
       this.questions.push({
         question: '',
         answers: [
@@ -85,21 +100,41 @@ export default {
         ]
       })
     },
-    deleteQuestion (key) {
+    deleteQuestion (questionKey) {
       if (this.questions.length > 1) {
-        this.questions.splice(key, 1)
-      }
-    },
-    addAnswer (question) {
-      question.answers.push('')
-    },
-    deleteAnswer (question, key) {
-      if (question.answers.length > 2) {
-        question.answers.splice(key, 1)
+        this.firstInteractions.splice(questionKey, 1)
+        this.questions.splice(questionKey, 1)
       }
     },
 
+    // answer methods
+    addAnswer (questionKey) {
+      this.firstInteractions[questionKey].answers.push(true)
+      this.questions[questionKey].answers.push('')
+    },
+    deleteAnswer (questionKey, answerKey) {
+      if (this.questions[questionKey].answers.length > 2) {
+        this.questions[questionKey].answers.splice(answerKey, 1)
+        this.firstInteractions[questionKey].answers.splice(answerKey, 1)
+      }
+    },
+
+    /**
+     * Called when the user submit the form
+     */
     onSubmit () {
+      // set all first interactions to false to show all the errors
+      const interactions = []
+      for (const questionInteraction of this.firstInteractions) {
+        const interaction = {
+          question: false,
+          answers: new Array(questionInteraction.answers.length).fill(false)
+        }
+        interactions.push(interaction)
+      }
+      // give a new array reference to update the view
+      this.firstInteractions = interactions
+
       if (this.isFormValid()) {
         // clone the content
         this.setTaskTemplate(JSON.parse(JSON.stringify(this.questions)))
@@ -109,17 +144,21 @@ export default {
       }
     },
 
+    /**
+     * Checks if all the fields of the form are valid
+     * @return {boolean}
+     */
     isFormValid () {
       let countInvalidQuestions = 0
       let countInvalidAnswers = 0
 
-      for (let question of this.questions) {
-        if (!this.questionValidated(question.question)) {
+      for (let question in this.questions) {
+        if (!this.questionValidated(question)) {
           countInvalidQuestions++
         }
 
-        for (let answer of question.answers) {
-          if (!this.answerValidated(answer)) {
+        for (let answer in this.questions[question].answers) {
+          if (!this.answerValidated(question, answer)) {
             countInvalidAnswers++
           }
         }
@@ -128,24 +167,37 @@ export default {
       return countInvalidQuestions === 0 && countInvalidAnswers === 0
     },
 
+    // question validation
     validQuestionFeedback (question) {
       return this.maxNbCharactersQuestions - question.length + ' characters left'
     },
     invalidQuestionFeedback (question) {
       return question.length > 0 ? 'Too many characters in this question' : 'The question should not be empty'
     },
-    questionValidated (question) {
-      return question.length > 0 && question.length <= this.maxNbCharactersQuestions
+    questionValidated (questionKey) {
+      const question = this.questions[questionKey].question
+      return (this.firstInteractions[questionKey].question || question.length > 0) && question.length <= this.maxNbCharactersQuestions
     },
 
+    // answer validation
     validAnswerFeedback (answer) {
       return this.maxNbCharactersAnswers - answer.length + ' characters left'
     },
     invalidAnswerFeedback (answer) {
       return answer.length > 0 ? 'Too many characters in this answer' : 'The answer should not be empty'
     },
-    answerValidated (answer) {
-      return answer.length > 0 && answer.length <= this.maxNbCharactersAnswers
+    answerValidated (questionKey, answerKey) {
+      const question = this.questions[questionKey]
+      const answer = question.answers[answerKey]
+      return (this.firstInteractions[questionKey].answers[answerKey] || answer.length > 0) && answer.length <= this.maxNbCharactersAnswers
+    },
+
+    // interaction updates
+    questionUpdated (questionKey) {
+      this.firstInteractions[questionKey].question = false
+    },
+    answerUpdated (questionKey, answerKey) {
+      this.firstInteractions[questionKey].answers[answerKey] = false
     }
   },
   computed: {
