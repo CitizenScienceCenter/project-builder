@@ -56,6 +56,7 @@ export default {
       'setOnlineCsvImporterVisible',
       'setFlickrImporterVisible',
       'setDropboxImporterVisible',
+      'setTwitterImporterVisible',
       'setBucketName',
       'setBucketFiles'
     ]),
@@ -74,6 +75,7 @@ export default {
       this.setOnlineCsvImporterVisible(false)
       this.setFlickrImporterVisible(false)
       this.setDropboxImporterVisible(false)
+      this.setTwitterImporterVisible(false)
     },
 
     search () {

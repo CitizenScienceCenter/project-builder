@@ -3,7 +3,7 @@
     <b-row class="mt-4">
       <b-col>
         <h2 class="text-center">Now's the time to select your source</h2>
-        <b-link v-if="selectedSource" @click="goBack">Go back: select another source</b-link>
+        <b-link v-if="selectedSource && materialSources[task.material].length > 1" @click="goBack">Go back: select another source</b-link>
 
         <b-row class="mt-4" v-if="!selectedSource">
           <b-col md="9">
@@ -42,6 +42,7 @@
             <DropboxSourceEditor v-if="selectedSource === sources.dropbox"></DropboxSourceEditor>
             <AmazonSourceEditor v-if="selectedSource === sources.amazon"></AmazonSourceEditor>
             <FlickrSourceEditor v-if="selectedSource === sources.flickr"></FlickrSourceEditor>
+            <TwitterSourceEditor v-if="selectedSource === sources.twitter"></TwitterSourceEditor>
           </b-col>
         </b-row>
       </b-col>
@@ -55,10 +56,12 @@ import { mapMutations, mapState } from 'vuex'
 import DropboxSourceEditor from '@/components/Task/Builder/SourceEditor/DropboxSourceEditor'
 import AmazonSourceEditor from '@/components/Task/Builder/SourceEditor/AmazonSourceEditor'
 import FlickrSourceEditor from '@/components/Task/Builder/SourceEditor/FlickrSourceEditor'
+import TwitterSourceEditor from '@/components/Task/Builder/SourceEditor/TwitterSourceEditor'
 
 export default {
   name: 'SourceBuilder',
   components: {
+    TwitterSourceEditor,
     FlickrSourceEditor,
     AmazonSourceEditor,
     DropboxSourceEditor
@@ -73,7 +76,9 @@ export default {
   },
   methods: {
     ...mapMutations('task/builder', [
-      'setStep', 'setTaskSource', 'setTaskSourceContent'
+      'setStep',
+      'setTaskSource',
+      'setTaskSourceContent'
     ]),
 
     onSourceSelected (source) {
@@ -89,7 +94,10 @@ export default {
   },
   computed: {
     ...mapState('task/builder', [
-      'task', 'materialSources', 'sources'
+      'task',
+      'materialSources',
+      'sources',
+      'materials'
     ]),
     ...mapState('project', [
       'selectedProject'

@@ -24,7 +24,8 @@ const jobs = {
 const sources = {
   dropbox: 'dropbox',
   amazon: 'amazon',
-  flickr: 'flickr'
+  flickr: 'flickr',
+  twitter: 'twitter'
 }
 
 // global state for this module
@@ -89,7 +90,7 @@ const state = {
       sources.dropbox
     ],
     [materials.tweet]: [
-
+      sources.twitter
     ],
     [materials.video]: [
       sources.amazon,
@@ -107,9 +108,7 @@ const state = {
     [materials.pdf]: [
       '.pdf'
     ],
-    [materials.tweet]: [
-
-    ],
+    [materials.tweet]: [],
     [materials.video]: [
       '.mp4'
     ]
@@ -211,6 +210,11 @@ const mutations = {
   },
   setStep (state, { step, value }) {
     state.steps = { ...state.steps, [step]: value }
+    // if only one source is available, we select it automatically
+    if (step === 'template' && value === true && state.materialSources[state.task.material].length === 1) {
+      state.task = { ...state.task, source: state.materialSources[state.task.material][0] }
+      state.steps = { ...state.steps, source: true }
+    }
   },
   setTaskMaterial (state, material) {
     state.task = { ...state.task, material }
