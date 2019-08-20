@@ -16,7 +16,8 @@ const errors = {
   POST_DROPBOX_TASKS_ERROR: 'Error when importing dropbox tasks',
   GET_FLICKR_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading flickr importer options',
   POST_FLICKR_TASKS_ERROR: 'Error when importing flickr tasks',
-  LOAD_FLICKR_ALBUMS_ERROR: 'Impossible to load your Flickr albums. Ensure that Pybossa is authorized to access your account'
+  LOAD_FLICKR_ALBUMS_ERROR: 'Impossible to load your Flickr albums. Ensure that Pybossa is authorized to access your account',
+  GET_TWITTER_IMPORTER_OPTIONS_LOADING_ERROR: 'Error when loading twitter importer options'
 }
 
 const state = {
@@ -26,6 +27,7 @@ const state = {
   isAmazonS3ImporterVisible: false,
   isFlickrImporterVisible: false,
   isDropboxImporterVisible: false,
+  isTwitterImporterVisible: false,
 
   bucket: {
     name: '',
@@ -39,6 +41,8 @@ const state = {
   localCsvTasksImportationOptions: {},
   onlineCsvTasksImportationOptions: {},
   dropboxTasksImportationOptions: {},
+  flickrTasksImportationOptions: {},
+  twitterTasksImportationOptions: {},
 
   loaders: {
     GET_BUCKET_FILES: 'task/importer/getBucketFiles'
@@ -451,6 +455,62 @@ const actions = {
       }, { root: true })
       return dispatch('getFlickrAlbums')
     })
+  },
+
+  /**
+   * Gets the CSRF token to import twitter tasks
+   * @param commit
+   * @param project
+   * @returns {Promise<T | boolean>}
+   */
+  getTwitterTasksImportationOptions ({ commit }, project) {
+    return api.getTwitterTasksImportationOptions(project.short_name).then(value => {
+      commit('setTwitterTasksImportationOptions', value.data)
+      return value.data
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: errors.GET_TWITTER_IMPORTER_OPTIONS_LOADING_ERROR, content: reason
+      }, { root: true })
+      return false
+    })
+  },
+
+  /**
+   * Imports the tweets task found with the given search options
+   * @param commit
+   * @param state
+   * @param dispatch
+   * @param project
+   * @param source
+   * @param maxTweets
+   * @return {Promise<any> | * | Promise<any> | Thenable<any> | PromiseLike<any> | Promise<any>}
+   */
+  importTwitterTasks ({ commit, state, dispatch }, { project, source, maxTweets }) {
+    return dispatch('getTwitterTasksImportationOptions', project).then(response => {
+      if (response) {
+        return api.importTwitterTasks(
+          state.twitterTasksImportationOptions.form.csrf,
+          project.short_name,
+          source,
+          maxTweets
+        ).then(value => {
+          if ('status' in value.data && value.data.status === 'message') {
+            commit('notification/showSuccess', {
+              title: 'Success',
+              content: value.data.flash
+            }, { root: true })
+            return value.data
+          }
+          return false
+        }).catch(reason => {
+          commit('notification/showError', {
+            title: errors.POST_FLICKR_TASKS_ERROR, content: reason
+          }, { root: true })
+          return false
+        })
+      }
+      return false
+    })
   }
 
 }
@@ -478,6 +538,9 @@ const mutations = {
   setFlickrAlbums (state, albums) {
     state.flickrAlbums = albums
   },
+  setTwitterTasksImportationOptions (state, options) {
+    state.twitterTasksImportationOptions = options
+  },
   setGoogleDocImporterVisible (state, value) {
     state.isGoogleDocImporterVisible = value
   },
@@ -495,6 +558,9 @@ const mutations = {
   },
   setDropboxImporterVisible (state, value) {
     state.isDropboxImporterVisible = value
+  },
+  setTwitterImporterVisible (state, value) {
+    state.isTwitterImporterVisible = value
   },
   setBucketFiles (state, files) {
     state.bucket = { ...state.bucket, files }

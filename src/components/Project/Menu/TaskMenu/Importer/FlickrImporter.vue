@@ -71,7 +71,8 @@ export default {
       'setLocalCsvImporterVisible',
       'setOnlineCsvImporterVisible',
       'setDropboxImporterVisible',
-      'setFlickrImporterVisible'
+      'setFlickrImporterVisible',
+      'setTwitterImporterVisible'
     ]),
     ...mapMutations('notification', [
       'showError'
@@ -117,6 +118,7 @@ export default {
       this.setGoogleDocImporterVisible(false)
       this.setAmazonS3ImporterVisible(false)
       this.setDropboxImporterVisible(false)
+      this.setTwitterImporterVisible(false)
     }
   },
   computed: {

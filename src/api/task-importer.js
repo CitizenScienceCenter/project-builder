@@ -126,6 +126,26 @@ export default {
         'X-CSRFToken': csrf
       }
     })
+  },
+
+  getTwitterTasksImportationOptions (projectShortName) {
+    return axios.get(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=twitter', {
+      data: {},
+      withCredentials: true
+    })
+  },
+
+  importTwitterTasks (csrf, projectShortName, source, maxTweets) {
+    return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + projectShortName + '/tasks/import?type=twitter', {
+      form_name: 'twitter',
+      max_tweets: maxTweets,
+      source: source
+    }, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
   }
 
 }

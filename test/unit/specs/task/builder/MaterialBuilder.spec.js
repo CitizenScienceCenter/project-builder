@@ -32,8 +32,7 @@ describe('Task/Builder/MaterialBuilder.vue', () => {
     const cards = wrapper.findAll(BCard)
 
     // + 1 for geo coding shortcut
-    // -1 because the twitter template is not ready yet
-    expect(cards.length).to.equal(storeMaterials.length + 1 - 1)
+    expect(cards.length).to.equal(storeMaterials.length + 1)
   })
 
   it('should update selected material on click', function () {

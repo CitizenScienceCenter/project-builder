@@ -115,6 +115,7 @@
               <i v-if="task.source === sources.amazon" class="fab fa-aws"></i>
               <i v-if="task.source === sources.dropbox" class="fab fa-dropbox"></i>
               <i v-if="task.source === sources.flickr" class="fab fa-flickr"></i>
+              <i v-if="task.source === sources.twitter" class="fab fa-twitter"></i>
             </b-media-aside>
 
             <b-media-body>
@@ -124,17 +125,17 @@
           </b-media>
         </ul>
 
-        <span v-if="task.source !== sources.flickr"><b>{{ task.sourceContent.length }}</b> tasks</span>
+        <span v-if="task.source !== sources.flickr && task.source !== sources.twitter"><b>{{ task.sourceContent.length }}</b> tasks</span>
 
-        <ul v-if="task.source !== sources.flickr">
+        <ul v-if="task.source !== sources.flickr && task.source !== sources.twitter">
           <li :key="key" v-for="(file, key) in task.sourceContent">
             <b-link v-if="task.source === sources.amazon" :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
             <b-link v-else-if="task.source === sources.dropbox" :href="file.link" target="_blank">{{ file.name }}</b-link>
             <b-link v-else :href="file" target="_blank">{{ file }}</b-link>
           </li>
         </ul>
-        <p v-else>One album to import (<span class="font-italic">{{ task.sourceContent }}</span>)</p>
-
+        <p v-else-if="task.source === sources.flickr">One album to import (<span class="font-italic">{{ task.sourceContent }}</span>)</p>
+        <p v-else-if="task.source === sources.twitter">{{ task.sourceContent.maxTweets + '' }} tweet(s) to import</p>
       </b-col>
     </b-row>
   </div>
@@ -153,6 +154,8 @@ import VideoDescriptionTemplate from '@/components/Task/Template/Video/VideoDesc
 import SoundClassificationTemplate from '@/components/Task/Template/Sound/SoundClassificationTemplate'
 import SoundDescriptionTemplate from '@/components/Task/Template/Sound/SoundDescriptionTemplate'
 import PdfDescriptionTemplate from '@/components/Task/Template/Document/PdfDescriptionTemplate'
+import TwitterClassificationTemplate from '@/components/Task/Template/Twitter/TwitterClassificationTemplate'
+import TwitterDescriptionTemplate from '@/components/Task/Template/Twitter/TwitterDescriptionTemplate'
 
 export default {
   name: 'SummaryBuilder',
@@ -174,7 +177,8 @@ export default {
     ...mapActions('task/importer', [
       'importAmazonS3Tasks',
       'importDropboxTasks',
-      'importFlickrTasks'
+      'importFlickrTasks',
+      'importTwitterTasks'
     ]),
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
@@ -259,9 +263,14 @@ export default {
       if (this.task.material === this.materials.tweet) {
 
         if (this.task.job === this.jobs.classify) {
-          console.log('Tweet classify template')
+          template = buildTemplateFromModel(TwitterClassificationTemplate, {
+            questions: this.task.template
+          })
         } else if (this.task.job === this.jobs.describe) {
-          console.log('Tweet describe template')
+          template = buildTemplateFromModel(TwitterDescriptionTemplate, {
+            question: this.task.template.question,
+            descriptions: this.task.template.descriptions
+          })
         }
 
       }
@@ -284,18 +293,29 @@ export default {
           bucket: this.bucket.name,
           files: this.task.sourceContent
         })
-      } else if (this.task.source === this.sources.dropbox) {
+
+      }
+      // Dropbox
+      else if (this.task.source === this.sources.dropbox) {
         sourcePromise = this.importDropboxTasks({
           project: this.selectedProject,
           files: this.task.sourceContent
         })
-      } else if (this.task.source === this.sources.flickr) {
+      }
+      // Flickr
+      else if (this.task.source === this.sources.flickr) {
         sourcePromise = this.importFlickrTasks({
           project: this.selectedProject,
           albumId: this.task.sourceContent
         })
-      } else {
-        console.log(this.task.source + ' task importer not implemented')
+      }
+      // Twitter
+      else if (this.task.source === this.sources.twitter) {
+        sourcePromise = this.importTwitterTasks({
+          project: this.selectedProject,
+          source: this.task.sourceContent.source,
+          maxTweets: this.task.sourceContent.maxTweets
+        })
       }
 
       /// --------------------------------------------------

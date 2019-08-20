@@ -25,6 +25,12 @@
 
       <b-row class="mt-4">
         <b-col>
+          <TwitterImporter></TwitterImporter>
+        </b-col>
+      </b-row>
+
+      <b-row class="mt-4">
+        <b-col>
           <GoogleDocImporter></GoogleDocImporter>
         </b-col>
       </b-row>
@@ -50,10 +56,12 @@ import OnlineCsvImporter from '@/components/Project/Menu/TaskMenu/Importer/Onlin
 import AmazonS3BucketImporter from '@/components/Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter'
 import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrImporter'
 import DropboxImporter from '@/components/Project/Menu/TaskMenu/Importer/DropboxImporter'
+import TwitterImporter from '@/components/Project/Menu/TaskMenu/Importer/TwitterImporter'
 
 export default {
   name: 'TaskImportersMenu',
   components: {
+    TwitterImporter,
     DropboxImporter,
     FlickrImporter,
     AmazonS3BucketImporter,
@@ -70,6 +78,7 @@ export default {
     this.setAmazonS3ImporterVisible(false)
     this.setFlickrImporterVisible(false)
     this.setDropboxImporterVisible(false)
+    this.setTwitterImporterVisible(false)
   },
   props: {
     id: {
@@ -91,7 +100,8 @@ export default {
       'setOnlineCsvImporterVisible',
       'setAmazonS3ImporterVisible',
       'setFlickrImporterVisible',
-      'setDropboxImporterVisible'
+      'setDropboxImporterVisible',
+      'setTwitterImporterVisible'
     ])
   },
   computed: {

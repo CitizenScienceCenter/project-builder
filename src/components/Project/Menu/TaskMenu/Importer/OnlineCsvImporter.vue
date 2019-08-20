@@ -36,7 +36,8 @@ export default {
       'setLocalCsvImporterVisible',
       'setOnlineCsvImporterVisible',
       'setFlickrImporterVisible',
-      'setDropboxImporterVisible'
+      'setDropboxImporterVisible',
+      'setTwitterImporterVisible'
     ]),
 
     onSubmit () {
@@ -52,6 +53,7 @@ export default {
       this.setAmazonS3ImporterVisible(false)
       this.setFlickrImporterVisible(false)
       this.setDropboxImporterVisible(false)
+      this.setTwitterImporterVisible(false)
     }
   },
   computed: {

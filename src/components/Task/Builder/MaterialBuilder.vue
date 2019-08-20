@@ -64,18 +64,15 @@
             </b-card>
           </b-col>
 
-          <b-col v-if="false" md="4" class="mt-2 mt-md-0">
+          <b-col md="4" class="mt-2 mt-md-0">
             <b-card ref="card-tweet"
                     :class="{ 'material-selected': selectedMaterial === materials.tweet }"
                     @click="onMaterialSelected(materials.tweet)"
                     class="text-center material"
+                    v-b-popover.hover.bottom="'This task allows you to present some tweets to an user in order for him to describe or classify them'"
             >
               <i class="fab fa-twitter fa-4x"></i><br>
               <div class="m-2">Tweets</div>
-
-              <template v-if="selectedMaterial === materials.tweet" slot="footer">
-                Tweeter footer
-              </template>
             </b-card>
           </b-col>
 
@@ -131,10 +128,14 @@ export default {
   },
   methods: {
     ...mapMutations('task/builder', [
-      'setTaskMaterial', 'setStep'
+      'setTaskMaterial',
+      'setStep'
     ]),
     ...mapMutations('task', [
       'setTaskTemplate'
+    ]),
+    ...mapActions('task/builder', [
+      'reset'
     ]),
     ...mapActions('task', [
       'saveTaskPresenter'
@@ -149,11 +150,17 @@ export default {
         this.$router.push({ name: 'project.task.presenter.editor', params: { id: this.selectedProject.id } })
       })
     },
+
     onMaterialSelected (materialType) {
       this.selectedMaterial = materialType
     },
+
     onSubmit () {
       if (Object.values(this.materials).some(m => m === this.selectedMaterial)) {
+        // reset all the builder variables when a new material is selected
+        if (this.task.material !== this.selectedMaterial) {
+          this.reset()
+        }
         this.setTaskMaterial(this.selectedMaterial)
         this.setStep({ step: 'material', value: true })
       }
@@ -161,7 +168,8 @@ export default {
   },
   computed: {
     ...mapState('task/builder', [
-      'materials', 'task'
+      'materials',
+      'task'
     ]),
     ...mapState('project', [
       'selectedProject'
