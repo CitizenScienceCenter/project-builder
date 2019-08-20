@@ -75,9 +75,16 @@ const actions = {
       return value.data
     }).catch(reason => {
       commit('notification/closeLoading', id, { root: true })
-      commit('notification/showError', {
-        title: errors.GET_BUCKET_FILES_ERROR, content: reason
-      }, { root: true })
+      if (reason.response.data.hasOwnProperty('exception_msg')) {
+        commit('notification/showError', {
+          title: 'Impossible to load this bucket',
+          content: reason.response.data.exception_msg
+        }, { root: true })
+      } else {
+        commit('notification/showError', {
+          title: errors.GET_BUCKET_FILES_ERROR, content: reason
+        }, { root: true })
+      }
       return false
     })
   },

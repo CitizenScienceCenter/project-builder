@@ -1,11 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 const component =
   {
-    /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
+      <!-- This template use https://bootstrap-vue.js.org/ -->
+
       <b-row v-if="pybossa.userProgressInPercent < 100">
+        
+        <!-- Form zone -->
         <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
         
+          <!-- Questions with answers -->
           <b-form-group :key="key" v-for="(question, key) in questions" :label="question.question" label-size="lg">
           
             <b-form-radio-group 
@@ -17,16 +21,22 @@ const component =
             
           </b-form-group>
           
+          <!-- Submit button -->
           <b-btn @click="submit" variant="success">Submit</b-btn>
+          
+          <!-- Form validation errors -->
           <b-alert variant="danger" v-model="showAlert" class="mt-2" dismissible>
             You must complete the form to submit
           </b-alert>
-          
+           
+          <!-- User progress -->
           <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ task.id }}</b-badge></p>
           <p>You have completed: <b-badge variant="primary">{{ pybossa.userProgress.done }}</b-badge> tasks from <b-badge variant="primary">{{ pybossa.userProgress.total }}</b-badge></p>
             
           <b-progress :value="pybossa.userProgressInPercent" :max="100"></b-progress>
         </b-col>
+        
+        <!-- Image -->
         <b-col md="6" class="order-1 order-md-2">
           <div v-if="taskInfo.url || taskInfo.link_raw" class="text-center">
             <div v-if="pybossa.taskLoaded">
@@ -38,6 +48,8 @@ const component =
           <b-alert v-else :show="true" variant="danger">Picture not available</b-alert>
         </b-col>
       </b-row>
+      
+      <!-- Task end message -->
       <b-row v-else>
         <b-col>
           <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>

@@ -1,9 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 const component =
   {
-    /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
+      <!-- This template use https://bootstrap-vue.js.org/ -->
+
       <b-row v-if="pybossa.userProgressInPercent < 100">
+      
+        <!-- Form -->
         <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
         
           <b-form-group :key="key" v-for="(question, key) in questions" :label="question.question" label-size="lg">
@@ -18,10 +21,13 @@ const component =
           </b-form-group>
           
           <b-btn @click="submit" variant="success">Submit</b-btn>
+          
+          <!-- Form validation errors -->
           <b-alert variant="danger" v-model="showAlert" class="mt-2" dismissible>
             You must complete the form to submit
           </b-alert>
           
+          <!-- User progress -->
           <p class="mt-2">You are working now on task: <b-badge variant="warning">{{ task.id }}</b-badge></p>
           <p>You have completed: <b-badge variant="primary">{{ pybossa.userProgress.done }}</b-badge> tasks from <b-badge variant="primary">{{ pybossa.userProgress.total }}</b-badge></p>
             
@@ -31,6 +37,7 @@ const component =
         <!-- Tweet -->
         <b-col md="6" class="order-1 order-md-2">
           
+          <!-- Author name and tweet text -->
           <h5 v-if="taskInfo.user && taskInfo.user.name">From: {{ taskInfo.user.name }}</h5>
           <p><i>{{ taskInfo.text }}</i></p>
         
@@ -50,6 +57,7 @@ const component =
         </b-col>
       </b-row>
       
+      <!-- Task end message -->
       <b-row v-else>
         <b-col>
           <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>
