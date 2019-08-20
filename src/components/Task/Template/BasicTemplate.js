@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 const component =
   {
-    /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
+      <!-- This template use https://bootstrap-vue.js.org/ -->
+
       <b-row>
         <b-col>
           <h1>Basic template</h1>

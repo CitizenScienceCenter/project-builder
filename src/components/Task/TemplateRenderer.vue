@@ -1,7 +1,8 @@
 <template>
   <b-row class="mt-4 mb-4">
     <b-col>
-      <b-link :to="{ name: 'project', params: { id: this.id } }">Go back to the project</b-link>
+      <b-link v-if="template" :to="{ name: 'project.task.presenter.editor', params: { id: this.id, template: this.template } }">Go back to the editor</b-link>
+      <b-link v-else :to="{ name: 'project', params: { id: this.id } }">Go back to the project</b-link>
 
       <div v-if="!taskPresenterLoaded" class="mt-4 text-center">
         <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
@@ -22,14 +23,22 @@ import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'TemplateRenderer',
   props: {
+    // project id
     id: {
       required: true
+    },
+    // template code (optional)
+    template: {
+      type: String
     }
   },
   created () {
+    // load the project first to have access to the presenter and to the related tasks
     this.getProject(this.id).then(() => {
       this.taskPresenterLoaded = true
-      if (this.presenter) {
+      // if the project presenter exists or a template is given (with the task presenter editor), it will be displayed
+      // otherwise an alert is displayed to indicate that the presenter is not already configured
+      if (this.presenter || this.template) {
         this.taskPresenterExists = true
       }
     })
@@ -70,7 +79,9 @@ export default {
     }),
 
     presenterComponent () {
-      const sanitizedPresenter = this.presenter.replace(/[\n\r\t]+/g, '')
+      const sanitize = el => el.replace(/[\n\r\t]+/g, '')
+      // display the optional template in priority if specified
+      const sanitizedPresenter = this.template ? sanitize(this.template) : sanitize(this.presenter)
       // eslint-disable-next-line no-eval
       return { name: 'presenter', ...eval('() => { return' + sanitizedPresenter + '}')() }
     }
@@ -92,10 +103,17 @@ export default {
       'showError'
     ]),
 
+    /**
+     * Called when the dynamic component start
+     */
     run () {
       this.newTask()
     },
 
+    /**
+     * Load a new task for the presenter if authorized
+     * Also load the global user progress
+     */
     newTask () {
       this.taskLoaded = false
       this.getNewTask(this.project).then(allowed => {
@@ -112,6 +130,10 @@ export default {
       })
     },
 
+    /**
+     * Save the user task answer and get a new task after
+     * @param answer
+     */
     saveTask (answer) {
       this.taskLoaded = false
       const taskRun = {

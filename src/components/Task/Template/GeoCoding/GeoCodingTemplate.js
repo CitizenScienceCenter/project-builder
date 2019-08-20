@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 const component =
   {
-    /* The template can use BoostrapVue components: https://bootstrap-vue.js.org */
     template: `
+      <!-- This template use https://bootstrap-vue.js.org/ and https://vuelayers.github.io -->
+
       <div>
+        <!-- Form -->
         <b-row v-if="!jobDone">
           <b-col>
             <h2>{{ taskInfo.question }}</h2>
@@ -22,6 +24,7 @@ const component =
       
         <b-row v-if="!jobDone">
           <b-col>
+            <!-- Map -->
             <vl-map
                   :load-tiles-while-animating="true"
                   :load-tiles-while-interacting="true"
@@ -62,6 +65,7 @@ const component =
               </vl-layer-tile>
             </vl-map>
     
+            <!-- Selected position coordinates -->
             <div class="mt-2">
               Selected position: 
               <ul>
@@ -69,15 +73,18 @@ const component =
                 <li>Latitude <b-badge>{{ markedPlaces.length > 0 ? markedPlaces[0].geometry.coordinates[1] : '-' }}</b-badge></li>
               </ul>
             </div>
+            
           </b-col>
         </b-row>
         
+        <!-- Submit button -->
         <b-row v-if="!jobDone">
           <b-col>
             <b-btn @click="submit" variant="success" size="lg">Save these coordinates</b-btn>     
           </b-col>
         </b-row>
         
+        <!-- Task end message -->
         <b-row v-if="jobDone">
           <b-col>
             <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>
