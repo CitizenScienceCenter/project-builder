@@ -9,9 +9,9 @@
         <b-form ref="form-task-redundancy-setting" @submit.prevent="onSubmit">
           <b-form-group
                   label="Redundancy"
-                  description="The number of answers per tasks that you want for the project"
+                  description="The number of answers per task that you want for the project"
           >
-            <b-form-input type="number" min="1" max="1000" v-model="redundancy" placeholder="The number of answers per tasks that you want for the project"></b-form-input>
+            <b-form-input type="number" min="1" max="1000" v-model="redundancy" placeholder="The number of answers per task that you want for the project"></b-form-input>
           </b-form-group>
 
           <b-button type="submit" variant="primary">Set</b-button>

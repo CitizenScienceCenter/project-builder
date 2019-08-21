@@ -12,7 +12,7 @@
         </p>
 
         <p>
-          <b-badge variant="primary">Importation</b-badge> The priority value is only respected by the <b>default scheduler</b>.
+          <b-badge variant="primary">Important:</b-badge> The priority value is only respected if the <b>default scheduler</b> is selected.
         </p>
 
         <b-form ref="form-task-priority-setting" @submit.prevent="onSubmit">

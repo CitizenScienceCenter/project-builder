@@ -50,7 +50,7 @@
                        type="email"
                        v-model="form.email"
                        @input="fieldUpdated('email')"
-                       placeholder="Email Address">
+                       placeholder="Email address">
               </b-input>
 
             </b-form-group>
@@ -65,7 +65,7 @@
                        type="password"
                        v-model="form.password"
                        @input="fieldUpdated('password')"
-                       placeholder="New Password">
+                       placeholder="New password">
               </b-input>
 
             </b-form-group>
@@ -81,7 +81,7 @@
                        type="password"
                        v-model="form.passwordConfirmation"
                        @input="fieldUpdated('password')"
-                       placeholder="Repeat Password">
+                       placeholder="Repeat password">
               </b-input>
 
             </b-form-group>

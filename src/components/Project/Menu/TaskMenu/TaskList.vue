@@ -11,7 +11,7 @@
       <ul>
         <li><b>Task</b> <b-badge variant="primary">#0000</b-badge> This number identifies the task for the project and it is unique</li>
         <li><b>0 of 30:</b> The first number shows how many answers have been submitted for the task and the second number how many need to be obtained to mark the task as completed</li>
-        <li><b>Progress Bar:</b> The progress progress-bar will the percentage that has been completed for the task</li>
+        <li><b>Progress Bar:</b> The progress progress bar shows the percentage that has been completed for the task</li>
       </ul>
 
       <b-list-group>

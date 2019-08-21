@@ -10,7 +10,7 @@
         <div class="float-right">
           <b-btn ref="btn-preview" variant="secondary" @click="previewPresenter">Preview task presenter</b-btn>
           <b-btn
-            v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you do."
+            v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you are doing."
             ref="btn-update-presenter"
             variant="success"
             @click="updateTaskPresenter"
@@ -19,6 +19,10 @@
           </b-btn>
         </div>
 
+      </div>
+
+      <div class="mt-2 clearfix">
+        <i class="float-left">This editor is reserved for expert users having coding skills. Edit and update at your own risk!</i>
       </div>
 
       <codemirror class="mt-3 float-none" ref="code-mirror" v-model="code" :options="cmOptions"></codemirror>
