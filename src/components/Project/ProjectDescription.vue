@@ -1,16 +1,16 @@
 <template>
   <b-row>
     <b-col>
-      <h4 class="mt-3">WHAT AND WHY</h4>
+      <h4 class="mt-3">What & Why</h4>
       <p>{{ description.whatWhy }}</p>
 
-      <h4 class="mt-3">HOW</h4>
+      <h4 class="mt-3">How</h4>
       <p>{{ description.how }}</p>
 
-      <h4 class="mt-3">WHO</h4>
+      <h4 class="mt-3">Who</h4>
       <p>{{ description.who }}</p>
 
-      <h4 class="mt-3">KEEP TRACK</h4>
+      <h4 class="mt-3">Keep Track</h4>
       <p>{{ description.keepTrack }}</p>
     </b-col>
   </b-row>

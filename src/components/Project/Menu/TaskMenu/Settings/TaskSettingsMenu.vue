@@ -29,7 +29,7 @@
                     align="center"
             >
               <b-card-text>Change the priority of the tasks</b-card-text>
-              <b-button ref="btn-priority" :to="{ name: 'project.task.settings.priority', params: { id } }" variant="outline-primary">Scheduler</b-button>
+              <b-button ref="btn-priority" :to="{ name: 'project.task.settings.priority', params: { id } }" variant="outline-primary">Priority</b-button>
             </b-card>
           </b-col>
         </b-row>

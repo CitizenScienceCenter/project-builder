@@ -45,7 +45,7 @@
           >
 
             <b-form-group
-              label="WHAT & WHY"
+              label="What & Why"
               :valid-feedback="validFeedback('whatWhy')"
               :invalid-feedback="invalidFeedback('whatWhy')"
               :state="validated('whatWhy')">
@@ -53,7 +53,7 @@
             </b-form-group>
 
             <b-form-group
-              label="HOW"
+              label="How"
               :valid-feedback="validFeedback('how')"
               :invalid-feedback="invalidFeedback('how')"
               :state="validated('how')">
@@ -61,7 +61,7 @@
             </b-form-group>
 
             <b-form-group
-              label="WHO"
+              label="Who"
               :valid-feedback="validFeedback('who')"
               :invalid-feedback="invalidFeedback('who')"
               :state="validated('who')">
@@ -69,7 +69,7 @@
             </b-form-group>
 
             <b-form-group
-              label="KEEP TRACK"
+              label="Keep Track"
               :valid-feedback="validFeedback('keepTrack')"
               :invalid-feedback="invalidFeedback('keepTrack')"
               :state="validated('keepTrack')">

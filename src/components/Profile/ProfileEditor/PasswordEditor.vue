@@ -19,7 +19,7 @@
             label-for="new-password"
             description=""
             :state="passwordConfirmed"
-            invalid-feedback="Your confirmation password is different">
+            invalid-feedback="Password and password confirmation do not match">
       <b-form-input
               id="new-password"
               v-model="form.newPassword"
@@ -34,7 +34,7 @@
             label-for="password-confirmation"
             description=""
             :state="passwordConfirmed"
-            invalid-feedback="Your confirmation password is different">
+            invalid-feedback="Password and password confirmation do not match">
       <b-form-input
               id="password-confirmation"
               v-model="form.passwordConfirmation"

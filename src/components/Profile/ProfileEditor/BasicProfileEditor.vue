@@ -17,7 +17,7 @@
     <b-form-group
             label="User name"
             label-for="username"
-            description="If you change your username you will be asked to signin again.">
+            description="If you change your username you will be asked to sign in again.">
       <b-form-input
               id="username"
               v-model="form.username"
@@ -56,22 +56,22 @@
     <b-form-group
             label="Privacy"
             label-for="privacy"
-            description="If enabled, it locks all the public pages related to you and lock your statistics.">
+            description="If enabled, it all your public pages and statistics will become private and will no longer be visible for other users.">
       <b-form-checkbox v-model="form.privacy" id="privacy" switch>
         Privacy setting {{ form.privacy ? 'enabled' : 'disabled' }}
       </b-form-checkbox>
     </b-form-group>
 
     <b-form-group
-            label="Get email notifications"
+            label="E-mail notifications"
             label-for="email-notification"
-            description="When a Pybossa project publishes a blog post, users will get an email with the update.">
+            description="Enable it in order to receive updates whenever a project publishes an update via a blog post.">
       <b-form-checkbox v-model="form.emailNotification" id="email-notification" switch>
         Email notifications {{ form.emailNotification ? 'enabled' : 'disabled' }}
       </b-form-checkbox>
     </b-form-group>
 
-    <b-button type="submit" variant="success" class="float-right">Save the changes</b-button>
+    <b-button type="submit" variant="success" class="float-right">Save changes</b-button>
 
   </b-form>
 </template>

@@ -28,7 +28,7 @@
           >
             <b-alert variant="danger" :show="true">
               You are about to publish your project. This CANNOT be undone! Once your project has been published, people will be able to contribute to it.
-              All the taskruns (answers) that may have been created during the test phase will be flushed and your project will start fresh.
+              All the task runs (answers) that may have been created during the test phase will be flushed and your project will start fresh.
               That means that your project should be working properly, so please make sure it does. Otherwise you can work on it and publish it once it works fine.
             </b-alert>
           </b-modal>

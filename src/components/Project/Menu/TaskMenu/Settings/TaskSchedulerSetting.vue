@@ -8,9 +8,9 @@
 
         <p>You can choose from the following schedulers:</p>
         <ul>
-          <li><b>Default</b> or <b>Depth First</b>: returns a task that has not been completed (the value of number of answers has not achieved) excluding the current user.</li>
-          <li><b>Breadth First</b>: returns a task which has the least number of task runs (answers) excluding the current user.</li>
-          <li><b>Depth First All</b>: returns a task where the current user has not participated. It does not take into account the task.state.</li>
+          <li><b>Default</b> or <b>Depth First</b>: returns a task that has not been completed (the required number of answers has not been yet reached) excluding those already answered by the current user.</li>
+          <li><b>Breadth First</b>: returns a task which has the least number of task runs (answers) excluding those already answered by the current user.</li>
+          <li><b>Depth First All</b>: returns a task where the current user has not participated. It does not take into account the task state.</li>
         </ul>
 
         <b-form-group

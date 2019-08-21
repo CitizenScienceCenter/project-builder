@@ -8,7 +8,7 @@
     <b-col md="4" class="mt-3 mt-md-0 text-center text-md-left">
       <p class="h3">{{ profile.fullname }}</p>
       <b-btn ref="btn-edit-profile" v-if="!isInEditionMode" :to="{ name: 'profile.edition' }" variant="outline-primary">Edit your profile</b-btn>
-      <b-btn ref="btn-go-back" v-else :to="{ name: 'profile' }">Go back to my profile</b-btn>
+      <b-btn ref="btn-go-back" v-else :to="{ name: 'profile' }">Go back to your profile</b-btn>
     </b-col>
 
     <b-col md="3" cols="6" class="mt-3 mt-md-0 text-center text-md-left">

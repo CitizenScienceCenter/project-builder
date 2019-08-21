@@ -66,7 +66,7 @@
                   id="fieldset-keep-track"
                   label="KEEP TRACK"
                   label-for="keep-track"
-                  description="Give some details about how contributors can contact or follow you"
+                  description="Give some details about how contributors can contact or follow you (i.e. e-mail, Facebook page, Twitter handle, etc.)"
                   :valid-feedback="validFeedback('currentKeepTrack')"
                   :invalid-feedback="invalidFeedback('currentKeepTrack')"
                   :state="validated('currentKeepTrack')"
