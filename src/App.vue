@@ -97,6 +97,38 @@ export default {
   created () {
     // this.getAccountProfile()
   },
+  metaInfo () {
+    return {
+      title: 'Community Projects | Citizen Science Center Zurich'
+      /*
+      meta: [
+        {
+          name: 'description',
+          content: 'Site Description'
+        },
+        {
+          property: 'og:description',
+          content: 'Site Description'
+        },
+        {
+          property: 'og:type',
+          content: 'website'
+        },
+        {
+          property: 'og:url',
+          content: ''
+        },
+        {
+          property: 'og:image',
+          content: 'https://citizenscience.ch/img/citsci-promo.jpg'
+        }
+      ],
+      htmlAttrs: {
+        lang: 'en'
+      }
+      */
+    }
+  },
   computed: mapState({
     errorNotifications: state => state.notification.errorNotifications,
     infoNotifications: state => state.notification.infoNotifications,
