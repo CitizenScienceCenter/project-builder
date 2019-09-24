@@ -9,6 +9,10 @@ import user from './modules/user'
 import task from './modules/task'
 import osm from './modules/osm'
 
+import consts from './modules/consts'
+import settings from './modules/settings'
+import gdpr from "./modules/gdpr";
+
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -19,7 +23,10 @@ export default new Vuex.Store({
     project,
     user,
     task,
-    osm
+    osm,
+    consts,
+    settings,
+    gdpr
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

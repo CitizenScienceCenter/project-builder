@@ -6,9 +6,12 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+import { i18n } from './i18n.js'
+
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
 import Pdf from 'vue-pdf'
+
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -39,6 +42,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   components: { App },
   template: '<App/>'
 })
