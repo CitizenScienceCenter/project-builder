@@ -6,9 +6,12 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+import { i18n } from './i18n.js'
+
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
 import Pdf from 'vue-pdf'
+
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -21,9 +24,11 @@ import 'codemirror/lib/codemirror.css'
 import 'vuelayers/lib/style.css'
 
 import c3s from 'vuex-c3s'
+import Meta from 'vue-meta'
 
 Vue.config.productionTip = false
 
+Vue.use(Meta);
 Vue.use(BootstrapVue)
 Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
@@ -41,6 +46,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   components: { App },
   template: '<App/>'
 })

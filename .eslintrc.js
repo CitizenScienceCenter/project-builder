@@ -13,7 +13,7 @@ module.exports = {
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
     'plugin:vue/essential',
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    'standard'
+    //'standard'
   ],
   // required to lint *.vue files
   plugins: [
@@ -28,7 +28,7 @@ module.exports = {
 
     // Custom rules
 
-    "semi": [1, "never"],
+    //"semi": [1, "never"],
     "standard/no-callback-literal": 'off',
     "no-trailing-spaces": 'off',
     "import/no-webpack-loader-syntax": 'off',
