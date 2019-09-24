@@ -10,7 +10,6 @@ import BListGroupItem from 'bootstrap-vue/es/components/list-group/list-group-it
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/TaskList.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

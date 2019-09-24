@@ -210,11 +210,9 @@ const router = new Router({
       name: 'project.builder.end',
       component: ProjectBuilder,
       beforeEnter: (to, from, next) => {
-
         if (store.state.project.builder.steps.name === true &&
           store.state.project.builder.steps.information === true &&
           store.state.project.builder.steps.story === true) {
-
           store.dispatch('project/builder/reset')
           store.commit('project/builder/setCurrentStep', 'end')
 

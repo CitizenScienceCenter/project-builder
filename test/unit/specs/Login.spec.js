@@ -4,12 +4,11 @@ import router from '@/router'
 import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
-import {createLocalVue, shallowMount} from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
 describe('Login.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

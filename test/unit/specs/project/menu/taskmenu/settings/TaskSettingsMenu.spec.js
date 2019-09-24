@@ -9,7 +9,6 @@ import { createLocalVue, mount } from '@vue/test-utils'
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/Settings/TaskSettingsMenu.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

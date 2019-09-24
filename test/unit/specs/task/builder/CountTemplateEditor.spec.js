@@ -11,7 +11,6 @@ import CountTemplateEditor from '@/components/Task/Builder/TemplateEditor/CountT
 const localVue = createLocalVue()
 
 describe('Task/Builder/CountTemplateEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -22,7 +21,6 @@ describe('Task/Builder/CountTemplateEditor.vue', () => {
   })
 
   it('should commit the task template and the step state if the form is valid on submit', done => {
-
     const spy = sandbox.spy(store, 'commit')
 
     const data = {

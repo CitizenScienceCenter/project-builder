@@ -10,7 +10,6 @@ import BasicProfileEditor from '@/components/Profile/ProfileEditor/BasicProfileE
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/BasicProfileEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

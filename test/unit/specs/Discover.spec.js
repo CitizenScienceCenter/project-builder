@@ -9,7 +9,6 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 const localVue = createLocalVue()
 
 describe('Discover.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

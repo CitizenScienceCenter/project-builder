@@ -5,7 +5,6 @@ import sinon from 'sinon'
 const actionsInjector = require('inject-loader!@/store/modules/project.js')
 
 describe('store/modules/project', () => {
-
   let sandbox
 
   beforeEach(() => {
@@ -196,7 +195,7 @@ describe('store/modules/project', () => {
       { short_name: 'project_3', category_id: 3 }
     ])
 
-    let result = projectModule.getters.getProjectsWithCategory(projectModule.state)({ id: 1 })
+    const result = projectModule.getters.getProjectsWithCategory(projectModule.state)({ id: 1 })
 
     // eslint-disable-next-line no-unused-expressions
     expect(result).to.be.an('array')

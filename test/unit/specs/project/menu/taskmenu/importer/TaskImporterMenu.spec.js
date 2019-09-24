@@ -15,7 +15,6 @@ import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrIm
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/Importer/TaskImporterMenu.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

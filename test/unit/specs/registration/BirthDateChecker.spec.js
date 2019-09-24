@@ -9,7 +9,6 @@ import { createLocalVue, mount } from '@vue/test-utils'
 const localVue = createLocalVue()
 
 describe('Project/Registration/BirthDateChecker.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -19,7 +18,6 @@ describe('Project/Registration/BirthDateChecker.vue', () => {
   })
 
   it('should disable the button if age not valid', function () {
-
     const wrapper = mount(BirthDateChecker, {
       store,
       localVue,
@@ -40,7 +38,6 @@ describe('Project/Registration/BirthDateChecker.vue', () => {
   })
 
   it('should validate the birth date is valid', function () {
-
     const wrapper = mount(BirthDateChecker, {
       store,
       localVue,

@@ -16,7 +16,6 @@ import ProfileDataExport from '@/components/Profile/ProfileEditor/ProfileDataExp
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/ProfileEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -26,7 +25,6 @@ describe('Profile/ProfileEditor/ProfileEditor.vue', () => {
   })
 
   it('should display all the required profile edition components', done => {
-
     const wrapper = mount(ProfileEditor, {
       store,
       localVue,

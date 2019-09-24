@@ -4,7 +4,6 @@ import { testAction } from '../helper'
 const actionsInjector = require('inject-loader!@/store/modules/user.js')
 
 describe('store/modules/user', () => {
-
   // ----------------------------------------------------------
   //
   //   ACTIONS

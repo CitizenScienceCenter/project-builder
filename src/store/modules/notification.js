@@ -23,24 +23,24 @@ const actions = {
 
 // methods that change the state
 const mutations = {
-  showError (state, {title, content}) {
-    state.errorNotifications.push({ id: uuid(), message: {title, content} })
+  showError (state, { title, content }) {
+    state.errorNotifications.push({ id: uuid(), message: { title, content } })
   },
   closeError (state, id) {
     state.errorNotifications = state.errorNotifications.filter(value => {
       return value.id !== id
     })
   },
-  showSuccess (state, {title, content}) {
-    state.successNotifications.push({ id: uuid(), message: {title, content} })
+  showSuccess (state, { title, content }) {
+    state.successNotifications.push({ id: uuid(), message: { title, content } })
   },
   closeSuccess (state, id) {
     state.successNotifications = state.successNotifications.filter(value => {
       return value.id !== id
     })
   },
-  showInfo (state, {title, content}) {
-    state.infoNotifications.push({ id: uuid(), message: {title, content} })
+  showInfo (state, { title, content }) {
+    state.infoNotifications.push({ id: uuid(), message: { title, content } })
   },
   closeInfo (state, id) {
     state.infoNotifications = state.infoNotifications.filter(value => {

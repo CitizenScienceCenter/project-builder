@@ -5,7 +5,6 @@ import { assert, expect } from 'chai'
 // const actionsInjector = require('inject-loader!@/store/modules/project-builder.js')
 
 describe('store/modules/project-builder', () => {
-
   // ----------------------------------------------------------
   //
   //   MUTATIONS

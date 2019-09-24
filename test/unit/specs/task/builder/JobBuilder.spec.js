@@ -13,7 +13,6 @@ import JobBuilder from '@/components/Task/Builder/JobBuilder'
 const localVue = createLocalVue()
 
 describe('Task/Builder/JobBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

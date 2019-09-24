@@ -3,7 +3,6 @@ import * as helper from '@/helper'
 import ImageCountTemplate from '@/components/Task/Template/Image/ImageCountTemplate'
 
 describe('helper.js', () => {
-
   let sandbox
 
   beforeEach(() => {
@@ -11,7 +10,6 @@ describe('helper.js', () => {
   })
 
   it('should generate a correctly formatted template', done => {
-
     const questionString = 'How many lines are present in this test ?'
     const template = helper.buildTemplateFromModel(ImageCountTemplate, { question: questionString })
 

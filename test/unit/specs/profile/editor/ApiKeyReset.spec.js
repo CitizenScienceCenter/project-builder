@@ -10,7 +10,6 @@ import ApiKeyReset from '@/components/Profile/ProfileEditor/ApiKeyReset'
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/ApiKeyReset.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

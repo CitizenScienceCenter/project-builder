@@ -5,12 +5,11 @@ import router from '@/router'
 import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
-import {createLocalVue, mount} from '@vue/test-utils'
+import { createLocalVue, mount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
 describe('Project/Builder/InformationBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -43,7 +42,6 @@ describe('Project/Builder/InformationBuilder.vue', () => {
       // expect(spy.calledWith('project/builder/setCroppedPicture')).to.equal(true)
       // expect(spy.calledWith('project/builder/setCropData')).to.equal(true)
     })
-
   })
 
   it('should not commit when form not completed', () => {
@@ -61,7 +59,6 @@ describe('Project/Builder/InformationBuilder.vue', () => {
       expect(spy.calledWith('project/builder/setStep', { step: 'name', value: true })).to.equal(false)
       expect(spy.calledWith('project/builder/setPicture', wrapper.vm.$data.selectedPicture)).to.equal(false)
     })
-
   })
 
   afterEach(() => {

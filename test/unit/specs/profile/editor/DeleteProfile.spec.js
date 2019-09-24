@@ -11,7 +11,6 @@ import DeleteProfile from '@/components/Profile/ProfileEditor/DeleteProfile'
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/DeleteProfile.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

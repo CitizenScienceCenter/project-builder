@@ -82,7 +82,7 @@ const mutations = {
     state.currentStep = step
   },
   setStep (state, { step, value }) {
-    state.steps = {...state.steps, [step]: value}
+    state.steps = { ...state.steps, [step]: value }
   }
 }
 

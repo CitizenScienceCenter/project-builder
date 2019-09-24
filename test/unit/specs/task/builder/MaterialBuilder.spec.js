@@ -13,7 +13,6 @@ import MaterialBuilder from '@/components/Task/Builder/MaterialBuilder'
 const localVue = createLocalVue()
 
 describe('Task/Builder/MaterialBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

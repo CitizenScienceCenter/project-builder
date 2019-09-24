@@ -10,7 +10,6 @@ import DropboxImporter from '@/components/Project/Menu/TaskMenu/Importer/Dropbox
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/Importer/DropboxImporter.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -20,7 +19,6 @@ describe('Project/Menu/TaskMenu/Importer/DropboxImporter.vue', () => {
   })
 
   it('should display the card', () => {
-
     const wrapper = mount(DropboxImporter, {
       store,
       localVue,
@@ -111,5 +109,4 @@ describe('Project/Menu/TaskMenu/Importer/DropboxImporter.vue', () => {
   afterEach(() => {
     sandbox.restore()
   })
-
 })

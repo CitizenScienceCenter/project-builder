@@ -9,7 +9,6 @@ import { createLocalVue, mount } from '@vue/test-utils'
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/Importer/LocalCsvImporter.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -19,7 +18,6 @@ describe('Project/Menu/TaskMenu/Importer/LocalCsvImporter.vue', () => {
   })
 
   it('should display the card', () => {
-
     const wrapper = mount(LocalCsvImporter, {
       store,
       localVue,

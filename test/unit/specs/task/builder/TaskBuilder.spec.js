@@ -12,7 +12,6 @@ import MaterialBuilder from '@/components/Task/Builder/MaterialBuilder'
 const localVue = createLocalVue()
 
 describe('Task/Builder/TaskBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -103,7 +102,7 @@ describe('Task/Builder/TaskBuilder.vue', () => {
 
   afterEach(() => {
     // reset the state for other tests
-    for (let step of Object.values(store.state.task.builder.steps)) {
+    for (const step of Object.values(store.state.task.builder.steps)) {
       store.commit('task/builder/setStep', { step: step, value: false })
     }
     sandbox.restore()

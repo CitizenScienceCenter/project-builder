@@ -10,7 +10,6 @@ import ProfileHeader from '@/components/Profile/ProfileHeader'
 const localVue = createLocalVue()
 
 describe('Profile/ProfileHeader.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

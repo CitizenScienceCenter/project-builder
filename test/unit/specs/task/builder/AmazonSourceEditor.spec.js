@@ -11,7 +11,6 @@ import AmazonSourceEditor from '@/components/Task/Builder/SourceEditor/AmazonSou
 const localVue = createLocalVue()
 
 describe('Task/Builder/AmazonSourceEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -45,7 +44,7 @@ describe('Task/Builder/AmazonSourceEditor.vue', () => {
 
   it('should commit task source and content and change the step on submit', function () {
     const spy = sandbox.spy(store, 'commit')
-    const links = sandbox.stub().returns([ 'img_1.jpg', 'img_2.jpg' ])
+    const links = sandbox.stub().returns(['img_1.jpg', 'img_2.jpg'])
 
     const wrapper = mount(AmazonSourceEditor, {
       store,

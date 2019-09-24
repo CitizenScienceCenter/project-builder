@@ -200,7 +200,6 @@ const actions = {
       project.id,
       rootState.user.logged ? rootState.user.infos.api_key : false
     ).then(value => {
-
       // return false when the task cannot be loaded because the project is not open for anonymous users
       if ('info' in value.data && 'error' in value.data.info) {
         return false

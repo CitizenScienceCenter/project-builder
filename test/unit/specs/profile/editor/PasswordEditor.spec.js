@@ -10,7 +10,6 @@ import PasswordEditor from '@/components/Profile/ProfileEditor/PasswordEditor'
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/PasswordEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

@@ -10,7 +10,6 @@ import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrIm
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/Importer/FlickrImporter.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -20,7 +19,6 @@ describe('Project/Menu/TaskMenu/Importer/FlickrImporter.vue', () => {
   })
 
   it('should display the card', () => {
-
     const wrapper = mount(FlickrImporter, {
       store,
       localVue,
@@ -134,5 +132,4 @@ describe('Project/Menu/TaskMenu/Importer/FlickrImporter.vue', () => {
   afterEach(() => {
     sandbox.restore()
   })
-
 })

@@ -9,7 +9,6 @@ import BasicTemplate from '@/components/Task/Template/BasicTemplate'
 const actionsInjector = require('inject-loader!@/store/modules/task.js')
 
 describe('store/modules/task', () => {
-
   let sandbox
 
   beforeEach(() => {

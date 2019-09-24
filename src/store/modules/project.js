@@ -50,7 +50,7 @@ const getters = {
    * @param state
    * @return {function({id: *}): T[]}
    */
-  getProjectsWithCategory: state => ({id}) => {
+  getProjectsWithCategory: state => ({ id }) => {
     return state.projects.filter(project => {
       return project.category_id === id
     })
@@ -107,7 +107,7 @@ const actions = {
    */
   getProjectsWithCategory ({ commit }, { category, page }) {
     return api.getProjectsWithCategory(category.short_name, page).then(value => {
-      if(value.data['active_cat'] !== undefined) {
+      if (value.data.active_cat !== undefined) {
         commit('setProjectsForCategory', {
           category: value.data.active_cat.short_name,
           projects: value.data.projects
@@ -173,13 +173,13 @@ const actions = {
           // specific error message when duplicated project name
           commit('notification/showError', {
             title: 'Error', content: 'Project name already taken'
-          }, {root: true})
+          }, { root: true })
           return false
         }
       }
       commit('notification/showError', {
         title: errors.POST_PROJECT_ERROR, content: reason
-      }, {root: true})
+      }, { root: true })
       return false
     })
   },

@@ -331,11 +331,9 @@ const actions = {
       if (response) {
         return api.updatePassword(state.profileUpdateOptions.form.csrf, user.name, form).then(value => {
           if ('status' in value.data && value.data.status === 'error') {
-
             commit('notification/showError', {
               title: 'Error', content: value.data.flash
             }, { root: true })
-
           } else {
             commit('notification/showSuccess', {
               title: 'Success', content: value.data.flash

@@ -9,7 +9,6 @@ import { createLocalVue, mount } from '@vue/test-utils'
 const localVue = createLocalVue()
 
 describe('Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -19,7 +18,6 @@ describe('Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter.vue', () => {
   })
 
   it('should display the card', () => {
-
     const wrapper = mount(AmazonS3BucketImporter, {
       store,
       localVue,

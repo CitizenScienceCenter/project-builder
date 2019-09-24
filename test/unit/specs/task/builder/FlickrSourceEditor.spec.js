@@ -11,7 +11,6 @@ import FlickrSourceEditor from '@/components/Task/Builder/SourceEditor/FlickrSou
 const localVue = createLocalVue()
 
 describe('Task/Builder/FlickrSourceEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

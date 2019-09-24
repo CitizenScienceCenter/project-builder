@@ -133,7 +133,7 @@ const getters = {
   },
   getBucketFilesWithExtensions: (state) => (extensions) => {
     return state.bucket.files.filter(value => {
-      for (let extension of extensions) {
+      for (const extension of extensions) {
         if (value.endsWith(extension)) {
           return true
         }
@@ -143,7 +143,7 @@ const getters = {
   },
   getMaterialForFilename: (state) => (filename) => {
     const extension = '.' + filename.split('.').pop()
-    for (let material in state.materialExtensions) {
+    for (const material in state.materialExtensions) {
       if (state.materialExtensions[material].includes(extension)) {
         return material
       }

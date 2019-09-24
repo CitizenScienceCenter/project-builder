@@ -1,7 +1,7 @@
 export function uuid () {
   let dt = new Date().getTime()
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    let r = (dt + Math.random() * 16) % 16 | 0
+    const r = (dt + Math.random() * 16) % 16 | 0
     dt = Math.floor(dt / 16)
     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
   })
@@ -13,7 +13,7 @@ export function dataURItoBlob (dataURI) {
   for (let i = 0; i < binary.length; i++) {
     array.push(binary.charCodeAt(i))
   }
-  return new Blob([new Uint8Array(array)], {type: 'image/jpeg'})
+  return new Blob([new Uint8Array(array)], { type: 'image/jpeg' })
 }
 
 export function buildTemplateFromModel (templateModel, templateData) {
@@ -28,7 +28,7 @@ export function buildTemplateFromModel (templateModel, templateData) {
 
   // generates all the template model methods in correctly formatted strings
   let methods = ''
-  for (let property in templateModel.methods) {
+  for (const property in templateModel.methods) {
     if (templateModel.methods.hasOwnProperty(property)) {
       methods += '\t' + property + ': ' + templateModel.methods[property].toString() + ',\n'
     }
@@ -37,7 +37,7 @@ export function buildTemplateFromModel (templateModel, templateData) {
 
   // generates all computed properties
   let computed = ''
-  for (let property in templateModel.computed) {
+  for (const property in templateModel.computed) {
     if (templateModel.computed.hasOwnProperty(property)) {
       computed += '\t' + property + ': ' + templateModel.computed[property].toString() + ',\n'
     }
@@ -46,7 +46,7 @@ export function buildTemplateFromModel (templateModel, templateData) {
 
   // generates all watchers
   let watch = ''
-  for (let property in templateModel.watch) {
+  for (const property in templateModel.watch) {
     if (templateModel.watch.hasOwnProperty(property)) {
       watch += '\t' + property + ': ' + templateModel.watch[property].toString() + ',\n'
     }
@@ -80,13 +80,13 @@ export function getFormErrorsAsString (errors) {
   const fields = Object.keys(errors)
   let result = '<ul>'
 
-  for (let fldIndex in fields) {
+  for (const fldIndex in fields) {
     const fieldName = fields[fldIndex]
     result += '<li>' + fieldName + ': '
 
     // print field errors in a new list
     result += '<ul>'
-    for (let error of errors[fieldName]) {
+    for (const error of errors[fieldName]) {
       result += '<li>' + error + '</li>'
     }
     result += '</ul>'

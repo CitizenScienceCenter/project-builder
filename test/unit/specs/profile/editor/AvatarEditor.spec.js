@@ -10,7 +10,6 @@ import AvatarEditor from '@/components/Profile/ProfileEditor/AvatarEditor'
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/AvatarEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

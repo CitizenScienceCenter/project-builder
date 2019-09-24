@@ -20,6 +20,8 @@ import 'codemirror/lib/codemirror.css'
 
 import 'vuelayers/lib/style.css'
 
+import c3s from 'vuex-c3s'
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
@@ -30,6 +32,9 @@ Vue.use(VueLayers, {
 Vue.component('pdf', Pdf)
 
 window.Vue = Vue
+
+const swaggerURL = "https://api.citizenscience.ch/api/v2/swagger.json"
+Vue.use(c3s.plugin, {store, swaggerURL})
 
 /* eslint-disable no-new */
 new Vue({

@@ -5,12 +5,11 @@ import router from '@/router'
 import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
-import {createLocalVue, mount} from '@vue/test-utils'
+import { createLocalVue, mount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
 describe('Project/Builder/NameBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -42,7 +41,6 @@ describe('Project/Builder/NameBuilder.vue', () => {
       expect(spy.calledWith('project/builder/setTitle', wrapper.vm.$data.currentTitle)).to.equal(true)
       expect(spy.calledWith('project/builder/setStep', { step: 'name', value: true })).to.equal(true)
     })
-
   })
 
   it('should not commit {project/builder/setTitle}, {project/builder/setStep} when form not completed', () => {
@@ -59,7 +57,6 @@ describe('Project/Builder/NameBuilder.vue', () => {
       expect(spy.calledWith('project/builder/setStep', { step: 'name', value: true })).to.equal(false)
       expect(wrapper.vm.validated).to.equal(false)
     })
-
   })
 
   afterEach(() => {

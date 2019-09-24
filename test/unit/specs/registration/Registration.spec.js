@@ -10,7 +10,6 @@ import BirthDateChecker from '@/components/Registration/BirthDateChecker'
 const localVue = createLocalVue()
 
 describe('Project/Registration/Registration.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

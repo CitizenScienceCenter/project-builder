@@ -9,7 +9,6 @@ import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
 const localVue = createLocalVue()
 
 describe('Project/Project.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

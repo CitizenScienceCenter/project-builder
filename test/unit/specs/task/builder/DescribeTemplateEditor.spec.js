@@ -11,7 +11,6 @@ import DescribeTemplateEditor from '@/components/Task/Builder/TemplateEditor/Des
 const localVue = createLocalVue()
 
 describe('Task/Builder/DescribeTemplateEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -22,7 +21,6 @@ describe('Task/Builder/DescribeTemplateEditor.vue', () => {
   })
 
   it('should commit the task template and the step state if the form is valid on submit', done => {
-
     const isFormValidStub = sandbox.stub().returns(true)
     const spy = sandbox.spy(store, 'commit')
 
@@ -72,7 +70,6 @@ describe('Task/Builder/DescribeTemplateEditor.vue', () => {
   })
 
   it('should valid the form if the question and all descriptions are valid', function () {
-
     const data = {
       question: '???',
       descriptions: [

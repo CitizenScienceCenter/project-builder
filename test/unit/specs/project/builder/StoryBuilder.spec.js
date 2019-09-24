@@ -5,12 +5,11 @@ import router from '@/router'
 import store from '@/store'
 import sinon from 'sinon'
 import BootstrapVue from 'bootstrap-vue'
-import {createLocalVue, mount} from '@vue/test-utils'
+import { createLocalVue, mount } from '@vue/test-utils'
 
 const localVue = createLocalVue()
 
 describe('Project/Builder/StoryBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -77,7 +76,6 @@ describe('Project/Builder/StoryBuilder.vue', () => {
         keepTrack: wrapper.vm.$data.currentKeepTrack
       })).to.equal(false)
     })
-
   })
 
   afterEach(() => {

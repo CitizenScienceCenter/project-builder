@@ -11,7 +11,6 @@ import DropboxSourceEditor from '@/components/Task/Builder/SourceEditor/DropboxS
 const localVue = createLocalVue()
 
 describe('Task/Builder/DropboxSourceEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -42,7 +41,7 @@ describe('Task/Builder/DropboxSourceEditor.vue', () => {
       router
     })
 
-    const links = [ 'img_1.jpg', 'img_2.jpg' ]
+    const links = ['img_1.jpg', 'img_2.jpg']
     wrapper.setData({
       files: links,
       selectedFiles: links

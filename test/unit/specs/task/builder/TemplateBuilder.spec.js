@@ -4,7 +4,7 @@ import store from '@/store'
 import BootstrapVue from 'bootstrap-vue'
 
 import sinon from 'sinon'
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 import TemplateBuilder from '@/components/Task/Builder/TemplateBuilder'
 import DescribeTemplateEditor from '@/components/Task/Builder/TemplateEditor/DescribeTemplateEditor'
@@ -14,7 +14,6 @@ import CountTemplateEditor from '@/components/Task/Builder/TemplateEditor/CountT
 const localVue = createLocalVue()
 
 describe('Task/Builder/TemplateBuilder.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

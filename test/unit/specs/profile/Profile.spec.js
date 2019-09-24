@@ -13,7 +13,6 @@ import ProfileEditor from '@/components/Profile/ProfileEditor/ProfileEditor'
 const localVue = createLocalVue()
 
 describe('Profile/Profile.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)

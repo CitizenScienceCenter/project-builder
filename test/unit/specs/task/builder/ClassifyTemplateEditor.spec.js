@@ -11,7 +11,6 @@ import ClassifyTemplateEditor from '@/components/Task/Builder/TemplateEditor/Cla
 const localVue = createLocalVue()
 
 describe('Task/Builder/ClassifyTemplateEditor.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
@@ -22,7 +21,6 @@ describe('Task/Builder/ClassifyTemplateEditor.vue', () => {
   })
 
   it('should commit the task template and the step state if the form is valid on submit', done => {
-
     const isFormValidStub = sandbox.stub().returns(true)
     const spy = sandbox.spy(store, 'commit')
 
@@ -82,7 +80,6 @@ describe('Task/Builder/ClassifyTemplateEditor.vue', () => {
   })
 
   it('should valid the form if all questions and answers are valid', function () {
-
     const data = {
       questions: [
         {

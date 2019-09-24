@@ -10,7 +10,6 @@ import ProfileDataExport from '@/components/Profile/ProfileEditor/ProfileDataExp
 const localVue = createLocalVue()
 
 describe('Profile/ProfileEditor/ProfileDataExport.vue', () => {
-
   let sandbox
   localVue.use(Vuex)
   localVue.use(BootstrapVue)
