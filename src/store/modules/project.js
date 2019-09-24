@@ -107,14 +107,16 @@ const actions = {
    */
   getProjectsWithCategory ({ commit }, { category, page }) {
     return api.getProjectsWithCategory(category.short_name, page).then(value => {
-      commit('setProjectsForCategory', {
-        category: value.data.active_cat.short_name,
-        projects: value.data.projects
-      })
-      commit('setPaginationForCategory', {
-        category: value.data.active_cat.short_name,
-        pagination: value.data.pagination
-      })
+      if(value.data['active_cat'] !== undefined) {
+        commit('setProjectsForCategory', {
+          category: value.data.active_cat.short_name,
+          projects: value.data.projects
+        })
+        commit('setPaginationForCategory', {
+          category: value.data.active_cat.short_name,
+          pagination: value.data.pagination
+        })
+      }
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
