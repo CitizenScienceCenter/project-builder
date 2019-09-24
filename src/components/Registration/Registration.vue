@@ -156,6 +156,7 @@ export default {
           password: this.form.password,
           confirm: this.form.passwordConfirmation
         }).then(response => {
+          console.log(response)
           if ('form' in response && 'errors' in response.form) {
             this.showError({
               title: 'Incomplete form error',
