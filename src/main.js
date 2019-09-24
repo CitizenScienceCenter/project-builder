@@ -20,8 +20,11 @@ import 'codemirror/lib/codemirror.css'
 
 import 'vuelayers/lib/style.css'
 
+import Meta from 'vue-meta'
+
 Vue.config.productionTip = false
 
+Vue.use(Meta);
 Vue.use(BootstrapVue)
 Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'

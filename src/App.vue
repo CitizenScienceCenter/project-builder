@@ -99,8 +99,7 @@ export default {
   },
   metaInfo () {
     return {
-      title: 'Community Projects | Citizen Science Center Zurich'
-      /*
+      title: 'Community Projects | Citizen Science Center Zurich',
       meta: [
         {
           name: 'description',
@@ -125,8 +124,11 @@ export default {
       ],
       htmlAttrs: {
         lang: 'en'
-      }
-      */
+      },
+      link: [
+        { rel: 'icon', type: 'image/png', href: '@/assets/shared/favicon-16x16png', sizes: '16x16' },
+        { rel: 'icon', type: 'image/png', href: '@/assets/shared/favicon-32x32png', sizes: '32x32' }
+      ]
     }
   },
   computed: mapState({
