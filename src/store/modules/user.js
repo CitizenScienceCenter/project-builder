@@ -1,4 +1,5 @@
 import api from '@/api/user'
+import store from '@/store'
 
 const errors = {
   GET_PROFILE_UPDATE_OPTIONS_LOADING_ERROR: 'Error during profile update options loading',
@@ -45,14 +46,19 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  getRegistrationOptions ({ commit }) {
+  getRegistrationOptions({
+    commit
+  }) {
     return api.getRegistrationOptions().then(value => {
       commit('setRegistrationOptions', value.data)
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Registration not available', content: reason
-      }, { root: true })
+        title: 'Registration not available',
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -65,18 +71,23 @@ const actions = {
    * @param form
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  register ({ commit, state, dispatch }, form) {
-    return dispatch('getRegistrationOptions').then(value => {
-      if (value) {
-        return api.register(state.registrationOptions.form.csrf, form).then(response => {
-          return response.data
-        }).catch(reason => {
-          commit('notification/showError', {
-            title: 'Error during registration', content: reason
-          }, { root: true })
-          return false
-        })
-      }
+  register({
+    commit,
+    state,
+    dispatch
+  }, form) {
+    console.log(form)
+    return store.dispatch('c3s/user/register', form).then(response => {
+      console.log(response)
+      return response.data
+    }).catch(reason => {
+      console.log(reason);
+      commit('notification/showError', {
+        title: 'Error during registration',
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -90,23 +101,31 @@ const actions = {
    * @param password
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  signIn ({ commit, state, dispatch }, { email, password }) {
-    return dispatch('getLoginOptions').then(value => {
-      if (value) {
-        return api.signIn(state.loginOptions.form.csrf, email, password).then(response => {
-          // checks if the user is authenticated (good credentials)
-          if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
-            commit('setLogged')
-            return response.data
-          }
-          return false
-        }).catch(reason => {
-          commit('notification/showError', {
-            title: 'Error during user sign in', content: reason
-          }, { root: true })
-          return false
-        })
+  signIn({
+    commit,
+    state,
+    dispatch
+  }, {
+    email,
+    password
+  }) {
+    return store.dispatch('c3s/user/login', {
+      email: email,
+      pwd: password
+    }).then(response => {
+      // checks if the user is authenticated (good credentials)
+      if (Object.prototype.hasOwnProperty.call(response, 'ok') && response.data.status === true) {
+        commit('setLogged')
+        return response.body
       }
+      return false
+    }).catch(reason => {
+      commit('notification/showError', {
+        title: 'Error during user sign in',
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -116,14 +135,19 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  getLoginOptions ({ commit }) {
+  getLoginOptions({
+    commit
+  }) {
     return api.getLoginOptions().then(value => {
       commit('setLoginOptions', value.data)
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: 'Sign in not available', content: reason
-      }, { root: true })
+        title: 'Sign in not available',
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -133,7 +157,9 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  getAccountProfile ({ commit }) {
+  getAccountProfile({
+    commit
+  }) {
     return api.getAccountProfile().then(value => {
       if (value.data.hasOwnProperty('user')) {
         commit('setUserInfos', value.data.user)
@@ -147,8 +173,11 @@ const actions = {
       return false
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.GET_ACCOUNT_PROFILE_LOADING_ERROR, content: reason
-      }, { root: true })
+        title: errors.GET_ACCOUNT_PROFILE_LOADING_ERROR,
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -158,7 +187,9 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  signOut ({ commit }) {
+  signOut({
+    commit
+  }) {
     return api.signOut().then(response => {
       if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
         commit('setLoggedOut')
@@ -169,14 +200,19 @@ const actions = {
         commit('notification/showInfo', {
           title: 'Signed out',
           content: 'You are now logged out'
-        }, { root: true })
+        }, {
+          root: true
+        })
         return response.data
       }
       return false
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.SIGN_OUT_ERROR, content: reason
-      }, { root: true })
+        title: errors.SIGN_OUT_ERROR,
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -187,14 +223,19 @@ const actions = {
    * @param user
    * @return {Promise<T | boolean>}
    */
-  getProfileUpdateOptions ({ commit }, user) {
+  getProfileUpdateOptions({
+    commit
+  }, user) {
     return api.getProfileUpdateOptions(user.name).then(value => {
       commit('setProfileUpdateOptions', value.data)
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.GET_PROFILE_UPDATE_OPTIONS_LOADING_ERROR, content: reason
-      }, { root: true })
+        title: errors.GET_PROFILE_UPDATE_OPTIONS_LOADING_ERROR,
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -208,18 +249,31 @@ const actions = {
    * @param form
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  updateProfile ({ commit, dispatch, state }, { user, form }) {
+  updateProfile({
+    commit,
+    dispatch,
+    state
+  }, {
+    user,
+    form
+  }) {
     return dispatch('getProfileUpdateOptions', user).then(response => {
       if (response) {
         return api.updateProfile(state.profileUpdateOptions.form.csrf, user.name, form).then(value => {
           commit('notification/showSuccess', {
-            title: 'Success', content: 'Your profile has been updated'
-          }, { root: true })
+            title: 'Success',
+            content: 'Your profile has been updated'
+          }, {
+            root: true
+          })
           return value.data
         }).catch(reason => {
           commit('notification/showError', {
-            title: errors.UPDATE_PROFILE_ERROR, content: reason
-          }, { root: true })
+            title: errors.UPDATE_PROFILE_ERROR,
+            content: reason
+          }, {
+            root: true
+          })
           return false
         })
       }
@@ -233,14 +287,19 @@ const actions = {
    * @param user
    * @return {Promise<T | boolean>}
    */
-  getResetApiKeyOptions ({ commit }, user) {
+  getResetApiKeyOptions({
+    commit
+  }, user) {
     return api.getResetApiKeyOptions(user.name).then(value => {
       commit('setResetApiKeyOptions', value.data)
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.GET_RESET_API_KEY_OPTIONS_LOADING_ERROR, content: reason
-      }, { root: true })
+        title: errors.GET_RESET_API_KEY_OPTIONS_LOADING_ERROR,
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -253,21 +312,31 @@ const actions = {
    * @param user
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  resetApiKey ({ commit, dispatch, state }, user) {
+  resetApiKey({
+    commit,
+    dispatch,
+    state
+  }, user) {
     return dispatch('getResetApiKeyOptions', user).then(response => {
       if (response) {
         return api.resetApiKey(state.resetApiKeyOptions.form.csrf, user.name).then(value => {
           // get the new api key generated and display it
           dispatch('getAccountProfile').then(() => {
             commit('notification/showSuccess', {
-              title: 'New API Key generated', content: state.infos.api_key
-            }, { root: true })
+              title: 'New API Key generated',
+              content: state.infos.api_key
+            }, {
+              root: true
+            })
           })
           return value.data
         }).catch(reason => {
           commit('notification/showError', {
-            title: errors.RESET_API_KEY_ERROR, content: reason
-          }, { root: true })
+            title: errors.RESET_API_KEY_ERROR,
+            content: reason
+          }, {
+            root: true
+          })
           return false
         })
       }
@@ -284,36 +353,60 @@ const actions = {
    * @param avatar
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  updateAvatar ({ commit, dispatch }, { user, avatar }) {
-    commit('notification/showLoading', 'user/updateAvatar', { root: true })
+  updateAvatar({
+    commit,
+    dispatch
+  }, {
+    user,
+    avatar
+  }) {
+    commit('notification/showLoading', 'user/updateAvatar', {
+      root: true
+    })
     return dispatch('getProfileUpdateOptions', user).then(response => {
       if (response) {
         return api.updateAvatar(state.profileUpdateOptions.form.csrf, user.name, avatar).then(value => {
           if ('status' in value.data && value.data.status === 'error') {
             commit('notification/showError', {
-              title: 'Error', content: value.data.flash
-            }, { root: true })
+              title: 'Error',
+              content: value.data.flash
+            }, {
+              root: true
+            })
           } else {
             return dispatch('getAccountProfile').then(() => {
               commit('notification/showSuccess', {
-                title: 'Success', content: value.data.flash
-              }, { root: true })
-              commit('notification/closeLoading', 'user/updateAvatar', { root: true })
+                title: 'Success',
+                content: value.data.flash
+              }, {
+                root: true
+              })
+              commit('notification/closeLoading', 'user/updateAvatar', {
+                root: true
+              })
               return value.data
             })
           }
-          commit('notification/closeLoading', 'user/updateAvatar', { root: true })
+          commit('notification/closeLoading', 'user/updateAvatar', {
+            root: true
+          })
           return value.data
         }).catch(reason => {
           commit('notification/showError', {
             title: errors.UPDATE_AVATAR_ERROR,
             content: 'Your picture is certainly too big. Ensure it size is less than 1MB'
-          }, { root: true })
-          commit('notification/closeLoading', 'user/updateAvatar', { root: true })
+          }, {
+            root: true
+          })
+          commit('notification/closeLoading', 'user/updateAvatar', {
+            root: true
+          })
           return false
         })
       }
-      commit('notification/closeLoading', 'user/updateAvatar', { root: true })
+      commit('notification/closeLoading', 'user/updateAvatar', {
+        root: true
+      })
       return false
     })
   },
@@ -326,24 +419,39 @@ const actions = {
    * @param form
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  updatePassword ({ commit, dispatch }, { user, form }) {
+  updatePassword({
+    commit,
+    dispatch
+  }, {
+    user,
+    form
+  }) {
     return dispatch('getProfileUpdateOptions', user).then(response => {
       if (response) {
         return api.updatePassword(state.profileUpdateOptions.form.csrf, user.name, form).then(value => {
           if ('status' in value.data && value.data.status === 'error') {
             commit('notification/showError', {
-              title: 'Error', content: value.data.flash
-            }, { root: true })
+              title: 'Error',
+              content: value.data.flash
+            }, {
+              root: true
+            })
           } else {
             commit('notification/showSuccess', {
-              title: 'Success', content: value.data.flash
-            }, { root: true })
+              title: 'Success',
+              content: value.data.flash
+            }, {
+              root: true
+            })
           }
           return value.data
         }).catch(reason => {
           commit('notification/showError', {
-            title: errors.UPDATE_PASSWORD_ERROR, content: reason
-          }, { root: true })
+            title: errors.UPDATE_PASSWORD_ERROR,
+            content: reason
+          }, {
+            root: true
+          })
           return false
         })
       }
@@ -358,17 +466,26 @@ const actions = {
    * @param user
    * @return {Promise<boolean>}
    */
-  deleteAccount ({ commit, dispatch }, user) {
+  deleteAccount({
+    commit,
+    dispatch
+  }, user) {
     return api.deleteAccount(user.name).then(value => {
       commit('notification/showSuccess', {
-        title: 'Success', content: 'Your account is definitively deleted'
-      }, { root: true })
+        title: 'Success',
+        content: 'Your account is definitively deleted'
+      }, {
+        root: true
+      })
       dispatch('signOut')
       return true
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.DELETE_ACCOUNT_ERROR, content: reason
-      }, { root: true })
+        title: errors.DELETE_ACCOUNT_ERROR,
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   },
@@ -380,16 +497,24 @@ const actions = {
    * @param user
    * @return {Promise<T | boolean>}
    */
-  exportAccountData ({ commit }, user) {
+  exportAccountData({
+    commit
+  }, user) {
     return api.exportAccountData(user.name).then(value => {
       commit('notification/showSuccess', {
-        title: 'Success', content: 'You will receive by email all your data...'
-      }, { root: true })
+        title: 'Success',
+        content: 'You will receive by email all your data...'
+      }, {
+        root: true
+      })
       return value.data
     }).catch(reason => {
       commit('notification/showError', {
-        title: errors.EXPORT_ACCOUNT_DATA_ERROR, content: reason
-      }, { root: true })
+        title: errors.EXPORT_ACCOUNT_DATA_ERROR,
+        content: reason
+      }, {
+        root: true
+      })
       return false
     })
   }
@@ -397,40 +522,40 @@ const actions = {
 
 // methods that change the state
 const mutations = {
-  setLogged (state) {
+  setLogged(state) {
     state.logged = true
   },
-  setLoggedOut (state) {
+  setLoggedOut(state) {
     state.logged = false
   },
-  setLoginOptions (state, options) {
+  setLoginOptions(state, options) {
     state.loginOptions = options
   },
-  setRegistrationOptions (state, options) {
+  setRegistrationOptions(state, options) {
     state.registrationOptions = options
   },
-  setUserInfos (state, infos) {
+  setUserInfos(state, infos) {
     state.infos = infos
   },
-  setUserContributedProjects (state, projects) {
+  setUserContributedProjects(state, projects) {
     state.contributedProjects = projects
   },
-  setUserDraftProjects (state, projects) {
+  setUserDraftProjects(state, projects) {
     state.draftProjects = projects
   },
-  setUserPublishedProjects (state, projects) {
+  setUserPublishedProjects(state, projects) {
     state.publishedProjects = projects
   },
-  isInProfileEditionMode (state, mode) {
+  isInProfileEditionMode(state, mode) {
     state.isInProfileEditionMode = mode
   },
-  setProfileUpdateOptions (state, options) {
+  setProfileUpdateOptions(state, options) {
     state.profileUpdateOptions = options
   },
-  setResetApiKeyOptions (state, options) {
+  setResetApiKeyOptions(state, options) {
     state.resetApiKeyOptions = options
   },
-  setBirthDateVerified (state, value) {
+  setBirthDateVerified(state, value) {
     state.isBirthDateVerified = value
   }
 }

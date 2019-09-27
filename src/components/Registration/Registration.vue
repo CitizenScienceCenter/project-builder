@@ -13,11 +13,10 @@
             <b-form-group
                     label="Full name"
                     label-for="fullname"
-                    :state="nameValid('fullname')"
                     :invalid-feedback="nameFeedback">
 
               <b-input id="fullname"
-                       v-model="form.fullname"
+                       v-model="form.info.fullname"
                        @input="fieldUpdated('fullname')"
                        placeholder="Full name">
               </b-input>
@@ -112,12 +111,14 @@ export default {
   data: () => {
     return {
       form: {
-        fullname: '',
+        info: {
+         fullname: '',
+         emailNotificationEnabled: false
+        },
         username: '',
         email: '',
         password: '',
         passwordConfirmation: '',
-        emailNotificationEnabled: false
       },
 
       firstInteractions: {
@@ -144,35 +145,27 @@ export default {
         password: false
       }
 
-      if (this.nameValid('fullname') &&
-        this.nameValid('username') &&
+      if (this.nameValid('username') &&
         this.emailValid &&
         this.passwordsValid
       ) {
         this.register({
-          fullname: this.form.fullname,
-          name: this.form.username,
-          email_addr: this.form.email,
-          password: this.form.password,
-          confirm: this.form.passwordConfirmation
+          info: {
+            fullname: this.form.fullname,
+          },
+          username: this.form.username,
+          email: this.form.email,
+          pwd: this.form.password,
         }).then(response => {
-          console.log(response)
-          if ('form' in response && 'errors' in response.form) {
-            this.showError({
-              title: 'Incomplete form error',
-              content: getFormErrorsAsString(response.form.errors)
-            })
-          } else {
             this.showSuccess({
               title: 'Success',
-              content: response.flash
+              content: response.msg
             })
             this.getAccountProfile().then(() => {
               if (this.userLogged) {
                 this.$router.push({ name: 'home' })
               }
             })
-          }
         })
       } else {
         this.showError({

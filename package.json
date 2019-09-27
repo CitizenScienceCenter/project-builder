@@ -106,7 +106,7 @@
     "vue-loader": "^13.7.3",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "vuex-c3s": "^2.0.1-beta",
+    "vuex-c3s": "^2.0.2-beta",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
