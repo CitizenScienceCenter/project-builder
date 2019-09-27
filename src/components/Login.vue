@@ -51,27 +51,21 @@ export default {
   name: 'Login',
   created () {
     // load the auth options
-    this.getLoginOptions().then(response => {
-      if (response) {
-
-        // if the user is already logged in, we can load his account data
-        if (!response.hasOwnProperty('auth')) {
-          this.getAccountProfile().then(() => {
-            if (this.logged) {
-              this.$router.push({ name: 'home' })
-            }
-          })
+    if (this.user !== null) {
+        if (this.logged) {
+          this.$router.push({ name: 'home' })
         }
-
-      }
-    })
+    }
   },
   data: () => {
     return {
       form: {
         email: '',
         password: ''
-      }
+      },
+      ...mapState({
+        user: state => state.c3s.user.currentUser,
+      })
     }
   },
   methods: {
@@ -86,8 +80,7 @@ export default {
 
     onSubmit () {
       this.signIn(this.form).then(() => {
-        if (this.logged) {
-          this.getAccountProfile()
+        if (this.user) {
           this.showInfo({
             title: 'Welcome',
             content: 'We are happy to see you again!'

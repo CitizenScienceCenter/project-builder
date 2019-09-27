@@ -79,6 +79,7 @@ const actions = {
     console.log(form)
     return store.dispatch('c3s/user/register', form).then(response => {
       console.log(response)
+      commit('setLogged')
       return response.data
     }).catch(reason => {
       console.log(reason);
@@ -114,11 +115,13 @@ const actions = {
       pwd: password
     }).then(response => {
       // checks if the user is authenticated (good credentials)
-      if (Object.prototype.hasOwnProperty.call(response, 'ok') && response.data.status === true) {
+      console.log(response);
+      if (response.hasOwnProperty('ok') && response.ok === true) {
+        console.log('User signed in');
         commit('setLogged')
         return response.body
       }
-      return false
+      return true
     }).catch(reason => {
       commit('notification/showError', {
         title: 'Error during user sign in',
@@ -190,31 +193,19 @@ const actions = {
   signOut({
     commit
   }) {
-    return api.signOut().then(response => {
-      if (response.data.hasOwnProperty('status') && response.data.status === 'success') {
-        commit('setLoggedOut')
-        commit('setUserInfos', {})
-        commit('setUserContributedProjects', [])
-        commit('setUserDraftProjects', [])
-        commit('setUserPublishedProjects', [])
-        commit('notification/showInfo', {
-          title: 'Signed out',
-          content: 'You are now logged out'
-        }, {
-          root: true
-        })
-        return response.data
-      }
-      return false
-    }).catch(reason => {
-      commit('notification/showError', {
-        title: errors.SIGN_OUT_ERROR,
-        content: reason
-      }, {
-        root: true
-      })
-      return false
+    store.dispatch('c3s/user/logout')
+    commit('setLoggedOut')
+    commit('setUserInfos', {})
+    commit('setUserContributedProjects', [])
+    commit('setUserDraftProjects', [])
+    commit('setUserPublishedProjects', [])
+    commit('notification/showInfo', {
+      title: 'Signed out',
+      content: 'You are now logged out'
+    }, {
+      root: true
     })
+    return true
   },
 
   /**

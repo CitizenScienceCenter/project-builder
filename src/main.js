@@ -6,7 +6,9 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-import { i18n } from './i18n.js'
+import {
+  i18n
+} from './i18n.js'
 
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
@@ -38,14 +40,25 @@ Vue.component('pdf', Pdf)
 window.Vue = Vue
 
 const apiURL = 'https://api-staging.citizenscience.ch/api/v3/openapi.json'
-Vue.use(c3s.plugin, { store, apiURL })
+Vue.use(c3s.plugin, {
+  store,
+  apiURL
+})
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  components: { App },
-  template: '<App/>'
-})
+store.watch(
+  (state) => state.c3s && state.c3s.client,
+  (value) => {
+    if (value !== null) {
+      new Vue({
+        el: '#app',
+        router,
+        store,
+        i18n,
+        components: {
+          App
+        },
+        template: '<App/>'
+      })
+    }
+  })

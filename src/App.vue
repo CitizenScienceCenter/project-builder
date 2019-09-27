@@ -12,7 +12,6 @@
 
     <div class="content-area">
 
-      {{ $t('test') }}
 
       <b-navbar toggleable="lg" type="dark" variant="dark">
 
@@ -31,7 +30,7 @@
             <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
 
-              <b-nav-item v-if="!userLogged" :to="{ name: 'login' }">Login</b-nav-item>
+              <b-nav-item v-if="!userLogged!==null" :to="{ name: 'login' }">Login</b-nav-item>
               <!--<b-nav-item v-if="!userLogged" :to="{ name: 'register' }">Register</b-nav-item>-->
 
               <b-nav-item-dropdown v-else right>
@@ -119,7 +118,9 @@ export default {
       GDPR,
         'app-header': Header
     },
-    created () {
+    created (
+    ) {
+      console.log(this.userLogged);
     // this.getAccountProfile()
   },
   metaInfo () {
@@ -161,8 +162,8 @@ export default {
     infoNotifications: state => state.notification.infoNotifications,
     successNotifications: state => state.notification.successNotifications,
 
-    userLogged: state => state.user.logged,
-    userProfile: state => state.user.infos
+    userLogged: state => state.c3s.user.currentUser,
+    userProfile: state => state.c3s.user.currentUser
   }),
   methods: {
     ...mapMutations({

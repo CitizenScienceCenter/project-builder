@@ -15,7 +15,7 @@
       <b-col cols="12" md="6" class="mt-4 mt-sm-0">
         <b-card bg-variant="light" text-variant="dark">
           <b-card-text>
-            Create a Project and get other volunteers to help you analyse your data.
+            Create a Project and get other volunteers to help you collect and/or analyse data.
           </b-card-text>
           <b-button :to="{ name: 'project.builder.name' }" variant="outline-primary">Create a project</b-button>
         </b-card>
@@ -23,7 +23,7 @@
 
     </b-row>
 
-    <b-row class="mt-4">
+    <b-row class="mt-4" v-if="projects.length > 0">
       <b-col>
         <h2 class="p-2 text-center">Featured projects</h2>
 
@@ -31,7 +31,7 @@
           <b-col :key="project.id" v-for="project in projects" md="4" class="mt-3">
 
             <b-card no-body tag="article" class="h-100">
-              <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+              <b-card-img-lazy v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
               <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
 
               <b-card-body>
@@ -59,18 +59,16 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Home',
   created () {
-    this.getProjectsWithCategory({
-      category: { short_name: 'featured' }
-    })
+    console.log(this.$store);
+    this.$store.dispatch('c3s/project/getProjects', []).then(res => {
+      console.log(res.body.body);
+    });
   },
   methods: {
-    ...mapActions('project', [
-      'getProjectsWithCategory'
-    ])
   },
   computed: {
-    ...mapState('project', {
-      projects: state => 'featured' in state.categoryProjects ? state.categoryProjects.featured : []
+    ...mapState({
+      projects: state => state.c3s.project.projects
     })
   }
 }
