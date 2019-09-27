@@ -12,7 +12,6 @@ import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
 import Pdf from 'vue-pdf'
 
-
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -28,7 +27,7 @@ import Meta from 'vue-meta'
 
 Vue.config.productionTip = false
 
-Vue.use(Meta);
+Vue.use(Meta)
 Vue.use(BootstrapVue)
 Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
@@ -38,8 +37,8 @@ Vue.component('pdf', Pdf)
 
 window.Vue = Vue
 
-const swaggerURL = "https://api.citizenscience.ch/api/v2/swagger.json"
-Vue.use(c3s.plugin, {store, swaggerURL})
+const apiURL = 'https://api-staging.citizenscience.ch/api/v3/openapi.json'
+Vue.use(c3s.plugin, { store, apiURL })
 
 /* eslint-disable no-new */
 new Vue({
