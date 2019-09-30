@@ -40,14 +40,16 @@ Vue.component('pdf', Pdf)
 window.Vue = Vue
 
 const apiURL = 'https://api-staging.citizenscience.ch/api/v3/openapi.json'
+const server = 'https://api-staging.citizenscience.ch/api/v3/'
 Vue.use(c3s.plugin, {
   store,
-  apiURL
+  apiURL,
+  server
 })
 
 /* eslint-disable no-new */
 store.watch(
-  (state) => state.c3s && state.c3s.client,
+  (state) => state.c3s && state.c3s.client.apis,
   (value) => {
     if (value !== null) {
       new Vue({

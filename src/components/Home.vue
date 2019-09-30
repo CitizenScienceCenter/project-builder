@@ -59,7 +59,6 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Home',
   created () {
-    console.log(this.$store);
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
       console.log(res.body.body);
     });
