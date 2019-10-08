@@ -4,6 +4,8 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -81,6 +83,15 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue',
+        options: {
+          loaders: {
+            i18n: '@kazupon/vue-i18n-loader'
+          }
+        }
       }
     ]
   },
@@ -95,5 +106,8 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
-  }
+  },
+  plugins: [
+    new VueLoaderPlugin()
+  ]
 }
