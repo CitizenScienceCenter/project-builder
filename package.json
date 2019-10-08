@@ -5,7 +5,7 @@
   "author": "Vincent Peillex <vincent@mobilethinking.ch>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.config.js",
     "serve": "npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
@@ -14,6 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.6.0",
     "@babel/runtime": "^7.6.2",
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@kazupon/vue-i18n-loader": "^0.4.1",

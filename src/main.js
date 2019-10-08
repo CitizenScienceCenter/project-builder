@@ -1,7 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import App from './App.vue'
 
 import store from './store'
 import router from './router'
@@ -34,25 +34,24 @@ Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
 })
 
-Vue.component('pdf', Pdf)
+//Vue.component('pdf', Pdf)
 
 window.Vue = Vue
 
 const swaggerURL = "https://api.citizenscience.ch/api/v2/swagger.json"
-Vue.use(c3s.plugin, {store, swaggerURL})
+Vue.use(c3s.plugin, { store, swaggerURL })
 
 /* eslint-disable no-new */
-store.watch(
-  (state) => state.c3s && state.c3s.client,
-  (value) => {
-    if (value !== null) {
-      new Vue({
+// store.watch(
+//   (state) => state.c3s && state.c3s.client,
+//   (value) => {
+//     if (value !== null) {
+      console.log('mounting vue')
+      const app = new Vue({
         el: '#app',
+        render: h => h(App),
         router,
-        store,
-        i18n,
-        render: h => h(App.default),
-        template: '<App/>'
+        store
       })
-    }
-  })
+  //   }
+  // })
