@@ -5,7 +5,6 @@ const HtmlPlugin = require('html-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const helpers = require('./helpers');
 const isDev = process.env.NODE_ENV === 'development';
-const utils = require('./utils')
 
 const webpackConfig = {
     entry: {
@@ -15,7 +14,8 @@ const webpackConfig = {
     resolve: {
         extensions: ['.js', '.vue'],
         alias: {
-            'vue$': isDev ? 'vue/dist/vue.runtime.js' : 'vue/dist/vue.runtime.min.js',
+            'vue': 'vue/dist/vue.js',
+            'vue$': isDev ? 'vue/dist/vue.js' : 'vue/dist/vue.min.js',
             '@': helpers.root('src')
         }
     },
@@ -24,6 +24,7 @@ const webpackConfig = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
+                options: {loaders: {}, esModule: false},
                 include: [helpers.root('src')]
             },
             {
@@ -74,7 +75,7 @@ const webpackConfig = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                    name: helpers.assetsPath('img/[name].[hash:7].[ext]')
                 }
             },
             {
@@ -89,7 +90,7 @@ const webpackConfig = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('media/[name].[hash:7].[ext]')
+                    name: helpers.assetsPath('media/[name].[hash:7].[ext]')
                 }
             },
             {
@@ -97,18 +98,19 @@ const webpackConfig = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                    name: helpers.assetsPath('fonts/[name].[hash:7].[ext]')
                 }
             },
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    loaders: {
-                        i18n: '@kazupon/vue-i18n-loader'
-                    }
-                }
-            }
+            // {
+            //     test: /\.vue$/,
+            //     loader: 'vue-loader',
+            //     options: {
+            //         loaders: {
+            //             i18n: '@kazupon/vue-i18n-loader'
+            //         },
+            //         esModule: false
+            //     }
+            // }
         ]
     },
     plugins: [

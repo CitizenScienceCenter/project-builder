@@ -7,7 +7,7 @@ const MiniCSSExtractPlugin     = require('mini-css-extract-plugin');
 const UglifyJSPlugin           = require('uglifyjs-webpack-plugin');
 const CompressionPlugin        = require('compression-webpack-plugin');
 const helpers                  = require('./helpers');
-const commonConfig             = require('./webpack.config.common');
+const commonConfig             = require('./webpack.common.config');
 const isProd                   = process.env.NODE_ENV === 'production';
 const environment              = isProd ? require('../config/prod.env') : require('../config/staging.env');
 

@@ -10,7 +10,7 @@ import { i18n } from './i18n.js'
 
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
-import Pdf from 'vue-pdf'
+// import Pdf from 'vue-pdf'
 
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -42,16 +42,17 @@ const swaggerURL = "https://api.citizenscience.ch/api/v2/swagger.json"
 Vue.use(c3s.plugin, { store, swaggerURL })
 
 /* eslint-disable no-new */
-// store.watch(
-//   (state) => state.c3s && state.c3s.client,
-//   (value) => {
-//     if (value !== null) {
+ store.watch(
+   (state) => state.c3s && state.c3s.client,
+  (value) => {
+    if (value !== null) {
       console.log('mounting vue')
-      const app = new Vue({
+      new Vue({
         el: '#app',
         render: h => h(App),
         router,
-        store
+        store,
+        i18n
       })
-  //   }
-  // })
+    }
+  })
