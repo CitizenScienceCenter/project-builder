@@ -133,7 +133,8 @@ export default {
     })
 
     // get all the projects only for the 'all' tab
-    this.getAllProjects().then(() => {
+    this.getAllProjects().then((p) => {
+      this.projects = p;
       // init the tab 'all' to the first page
       this.categoryAllPageChange(1)
     })
@@ -146,7 +147,8 @@ export default {
         showedProjects: [],
         paginationSize: 20,
         currentPage: 1
-      }
+      },
+      projects: []
     }
   },
   methods: {
@@ -178,10 +180,13 @@ export default {
   },
   computed: {
     ...mapState('project', [
-      'projects',
+      //'projects',
       'categories',
       'categoryProjects',
       'categoryPagination'
+    ],
+    'c3s/project', [
+      'projects'
     ]),
 
     /**

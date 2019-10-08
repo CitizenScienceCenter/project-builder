@@ -30,7 +30,7 @@
             <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
 
-              <b-nav-item v-if="!userLogged!==null" :to="{ name: 'login' }">Login</b-nav-item>
+              <b-nav-item v-if="!userLogged" :to="{ name: 'login' }">Login</b-nav-item>
               <!--<b-nav-item v-if="!userLogged" :to="{ name: 'register' }">Register</b-nav-item>-->
 
               <b-nav-item-dropdown v-else right>
@@ -120,7 +120,6 @@ export default {
     },
     created (
     ) {
-      console.log(this.userLogged);
     // this.getAccountProfile()
   },
   metaInfo () {

@@ -60,14 +60,15 @@ export default {
   name: 'Home',
   created () {
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
-      console.log(res.body.body);
+      console.log(res);
     });
   },
   methods: {
   },
   computed: {
     ...mapState({
-      projects: state => state.c3s.project.projects
+      projects: state => state.c3s.project.projects,
+      user: state => state.c3s.user.currentUser
     })
   }
 }
