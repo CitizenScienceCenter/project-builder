@@ -42,11 +42,17 @@ const swaggerURL = "https://api.citizenscience.ch/api/v2/swagger.json"
 Vue.use(c3s.plugin, {store, swaggerURL})
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h =>h(App.default),
-  template: '<App/>'
-})
+store.watch(
+  (state) => state.c3s && state.c3s.client,
+  (value) => {
+    if (value !== null) {
+      new Vue({
+        el: '#app',
+        router,
+        store,
+        i18n,
+        render: h => h(App.default),
+        template: '<App/>'
+      })
+    }
+  })
