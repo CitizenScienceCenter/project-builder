@@ -96,7 +96,7 @@ module.exports = {
       },
       {
         test: /\.vue$/,
-        loader: 'vue',
+        loader: 'vue-loader',
         options: {
           loaders: {
             i18n: '@kazupon/vue-i18n-loader'

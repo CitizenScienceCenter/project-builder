@@ -119,7 +119,11 @@ export default {
       GDPR,
         'app-header': Header
     },
+    mounted() {
+      console.log('mount')
+    },
     created () {
+      console.log('mounted');
     // this.getAccountProfile()
   },
   metaInfo () {
