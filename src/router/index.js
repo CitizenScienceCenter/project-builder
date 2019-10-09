@@ -67,13 +67,13 @@ const router = new Router({
           path: 'discover',
           name: 'discover',
           component: Discover,
-         // meta: {i18n: 'navigation-discover', nav: true}
+         meta: {i18n: 'navigation-discover', nav: true}
         },
         {
           path: 'about',
           name: 'about',
           component: About,
-          //meta: {i18n: 'navigation-about', nav: true}
+          meta: {i18n: 'navigation-about', nav: true}
         },
         {
           path: 'profile',
@@ -317,49 +317,49 @@ const publicRoutes = [
   'home', 'login', 'register', 'logout', 'discover', 'about', 'project', 'project.task.presenter'
 ]
 
-// router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
 
-//   let filteredPath = to.path.split('/').filter(element => element.length > 0);
-//   if( filteredPath.length > 0 && filteredPath[0].length === 2 ) {
-//     //console.log( 'url has language: '+ to.params.lang);
-//     let language = to.params.lang;
-//     store.dispatch("settings/setLanguage", language);
-//     //i18n.locale = language;
-
-
-//     if (store.state.user.logged) {
-//       // user already logged (getAccountProfile already done) so he can access all the routes
-//       next()
-//     } else {
-//       // test if the user can be logged with his session if not already logged
-//       store.dispatch('user/getAccountProfile').then(() => {
-//         // can go next also if not logged and if the route is public
-//         if (store.state.user.logged || publicRoutes.includes(to.name)) {
-//           next()
-//         } else {
-//           // if the route needs to be logged the user is redirected
-//           store.commit('notification/showInfo', {
-//             title: 'Not authenticated',
-//             content: 'You must be logged to access this page'
-//           })
-//           from.name !== null ? next(false) : next({ name: 'login' })
-//         }
-//       }).catch(() => {
-//         next({ name: 'home' })
-//       })
-//     }
+  let filteredPath = to.path.split('/').filter(element => element.length > 0);
+  if( filteredPath.length > 0 && filteredPath[0].length === 2 ) {
+    //console.log( 'url has language: '+ to.params.lang);
+    let language = to.params.lang;
+    store.dispatch("settings/setLanguage", language);
+    //i18n.locale = language;
 
 
-
-//   }
-//   else {
-//     //console.log('redirect to');
-//     //console.log( '/'+ i18n.locale + to.path );
-//     //next( '/'+ i18n.locale + to.path );
-//   }
+    if (store.state.user.logged) {
+      // user already logged (getAccountProfile already done) so he can access all the routes
+      next()
+    } else {
+      // test if the user can be logged with his session if not already logged
+      store.dispatch('user/getAccountProfile').then(() => {
+        // can go next also if not logged and if the route is public
+        if (store.state.user.logged || publicRoutes.includes(to.name)) {
+          next()
+        } else {
+          // if the route needs to be logged the user is redirected
+          store.commit('notification/showInfo', {
+            title: 'Not authenticated',
+            content: 'You must be logged to access this page'
+          })
+          from.name !== null ? next(false) : next({ name: 'login' })
+        }
+      }).catch(() => {
+        next({ name: 'home' })
+      })
+    }
 
 
 
-// })
+  }
+  else {
+    //console.log('redirect to');
+    //console.log( '/'+ i18n.locale + to.path );
+    //next( '/'+ i18n.locale + to.path );
+  }
+
+
+
+})
 
 export default router

@@ -115,15 +115,11 @@ const actions = {
       pwd: password
     }).then(response => {
       // checks if the user is authenticated (good credentials)
-    
+      console.log(response)
       if (response.hasOwnProperty('ok') && response.ok === true) {
         console.log('User signed in');
         commit('setLogged')
-        store.commit('c3s/user/SET_CURRENT_USER', response, {root: true}).then(r=>{
-          console.log(r)
-        }).catch(err => {
-          console.log(err)
-        })
+        commit('setUserInfos', response.body.data)
         return response
       } else {
         console.log(response)

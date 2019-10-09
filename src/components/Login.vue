@@ -81,7 +81,7 @@ export default {
     onSubmit () {
       this.signIn(this.form).then(() => {
         if (this.user) {
-          console.log(this.$store.state.c3s.user)
+          console.log(this.$store.state.c3s.user.currentUser)
           this.showInfo({
             title: 'Welcome',
             content: 'We are happy to see you again!'
