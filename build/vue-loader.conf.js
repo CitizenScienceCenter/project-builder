@@ -13,6 +13,7 @@ module.exports = {
   }),
   cssSourceMap: sourceMapEnabled,
   cacheBusting: config.dev.cacheBusting,
+  // esModule: false,
   transformToRequire: {
     video: ['src', 'poster'],
     source: 'src',

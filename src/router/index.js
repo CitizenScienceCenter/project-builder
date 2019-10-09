@@ -1,29 +1,29 @@
 import Vue from 'vue'
 import store from '@/store'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Login from '@/components/Login'
-import Discover from '@/components/Discover'
-import Project from '@/components/Project/Project'
-import ProjectBuilder from '@/components/Project/Builder/ProjectBuilder'
-import About from '@/components/About'
-import TaskBuilder from '@/components/Task/Builder/TaskBuilder'
-import TemplateRenderer from '@/components/Task/TemplateRenderer'
-import Profile from '@/components/Profile/Profile'
-import TaskPresenterMenu from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterMenu'
-import TaskPresenterEditor from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterEditor'
-import TaskList from '@/components/Project/Menu/TaskMenu/TaskList'
-import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu'
-import Registration from '@/components/Registration/Registration'
-import TaskExporterMenu from '@/components/Project/Menu/TaskMenu/Exporter/TaskExporterMenu'
-import TaskSettingsMenu from '@/components/Project/Menu/TaskMenu/Settings/TaskSettingsMenu'
-import DeleteTaskSetting from '@/components/Project/Menu/TaskMenu/Settings/DeleteTaskSetting'
-import TaskSchedulerSetting from '@/components/Project/Menu/TaskMenu/Settings/TaskSchedulerSetting'
-import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskRedundancySetting'
-import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting'
-import FlickrCallback from '@/components/Task/Builder/FlickrCallback'
+import Home from '@/components/Home.vue'
+import Login from '@/components/Login.vue'
+import Discover from '@/components/Discover.vue'
+import Project from '@/components/Project/Project.vue'
+import ProjectBuilder from '@/components/Project/Builder/ProjectBuilder.vue'
+import About from '@/components/About.vue'
+import TaskBuilder from '@/components/Task/Builder/TaskBuilder.vue'
+import TemplateRenderer from '@/components/Task/TemplateRenderer.vue'
+import Profile from '@/components/Profile/Profile.vue'
+import TaskPresenterMenu from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterMenu.vue'
+import TaskPresenterEditor from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterEditor.vue'
+import TaskList from '@/components/Project/Menu/TaskMenu/TaskList.vue'
+import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu.vue'
+import Registration from '@/components/Registration/Registration.vue'
+import TaskExporterMenu from '@/components/Project/Menu/TaskMenu/Exporter/TaskExporterMenu.vue'
+import TaskSettingsMenu from '@/components/Project/Menu/TaskMenu/Settings/TaskSettingsMenu.vue'
+import DeleteTaskSetting from '@/components/Project/Menu/TaskMenu/Settings/DeleteTaskSetting.vue'
+import TaskSchedulerSetting from '@/components/Project/Menu/TaskMenu/Settings/TaskSchedulerSetting.vue'
+import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskRedundancySetting.vue'
+import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
+import FlickrCallback from '@/components/Task/Builder/FlickrCallback.vue'
 
-import { i18n } from '../i18n.js';
+//import { i18n } from '../i18n.js';
 
 Vue.use(Router)
 
@@ -67,13 +67,13 @@ const router = new Router({
           path: 'discover',
           name: 'discover',
           component: Discover,
-          meta: {i18n: 'navigation-discover', nav: true}
+         // meta: {i18n: 'navigation-discover', nav: true}
         },
         {
           path: 'about',
           name: 'about',
           component: About,
-          meta: {i18n: 'navigation-about', nav: true}
+          //meta: {i18n: 'navigation-about', nav: true}
         },
         {
           path: 'profile',
@@ -317,49 +317,49 @@ const publicRoutes = [
   'home', 'login', 'register', 'logout', 'discover', 'about', 'project', 'project.task.presenter'
 ]
 
-router.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
 
-  let filteredPath = to.path.split('/').filter(element => element.length > 0);
-  if( filteredPath.length > 0 && filteredPath[0].length === 2 ) {
-    //console.log( 'url has language: '+ to.params.lang);
-    let language = to.params.lang;
-    store.dispatch("settings/setLanguage", language);
-    i18n.locale = language;
-
-
-    if (store.state.user.logged) {
-      // user already logged (getAccountProfile already done) so he can access all the routes
-      next()
-    } else {
-      // test if the user can be logged with his session if not already logged
-      store.dispatch('user/getAccountProfile').then(() => {
-        // can go next also if not logged and if the route is public
-        if (store.state.user.logged || publicRoutes.includes(to.name)) {
-          next()
-        } else {
-          // if the route needs to be logged the user is redirected
-          store.commit('notification/showInfo', {
-            title: 'Not authenticated',
-            content: 'You must be logged to access this page'
-          })
-          from.name !== null ? next(false) : next({ name: 'login' })
-        }
-      }).catch(() => {
-        next({ name: 'home' })
-      })
-    }
+//   let filteredPath = to.path.split('/').filter(element => element.length > 0);
+//   if( filteredPath.length > 0 && filteredPath[0].length === 2 ) {
+//     //console.log( 'url has language: '+ to.params.lang);
+//     let language = to.params.lang;
+//     store.dispatch("settings/setLanguage", language);
+//     //i18n.locale = language;
 
 
-
-  }
-  else {
-    //console.log('redirect to');
-    //console.log( '/'+ i18n.locale + to.path );
-    next( '/'+ i18n.locale + to.path );
-  }
+//     if (store.state.user.logged) {
+//       // user already logged (getAccountProfile already done) so he can access all the routes
+//       next()
+//     } else {
+//       // test if the user can be logged with his session if not already logged
+//       store.dispatch('user/getAccountProfile').then(() => {
+//         // can go next also if not logged and if the route is public
+//         if (store.state.user.logged || publicRoutes.includes(to.name)) {
+//           next()
+//         } else {
+//           // if the route needs to be logged the user is redirected
+//           store.commit('notification/showInfo', {
+//             title: 'Not authenticated',
+//             content: 'You must be logged to access this page'
+//           })
+//           from.name !== null ? next(false) : next({ name: 'login' })
+//         }
+//       }).catch(() => {
+//         next({ name: 'home' })
+//       })
+//     }
 
 
 
-})
+//   }
+//   else {
+//     //console.log('redirect to');
+//     //console.log( '/'+ i18n.locale + to.path );
+//     //next( '/'+ i18n.locale + to.path );
+//   }
+
+
+
+// })
 
 export default router

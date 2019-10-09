@@ -1,7 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import App from './App.vue'
 
 import store from './store'
 import router from './router'
@@ -12,7 +12,7 @@ import {
 
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
-import Pdf from 'vue-pdf'
+// import Pdf from 'vue-pdf'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -35,7 +35,7 @@ Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
 })
 
-Vue.component('pdf', Pdf)
+//Vue.component('pdf', Pdf)
 
 window.Vue = Vue
 
@@ -48,19 +48,17 @@ Vue.use(c3s.plugin, {
 })
 
 /* eslint-disable no-new */
-store.watch(
-  (state) => state.c3s && state.c3s.client.apis,
+ store.watch(
+   (state) => state.c3s && state.c3s.client,
   (value) => {
     if (value !== null) {
+      console.log('mounting vue')
       new Vue({
         el: '#app',
+        render: h => h(App),
         router,
         store,
-        i18n,
-        components: {
-          App
-        },
-        template: '<App/>'
+        i18n
       })
     }
   })

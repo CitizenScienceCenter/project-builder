@@ -53,7 +53,7 @@
       </b-navbar>
 
       <b-container>
-        <router-view/>
+        <router-view></router-view>
       </b-container>
 
       <!-- Notification toasts -->
