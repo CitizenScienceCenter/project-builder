@@ -79,7 +79,7 @@
               <b-col :key="project.id" v-for="project in categoryProjects[category.short_name]" md="4" class="mt-3">
 
                 <b-card no-body tag="article" class="h-100">
-                  <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+                  <b-card-img-lazy v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
                   <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
 
                   <b-card-body>
@@ -123,18 +123,18 @@ export default {
   name: 'Discover',
   created () {
     // all categories are loaded during the creation to have all the pagination systems
-    this.getCategories().then(() => {
-      this.allCategories.forEach(category => {
-        this.categoryCurrentPage[category.id] = 1
-        this.getProjectsWithCategory({
-          category
-        })
-      })
-    })
+    // this.getCategories().then(() => {
+    //   this.allCategories.forEach(category => {
+    //     this.categoryCurrentPage[category.id] = 1
+    //     this.getProjectsWithCategory({
+    //       category
+    //     })
+    //   })
+    // })
 
     // get all the projects only for the 'all' tab
-    this.getAllProjects().then((p) => {
-      this.projects = p;
+    this.getProjects([undefined, 10]).then((p) => {
+      this.projects = p.body.data;
       // init the tab 'all' to the first page
       this.categoryAllPageChange(1)
     })
@@ -152,10 +152,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getAllProjects',
-      'getCategories',
-      'getProjectsWithCategory'
+    ...mapActions('c3s/project', [
+      'getProjects',
+      // 'getCategories',
+      // 'getProjectsWithCategory'
     ]),
 
     /**

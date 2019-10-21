@@ -1,5 +1,13 @@
 # pybossa-client
 
+
+## Running this branch
+
+You will need:
+* [github.com/citizensciencecenter/project-builder](Project Builder)
+* [github.com/citizensciencecenter/backend](Backend)
+* [github.com/citizensciencecenter/vuex-c3s](Vuex C3S Package)
+
 > Pybossa client
 
 ## Build Setup

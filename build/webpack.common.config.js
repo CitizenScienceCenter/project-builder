@@ -24,8 +24,13 @@ const webpackConfig = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {loaders: {}, esModule: false},
+                options: { loaders: {}, esModule: false },
                 include: [helpers.root('src')]
+            },
+            {
+                resourceQuery: /blockType=i18n/,
+                type: 'javascript/auto',
+                loader: '@kazupon/vue-i18n-loader'
             },
             {
                 test: /\.js$/,

@@ -60,10 +60,12 @@ export default {
   name: 'Home',
   created () {
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
-      console.log(res);
     });
   },
   methods: {
+    ...mapActions('c3s/project', [
+      'getProjects'
+    ]),
   },
   computed: {
     ...mapState({

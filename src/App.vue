@@ -1,7 +1,7 @@
 <i18n>
   {
   "en": {
-    "test: "test-with-i18n-tags"
+    "test": "test-with-i18n-tags"
   }
   }
 </i18n>
