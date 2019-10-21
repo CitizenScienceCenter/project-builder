@@ -12,6 +12,7 @@
 
     <div class="content-area">
 
+      Test: {{ $t('test') }}
 
       <b-navbar toggleable="lg" type="dark" variant="dark">
 
@@ -112,6 +113,8 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import Header from "./components/shared/Header";
 import GDPR from "./components/shared/GDPR";
 
+const url = 'https://lab.citizenscience.ch';
+
 export default {
   name: 'App',
     components: {
@@ -124,15 +127,22 @@ export default {
   },
   metaInfo () {
     return {
-      title: 'Community Projects | Citizen Science Center Zurich',
+      // if no subcomponents specify a metaInfo.title, this title will be used
+      title: '',
+      // all titles will be injected into this template
+      titleTemplate: '%s | '+this.$t('site-title'),
       meta: [
         {
           name: 'description',
-          content: 'Site Description'
+          content: this.$t('site-description')
+        },
+        {
+          property: 'og:title',
+          content: this.$t('site-title')
         },
         {
           property: 'og:description',
-          content: 'Site Description'
+          content: this.$t('site-description')
         },
         {
           property: 'og:type',
@@ -140,20 +150,21 @@ export default {
         },
         {
           property: 'og:url',
-          content: ''
+          content: url+this.$route.path
         },
         {
           property: 'og:image',
-          content: 'https://citizenscience.ch/img/citsci-promo.jpg'
+          content: url+'/img/promo.jpg'
         }
       ],
-      htmlAttrs: {
-        lang: 'en'
-      },
       link: [
+        {rel: 'canonical', href: url+this.$route.path},
         { rel: 'icon', type: 'image/png', href: '@/assets/shared/favicon-16x16png', sizes: '16x16' },
         { rel: 'icon', type: 'image/png', href: '@/assets/shared/favicon-32x32png', sizes: '32x32' }
-      ]
+      ],
+      htmlAttrs: {
+        lang: this.language
+      }
     }
   },
   computed: mapState({
