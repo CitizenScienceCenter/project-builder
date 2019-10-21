@@ -1,18 +1,8 @@
-<i18n>
-  {
-  "en": {
-    "test": "test-with-i18n-tags"
-  }
-  }
-</i18n>
-
 <template>
   <div id="app">
-    <app-header project-name="Community <br/>Projects" :languages="['en']" hide-login></app-header>
+    <app-header project-name="Site <br/>Title" :languages="['en']"></app-header>
 
     <div class="content-area">
-
-      Test: {{ $t('test') }}
 
       <b-navbar toggleable="lg" type="dark" variant="dark">
 
@@ -189,7 +179,10 @@ export default {
 }
 </script>
 
+<!--
+<style lang="scss" src="@/styles/undoBoostrap.scss"></style>
 <style lang="scss" src="@/styles/shared/main.scss"></style>
+-->
 
 <style>
 
