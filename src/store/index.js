@@ -13,10 +13,13 @@ import consts from './modules/consts'
 import settings from './modules/settings'
 import gdpr from "./modules/gdpr";
 
-Vue.use(Vuex)
+import createPersistedState from 'vuex-persistedstate';
 
-const debug = process.env.NODE_ENV !== 'production'
+Vue.use(Vuex);
 
+const debug = process.env.NODE_ENV !== 'production';
+
+/*
 export default new Vuex.Store({
   modules: {
     notification,
@@ -31,3 +34,40 @@ export default new Vuex.Store({
   strict: debug,
   plugins: debug ? [createLogger()] : []
 })
+*/
+
+let store;
+if( window.localStorage ) {
+  store = new Vuex.Store({
+    modules: {
+      notification,
+      project,
+      user,
+      task,
+      osm,
+      consts,
+      settings,
+      gdpr
+    },
+    strict: debug,
+    plugins: debug ? [createLogger(), createPersistedState({ storage: window.localStorage})] : [createPersistedState({ storage: window.localStorage})]
+  });
+}
+else {
+  store = new Vuex.Store({
+    modules: {
+      notification,
+      project,
+      user,
+      task,
+      osm,
+      consts,
+      settings,
+      gdpr
+    },
+    strict: debug,
+    plugins: debug ? [createLogger()] : []
+  });
+}
+
+export default store;
