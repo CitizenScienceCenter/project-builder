@@ -23,7 +23,7 @@ import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/T
 import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
 import FlickrCallback from '@/components/Task/Builder/FlickrCallback.vue'
 
-//import { i18n } from '../i18n.js';
+import { i18n } from '../i18n.js';
 
 Vue.use(Router)
 
@@ -324,8 +324,7 @@ router.beforeEach((to, from, next) => {
     //console.log( 'url has language: '+ to.params.lang);
     let language = to.params.lang;
     store.dispatch("settings/setLanguage", language);
-    //i18n.locale = language;
-
+    i18n.locale = language;
 
     if (store.state.user.logged) {
       // user already logged (getAccountProfile already done) so he can access all the routes
@@ -353,11 +352,10 @@ router.beforeEach((to, from, next) => {
 
   }
   else {
-    //console.log('redirect to');
-    //console.log( '/'+ i18n.locale + to.path );
-    //next( '/'+ i18n.locale + to.path );
+    console.log('redirect to');
+    console.log( '/'+ i18n.locale + to.path );
+    next( '/'+ i18n.locale + to.path );
   }
-
 
 
 })

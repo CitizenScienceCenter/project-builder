@@ -58,6 +58,18 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Home',
+  metaInfo: function() {
+    return {
+      title: this.$t('site-title'),
+      titleTemplate: null,
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('site-title')
+        }
+      ]
+    }
+  },
   created () {
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
       console.log(res);
