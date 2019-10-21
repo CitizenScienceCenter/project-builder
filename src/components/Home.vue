@@ -1,5 +1,61 @@
+<i18n>
+{
+
+"en": {
+
+"cover-heading": "Citizen Science Lab",
+"cover-subheading": "Start building your projects",
+"cover-button-primary": "Create a Project",
+"cover-button-secondary": "Browse Projects"
+
+}
+
+}
+</i18n>
+
+
 <template>
   <div>
+
+    <app-cover imageUrl="/img/cover.jpg">
+      <div class="row row-centered">
+        <div class="col col-large-8">
+          <h2 class="cover-heading scroll-effect" v-html="$t('cover-heading')"></h2>
+        </div>
+      </div>
+      <div class="row row-centered">
+        <div class="col col-large-8">
+          <p class="cover-subheading scroll-effect scroll-effect-delayed-1">{{ $t('cover-subheading') }}</p>
+        </div>
+      </div>
+      <div class="row row-centered">
+        <div class="col col-large-8">
+          <div class="button-group centered scroll-effect scroll-effect-delayed-2">
+            <router-link tag="button" to="/identification" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
+            <router-link tag="button" to="/about" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
+          </div>
+        </div>
+      </div>
+    </app-cover>
+
+    <app-content-section>
+      <div class="content-wrapper">
+        <div class="row row-centered">
+          <div class="col col-large-10 scroll-effect">
+            <h2 class="heading centered">Featured Projects</h2>
+          </div>
+        </div>
+      </div>
+    </app-content-section>
+
+    <section-newsletter-signup></section-newsletter-signup>
+
+    <app-footer platform></app-footer>
+
+
+
+
+
 
     <b-row class="mt-4">
 
@@ -56,8 +112,19 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
+import Cover from '@/components/shared/Cover.vue';
+import ContentSection from '@/components/shared/ContentSection.vue';
+import Footer from '@/components/shared/Footer.vue';
+import SectionNewsletterSignup from "@/components/shared/SectionNewsletterSignup";
+
 export default {
   name: 'Home',
+  components: {
+    SectionNewsletterSignup,
+      'app-cover': Cover,
+      'app-content-section': ContentSection,
+      'app-footer': Footer
+  },
   metaInfo: function() {
     return {
       title: this.$t('site-title'),

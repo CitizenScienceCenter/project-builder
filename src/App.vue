@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <app-header project-name="Site <br/>Title" :languages="['en']"></app-header>
+    <app-header project-name="<span class='kerning-fix'>L</span>ab" :languages="['en']"></app-header>
+
+    <div class="content-area">
+      <router-view></router-view>
+    </div>
+
+    <g-d-p-r></g-d-p-r>
 
     <div class="content-area">
 
@@ -43,9 +49,11 @@
 
       </b-navbar>
 
+      <!--
       <b-container>
         <router-view></router-view>
       </b-container>
+      -->
 
       <!-- Notification toasts -->
       <b-toast
@@ -92,7 +100,6 @@
 
 
     </div>
-    <g-d-p-r></g-d-p-r>
 
   </div>
 </template>

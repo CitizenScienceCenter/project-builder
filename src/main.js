@@ -38,6 +38,13 @@ Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
 })
 
+let VueScrollTo = require('vue-scrollto');
+Vue.use(VueScrollTo, {
+    easing: "easeInOut",
+    duration: 600,
+    offset: 0
+});
+
 //Vue.component('pdf', Pdf)
 
 window.Vue = Vue
