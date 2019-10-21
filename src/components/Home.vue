@@ -31,7 +31,7 @@
       <div class="row row-centered">
         <div class="col col-large-8">
           <div class="button-group centered scroll-effect scroll-effect-delayed-2">
-            <router-link tag="button" to="/identification" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
+            <router-link tag="button" to="/discover" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
             <router-link tag="button" to="/about" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
           </div>
         </div>
@@ -50,7 +50,7 @@
 
     <section-newsletter-signup></section-newsletter-signup>
 
-    <app-footer platform></app-footer>
+    <app-footer></app-footer>
 
 
 
