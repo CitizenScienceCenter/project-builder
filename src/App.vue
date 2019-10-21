@@ -10,6 +10,8 @@
   <div id="app">
     <app-header project-name="Community <br/>Projects" :languages="['en']" hide-login></app-header>
 
+    {{ $t('test') }}
+
     <div class="content-area">
 
 
