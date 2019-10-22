@@ -6,6 +6,7 @@
       <router-view></router-view>
     </div>
 
+
     <g-d-p-r></g-d-p-r>
 
     <div class="content-area">
@@ -151,13 +152,13 @@ export default {
         },
         {
           property: 'og:image',
-          content: url+'/img/promo.jpg'
+          content: url+'/static/img/citsci-promo.jpg'
         }
       ],
       link: [
         {rel: 'canonical', href: url+this.$route.path},
-        { rel: 'icon', type: 'image/png', href: '@/assets/shared/favicon-16x16png', sizes: '16x16' },
-        { rel: 'icon', type: 'image/png', href: '@/assets/shared/favicon-32x32png', sizes: '32x32' }
+        { rel: 'icon', type: 'image/png', href: '/static/img/favicon-16x16.png', sizes: '16x16' },
+        { rel: 'icon', type: 'image/png', href: '/static/img/favicon-32x32.png', sizes: '32x32' }
       ],
       htmlAttrs: {
         lang: this.language
