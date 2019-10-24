@@ -73,7 +73,7 @@
           <b-card-text>
             Create a Project and get other volunteers to help you collect and/or analyse data.
           </b-card-text>
-          <b-button :to="{ name: 'project.builder.name' }" variant="outline-primary">Create a project</b-button>
+          <b-button :to="{ name: 'activity.builder.name' }" variant="outline-primary">Create a project</b-button>
         </b-card>
       </b-col>
 

@@ -24,14 +24,14 @@ const webpackConfig = merge(commonConfig, {
     },
     plugins: [
         new webpack.EnvironmentPlugin(environment),
-        new webpack.HotModuleReplacementPlugin(),
-        new FriendlyErrorsPlugin()
+        new webpack.HotModuleReplacementPlugin()
+        //new FriendlyErrorsPlugin()
     ],
     devServer: {
         compress: true,
         historyApiFallback: true,
         hot: true,
-        open: true,
+        open: false,
         overlay: true,
         port: 8000,
         stats: {

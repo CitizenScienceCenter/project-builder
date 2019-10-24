@@ -48,26 +48,26 @@
         <b-tabs content-class="mt-5 mb-5" active-nav-item-class="font-weight-bold" fill>
 
           <b-tab title="Info" :active="currentTab === tabs.info" @click="setCurrentTab(tabs.info)">
-            <ProjectInfoMenu></ProjectInfoMenu>
+            <!-- <ProjectInfoMenu></ProjectInfoMenu> -->
           </b-tab>
 
           <!-- Temporary removed -->
           <b-tab v-if="false" :title="'Results (' + results.n_results + ')'" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
-            <ProjectResultsMenu></ProjectResultsMenu>
+            <!-- <ProjectResultsMenu></ProjectResultsMenu> -->
           </b-tab>
 
           <b-tab ref="tab-tasks" v-if="isLoggedUserOwnerOfProject(project)" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
-            <ProjectTasksMenu></ProjectTasksMenu>
+            <!-- <ProjectTasksMenu></ProjectTasksMenu> -->
           </b-tab>
 
           <!-- Temporary removed -->
           <b-tab v-if="false" title="Statistics" :active="currentTab === tabs.statistics" @click="setCurrentTab(tabs.statistics)">
-            <ProjectStatisticsMenu></ProjectStatisticsMenu>
+            <!-- <ProjectStatisticsMenu></ProjectStatisticsMenu> -->
           </b-tab>
 
           <b-tab ref="tab-settings" v-if="isLoggedUserOwnerOfProject(project)" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
             <!-- v-if used to render the component only if the tab is active -->
-            <ProjectEditor v-if="currentTab === tabs.settings"></ProjectEditor>
+            <!-- <ProjectEditor v-if="currentTab === tabs.settings"></ProjectEditor> -->
           </b-tab>
 
         </b-tabs>
@@ -81,24 +81,10 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
-import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
-import ProjectTasksMenu from '@/components/Project/Menu/ProjectTaskMenu'
-import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticMenu'
-import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultMenu'
-import ProjectDescription from '@/components/Project/ProjectDescription'
-import TemplateRenderer from '@/components/Task/TemplateRenderer'
-import ProjectEditor from '@/components/Project/ProjectEditor'
 
 export default {
   name: 'Project',
   components: {
-    ProjectEditor,
-    TemplateRenderer,
-    ProjectDescription,
-    ProjectResultsMenu,
-    ProjectInfoMenu,
-    ProjectTasksMenu,
-    ProjectStatisticsMenu
   },
   created () {
     // eager loading: load the project and finally get stats and results
