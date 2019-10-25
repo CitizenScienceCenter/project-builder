@@ -111,7 +111,7 @@ export default {
     }
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },

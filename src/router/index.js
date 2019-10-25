@@ -108,66 +108,66 @@ const router = new Router({
           },
           children: [
             {
-            path: 'activity',
-            name:'ActivityRoot',
-            props: true,
-            children: [
-            {
-              path: 'builder/name',
-              name: 'activity.builder.name',
-              component: ActivityBuilder,
-              beforeEnter: (to, from, next) => {
-                store.commit('activity/builder/setCurrentStep', 'name')
-                next()
-              }
-            },
-            {
-              path: 'builder/information',
-              name: 'activity.builder.information',
-              component: ActivityBuilder,
-              beforeEnter: (to, from, next) => {
-                if (store.state.activity.builder.steps.name === true) {
-                  store.commit('activity/builder/setCurrentStep', 'information')
-                  next()
-                } else {
-                  next({ name: 'activity.builder.name' })
-                }
-              }
-            },
-            {
-              path: 'builder/story',
-              name: 'activity.builder.story',
-              component: ActivityBuilder,
-              beforeEnter: (to, from, next) => {
-                if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
-                  store.commit('activity/builder/setCurrentStep', 'story')
-                  next()
-                } else {
-                  next({ name: 'activity.builder.information' })
-                }
-              }
-            },
-            {
-              path: 'builder/end',
-              name: 'activity.builder.end',
-              component: ActivityBuilder,
-              beforeEnter: (to, from, next) => {
+              path: 'activity',
+              name: 'ActivityRoot',
+              props: true,
+              children: [
+                {
+                  path: 'builder/name',
+                  name: 'activity.builder.name',
+                  component: ActivityBuilder,
+                  beforeEnter: (to, from, next) => {
+                    store.commit('activity/builder/setCurrentStep', 'name')
+                    next()
+                  }
+                },
+                {
+                  path: 'builder/information',
+                  name: 'activity.builder.information',
+                  component: ActivityBuilder,
+                  beforeEnter: (to, from, next) => {
+                    if (store.state.activity.builder.steps.name === true) {
+                      store.commit('activity/builder/setCurrentStep', 'information')
+                      next()
+                    } else {
+                      next({ name: 'activity.builder.name' })
+                    }
+                  }
+                },
+                {
+                  path: 'builder/story',
+                  name: 'activity.builder.story',
+                  component: ActivityBuilder,
+                  beforeEnter: (to, from, next) => {
+                    if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
+                      store.commit('activity/builder/setCurrentStep', 'story')
+                      next()
+                    } else {
+                      next({ name: 'activity.builder.information' })
+                    }
+                  }
+                },
+                {
+                  path: 'builder/end',
+                  name: 'activity.builder.end',
+                  component: ActivityBuilder,
+                  beforeEnter: (to, from, next) => {
 
-                if (store.state.activity.builder.steps.name === true &&
-                  store.state.activity.builder.steps.information === true &&
-                  store.state.activity.builder.steps.story === true) {
+                    if (store.state.activity.builder.steps.name === true &&
+                      store.state.activity.builder.steps.information === true &&
+                      store.state.activity.builder.steps.story === true) {
 
-                  store.dispatch('activity/builder/reset')
-                  store.commit('activity/builder/setCurrentStep', 'end')
+                      store.dispatch('activity/builder/reset')
+                      store.commit('activity/builder/setCurrentStep', 'end')
 
-                  next()
-                } else {
-                  next({ name: 'activity.builder.story' })
-                }
-              }
+                      next()
+                    } else {
+                      next({ name: 'activity.builder.story' })
+                    }
+                  }
+                },
+              ],
             },
-          ],
-        },
             {
               path: 'activity/:aid',
               name: 'activity',

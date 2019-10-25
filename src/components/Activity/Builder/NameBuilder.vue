@@ -36,6 +36,11 @@ export default {
       titleFirstInteraction: true
     }
   },
+  props: {
+    pid: {
+      required: true
+    }
+  },
   created () {
     this.currentTitle = this.title
   },

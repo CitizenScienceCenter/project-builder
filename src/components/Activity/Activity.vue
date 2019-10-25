@@ -125,7 +125,7 @@ export default {
     }
   },
   props: {
-    id: {
+    aid: {
       required: true
     }
   },
