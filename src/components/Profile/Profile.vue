@@ -25,7 +25,6 @@ export default {
     }
   },
   created () {
-    this.getAccountProfile()
   },
   methods: {
     ...mapActions('user', [

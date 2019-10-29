@@ -40,17 +40,19 @@ Vue.use(VueLayers, {
 
 let VueScrollTo = require('vue-scrollto');
 Vue.use(VueScrollTo, {
-    easing: "easeInOut",
-    duration: 600,
-    offset: 0
+  easing: "easeInOut",
+  duration: 600,
+  offset: 0
 });
 
 //Vue.component('pdf', Pdf)
 
 window.Vue = Vue
 
-const apiURL = 'https://api-staging.citizenscience.ch/api/v3/openapi.json'
-const server = 'https://api-staging.citizenscience.ch/api/v3/'
+//const apiURL = 'https://api-staging.citizenscience.ch/api/v3/openapi.json'
+//const server = 'https://api-staging.citizenscience.ch/api/v3/'
+const apiURL = 'http://localhost:9000/v3/openapi.json'
+const server = 'http://localhost:9000/v3/'
 Vue.use(c3s.plugin, {
   store,
   apiURL,
@@ -58,8 +60,8 @@ Vue.use(c3s.plugin, {
 })
 
 /* eslint-disable no-new */
- store.watch(
-   (state) => state.c3s && state.c3s.client,
+store.watch(
+  (state) => state.c3s && state.c3s.client,
   (value) => {
     if (value !== null) {
       console.log('mounting vue')

@@ -29,6 +29,11 @@ export default {
 
     }
   },
+  props: {
+    pid: {
+      required: true
+    }
+  },
   methods: {
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'

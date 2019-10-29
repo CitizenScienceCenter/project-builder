@@ -115,16 +115,12 @@ const actions = {
       pwd: password
     }).then(response => {
       // checks if the user is authenticated (good credentials)
-      console.log(response)
-      if (response.hasOwnProperty('ok') && response.ok === true) {
+      if (response.statusCode === 200) {
         console.log('User signed in');
         commit('setLogged')
         commit('setUserInfos', response.body.data)
         return response
-      } else {
-        console.log(response)
-      }
-      return true
+      } 
     }).catch(reason => {
       commit('notification/showError', {
         title: 'Error during user sign in',
