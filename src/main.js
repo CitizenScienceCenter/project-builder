@@ -40,9 +40,9 @@ Vue.use(VueLayers, {
 
 let VueScrollTo = require('vue-scrollto');
 Vue.use(VueScrollTo, {
-    easing: "easeInOut",
-    duration: 600,
-    offset: 0
+  easing: "easeInOut",
+  duration: 600,
+  offset: 0
 });
 
 //Vue.component('pdf', Pdf)
@@ -60,8 +60,8 @@ Vue.use(c3s.plugin, {
 })
 
 /* eslint-disable no-new */
- store.watch(
-   (state) => state.c3s && state.c3s.client,
+store.watch(
+  (state) => state.c3s && state.c3s.client,
   (value) => {
     if (value !== null) {
       console.log('mounting vue')
