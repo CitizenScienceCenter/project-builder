@@ -199,12 +199,14 @@ const actions = {
     commit('setUserContributedProjects', [])
     commit('setUserDraftProjects', [])
     commit('setUserPublishedProjects', [])
+    /*
     commit('notification/showInfo', {
       title: 'Signed out',
       content: 'You are now logged out'
     }, {
       root: true
     })
+    */
     return true
   },
 

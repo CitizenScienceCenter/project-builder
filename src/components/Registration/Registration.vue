@@ -3,6 +3,8 @@
 
   "en": {
 
+  "page-title": "Registration",
+
   "label-email": "Email",
   "label-password": "Password",
   "label-password-repeat": "Repeat Password",
@@ -24,6 +26,8 @@
   },
 
   "de": {
+
+  "page-title": "Registration",
 
   "label-email": "Email",
   "label-password": "Passwort",
@@ -55,30 +59,30 @@
     <app-content-section>
       <div class="content-wrapper">
         <div class="row row-centered">
-          <div class="col col-large-6 scroll-effect">
+          <div class="col col-large-6 col-xlarge-4 scroll-effect">
             <h2 class="heading centered">Registration</h2>
 
             <form @submit.prevent="register">
               <div class="form-field form-field-block">
                 <label for="reg-email">{{ $t("label-email") }}</label>
-                <input v-model="email" type="email" id="reg-email" name="reg-email" autocomplete="new-password" :disabled="loading" />
+                <input v-model="email" type="email" id="reg-email" name="reg-email" autocomplete="new-password" />
                 <span class="message error" v-if="errors.empty">{{ $t("error-empty") }}</span>
                 <span class="message error" v-if="errors.emailFormat">{{ $t("error-email-format") }}</span>
                 <span class="message error" v-if="errors.email">{{ $t("error-email") }}</span>
               </div>
               <div class="form-field form-field-block">
                 <label for="reg-username">Username</label>
-                <input v-model="username" id="reg-username" name="reg-email" autocomplete="new-password" :disabled="loading" />
+                <input v-model="username" id="reg-username" name="reg-email" autocomplete="new-password" />
                 <span class="message error" v-if="errors.username">{{ $t("error-username") }}</span>
               </div>
               <div class="form-field form-field-block">
                 <label for="reg-password">{{ $t("label-password") }}</label>
-                <input v-model="password" type="password" id="reg-password" name="reg-password" autocomplete="new-password" :disabled="loading"/>
+                <input v-model="password" type="password" id="reg-password" name="reg-password" autocomplete="new-password" />
                 <span class="message error" v-if="errors.len">{{ $t("error-len") }}</span>
               </div>
               <div class="form-field form-field-block">
                 <label for="reg-password-2">{{ $t("label-password-repeat") }}</label>
-                <input v-model="confPassword" type="password" id="reg-password-2" name="reg-password-2" autocomplete="new-password" :disabled="loading"/>
+                <input v-model="confPassword" type="password" id="reg-password-2" name="reg-password-2" autocomplete="new-password" />
                 <span class="message error" v-if="errors.match">{{ $t("error-match") }}</span>
               </div>
 
@@ -96,6 +100,7 @@
                     <span>{{ $t("notifications-option-1") }}</span>
                   </label>
 
+                  <!--
                   <label v-if="projectId !== '667461b5-353e-4dae-b83b-c59b0563133b'">
                     <input type="checkbox" v-model="checkbox2">
                     <div class="checkbox">
@@ -105,12 +110,13 @@
                     </div>
                     <span>{{ $t("notifications-option-2") }}</span>
                   </label>
+                  -->
 
                 </div>
               </div>
 
               <div class="button-group right-aligned">
-                <button :disabled="loading || !email || !password || errors.email || errors.empty || errors.len || errors.match || errors.password || errors.username" type="submit" class="button button-primary">{{ $t("button-register") }}</button>
+                <button :disabled="!email || !password || errors.email || errors.empty || errors.len || errors.match || errors.password || errors.username" type="submit" class="button button-primary">{{ $t("button-register") }}</button>
               </div>
 
               <div class="form-message form-message-error" v-if="errors.server">
@@ -243,6 +249,18 @@ export default {
     'app-content-section': ContentSection,
     'app-footer': Footer
   },
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   data: () => {
     return {
       form: {
@@ -283,7 +301,135 @@ export default {
       usernameCheckTimeout: undefined
     };
   },
+  watch: {
+    email() {
+      this.username = this.email.split('@')[0];
+
+      this.errors.email = false;
+      clearTimeout( this.emailCheckTimeout );
+      var self = this;
+      this.emailCheckTimeout = setTimeout( function() {
+        self.checkEmailFormat();
+        self.checkEmail();
+      }, 500);
+    },
+    username() {
+      this.errors.username = false;
+      clearTimeout( this.usernameCheckTimeout );
+      var self = this;
+      this.usernameCheckTimeout = setTimeout( function() {
+        self.checkUsername();
+      }, 500);
+    },
+    password() {
+      if( this.password.length < 8 ) {
+        this.errors.len = true;
+      }
+      else {
+        this.errors.len = false;
+      }
+    },
+    confPassword() {
+      if( this.confPassword !== this.password ) {
+        this.errors.match = true;
+      }
+      else {
+        this.errors.match = false;
+      }
+    }
+  },
   methods: {
+    checkUsername() {
+      let query = {
+        'select': {
+          'fields': [
+            '*'
+          ],
+          'tables': [
+            'users'
+          ]
+        },
+        'where': [
+          {
+            "field": 'username',
+            'op': 'e',
+            'val': this.username
+          }
+        ]
+      };
+      this.$store.dispatch('c3s/submission/getSubmissions', [query, 1] ).then(res => {
+        if( res.body.length > 0 ) {
+          // email already registered
+          this.errors.username = true;
+        }
+
+        //this.$store.commit('c3s/user/SET_ANON', true);
+      });
+    },
+    checkEmailFormat() {
+      var re = /\S+@\S+\.\S+/;
+      if( re.test(this.email) ) {
+        this.errors.emailFormat = false;
+      }
+      else {
+        this.errors.emailFormat = true;
+      }
+    },
+    checkEmail() {
+      let query = {
+        'select': {
+          'fields': [
+            '*'
+          ],
+          'tables': [
+            'users'
+          ]
+        },
+        'where': [
+          {
+            "field": 'email',
+            'op': 'e',
+            'val': this.email
+          }
+        ]
+      };
+      this.$store.dispatch('c3s/submission/getSubmissions', [query, 1] ).then(res => {
+        console.log( res );
+        if( res.body.length > 0 ) {
+          // email already registered
+          this.errors.email = true;
+        }
+      });
+    },
+    register() {
+      this.errors.server = false;
+      this.errors.username = false;
+
+      const user = {
+        email: this.email,
+        username: this.username,
+        pwd: this.password,
+        info: {
+          'anonymous': false,
+          'center-notifications': this.checkbox1
+        }
+      };
+
+      if( this.projectId && this.checkbox2 ) {
+        user.info['project-notifications'] = [ this.projectId ];
+      }
+
+      this.$store.dispatch('c3s/user/register', user).then(r => {
+
+        if (r.ok === true) {
+          this.$router.push('/');
+        }
+        else {
+          this.errors.server = true;
+        }
+      });
+    },
+
     ...mapMutations("notification", ["showError", "showSuccess"]),
     ...mapActions("user", ["register", "getAccountProfile"]),
 

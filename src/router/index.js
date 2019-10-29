@@ -59,6 +59,8 @@ const router = new Router({
           beforeEnter: (to, from, next) => {
             store.dispatch('user/signOut').then(signedOut => {
               if (signedOut) {
+                store.commit('c3s/user/SET_CURRENT_USER', null, {root: true});
+                store.commit('c3s/user/SET_ANON', false);
                 next({ name: 'home' })
               }
             })

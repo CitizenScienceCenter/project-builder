@@ -1,12 +1,18 @@
 <i18n>
   {
   "de": {
+
+  "page-title": "Login",
+
   "label-email": "Email",
   "label-password": "Passwort",
   "button-login": "Anmelden",
   "button-forgotten": "Passwort vergessen?"
   },
   "en": {
+
+  "page-title": "Login",
+
   "label-email": "Email",
   "label-password": "Password",
   "button-login": "Login",
@@ -22,7 +28,7 @@
     <app-content-section>
       <div class="content-wrapper">
         <div class="row row-centered">
-          <div class="col col-large-6 scroll-effect">
+          <div class="col col-large-6 col-xlarge-4 scroll-effect">
             <h2 class="heading centered">Login</h2>
 
             <div class="margin-bottom">
@@ -123,6 +129,18 @@ export default {
     'app-content-section': ContentSection,
     'app-footer': Footer
   },
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   created () {
     // load the auth options
     if (this.user !== null) {
@@ -155,10 +173,14 @@ export default {
     onSubmit () {
       this.signIn(this.form).then((response) => {
         if (response && response.status === 200) {
+          /*
           this.showInfo({
             title: 'Welcome',
             content: 'We are happy to see you again!'
           })
+           */
+          this.$store.commit('c3s/user/SET_CURRENT_USER', response.body, {root: true});
+          this.$store.commit('c3s/user/SET_ANON', false);
           this.$router.push({ name: 'home' })
         } else {
           this.showError({ title: 'Wrong credentials', content: 'Your email and/or your password are incorrect' })
