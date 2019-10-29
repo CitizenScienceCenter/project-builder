@@ -8,3 +8,11 @@ button:focus {
 .toast-header {
   position: relative;
 }
+
+.row {
+  margin: 0;
+}
+.col {
+  flex-basis: initial;
+  flex-grow: initial;
+}
