@@ -116,7 +116,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('project', [
+    ...mapActions('c3s/project', [
       'getProject',
       'publishProject',
       'getResults',
