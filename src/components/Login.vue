@@ -41,6 +41,7 @@
                   <a tabindex="93" @click.prevent="reset" class="button button-secondary button-secondary-naked">{{ $t('button-forgotten') }}</a>
                   <button tabindex="92" type="submit" class="button button-primary" :disabled="!form.email || !form.password">{{ $t('button-login') }}</button>
                 </div>
+                <!--
                 <div class="form-message form-message-error" v-if="error">
                   <div class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -49,6 +50,7 @@
                   </div>
                   <span class="text">{{error}}</span>
                 </div>
+                -->
               </form>
             </div>
 
@@ -152,7 +154,7 @@ export default {
 
     onSubmit () {
       this.signIn(this.form).then((response) => {
-        if (response && response.statusCode === 200) {
+        if (response && response.status === 200) {
           this.showInfo({
             title: 'Welcome',
             content: 'We are happy to see you again!'
