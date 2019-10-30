@@ -8,15 +8,14 @@
         <b-form class="mt-4" @submit.prevent="onSubmit">
           <b-form-group
                   id="input-group-1"
-                  label="Email address"
-                  label-for="email"
-                  description="We'll never share your email with anyone else.">
+                  label="Email address or Username"
+                  label-for="email">
             <b-form-input
                     id="email"
                     v-model="form.email"
-                    type="email"
+                    type="text"
                     required
-                    placeholder="Email">
+                    placeholder="Email/Username">
             </b-form-input>
           </b-form-group>
 
@@ -46,7 +45,7 @@
 
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex'
-
+import { validateEmail } from '@/utils.js'
 export default {
   name: 'Login',
   created () {
@@ -79,6 +78,10 @@ export default {
     ]),
 
     onSubmit () {
+      if(!validateEmail(this.form.email)) {
+        this.form['username'] = this.form.email
+        delete this.form.email
+      }
       this.signIn(this.form).then((response) => {
         if (response && response.statusCode === 200) {
           this.showInfo({

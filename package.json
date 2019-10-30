@@ -5,8 +5,9 @@
   "author": "Vincent Peillex <vincent@mobilethinking.ch>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --progress",
+    "dev": "NODE_ENV=development webpack-dev-server --env.NODE_ENV=dev --progress",
     "serve": "npm run dev",
+    "local": "NODE_ENV=local webpack-dev-server --progress",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -74,7 +75,6 @@
     "chromedriver": "^77.0.0",
     "compression-webpack-plugin": "~2.0",
     "copy-webpack-plugin": "^5.0.4",
-    "cross-env": "~5.2",
     "cross-spawn": "^7.0.1",
     "css-loader": "~2.1",
     "eslint": "~5.16",

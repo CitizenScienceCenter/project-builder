@@ -48,11 +48,9 @@ Vue.use(VueScrollTo, {
 //Vue.component('pdf', Pdf)
 
 window.Vue = Vue
-
-//const apiURL = 'https://api-staging.citizenscience.ch/api/v3/openapi.json'
-//const server = 'https://api-staging.citizenscience.ch/api/v3/'
-const apiURL = 'http://localhost:9000/v3/openapi.json'
-const server = 'http://localhost:9000/v3/'
+console.dir(process.env.OPENAPI_URL)
+const apiURL = process.env.OPENAPI_URL
+const server = process.env.OPENAPI_SERVER
 Vue.use(c3s.plugin, {
   store,
   apiURL,
