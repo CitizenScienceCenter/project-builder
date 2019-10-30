@@ -119,7 +119,7 @@ const actions = {
       if (response.status === 200) {
         console.log('User signed in');
         commit('setLogged')
-        commit('setUserInfos', response.body.data)
+        commit('setUserInfos', response.body)
         return response
       }
     }).catch(reason => {

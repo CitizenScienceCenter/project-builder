@@ -131,13 +131,14 @@ export default {
     //     })
     //   })
     // })
-
+    console.log(this)
     // get all the projects only for the 'all' tab
-    this.getProjectActivities(this.projectId).then((p) => {
-      this.projects = p.body.data;
+/*    this.getProjectActivities([this.projectId]).then((p) => {
+      console.log(p)
+      //this.projects = p.body.data;
       // init the tab 'all' to the first page
       //this.categoryAllPageChange(1)
-    })
+    })*/
   },
   data: () => {
     return {
@@ -153,7 +154,7 @@ export default {
   },
   methods: {
     ...mapActions('c3s/project', [
-      'getProjectsActivities',
+      'getProjectActivities',
       // 'getCategories',
       // 'getProjectsWithCategory'
     ]),
@@ -188,9 +189,11 @@ export default {
     'c3s/project', [
       'projects'
     ],
-    'consts', [
-      'projectId'
-    ]),
+    'c3s/activity', [
+      'activities'
+    ],{
+      projectId: state => state.consts.projectId
+    }),
 
     /**
      * Returns the categories with the featured category

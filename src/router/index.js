@@ -335,7 +335,6 @@ const publicRoutes = [
 ]
 
 router.beforeEach((to, from, next) => {
-  console.dir(to)
 
   let filteredPath = to.path.split('/').filter(element => element.length > 0);
   if (filteredPath.length > 0 && filteredPath[0].length === 2) {
@@ -372,13 +371,7 @@ router.beforeEach((to, from, next) => {
 
   }
   else {
-    // TODO is this the best way to check for external links?
-    if (to.path.startsWith('http')) {
-      next()
-    } else {
-      //next()
       next('/' + i18n.locale + to.path);
-    }
   }
 })
 

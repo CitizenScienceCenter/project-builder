@@ -140,7 +140,7 @@ export default {
             content: 'We are happy to see you again!'
           })
            */
-          this.$store.commit('c3s/user/SET_CURRENT_USER', response.body, {root: true});
+          //this.$store.commit('c3s/user/SET_CURRENT_USER', response.body, {root: true});
           this.$store.commit('c3s/user/SET_ANON', false);
           this.$router.push({ name: 'home' })
         } else {
