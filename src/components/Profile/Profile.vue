@@ -38,13 +38,29 @@
           <tab>
             <template slot="title">Draft Projects</template>
             <template slot="content">
-              <p class="centered">gaggi 1</p>
+
+              <div class="content-wrapper">
+                <div class="row">
+                  <div class="col">
+                    <p class="centered">gaggi 1</p>
+                  </div>
+                </div>
+              </div>
+
             </template>
           </tab>
           <tab>
             <template slot="title">Your Contributions</template>
             <template slot="content">
-              <p class="centered">gaggi 2</p>
+
+              <div class="content-wrapper">
+                <div class="row">
+                  <div class="col">
+                    <p class="centered">gaggi 2</p>
+                  </div>
+                </div>
+              </div>
+
             </template>
           </tab>
         </tabbed-content>
