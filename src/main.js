@@ -48,7 +48,6 @@ Vue.use(VueScrollTo, {
 //Vue.component('pdf', Pdf)
 
 window.Vue = Vue
-console.dir(process.env.OPENAPI_URL)
 const apiURL = process.env.OPENAPI_URL
 const server = process.env.OPENAPI_SERVER
 Vue.use(c3s.plugin, {

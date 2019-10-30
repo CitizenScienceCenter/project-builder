@@ -160,8 +160,9 @@ export default {
       ],
       link: [
         {rel: 'canonical', href: url+this.$route.path},
-        { rel: 'icon', type: 'image/png', href: '/static/img/favicon-16x16.png', sizes: '16x16' },
-        { rel: 'icon', type: 'image/png', href: '/static/img/favicon-32x32.png', sizes: '32x32' }
+        { rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' },
+        { rel: 'icon', type: 'image/png', href: '/static/favicon-16x16.png', sizes: '16x16' },
+        { rel: 'icon', type: 'image/png', href: '/static/favicon-32x32.png', sizes: '32x32' }
       ],
       htmlAttrs: {
         lang: this.language
