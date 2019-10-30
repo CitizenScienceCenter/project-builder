@@ -133,10 +133,10 @@ export default {
     // })
 
     // get all the projects only for the 'all' tab
-    this.getProjects([undefined, 10]).then((p) => {
+    this.getProjectActivities(this.projectId).then((p) => {
       this.projects = p.body.data;
       // init the tab 'all' to the first page
-      this.categoryAllPageChange(1)
+      //this.categoryAllPageChange(1)
     })
   },
   data: () => {
@@ -153,7 +153,7 @@ export default {
   },
   methods: {
     ...mapActions('c3s/project', [
-      'getProjects',
+      'getProjectsActivities',
       // 'getCategories',
       // 'getProjectsWithCategory'
     ]),
@@ -187,6 +187,9 @@ export default {
     ],
     'c3s/project', [
       'projects'
+    ],
+    'consts', [
+      'projectId'
     ]),
 
     /**

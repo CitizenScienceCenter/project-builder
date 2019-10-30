@@ -4,7 +4,7 @@
 
   "page-title": "Login",
 
-  "label-email": "Email",
+  "label-email": "Email or Username",
   "label-password": "Passwort",
   "button-login": "Anmelden",
   "button-forgotten": "Passwort vergessen?"
@@ -13,7 +13,7 @@
 
   "page-title": "Login",
 
-  "label-email": "Email",
+  "label-email": "Email oder Benutzername",
   "label-password": "Password",
   "button-login": "Login",
   "button-forgotten": "Forgot Password?"
@@ -71,48 +71,6 @@
     </app-content-section>
 
     <app-footer></app-footer>
-
-
-    <b-row class="mt-4 justify-content-center">
-      <b-col md="6" md-offset="3">
-
-        <h2>Login</h2>
-
-        <b-form class="mt-4" @submit.prevent="onSubmit">
-          <b-form-group
-                  id="input-group-1"
-                  label="Email address or Username"
-                  label-for="email">
-            <b-form-input
-                    id="email"
-                    v-model="form.email"
-                    type="text"
-                    required
-                    placeholder="Email/Username">
-            </b-form-input>
-          </b-form-group>
-
-          <b-form-group id="input-group-2" label="Password" label-for="password">
-            <b-form-input
-                    id="password"
-                    type="password"
-                    v-model="form.password"
-                    required
-                    placeholder="Password"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-button type="submit" variant="primary">Submit</b-button>
-        </b-form>
-
-      </b-col>
-    </b-row>
-
-    <b-row class="mt-4">
-      <b-col>
-        <p class="text-center">Not registered? <b-link :to="{ name: 'register' }">Sign up for free now</b-link></p>
-      </b-col>
-    </b-row>
   </div>
 </template>
 
