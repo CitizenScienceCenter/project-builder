@@ -1,11 +1,16 @@
 <template>
   <div>
+
+    <BasicProfileEditor></BasicProfileEditor>
+
+    <!--
     <b-row align-h="center" class="mb-5">
       <b-col md="9">
         <h2 class="mt-4 mb-4 text-center">Update your profile</h2>
         <BasicProfileEditor></BasicProfileEditor>
       </b-col>
     </b-row>
+    -->
 
     <hr>
 
@@ -81,7 +86,6 @@ export default {
     }
   },
   mounted () {
-
   },
   computed: {
     ...mapState('user', {

@@ -33,8 +33,24 @@
           </div>
         </div>
       </div>
-      <div class="content-subsection">
+      <div class="content-subsection scroll-effect scroll-effect-delayed-3">
         <tabbed-content>
+
+          <tab>
+            <template slot="title">Published Projects</template>
+            <template slot="content">
+
+              <div class="content-wrapper">
+                <div class="row">
+                  <div class="col">
+                    <p class="centered">Published projects here ...</p>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+          </tab>
+
           <tab>
             <template slot="title">Draft Projects</template>
             <template slot="content">
@@ -42,13 +58,14 @@
               <div class="content-wrapper">
                 <div class="row">
                   <div class="col">
-                    <p class="centered">gaggi 1</p>
+                    <p class="centered">Draft projects here ...</p>
                   </div>
                 </div>
               </div>
 
             </template>
           </tab>
+
           <tab>
             <template slot="title">Your Contributions</template>
             <template slot="content">
@@ -56,13 +73,29 @@
               <div class="content-wrapper">
                 <div class="row">
                   <div class="col">
-                    <p class="centered">gaggi 2</p>
+                    <p class="centered">Your contributions here ...</p>
                   </div>
                 </div>
               </div>
 
             </template>
           </tab>
+
+          <tab>
+            <template slot="title">Edit Profile</template>
+            <template slot="content">
+
+              <div class="content-wrapper">
+                <div class="row row-centered">
+                  <div class="col col-large-6">
+                    <ProfileEditor></ProfileEditor>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+          </tab>
+
         </tabbed-content>
       </div>
 
@@ -71,10 +104,14 @@
 
     <app-footer></app-footer>
 
+
+
+
     <ProfileHeader class="mt-4"></ProfileHeader>
 
     <ProfileEditor v-if="isInEditionMode" class="mt-4"></ProfileEditor>
     <ProfileView v-else class="mt-4"></ProfileView>
+
   </div>
 </template>
 

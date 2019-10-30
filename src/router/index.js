@@ -92,7 +92,7 @@ const router = new Router({
           name: 'profile.edition',
           component: Profile,
           beforeEnter: (to, from, next) => {
-            store.commit('user/isInProfileEditionMode', true)
+            store.commit('user/isInProfileEditionMode', true);
             next()
           }
         },
