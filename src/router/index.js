@@ -53,19 +53,19 @@ const router = new Router({
           name: 'register',
           component: Registration
         },
+        /*
         {
           path: 'logout',
           name: 'logout',
           beforeEnter: (to, from, next) => {
             store.dispatch('user/signOut').then(signedOut => {
               if (signedOut) {
-                store.commit('c3s/user/SET_CURRENT_USER', null, {root: true});
-                store.commit('c3s/user/SET_ANON', false);
                 next({ name: 'home' })
               }
             })
           }
         },
+        */
         {
           path: 'discover',
           name: 'discover',
@@ -335,7 +335,6 @@ const publicRoutes = [
 ]
 
 router.beforeEach((to, from, next) => {
-  console.dir(to)
 
   let filteredPath = to.path.split('/').filter(element => element.length > 0);
   if (filteredPath.length > 0 && filteredPath[0].length === 2) {

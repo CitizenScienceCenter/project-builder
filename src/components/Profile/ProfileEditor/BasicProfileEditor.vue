@@ -3,10 +3,6 @@
 
   "en": {
 
-  "page-title": "Your Profile",
-
-  "heading": "Your Profile",
-
   "label-email": "Email",
   "label-username": "Username",
   "label-firstname": "First Name",
@@ -24,7 +20,6 @@
   "label-project-notifications-suffix": "Project.",
 
   "thanks": "Thanks for helping!",
-  "button-logout": "Logout",
   "button-reset": "Reset Password",
   "button-save": "Save",
   "button-save-message": "Saved",
@@ -39,8 +34,6 @@
 
 <template>
   <div>
-
-    <h3 class="subheading centered">Update your Profile</h3>
 
     <div class="form-field form-field-block">
       <label>{{ $t('label-email') }}</label>
@@ -83,7 +76,7 @@
     </div>
 
     <div class="button-group right-aligned">
-      <submit-button @click="save()" :disabled="usernameCheckInProgress || !username || errors.username || !saveNeeded || saveInProgress" :submissionInfo="showSubmissionInfo" :infoMessage="$t('button-save-message')">{{ $t('button-save') }}</submit-button>
+      <submit-button @click="save()" :disabled="usernameCheckInProgress || !form.username || errors.username || !saveNeeded || saveInProgress" :submissionInfo="showSubmissionInfo" :infoMessage="$t('button-save-message')">{{ $t('button-save') }}</submit-button>
       <!-- <button class="button button-primary" @click.prevent="save()" :disabled="usernameCheckInProgress || !username || errors.username || !saveNeeded">{{ $t('button-save') }}</button> -->
     </div>
 
@@ -187,7 +180,13 @@ export default {
       },
       errors: {
         username: false
-      }
+      },
+      usernameCheckTimeout: undefined,
+      usernameCheckInProgress: false,
+
+      saveNeeded: false,
+      saveInProgress: false,
+      showSubmissionInfo: false
     }
   },
   created () {
@@ -217,12 +216,109 @@ export default {
       currentUser: state => state.c3s.user.currentUser
     })
   },
+  watch: {
+    'form.username'() {
+      this.errors.username = false;
+
+      if (this.form.username !== this.currentUser.username) {
+        this.usernameCheckInProgress = true;
+        clearTimeout(this.usernameCheckTimeout);
+        var self = this;
+        this.usernameCheckTimeout = setTimeout(function () {
+          self.checkUsername();
+          self.usernameCheckInProgress = false;
+        }, 500);
+
+        this.saveNeeded = true;
+      }
+    },
+    'form.firstname'() {
+      if (this.form.firstname !== this.currentUser.info.firstname) {
+        this.saveNeeded = true;
+      }
+    },
+    'form.lastname'() {
+      if (this.form.lastname !== this.currentUser.info.lastname) {
+        this.saveNeeded = true;
+      }
+    },
+    'form.centerNotifications'(to, from) {
+      if (this.form.centerNotifications !== this.currentUser.info['center-notifications']) {
+        this.saveNeeded = true;
+      }
+    }
+  },
   methods: {
     ...mapActions('user', [
       'updateProfile',
       'getProfileUpdateOptions'
     ]),
 
+    getUserObject() {
+      let info = JSON.parse(JSON.stringify(this.currentUser.info));
+
+      info['firstname'] = this.form.firstname;
+      info['lastname'] = this.form.lastname;
+      info['center-notifications'] = this.form.centerNotifications;
+
+      return {
+        'username': this.form.username,
+        'info': info
+      };
+    },
+    checkUsername() {
+      let query = {
+        'select': {
+          'fields': [
+            '*'
+          ],
+          'tables': [
+            'users'
+          ]
+        },
+        'where': [
+          {
+            "field": 'username',
+            'op': 'e',
+            'val': this.form.username
+          }
+        ]
+      };
+      this.$store.dispatch('c3s/submission/getSubmissions', [query, 1] ).then(res => {
+        console.log('username checked');
+        console.log( res );
+        if( res.body.length > 0 ) {
+          // email already registered
+          this.errors.username = true;
+        }
+      });
+    },
+
+    save() {
+      console.log( 'save user ');
+      this.saveInProgress = true;
+      this.$store.dispatch('c3s/user/updateUser', [ this.currentUser.id, this.getUserObject() ] ).then(r => {
+
+        console.log( r );
+        this.$store.dispatch('c3s/user/validate').then(v => {
+
+          console.log( v );
+
+          this.showSubmissionInfo = true;
+          let self = this;
+          setTimeout( function() {
+            self.showSubmissionInfo = false;
+            self.saveNeeded = false;
+            self.saveInProgress = false;
+          }, 900 );
+
+        });
+
+      });
+    }
+
+
+    /*
     onProfileSubmitted () {
       const form = this.form
       this.updateProfile({
@@ -237,6 +333,7 @@ export default {
         }
       })
     }
+    */
   }
 }
 </script>

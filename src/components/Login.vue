@@ -140,14 +140,6 @@ export default {
       ]
     }
   },
-  created () {
-    // load the auth options
-    if (this.user !== null) {
-        if (this.logged) {
-          this.$router.push({ name: 'home' })
-        }
-    }
-  },
   data: () => {
     return {
       form: {
@@ -155,7 +147,7 @@ export default {
         password: ''
       },
       ...mapState({
-        user: state => state.c3s.user.currentUser,
+        currentUser: state => state.c3s.user.currentUser,
       })
     }
   },
@@ -188,11 +180,6 @@ export default {
         }
       })
     }
-  },
-  computed: {
-    ...mapState('user', [
-      'logged'
-    ])
   }
 }
 </script>

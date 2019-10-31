@@ -1,7 +1,22 @@
 <template>
   <div>
 
-    <BasicProfileEditor></BasicProfileEditor>
+    <div class="content-subsection">
+      <h3 class="subheading centered">Update your Profile</h3>
+      <BasicProfileEditor></BasicProfileEditor>
+    </div>
+
+    <div class="content-subsection">
+      <h3 class="subheading centered">Export your Data</h3>
+      <ProfileDataExport></ProfileDataExport>
+    </div>
+
+    <div class="content-subsection">
+      <h3 class="subheading centered">Delete your Account</h3>
+      <DeleteProfile></DeleteProfile>
+    </div>
+
+
 
     <!--
     <b-row align-h="center" class="mb-5">
@@ -10,7 +25,6 @@
         <BasicProfileEditor></BasicProfileEditor>
       </b-col>
     </b-row>
-    -->
 
     <hr>
 
@@ -56,6 +70,9 @@
         <DeleteProfile></DeleteProfile>
       </b-col>
     </b-row>
+
+
+    -->
 
   </div>
 </template>
