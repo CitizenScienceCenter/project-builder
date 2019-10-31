@@ -31,8 +31,8 @@
       <div class="row row-centered">
         <div class="col col-large-8">
           <div class="button-group centered scroll-effect scroll-effect-delayed-2">
-            <router-link tag="button" to="/discover" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
-            <router-link tag="button" to="/about" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
+            <router-link tag="button" :to="{name:'activity.builder.name', params: {pid: projectId, lang: 'en'}}" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
+            <router-link tag="button" to="/discover" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@
           <b-card-text>
             Create a Project and get other volunteers to help you collect and/or analyse data.
           </b-card-text>
-          <b-button :to="{ name: 'activity.builder.name' }" variant="outline-primary">Create a project</b-button>
+          <b-button :to="{ name: 'activity.builder.name', params: { pid: projectId, lang: lang} }" variant="outline-primary">Create a project</b-button>
         </b-card>
       </b-col>
 
@@ -125,6 +125,11 @@ export default {
       'app-content-section': ContentSection,
       'app-footer': Footer
   },
+  data: function() {
+    return {
+      lang: 'en'
+    }
+  },
   metaInfo: function() {
     return {
       title: this.$t('site-title'),
@@ -138,6 +143,7 @@ export default {
     }
   },
   created () {
+    console.log(this.projectId)
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
     });
   },
@@ -149,7 +155,8 @@ export default {
   computed: {
     ...mapState({
       projects: state => state.c3s.project.projects,
-      user: state => state.c3s.user.currentUser
+      user: state => state.c3s.user.currentUser,
+      projectId: state => state.consts.projectId
     })
   }
 }

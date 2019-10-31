@@ -372,12 +372,8 @@ router.beforeEach((to, from, next) => {
   }
   else {
     // TODO is this the best way to check for external links?
-    if (to.path.startsWith('http')) {
-      next()
-    } else {
       //next()
       next('/' + i18n.locale + to.path);
-    }
   }
 })
 
