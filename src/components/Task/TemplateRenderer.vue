@@ -51,15 +51,15 @@ export default {
     }
   },
   computed: {
-    ...mapState('project', {
+    ...mapState('c3s/project', {
       // the current project where is displayed the task presenter
-      project: state => state.selectedProject,
+      project: state => state.currentProject,
 
       // user task progress
       userProgress: state => state.selectedProjectUserProgress
     }),
 
-    ...mapState('task', {
+    ...mapState('c3s/task', {
       // the currently displayed task in the presenter
       task: state => state.currentTask,
 
@@ -68,10 +68,10 @@ export default {
     }),
 
     // user data
-    ...mapState('user', {
+    ...mapState('c3s/user', {
       isUserLogged: state => state.logged,
-      userId: state => state.infos.id,
-      userApiKey: state => state.infos.api_key
+      userId: state => state.currentUser.id,
+      userApiKey: state => state.currentUser.api_key
     }),
 
     ...mapGetters('project', {
@@ -88,7 +88,11 @@ export default {
   },
   methods: {
     ...mapActions('task', [
-      'getNewTask', 'saveTaskRun'
+      'getNewTask'
+    ]),
+
+    ...mapActions('c3s/submission', [
+      'createSubmission'
     ]),
 
     ...mapActions('project', [
@@ -149,7 +153,7 @@ export default {
       if (this.isUserLogged) {
         taskRun.user_id = this.userId
       }
-      this.saveTaskRun(JSON.stringify(taskRun)).then(() => {
+      this.createSubmission(JSON.stringify(taskRun)).then(() => {
         // load a new task when current task saved
         this.newTask()
       })

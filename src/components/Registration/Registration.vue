@@ -340,26 +340,8 @@ export default {
   },
   methods: {
     checkUsername() {
-      let query = {
-        'select': {
-          'fields': [
-            '*'
-          ],
-          'tables': [
-            'users'
-          ]
-        },
-        'where': [
-          {
-            "field": 'username',
-            'op': 'e',
-            'val': this.username
-          }
-        ]
-      };
-      this.$store.dispatch('c3s/submission/getSubmissions', [query, 1] ).then(res => {
-        if( res.body.length > 0 ) {
-          // email already registered
+      this.$store.dispatch('c3s/user/checkUsername', this.username ).then(res => {
+        if( res.status === 200 ) {
           this.errors.username = true;
         }
 
@@ -376,29 +358,13 @@ export default {
       }
     },
     checkEmail() {
-      let query = {
-        'select': {
-          'fields': [
-            '*'
-          ],
-          'tables': [
-            'users'
-          ]
-        },
-        'where': [
-          {
-            "field": 'email',
-            'op': 'e',
-            'val': this.email
-          }
-        ]
-      };
-      this.$store.dispatch('c3s/submission/getSubmissions', [query, 1] ).then(res => {
-        console.log( res );
-        if( res.body.length > 0 ) {
+      this.$store.dispatch('c3s/user/checkUseremail', this.email ).then(res => {
+        if( res.status === 200 ) {
           // email already registered
           this.errors.email = true;
         }
+
+        //this.$store.commit('c3s/user/SET_ANON', true);
       });
     },
     register() {

@@ -3,8 +3,7 @@
   "de": {
 
   "page-title": "Login",
-
-  "label-email": "Email",
+  "label-email": "Email oder Benutzername",
   "label-password": "Passwort",
   "button-login": "Anmelden",
   "button-forgotten": "Passwort vergessen?"
@@ -12,8 +11,7 @@
   "en": {
 
   "page-title": "Login",
-
-  "label-email": "Email",
+  "label-email": "Email or Username",
   "label-password": "Password",
   "button-login": "Login",
   "button-forgotten": "Forgot Password?"
