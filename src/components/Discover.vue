@@ -1,3 +1,15 @@
+<i18n>
+  {
+
+  "en": {
+
+  "page-title": "Projects"
+
+  }
+
+  }
+</i18n>
+
 <template>
   <b-row class="justify-content-center mt-4">
     <b-col>
@@ -121,6 +133,18 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Discover',
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   created () {
     // all categories are loaded during the creation to have all the pagination systems
     // this.getCategories().then(() => {
@@ -131,12 +155,17 @@ export default {
     //     })
     //   })
     // })
-
+  this.$store.dispatch('c3s/project/getProjectActivities', '6c1f5297-642f-4db9-9262-8fee4013a77c').then((p) => {
     // get all the projects only for the 'all' tab
-    this.getProjects([undefined, 10]).then((p) => {
-      this.projects = p.body.data;
-      // init the tab 'all' to the first page
-      this.categoryAllPageChange(1)
+    //this.getProjectActivities(this.projectId).then((p) => {
+      console.log(p)
+      if (p.status === 200) {
+        this.projects = p.body.data;
+        // init the tab 'all' to the first page
+        this.categoryAllPageChange(1)
+      } else {
+        console.log(p)
+      }
     })
   },
   data: () => {
@@ -154,6 +183,7 @@ export default {
   methods: {
     ...mapActions('c3s/project', [
       'getProjects',
+      'getProjectActivities'
       // 'getCategories',
       // 'getProjectsWithCategory'
     ]),
@@ -187,7 +217,10 @@ export default {
     ],
     'c3s/project', [
       'projects'
-    ]),
+    ],
+    {
+      projectId: state => state.consts.projectId
+    }),
 
     /**
      * Returns the categories with the featured category

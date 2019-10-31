@@ -186,12 +186,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions('project', [
+    ...mapActions('c3s/project', [
       'getProject',
       'deleteProject',
-      'uploadAvatar',
       'updateProject',
-      'getCategories'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError', 'showInfo'
@@ -211,7 +209,7 @@ export default {
         this.$refs.cropper.replace(this.picture)
       }
     },
-
+ 
     /**
      * Update the project data
      */

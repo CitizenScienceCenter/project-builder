@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server --env.NODE_ENV=dev --progress",
     "serve": "npm run dev",
-    "local": "NODE_ENV=local webpack-dev-server --progress",
+    "local": "NODE_ENV=local webpack-dev-server --env.NODE_ENV=local --progress",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
