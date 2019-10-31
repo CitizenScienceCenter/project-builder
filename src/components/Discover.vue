@@ -1,3 +1,15 @@
+<i18n>
+  {
+
+  "en": {
+
+  "page-title": "Projects"
+
+  }
+
+  }
+</i18n>
+
 <template>
   <b-row class="justify-content-center mt-4">
     <b-col>
@@ -121,6 +133,18 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Discover',
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   created () {
     // all categories are loaded during the creation to have all the pagination systems
     // this.getCategories().then(() => {

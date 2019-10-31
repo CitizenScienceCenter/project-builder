@@ -14,7 +14,7 @@
     </p>
 
     <p v-if="showConfirmation" class="centered reduced-bottom-margin">
-      Are you sure?
+      <b>Are you sure?</b>
     </p>
 
     <div class="button-group centered">
