@@ -60,8 +60,8 @@
               </form>
             </div>
 
-            <p class="right-aligned reduced-bottom-margin">not registered yet?</p>
-            <div class="button-group right-aligned">
+            <p class="centered reduced-bottom-margin">not registered yet?</p>
+            <div class="button-group centered">
               <router-link :to="{ name: 'register' }" class="button button-secondary">Register now</router-link>
             </div>
 

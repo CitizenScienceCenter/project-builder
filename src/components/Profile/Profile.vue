@@ -90,7 +90,7 @@
 
               <div class="content-wrapper">
                 <div class="row row-centered">
-                  <div class="col col-large-6">
+                  <div class="col col-large-6 col-xlarge-4">
                     <ProfileEditor></ProfileEditor>
                   </div>
                 </div>

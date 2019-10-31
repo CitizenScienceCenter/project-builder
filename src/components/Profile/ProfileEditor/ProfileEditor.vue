@@ -7,6 +7,11 @@
     </div>
 
     <div class="content-subsection">
+      <h3 class="subheading centered">Update your Password</h3>
+      <PasswordEditor></PasswordEditor>
+    </div>
+
+    <div class="content-subsection">
       <h3 class="subheading centered">Export your Data</h3>
       <ProfileDataExport></ProfileDataExport>
     </div>
