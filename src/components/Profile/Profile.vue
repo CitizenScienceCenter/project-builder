@@ -2,12 +2,9 @@
   {
   "en": {
 
-  "page-title": "Profil"
+  "page-title": "Profil",
 
-  },
-  "de": {
-
-  "page-title": "Profile"
+  "button-logout": "Logout"
 
   }
   }
@@ -19,49 +16,105 @@
   <div>
 
     <app-content-section>
-      <div class="content-wrapper">
-        <div class="row row-centered">
-          <div class="col col-large-6 col-xlarge-4 scroll-effect">
-            <h2 class="heading centered">Your Profile</h2>
+      <div class="content-subsection">
+        <div class="content-wrapper">
+          <div class="row row-centered">
+            <div class="col col-large-6 col-xlarge-4 scroll-effect">
+              <h2 class="heading centered">Your Profile</h2>
+            </div>
           </div>
-        </div>
-        <div class="content-subsection">
           <div class="row">
             <div class="col">
               <sub-section-stats :my-submission-count="3" :my-rank="3"></sub-section-stats>
-            </div>
-          </div>
-        </div>
-        <div class="content-subsection">
-          <div class="row row-centered">
-            <div class="col col-large-8">
-              <tabbed-content>
-                <tab>
-                  <template slot="title">Tab 1</template>
-                  <template slot="content">
-                    <p>gaggi 1</p>
-                  </template>
-                </tab>
-                <tab>
-                  <template slot="title">Tab 2</template>
-                  <template slot="content">
-                    <p>gaggi 2</p>
-                  </template>
-                </tab>
-              </tabbed-content>
+              <div class="content-subsection scroll-effect">
+                <div class="button-group centered">
+                  <!-- <router-link tag="button" to="/logout" class="button button-secondary">{{ $t('button-logout') }}</router-link> -->
+                  <button class="button button-secondary" @click.prevent="logout()">{{ $t('button-logout') }}</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="content-subsection scroll-effect scroll-effect-delayed-3">
+        <tabbed-content>
+
+          <tab>
+            <template slot="title">Published Projects</template>
+            <template slot="content">
+
+              <div class="content-wrapper">
+                <div class="row">
+                  <div class="col">
+                    <p class="centered">Published projects here ...</p>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+          </tab>
+
+          <tab>
+            <template slot="title">Draft Projects</template>
+            <template slot="content">
+
+              <div class="content-wrapper">
+                <div class="row">
+                  <div class="col">
+                    <p class="centered">Draft projects here ...</p>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+          </tab>
+
+          <tab>
+            <template slot="title">Your Contributions</template>
+            <template slot="content">
+
+              <div class="content-wrapper">
+                <div class="row">
+                  <div class="col">
+                    <p class="centered">Your contributions here ...</p>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+          </tab>
+
+          <tab>
+            <template slot="title">Edit Profile</template>
+            <template slot="content">
+
+              <div class="content-wrapper">
+                <div class="row row-centered">
+                  <div class="col col-large-6 col-xlarge-4">
+                    <ProfileEditor></ProfileEditor>
+                  </div>
+                </div>
+              </div>
+
+            </template>
+          </tab>
+
+        </tabbed-content>
+      </div>
+
     </app-content-section>
 
 
     <app-footer></app-footer>
 
+
+
+
     <ProfileHeader class="mt-4"></ProfileHeader>
 
     <ProfileEditor v-if="isInEditionMode" class="mt-4"></ProfileEditor>
     <ProfileView v-else class="mt-4"></ProfileView>
+
   </div>
 </template>
 
@@ -112,7 +165,14 @@ export default {
   methods: {
     ...mapActions('user', [
       'getAccountProfile'
-    ])
+    ]),
+
+
+    logout() {
+      this.$store.commit('c3s/user/SET_CURRENT_USER', null);
+      this.$store.commit('c3s/user/SET_ANON', false);
+      this.$router.push('/');
+    }
   },
   computed: {
     ...mapState('user', {

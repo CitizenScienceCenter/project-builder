@@ -5,7 +5,7 @@ const merge = require('webpack-merge');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const helpers = require('./helpers');
 const commonConfig = require('./webpack.common.config');
-const environment = require('../config/dev.env');
+const environment = require('../config/local.env');
 
 const webpackConfig = merge(commonConfig, {
     mode: 'development',

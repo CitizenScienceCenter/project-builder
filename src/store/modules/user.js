@@ -115,7 +115,6 @@ const actions = {
       pwd: password
     }).then(response => {
       // checks if the user is authenticated (good credentials)
-      console.log( response );
       if (response.status === 200) {
         console.log('User signed in');
         commit('setLogged')

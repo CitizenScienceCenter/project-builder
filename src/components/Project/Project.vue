@@ -15,7 +15,7 @@
 
         <!-- Owner actions -->
         <div v-if="isLoggedUserOwnerOfProject(project) && !project.published">
-          <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+          <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id: 'sdsasadfsa' } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
           <!-- Publish project modal -->

@@ -1,5 +1,29 @@
 <template>
   <div>
+
+    <div class="content-subsection">
+      <h3 class="subheading centered">Update your Profile</h3>
+      <BasicProfileEditor></BasicProfileEditor>
+    </div>
+
+    <div class="content-subsection">
+      <h3 class="subheading centered">Update your Password</h3>
+      <PasswordEditor></PasswordEditor>
+    </div>
+
+    <div class="content-subsection">
+      <h3 class="subheading centered">Export your Data</h3>
+      <ProfileDataExport></ProfileDataExport>
+    </div>
+
+    <div class="content-subsection">
+      <h3 class="subheading centered">Delete your Account</h3>
+      <DeleteProfile></DeleteProfile>
+    </div>
+
+
+
+    <!--
     <b-row align-h="center" class="mb-5">
       <b-col md="9">
         <h2 class="mt-4 mb-4 text-center">Update your profile</h2>
@@ -52,6 +76,9 @@
       </b-col>
     </b-row>
 
+
+    -->
+
   </div>
 </template>
 
@@ -81,7 +108,6 @@ export default {
     }
   },
   mounted () {
-
   },
   computed: {
     ...mapState('user', {

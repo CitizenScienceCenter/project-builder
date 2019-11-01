@@ -73,7 +73,7 @@
           <b-card-text>
             Create a Project and get other volunteers to help you collect and/or analyse data.
           </b-card-text>
-          <b-button :to="{ name: 'activity.builder.name' }" variant="outline-primary">Create a project</b-button>
+          <b-button :to="{ name: 'activity.builder.name', params: { pid: projectId, lang: lang} }" variant="outline-primary">Create a project</b-button>
         </b-card>
       </b-col>
 
@@ -125,6 +125,11 @@ export default {
       'app-content-section': ContentSection,
       'app-footer': Footer
   },
+  data: function() {
+    return {
+      lang: 'en'
+    }
+  },
   metaInfo: function() {
     return {
       title: this.$t('site-title'),
@@ -138,6 +143,7 @@ export default {
     }
   },
   created () {
+    console.log(this.projectId)
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
     });
   },
@@ -150,7 +156,7 @@ export default {
     ...mapState({
       projects: state => state.c3s.project.projects,
       user: state => state.c3s.user.currentUser,
-      builderProject: state => state.consts.projectId
+      projectId: state => state.consts.projectId
     })
   }
 }

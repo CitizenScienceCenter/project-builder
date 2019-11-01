@@ -3,8 +3,7 @@
   "de": {
 
   "page-title": "Login",
-
-  "label-email": "Email or Username",
+  "label-email": "Email oder Benutzername",
   "label-password": "Passwort",
   "button-login": "Anmelden",
   "button-forgotten": "Passwort vergessen?"
@@ -12,8 +11,7 @@
   "en": {
 
   "page-title": "Login",
-
-  "label-email": "Email oder Benutzername",
+  "label-email": "Email or Username",
   "label-password": "Password",
   "button-login": "Login",
   "button-forgotten": "Forgot Password?"
@@ -60,8 +58,8 @@
               </form>
             </div>
 
-            <p class="right-aligned reduced-bottom-margin">not registered yet?</p>
-            <div class="button-group right-aligned">
+            <p class="centered reduced-bottom-margin">not registered yet?</p>
+            <div class="button-group centered">
               <router-link :to="{ name: 'register' }" class="button button-secondary">Register now</router-link>
             </div>
 
@@ -98,14 +96,6 @@ export default {
       ]
     }
   },
-  created () {
-    // load the auth options
-    if (this.user !== null) {
-        if (this.logged) {
-          this.$router.push({ name: 'home' })
-        }
-    }
-  },
   data: () => {
     return {
       form: {
@@ -113,7 +103,7 @@ export default {
         password: ''
       },
       ...mapState({
-        user: state => state.c3s.user.currentUser,
+        currentUser: state => state.c3s.user.currentUser,
       })
     }
   },
@@ -134,25 +124,16 @@ export default {
       }
       this.signIn(this.form).then((response) => {
         if (response && response.status === 200) {
-          /*
           this.showInfo({
             title: 'Welcome',
             content: 'We are happy to see you again!'
           })
-           */
-          //this.$store.commit('c3s/user/SET_CURRENT_USER', response.body, {root: true});
-          this.$store.commit('c3s/user/SET_ANON', false);
           this.$router.push({ name: 'home' })
         } else {
           this.showError({ title: 'Wrong credentials', content: 'Your email and/or your password are incorrect' })
         }
       })
     }
-  },
-  computed: {
-    ...mapState('user', [
-      'logged'
-    ])
   }
 }
 </script>
