@@ -8,6 +8,6 @@ module.exports = merge(prodEnv, {
   BASE_ENDPOINT_URL: 'https://pybossa.citizenscience.ch/',
   BASE_API_URL: 'https://pybossa.citizenscience.ch/api/',
   FLICKR_CALLBACK_URL: 'http://localhost:8080/flickr/callback',
-  OPENAPI_URL: "https://api-staging.citizenscience.ch/api/v3/openapi.json",
-  OPENAPI_SERVER: 'https://api-staging.citizenscience.ch/api/v3/'
+  OPENAPI_URL: "https://api-staging.citizenscience.ch/v3/openapi.json",
+  OPENAPI_SERVER: 'https://api-staging.citizenscience.ch/v3/'
 })

@@ -50,6 +50,7 @@ Vue.use(VueScrollTo, {
 window.Vue = Vue
 const apiURL = process.env.OPENAPI_URL
 const server = process.env.OPENAPI_SERVER
+console.log(apiURL, server)
 Vue.use(c3s.plugin, {
   store,
   apiURL,

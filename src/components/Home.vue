@@ -31,7 +31,7 @@
       <div class="row row-centered">
         <div class="col col-large-8">
           <div class="button-group centered scroll-effect scroll-effect-delayed-2">
-            <router-link tag="button" :to="{ name: 'activity.builder.name', params: { pid: builderProject }}" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
+            <router-link tag="button" :to="{ name: 'activity.builder.name', params: { pid: projectId }}" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
             <router-link tag="button" to="/discover" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
           </div>
         </div>
