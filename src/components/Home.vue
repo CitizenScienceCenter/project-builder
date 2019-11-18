@@ -96,7 +96,7 @@
               </b-card-body>
 
               <b-card-footer class="text-center">
-                <!--<b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>-->
+                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
               </b-card-footer>
             </b-card>
 

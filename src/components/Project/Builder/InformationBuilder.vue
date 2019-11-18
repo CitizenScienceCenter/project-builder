@@ -1,6 +1,55 @@
 <template>
   <div>
 
+    <app-content-section>
+      <div class="content-subsection">
+        <div class="content-wrapper">
+          <div class="row row-centered">
+            <div class="col col-large-6 col-xlarge-4 scroll-effect">
+
+              <div class="margin-bottom">
+                <router-link class="button button-secondary button-secondary-naked" :to="{ name: 'project.builder.name' }" style="padding:0">Go Back</router-link>
+              </div>
+
+              <h3 class="subheading">{{ title }} in a few words</h3>
+
+              <form @submit.prevent="onSubmit">
+
+                <div class="form-field form-field-block">
+                  <growing-textarea v-model="currentShortDescription" placeholder="Please write a short description ..."></growing-textarea>
+                  <span v-if="validated && validFeedback" class="message success">{{validFeedback}}</span>
+                  <span v-if="!validated && invalidFeedback" class="message error">{{invalidFeedback}}</span>
+                </div>
+
+                <h3 class="subheading">Project Picture</h3>
+
+                <div class="form-field form-field-block">
+                  <label>Title</label>
+                  <input type="file" accept=".jpg, .png, .gif, .svg" placeholder="Select a picture ..." @change="setImage" />
+                  <span class="message error" v-if="selectedPictureSizeInMB > maxPictureSizeInMB">The picture is too big in file size.</span>
+                  <span class="message info">Authorized formats: .jpg, .png, .gif, .svg. <br>The picture must not exceed {{ maxPictureSizeInMB }} MB.</span>
+                </div>
+
+                <div class="margin-bottom" v-if="selectedPicture && this.selectedPictureSizeInMB <= this.maxPictureSizeInMB">
+                  <img :src="selectedPicture" />
+                </div>
+                <!-- <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="16/3"></vue-cropper> -->
+
+                <div class="button-group right-aligned">
+                  <button type="submit" class="button button-primary" :disabled="!this.validated || this.selectedPictureSizeInMB > this.maxPictureSizeInMB">Next Step</button>
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-content-section>
+
+
+    <!--
+
     <b-row class="mt-4">
       <b-col>
         <b-link :to="{ name: 'project.builder.name' }">Go back</b-link>
@@ -11,7 +60,6 @@
 
       <b-row>
 
-        <!-- project description -->
         <b-col md="9">
           <h3 class="mt-3">{{ title }} in a few words</h3>
           <b-form-group
@@ -36,12 +84,12 @@
 
       </b-row>
 
-      <!-- Image upload -->
       <b-row class="mt-4">
         <b-col md="9">
           <h3 class="mt-3">Choose a picture that represents or is related to your project</h3>
 
           <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="4/3"></vue-cropper>
+
           <b-form-group
                   :state="selectedPictureSizeInMB <= maxPictureSizeInMB"
                   invalid-feedback="The picture is too big"
@@ -60,17 +108,25 @@
       </b-row>
 
     </b-form>
+
+    -->
   </div>
 </template>
 
 <script>
+
+import ContentSection from '@/components/shared/ContentSection.vue';
+
 import { mapState, mapMutations } from 'vuex'
 import VueCropper from 'vue-cropperjs'
+import GrowingTextarea from "@/components/shared/GrowingTextarea";
 
 export default {
   name: 'InformationBuilder',
   components: {
-    VueCropper
+    GrowingTextarea,
+    VueCropper,
+    'app-content-section': ContentSection
   },
   data: () => {
     return {
@@ -193,6 +249,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

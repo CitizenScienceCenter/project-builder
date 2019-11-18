@@ -9,101 +9,100 @@
 
     <g-d-p-r></g-d-p-r>
 
-    <div class="content-area">
 
-      <b-navbar toggleable="lg" type="dark" variant="dark">
+    <!--
+    <b-navbar toggleable="lg" type="dark" variant="dark">
 
-        <b-container>
-          <b-navbar-brand :to="{ name: 'home' }">Pybossa</b-navbar-brand>
-
-          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-          <b-collapse id="nav-collapse" is-nav>
-            <b-navbar-nav>
-              <b-nav-item :to="{ name: 'home' }">Home</b-nav-item>
-              <b-nav-item :to="{ name: 'discover' }">Discover</b-nav-item>
-              <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
-            </b-navbar-nav>
-
-            <!-- Right aligned nav items -->
-            <b-navbar-nav class="ml-auto">
-
-              <b-nav-item v-if="!userLogged" :to="{ name: 'login' }">Login</b-nav-item>
-              <!--<b-nav-item v-if="!userLogged" :to="{ name: 'register' }">Register</b-nav-item>-->
-
-              <b-nav-item-dropdown v-else right>
-                <template slot="button-content">
-                  <b-img v-if="userProfile.info" height="40" width="40" rounded="circle" :src="userProfile.info.avatar_url"></b-img>&ensp;
-                  {{ userProfile.fullname }}
-                </template>
-                <b-dropdown-item :to="{ name: 'profile' }">Profile</b-dropdown-item>
-                <b-dropdown-item :to="{ name: 'logout' }">Sign Out</b-dropdown-item>
-              </b-nav-item-dropdown>
-
-              <b-nav-item v-if="userLogged" :to="{ name: 'project.builder.name' }">
-                <b-button>Create your project</b-button>
-              </b-nav-item>
-
-            </b-navbar-nav>
-          </b-collapse>
-        </b-container>
-
-      </b-navbar>
-
-      <!--
       <b-container>
-        <router-view></router-view>
+        <b-navbar-brand :to="{ name: 'home' }">Pybossa</b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item :to="{ name: 'home' }">Home</b-nav-item>
+            <b-nav-item :to="{ name: 'discover' }">Discover</b-nav-item>
+            <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
+          </b-navbar-nav>
+
+
+          <b-navbar-nav class="ml-auto">
+
+            <b-nav-item v-if="!userLogged" :to="{ name: 'login' }">Login</b-nav-item>
+
+            <b-nav-item v-if="!userLogged" :to="{ name: 'register' }">Register</b-nav-item>
+
+            <b-nav-item-dropdown v-else right>
+              <template slot="button-content">
+                <b-img v-if="userProfile.info" height="40" width="40" rounded="circle" :src="userProfile.info.avatar_url"></b-img>&ensp;
+                {{ userProfile.fullname }}
+              </template>
+              <b-dropdown-item :to="{ name: 'profile' }">Profile</b-dropdown-item>
+              <b-dropdown-item :to="{ name: 'logout' }">Sign Out</b-dropdown-item>
+            </b-nav-item-dropdown>
+
+            <b-nav-item v-if="userLogged" :to="{ name: 'project.builder.name' }">
+              <b-button>Create your project</b-button>
+            </b-nav-item>
+
+          </b-navbar-nav>
+        </b-collapse>
       </b-container>
-      -->
 
-      <!-- Notification toasts -->
-      <b-toast
-              :key="notification.id"
-              header-class="h5"
-              body-class="h6"
-              v-for="notification in errorNotifications"
-              toaster="b-toaster-top-center"
-              :title="notification.message.title"
-              variant="danger"
-              @hidden="closeError(notification.id)"
-              visible
-              auto-hide-delay="4000"
-              no-auto-hide>
-        <span v-html="notification.message.content"></span>
-      </b-toast>
+    </b-navbar>
+    -->
 
-      <b-toast
-              :key="notification.id"
-              header-class="h5"
-              body-class="h6"
-              v-for="notification in infoNotifications"
-              toaster="b-toaster-top-center"
-              :title="notification.message.title"
-              variant="info"
-              @hidden="closeInfo(notification.id)"
-              visible
-              auto-hide-delay="4000"
-              no-auto-hide>
-        <span v-html="notification.message.content"></span>
-      </b-toast>
+    <!--
+    <b-container>
+      <router-view></router-view>
+    </b-container>
+    -->
 
-      <b-toast
-              :key="notification.id"
-              header-class="h5"
-              body-class="h6"
-              v-for="notification in successNotifications"
-              toaster="b-toaster-top-center"
-              :title="notification.message.title"
-              variant="success"
-              @hidden="closeSuccess(notification.id)"
-              visible
-              auto-hide-delay="4000"
-              no-auto-hide>
-        <span v-html="notification.message.content"></span>
-      </b-toast>
+    <!-- Notification toasts -->
+    <b-toast
+            :key="notification.id"
+            header-class="h5"
+            body-class="h6"
+            v-for="notification in errorNotifications"
+            toaster="b-toaster-top-center"
+            :title="notification.message.title"
+            variant="danger"
+            @hidden="closeError(notification.id)"
+            visible
+            auto-hide-delay="4000"
+            no-auto-hide>
+      <span v-html="notification.message.content"></span>
+    </b-toast>
 
+    <b-toast
+            :key="notification.id"
+            header-class="h5"
+            body-class="h6"
+            v-for="notification in infoNotifications"
+            toaster="b-toaster-top-center"
+            :title="notification.message.title"
+            variant="info"
+            @hidden="closeInfo(notification.id)"
+            visible
+            auto-hide-delay="4000"
+            no-auto-hide>
+      <span v-html="notification.message.content"></span>
+    </b-toast>
 
-    </div>
+    <b-toast
+            :key="notification.id"
+            header-class="h5"
+            body-class="h6"
+            v-for="notification in successNotifications"
+            toaster="b-toaster-top-center"
+            :title="notification.message.title"
+            variant="success"
+            @hidden="closeSuccess(notification.id)"
+            visible
+            auto-hide-delay="4000"
+            no-auto-hide>
+      <span v-html="notification.message.content"></span>
+    </b-toast>
 
   </div>
 </template>
