@@ -14,7 +14,7 @@ const environment = isProd ? require('../config/prod.env') : require('../config/
 const webpackConfig = merge(commonConfig, {
     mode: 'production',
     output: {
-        path: helpers.root('dist'),
+        path: helpers.root('public'),
         publicPath: '/',
         filename: 'js/[hash].js',
         chunkFilename: 'js/[id].[hash].chunk.js'

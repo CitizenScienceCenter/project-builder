@@ -7,5 +7,5 @@ if (environment === 'development') {
 } else if (environment === 'local') {
     module.exports = require('./build/webpack.local.config');
 } else {
-    module.exports = require('./buil/webpack.prod.config');
+    module.exports = require('./build/webpack.prod.config');
 }

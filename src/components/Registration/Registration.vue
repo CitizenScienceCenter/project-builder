@@ -397,7 +397,7 @@ export default {
     },
 
     ...mapMutations("notification", ["showError", "showSuccess"]),
-    ...mapActions("user", ["register", "getAccountProfile"]),
+    //...mapActions("user", ["register", "getAccountProfile"]),
 
     submitRegistration() {
       this.firstInteractions = {
