@@ -19,7 +19,7 @@
 
     <div class="form-field form-field-block">
       <label>{{ $t('label-current-password') }}</label>
-      <input v-model="form.currentPassword" autocomplete="new-password" />
+      <input v-model="form.currentPassword" type="password" autocomplete="new-password" />
       <!--
       <span class="message error" v-if="errors.username">{{ $t("error-username") }}</span>
       -->
@@ -27,7 +27,7 @@
 
     <div class="form-field form-field-block">
       <label>{{ $t('label-new-password') }}</label>
-      <input v-model="form.newPassword" autocomplete="new-password" />
+      <input v-model="form.newPassword" type="password" autocomplete="new-password" />
       <!--
       <span class="message error" v-if="errors.username">{{ $t("error-username") }}</span>
       -->
@@ -35,14 +35,14 @@
 
     <div class="form-field form-field-block">
       <label>{{ $t('label-new-password-confirmation') }}</label>
-      <input v-model="form.passwordConfirmation" autocomplete="new-password" />
+      <input v-model="form.passwordConfirmation" type="password" autocomplete="new-password" />
       <!--
       <span class="message error" v-if="errors.username">{{ $t("error-username") }}</span>
       -->
     </div>
 
     <div class="button-group right-aligned">
-      <submit-button @click="save()" :disabled="form.currentPassword || !form.newPassword || !form.newPassword">{{ $t('button-save-password') }}</submit-button>
+      <submit-button @click="onSubmit()" :disabled="form.currentPassword === '' || form.newPassword === '' || form.passwordConfirmation === '' || !passwordConfirmed">{{ $t('button-save-password') }}</submit-button>
       <!-- <button class="button button-primary" @click.prevent="save()" :disabled="usernameCheckInProgress || !username || errors.username || !saveNeeded">{{ $t('button-save') }}</button> -->
     </div>
 
@@ -115,8 +115,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('user', {
-      profile: state => state.infos
+    ...mapState({
+      //profile: state => state.infos
+      currentUser: state => state.c3s.user.currentUser
     }),
 
     passwordConfirmed () {
@@ -132,7 +133,7 @@ export default {
       if (this.passwordConfirmed) {
         const form = this.form
         this.updatePassword({
-          user: this.profile,
+          user: this.currentUser,
           form: {
             current_password: form.currentPassword,
             new_password: form.newPassword,

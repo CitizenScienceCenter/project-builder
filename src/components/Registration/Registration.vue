@@ -388,12 +388,12 @@ export default {
       this.$store.dispatch('c3s/user/register', user).then(r => {
 
         if (r.ok === true) {
-          this.$router.push('/');
+          this.$router.push({ name: 'home' });
         }
         else {
           this.errors.server = true;
         }
-      });
+      })
     },
 
     ...mapMutations("notification", ["showError", "showSuccess"]),

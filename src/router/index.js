@@ -59,7 +59,6 @@ const router = new Router({
           name: 'register',
           component: Registration
         },
-        /*
         {
           path: 'logout',
           name: 'logout',
@@ -71,7 +70,6 @@ const router = new Router({
             })
           }
         },
-        */
         {
           path: 'discover',
           name: 'discover',
