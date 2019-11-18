@@ -14,7 +14,7 @@
     <b-navbar toggleable="lg" type="dark" variant="dark">
 
       <b-container>
-        <b-navbar-brand :to="{ name: 'home' }">Pybossa</b-navbar-brand>
+          <b-navbar-brand :to="{ name: 'home' }">Citizen Science Center</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

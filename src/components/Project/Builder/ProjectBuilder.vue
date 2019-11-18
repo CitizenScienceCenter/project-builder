@@ -81,6 +81,9 @@ export default {
     ...mapActions('project', [
       'createProject', 'uploadAvatar'
     ]),
+    ...mapActions('c3s/activity', [
+      'createActivity'
+    ]),
     ...mapMutations('notification', [
       'showError'
     ])
@@ -88,7 +91,7 @@ export default {
   computed: {
     ...mapState('project/builder', [
       'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'croppedPicture'
-    ], 'config', ['projectId']),
+    ], 'consts', ['projectId']),
     items () {
       return [
         {
@@ -125,9 +128,12 @@ export default {
 
         const image = this.croppedPicture
 
-        this.createProject({
+        this.createActivity({
           name: this.title,
-          shortDescription: this.shortDescription,
+          info: {
+            shortDescription: this.shortDescription,
+          },
+          part_of: this.projectId,
           longDescription: JSON.stringify({
             whatWhy: this.story.whatWhy,
             how: this.story.how,
