@@ -59,19 +59,17 @@ const router = new Router({
           name: 'register',
           component: Registration
         },
-        /*
         {
           path: 'logout',
           name: 'logout',
           beforeEnter: (to, from, next) => {
-            store.dispatch('user/signOut').then(signedOut => {
+            store.dispatch('c3s/user/logout').then(signedOut => {
               if (signedOut) {
                 next({ name: 'home' })
               }
             })
           }
         },
-        */
         {
           path: 'discover',
           name: 'discover',
@@ -113,7 +111,7 @@ const router = new Router({
           name: 'activity.builder.name',
           component: ActivityBuilder,
           beforeEnter: (to, from, next) => {
-            store.commit('activity/builder/setCurrentStep', 'name')
+            store.commit('project/builder/setCurrentStep', 'name')
             next()
           }
         },
@@ -122,8 +120,9 @@ const router = new Router({
           name: 'activity.builder.information',
           component: ActivityBuilder,
           beforeEnter: (to, from, next) => {
-            if (store.state.activity.builder.steps.name === true) {
-              store.commit('activity/builder/setCurrentStep', 'information')
+            console.log(store.state)
+            if (store.state.project.builder.steps.name === true) {
+              store.commit('project/builder/setCurrentStep', 'information')
               next()
             } else {
               next({
@@ -137,8 +136,8 @@ const router = new Router({
           name: 'activity.builder.story',
           component: ActivityBuilder,
           beforeEnter: (to, from, next) => {
-            if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
-              store.commit('activity/builder/setCurrentStep', 'story')
+            if (store.state.project.builder.steps.name === true && store.state.project.builder.steps.information === true) {
+              store.commit('project/builder/setCurrentStep', 'story')
               next()
             } else {
               next({
@@ -153,12 +152,12 @@ const router = new Router({
           component: ActivityBuilder,
           beforeEnter: (to, from, next) => {
 
-            if (store.state.activity.builder.steps.name === true &&
-              store.state.activity.builder.steps.information === true &&
-              store.state.activity.builder.steps.story === true) {
+            if (store.state.project.builder.steps.name === true &&
+              store.state.project.builder.steps.information === true &&
+              store.state.project.builder.steps.story === true) {
 
-              store.dispatch('activity/builder/reset')
-              store.commit('activity/builder/setCurrentStep', 'end')
+              store.dispatch('project/builder/reset')
+              store.commit('project/builder/setCurrentStep', 'end')
 
               next()
             } else {
@@ -176,7 +175,7 @@ const router = new Router({
           beforeEnter: (to, from, next) => {
             const selectedActivityId = store.state.c3s.Activity.currentActivity.id
             if (parseInt(selectedActivityId) !== parseInt(to.params.id)) {
-              store.commit('activity/menu/setCurrentTab', store.state.project.menu.tabs.info)
+              store.commit('project/menu/setCurrentTab', store.state.project.menu.tabs.info)
             }
             next()
           },

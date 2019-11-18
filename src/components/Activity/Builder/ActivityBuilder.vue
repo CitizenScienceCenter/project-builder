@@ -35,7 +35,7 @@ export default {
     ...mapActions('task/builder', {
       resetTaskBuilder: 'reset'
     }),
-    ...mapMutations('activity/builder', [
+    ...mapMutations('project/builder', [
       'setCurrentStep', 'setStep'
     ]),
     ...mapMutations('task', [
@@ -49,7 +49,7 @@ export default {
     ])
   },
   computed: {
-    ...mapState('activity/builder', [
+    ...mapState('project/builder', [
       'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'croppedPicture'
     ], 'config', ['projectId']),
     items () {
