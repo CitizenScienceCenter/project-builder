@@ -4,10 +4,10 @@
 "en": {
 
 "cover-heading": "Citizen Science Lab",
-"cover-subheading": "Start building your activities",
-"cover-button-primary": "Create an project",
-"cover-button-secondary": "Browse Activities",
-"content-header": "Featured Activities"
+"cover-subheading": "Start building your Projects",
+"cover-button-primary": "Create a Project",
+"cover-button-secondary": "Browse Projects",
+"content-header": "Featured Projects"
 }
 
 }

@@ -155,7 +155,7 @@ export default {
     //     })
     //   })
     // })
-  this.$store.dispatch('c3s/project/getProjectActivities', '6c1f5297-642f-4db9-9262-8fee4013a77c').then((p) => {
+  this.$store.dispatch('c3s/project/getProject', '6c1f5297-642f-4db9-9262-8fee4013a77c').then((p) => {
     // get all the projects only for the 'all' tab
     //this.getProjectActivities(this.projectId).then((p) => {
       console.log(p)
