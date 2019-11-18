@@ -218,7 +218,7 @@ export default {
     'c3s/project', [
       'projects'
     ],
-    'c3s/activity', [
+    'c3s/project', [
       'activities'
     ],
     {

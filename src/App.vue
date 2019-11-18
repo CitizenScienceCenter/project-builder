@@ -40,7 +40,7 @@
                 <b-dropdown-item :to="{ name: 'logout' }">Sign Out</b-dropdown-item>
               </b-nav-item-dropdown>
 
-              <b-nav-item v-if="userLogged" :to="{ name: 'activity.builder.name' }">
+              <b-nav-item v-if="userLogged" :to="{ name: 'project.builder.name' }">
                 <b-button>Create your project</b-button>
               </b-nav-item>
 

@@ -5,7 +5,7 @@
 
 "cover-heading": "Citizen Science Lab",
 "cover-subheading": "Start building your activities",
-"cover-button-primary": "Create an Activity",
+"cover-button-primary": "Create an project",
 "cover-button-secondary": "Browse Activities",
 "content-header": "Featured Activities"
 }
@@ -31,7 +31,7 @@
       <div class="row row-centered">
         <div class="col col-large-8">
           <div class="button-group centered scroll-effect scroll-effect-delayed-2">
-            <router-link tag="button" :to="{ name: 'activity.builder.name' }" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
+            <router-link tag="button" :to="{ name: 'project.builder.name' }" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
             <router-link tag="button" to="/discover" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
           </div>
         </div>
@@ -73,7 +73,7 @@
           <b-card-text>
             Create a Project and get other volunteers to help you collect and/or analyse data.
           </b-card-text>
-          <b-button :to="{ name: 'activity.builder.name' }" variant="outline-primary">Create a project</b-button>
+          <b-button :to="{ name: 'project.builder.name' }" variant="outline-primary">Create a project</b-button>
         </b-card>
       </b-col>
 

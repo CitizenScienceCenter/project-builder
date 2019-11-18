@@ -4,23 +4,23 @@ import Router from 'vue-router'
 import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import Discover from '@/components/Discover.vue'
-import Activity from '@/components/Activity/Activity.vue'
-import ActivityBuilder from '@/components/Activity/Builder/ActivityBuilder.vue'
+import Project from '@/components/Project/Project.vue'
+import ProjectBuilder from '@/components/Project/Builder/ProjectBuilder.vue'
 import About from '@/components/About.vue'
 import TaskBuilder from '@/components/Task/Builder/TaskBuilder.vue'
 import TemplateRenderer from '@/components/Task/TemplateRenderer.vue'
 import Profile from '@/components/Profile/Profile.vue'
-import TaskPresenterMenu from '@/components/Activity/Menu/TaskMenu/Presenter/TaskPresenterMenu.vue'
-import TaskPresenterEditor from '@/components/Activity/Menu/TaskMenu/Presenter/TaskPresenterEditor.vue'
-import TaskList from '@/components/Activity/Menu/TaskMenu/TaskList.vue'
-import TaskImporterMenu from '@/components/Activity/Menu/TaskMenu/Importer/TaskImporterMenu.vue'
+import TaskPresenterMenu from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterMenu.vue'
+import TaskPresenterEditor from '@/components/Project/Menu/TaskMenu/Presenter/TaskPresenterEditor.vue'
+import TaskList from '@/components/Project/Menu/TaskMenu/TaskList.vue'
+import TaskImporterMenu from '@/components/Project/Menu/TaskMenu/Importer/TaskImporterMenu.vue'
 import Registration from '@/components/Registration/Registration.vue'
-import TaskExporterMenu from '@/components/Activity/Menu/TaskMenu/Exporter/TaskExporterMenu.vue'
-import TaskSettingsMenu from '@/components/Activity/Menu/TaskMenu/Settings/TaskSettingsMenu.vue'
-import DeleteTaskSetting from '@/components/Activity/Menu/TaskMenu/Settings/DeleteTaskSetting.vue'
-import TaskSchedulerSetting from '@/components/Activity/Menu/TaskMenu/Settings/TaskSchedulerSetting.vue'
-import TaskRedundancySetting from '@/components/Activity/Menu/TaskMenu/Settings/TaskRedundancySetting.vue'
-import TaskPrioritySetting from '@/components/Activity/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
+import TaskExporterMenu from '@/components/Project/Menu/TaskMenu/Exporter/TaskExporterMenu.vue'
+import TaskSettingsMenu from '@/components/Project/Menu/TaskMenu/Settings/TaskSettingsMenu.vue'
+import DeleteTaskSetting from '@/components/Project/Menu/TaskMenu/Settings/DeleteTaskSetting.vue'
+import TaskSchedulerSetting from '@/components/Project/Menu/TaskMenu/Settings/TaskSchedulerSetting.vue'
+import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskRedundancySetting.vue'
+import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
 import FlickrCallback from '@/components/Task/Builder/FlickrCallback.vue'
 
 import {
@@ -108,8 +108,8 @@ const router = new Router({
         },
         {
           path: 'builder/name',
-          name: 'activity.builder.name',
-          component: ActivityBuilder,
+          name: 'project.builder.name',
+          component: ProjectBuilder,
           beforeEnter: (to, from, next) => {
             store.commit('project/builder/setCurrentStep', 'name')
             next()
@@ -117,8 +117,8 @@ const router = new Router({
         },
         {
           path: 'builder/information',
-          name: 'activity.builder.information',
-          component: ActivityBuilder,
+          name: 'project.builder.information',
+          component: ProjectBuilder,
           beforeEnter: (to, from, next) => {
             console.log(store.state)
             if (store.state.project.builder.steps.name === true) {
@@ -126,30 +126,30 @@ const router = new Router({
               next()
             } else {
               next({
-                name: 'activity.builder.name'
+                name: 'project.builder.name'
               })
             }
           }
         },
         {
           path: 'builder/story',
-          name: 'activity.builder.story',
-          component: ActivityBuilder,
+          name: 'project.builder.story',
+          component: ProjectBuilder,
           beforeEnter: (to, from, next) => {
             if (store.state.project.builder.steps.name === true && store.state.project.builder.steps.information === true) {
               store.commit('project/builder/setCurrentStep', 'story')
               next()
             } else {
               next({
-                name: 'activity.builder.information'
+                name: 'project.builder.information'
               })
             }
           }
         },
         {
           path: 'builder/end',
-          name: 'activity.builder.end',
-          component: ActivityBuilder,
+          name: 'project.builder.end',
+          component: ProjectBuilder,
           beforeEnter: (to, from, next) => {
 
             if (store.state.project.builder.steps.name === true &&
@@ -162,86 +162,86 @@ const router = new Router({
               next()
             } else {
               next({
-                name: 'activity.builder.story'
+                name: 'project.builder.story'
               })
             }
           }
         },
         {
-          path: 'activity/:aid',
-          name: 'activity',
-          component: Activity,
+          path: 'project/:aid',
+          name: 'project',
+          component: Project,
           props: true,
           beforeEnter: (to, from, next) => {
-            const selectedActivityId = store.state.c3s.Activity.currentActivity.id
-            if (parseInt(selectedActivityId) !== parseInt(to.params.id)) {
+            const selectedProjectId = store.state.c3s.project.currentProject.id
+            if (parseInt(selectedProjectId) !== parseInt(to.params.id)) {
               store.commit('project/menu/setCurrentTab', store.state.project.menu.tabs.info)
             }
             next()
           },
           children: [{
-              path: 'activity/:id/task-importers',
-              name: 'activity.task.importers',
+              path: 'project/:id/task-importers',
+              name: 'project.task.importers',
               component: TaskImporterMenu,
               props: true
             },
             {
-              path: 'activity/:id/task-exporters',
-              name: 'activity.task.exporters',
+              path: 'project/:id/task-exporters',
+              name: 'project.task.exporters',
               component: TaskExporterMenu,
               props: true
             },
             {
               path: 'task-settings',
-              name: 'activity.task.settings',
+              name: 'project.task.settings',
               component: TaskSettingsMenu,
               props: true
             },
             {
               path: 'task-settings/delete',
-              name: 'activity.task.settings.delete',
+              name: 'project.task.settings.delete',
               component: DeleteTaskSetting,
               props: true
             },
             {
               path: 'task-settings/scheduler',
-              name: 'activity.task.settings.scheduler',
+              name: 'project.task.settings.scheduler',
               component: TaskSchedulerSetting,
               props: true
             },
             {
               path: 'task-settings/redundancy',
-              name: 'activity.task.settings.redundancy',
+              name: 'project.task.settings.redundancy',
               component: TaskRedundancySetting,
               props: true
             },
             {
               path: 'task-settings/priority',
-              name: 'activity.task.settings.priority',
+              name: 'project.task.settings.priority',
               component: TaskPrioritySetting,
               props: true
             },
             {
               path: 'task-presenter',
-              name: 'activity.task.presenter',
+              name: 'project.task.presenter',
               component: TemplateRenderer,
               props: true
             },
             {
               path: 'task-presenter/settings',
-              name: 'activity.task.presenter.settings',
+              name: 'project.task.presenter.settings',
               component: TaskPresenterMenu,
               props: true
             },
             {
               path: 'task-presenter/editor',
-              name: 'activity.task.presenter.editor',
+              name: 'project.task.presenter.editor',
               component: TaskPresenterEditor,
               props: true
             },
             {
               path: 'tasks',
-              name: 'activity.tasks.list',
+              name: 'project.tasks.list',
               component: TaskList,
               props: true
             },
@@ -345,7 +345,7 @@ const router = new Router({
 })
 
 const publicRoutes = [
-  'home', 'login', 'register', 'logout', 'discover', 'about', 'project', 'activity', 'activity.task.presenter'
+  'home', 'login', 'register', 'logout', 'discover', 'about', 'project', 'project', 'project.task.presenter'
 ]
 
 router.beforeEach((to, from, next) => {
