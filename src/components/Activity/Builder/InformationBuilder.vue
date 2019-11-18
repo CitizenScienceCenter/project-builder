@@ -150,7 +150,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('activity/builder', {
+    ...mapState('project/builder', {
       title: state => state.title,
       shortDescription: state => state.shortDescription,
       picture: state => state.picture,
