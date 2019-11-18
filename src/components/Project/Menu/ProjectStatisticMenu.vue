@@ -28,7 +28,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'projectStatisticsMenu',
+  name: 'ProjectStatisticsMenu',
   computed: {
     ...mapState('project', {
       stats: state => state.selectedprojectStats

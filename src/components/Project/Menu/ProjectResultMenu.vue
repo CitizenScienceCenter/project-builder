@@ -12,7 +12,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'projectResultsMenu',
+  name: 'ProjectResultsMenu',
   computed: {
     ...mapState('project', {
       results: state => state.selectedprojectResults

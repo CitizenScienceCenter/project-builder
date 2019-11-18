@@ -81,24 +81,24 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
-import projectInfoMenu from '@/components/project/Menu/projectInfoMenu'
-import projectTasksMenu from '@/components/project/Menu/projectTaskMenu'
-import projectStatisticsMenu from '@/components/project/Menu/projectStatisticMenu'
-import projectResultsMenu from '@/components/project/Menu/projectResultMenu'
-import projectDescription from '@/components/project/projectDescription'
+import ProjectInfoMenu from '@/components/Project/Menu/ProjectInfoMenu'
+import ProjectTasksMenu from '@/components/Project/Menu/ProjectTaskMenu'
+import ProjectStatisticsMenu from '@/components/Project/Menu/ProjectStatisticMenu'
+import ProjectResultsMenu from '@/components/Project/Menu/ProjectResultMenu'
+import ProjectDescription from '@/components/Project/ProjectDescription'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
-import projectEditor from '@/components/project/projectEditor'
+import ProjectEditor from '@/components/Project/ProjectEditor'
 
 export default {
   name: 'project',
   components: {
-    projectEditor,
+    ProjectEditor,
     TemplateRenderer,
-    projectDescription,
-    projectResultsMenu,
-    projectInfoMenu,
-    projectTasksMenu,
-    projectStatisticsMenu
+    ProjectDescription,
+    ProjectResultsMenu,
+    ProjectInfoMenu,
+    ProjectTasksMenu,
+    ProjectStatisticsMenu
   },
   created () {
     // eager loading: load the project and finally get stats and results
@@ -131,13 +131,13 @@ export default {
   },
   methods: {
     ...mapActions('project', [
-      'getproject',
-      'publishproject',
+      'getProject',
+      'publishProject',
       'getResults',
       'getStatistics'
     ]),
     ...mapActions('task', [
-      'getprojectTasks',
+      'getProjectTasks',
       'getNewTask'
     ]),
     ...mapMutations('project/menu', [

@@ -50,13 +50,13 @@
 
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex'
-import GoogleDocImporter from '@/components/project/Menu/TaskMenu/Importer/GoogleDocImporter'
-import LocalCsvImporter from '@/components/project/Menu/TaskMenu/Importer/LocalCsvImporter'
-import OnlineCsvImporter from '@/components/project/Menu/TaskMenu/Importer/OnlineCsvImporter'
-import AmazonS3BucketImporter from '@/components/project/Menu/TaskMenu/Importer/AmazonS3BucketImporter'
-import FlickrImporter from '@/components/project/Menu/TaskMenu/Importer/FlickrImporter'
-import DropboxImporter from '@/components/project/Menu/TaskMenu/Importer/DropboxImporter'
-import TwitterImporter from '@/components/project/Menu/TaskMenu/Importer/TwitterImporter'
+import GoogleDocImporter from '@/components/Project/Menu/TaskMenu/Importer/GoogleDocImporter'
+import LocalCsvImporter from '@/components/Project/Menu/TaskMenu/Importer/LocalCsvImporter'
+import OnlineCsvImporter from '@/components/Project/Menu/TaskMenu/Importer/OnlineCsvImporter'
+import AmazonS3BucketImporter from '@/components/Project/Menu/TaskMenu/Importer/AmazonS3BucketImporter'
+import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrImporter'
+import DropboxImporter from '@/components/Project/Menu/TaskMenu/Importer/DropboxImporter'
+import TwitterImporter from '@/components/Project/Menu/TaskMenu/Importer/TwitterImporter'
 
 export default {
   name: 'TaskImportersMenu',

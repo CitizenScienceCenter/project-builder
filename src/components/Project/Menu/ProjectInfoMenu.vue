@@ -33,10 +33,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import projectDescription from '@/components/project/projectDescription'
+import projectDescription from '@/components/Project/ProjectDescription'
 
 export default {
-  name: 'projectInfoMenu',
+  name: 'ProjectInfoMenu',
   components: {projectDescription},
   computed: {
     ...mapState('project', {

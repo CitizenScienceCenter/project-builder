@@ -88,7 +88,7 @@ export default {
 
         const image = this.croppedPicture
 
-        this.createproject({
+        this.createProject({
           name: this.title,
           shortDescription: this.shortDescription,
           longDescription: JSON.stringify({

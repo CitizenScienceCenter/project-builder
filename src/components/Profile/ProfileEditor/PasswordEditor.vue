@@ -75,23 +75,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', [
-      'updatePassword'
-    ], 'c3s/user', [
+    ...mapActions(
+    'c3s/user', [
       'updateUser'
     ]),
 
     onSubmit () {
       if (this.passwordConfirmed) {
         const form = this.form
-        this.updateUser({
-          user: this.profile,
-          form: {
-            current_password: form.currentPassword,
-            new_password: form.newPassword,
-            confirm: form.passwordConfirmation
-          }
-        }).then(() => {
+        this.updateUser([this.user.id, {password: this.form.newPassword}]
+          ).then(() => {
           // reset the form
           Object.keys(this.form).forEach(key => {
             this.form[key] = ''

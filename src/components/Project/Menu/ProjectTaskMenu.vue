@@ -62,7 +62,7 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'projectTasksMenu',
+  name: 'ProjectTaskMenu',
   data: () => {
     return {
 
