@@ -23,21 +23,28 @@ import TaskRedundancySetting from '@/components/Activity/Menu/TaskMenu/Settings/
 import TaskPrioritySetting from '@/components/Activity/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
 import FlickrCallback from '@/components/Task/Builder/FlickrCallback.vue'
 
-import { i18n } from '../i18n.js';
+import {
+  i18n
+} from '../i18n.js'
 
 Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
   scrollBehavior() {
-    return { x: 0, y: 0 }
+    return {
+      x: 0,
+      y: 0
+    }
   },
-  routes: [
-    {
+  routes: [{
       path: '/:lang',
-      component: { render(c) { return c('router-view') } },
-      children: [
-        {
+      component: {
+        render(c) {
+          return c('router-view')
+        }
+      },
+      children: [{
           path: '',
           name: 'home',
           component: Home
@@ -69,13 +76,19 @@ const router = new Router({
           path: 'discover',
           name: 'discover',
           component: Discover,
-          meta: { i18n: 'navigation-discover', nav: true }
+          meta: {
+            i18n: 'navigation-discover',
+            nav: true
+          }
         },
         {
           path: 'about',
           name: 'about',
           component: About,
-          meta: { i18n: 'navigation-about', nav: true }
+          meta: {
+            i18n: 'navigation-about',
+            nav: true
+          }
         },
         {
           path: 'profile',
@@ -95,215 +108,240 @@ const router = new Router({
             next()
           }
         },
-          {
-            path: 'builder/name',
-            name: 'activity.builder.name',
-            component: ActivityBuilder,
-            beforeEnter: (to, from, next) => {
-              store.commit('activity/builder/setCurrentStep', 'name')
-              next()
-            }
-          },
-          {
-            path: 'builder/information',
-            name: 'activity.builder.information',
-            component: ActivityBuilder,
-            beforeEnter: (to, from, next) => {
-              if (store.state.activity.builder.steps.name === true) {
-                store.commit('activity/builder/setCurrentStep', 'information')
-                next()
-              } else {
-                next({ name: 'activity.builder.name' })
-              }
-            }
-          },
-          {
-            path: 'builder/story',
-            name: 'activity.builder.story',
-            component: ActivityBuilder,
-            beforeEnter: (to, from, next) => {
-              if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
-                store.commit('activity/builder/setCurrentStep', 'story')
-                next()
-              } else {
-                next({ name: 'activity.builder.information' })
-              }
-            }
-          },
-          {
-            path: 'builder/end',
-            name: 'activity.builder.end',
-            component: ActivityBuilder,
-            beforeEnter: (to, from, next) => {
-
-              if (store.state.activity.builder.steps.name === true &&
-                store.state.activity.builder.steps.information === true &&
-                store.state.activity.builder.steps.story === true) {
-
-                store.dispatch('activity/builder/reset')
-                store.commit('activity/builder/setCurrentStep', 'end')
-
-                next()
-              } else {
-                next({ name: 'activity.builder.story' })
-              }
-            }
-          },
-            {
-              path: 'activity/:aid',
-              name: 'activity',
-              component: Activity,
-              props: true,
-              beforeEnter: (to, from, next) => {
-                const selectedActivityId = store.state.c3s.Activity.currentActivity.id
-                if (parseInt(selectedActivityId) !== parseInt(to.params.id)) {
-                  store.commit('activity/menu/setCurrentTab', store.state.project.menu.tabs.info)
-                }
-                next()
-              },
-              children: [
-                {
-                  path: 'activity/:id/task-importers',
-                  name: 'activity.task.importers',
-                  component: TaskImporterMenu,
-                  props: true
-                },
-                {
-                  path: 'activity/:id/task-exporters',
-                  name: 'activity.task.exporters',
-                  component: TaskExporterMenu,
-                  props: true
-                },
-                {
-                  path: 'task-settings',
-                  name: 'activity.task.settings',
-                  component: TaskSettingsMenu,
-                  props: true
-                },
-                {
-                  path: 'task-settings/delete',
-                  name: 'activity.task.settings.delete',
-                  component: DeleteTaskSetting,
-                  props: true
-                },
-                {
-                  path: 'task-settings/scheduler',
-                  name: 'activity.task.settings.scheduler',
-                  component: TaskSchedulerSetting,
-                  props: true
-                },
-                {
-                  path: 'task-settings/redundancy',
-                  name: 'activity.task.settings.redundancy',
-                  component: TaskRedundancySetting,
-                  props: true
-                },
-                {
-                  path: 'task-settings/priority',
-                  name: 'activity.task.settings.priority',
-                  component: TaskPrioritySetting,
-                  props: true
-                },
-                {
-                  path: 'task-presenter',
-                  name: 'activity.task.presenter',
-                  component: TemplateRenderer,
-                  props: true
-                },
-                {
-                  path: 'task-presenter/settings',
-                  name: 'activity.task.presenter.settings',
-                  component: TaskPresenterMenu,
-                  props: true
-                },
-                {
-                  path: 'task-presenter/editor',
-                  name: 'activity.task.presenter.editor',
-                  component: TaskPresenterEditor,
-                  props: true
-                },
-                {
-                  path: 'tasks',
-                  name: 'activity.tasks.list',
-                  component: TaskList,
-                  props: true
-                },
-                {
-                  path: 'task/builder/material',
-                  name: 'task.builder.material',
-                  component: TaskBuilder,
-                  props: true,
-                  beforeEnter: (to, from, next) => {
-                    store.commit('task/builder/setCurrentStep', 'material')
-                    next()
-                  }
-                },
-                {
-                  path: 'task/builder/job',
-                  name: 'task.builder.job',
-                  component: TaskBuilder,
-                  props: true,
-                  beforeEnter: (to, from, next) => {
-                    if (store.state.task.builder.steps.material === true) {
-                      store.commit('task/builder/setCurrentStep', 'job')
-                      next()
-                    } else {
-                      next({ name: 'task.builder.material', params: { id: to.params.id } })
-                    }
-                  }
-                },
-                {
-                  path: 'task/builder/template',
-                  name: 'task.builder.template',
-                  component: TaskBuilder,
-                  props: true,
-                  beforeEnter: (to, from, next) => {
-                    if (store.state.task.builder.steps.job === true) {
-                      store.commit('task/builder/setCurrentStep', 'template')
-                      next()
-                    } else {
-                      next({ name: 'task.builder.job', params: { id: to.params.id } })
-                    }
-                  }
-                },
-                {
-                  path: 'task/builder/source',
-                  name: 'task.builder.source',
-                  component: TaskBuilder,
-                  props: true,
-                  beforeEnter: (to, from, next) => {
-                    if (store.state.task.builder.steps.template === true) {
-                      store.commit('task/builder/setCurrentStep', 'source')
-                      next()
-                    } else {
-                      next({ name: 'task.builder.template', params: { id: to.params.id } })
-                    }
-                  }
-                },
-                {
-                  path: 'task/builder/summary',
-                  name: 'task.builder.summary',
-                  props: true,
-                  component: TaskBuilder,
-                  beforeEnter: (to, from, next) => {
-                    if (store.state.task.builder.steps.source === true) {
-                      store.commit('task/builder/setCurrentStep', 'summary')
-                      next()
-                    } else {
-                      next({ name: 'task.builder.source', params: { id: to.params.id } })
-                    }
-                  }
-                }
-              ]
-            }
-          ]
+        {
+          path: 'builder/name',
+          name: 'activity.builder.name',
+          component: ActivityBuilder,
+          beforeEnter: (to, from, next) => {
+            store.commit('activity/builder/setCurrentStep', 'name')
+            next()
+          }
         },
         {
-          path: 'flickr/callback',
-          name: 'flickr.callback',
+          path: 'builder/information',
+          name: 'activity.builder.information',
+          component: ActivityBuilder,
+          beforeEnter: (to, from, next) => {
+            if (store.state.activity.builder.steps.name === true) {
+              store.commit('activity/builder/setCurrentStep', 'information')
+              next()
+            } else {
+              next({
+                name: 'activity.builder.name'
+              })
+            }
+          }
+        },
+        {
+          path: 'builder/story',
+          name: 'activity.builder.story',
+          component: ActivityBuilder,
+          beforeEnter: (to, from, next) => {
+            if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
+              store.commit('activity/builder/setCurrentStep', 'story')
+              next()
+            } else {
+              next({
+                name: 'activity.builder.information'
+              })
+            }
+          }
+        },
+        {
+          path: 'builder/end',
+          name: 'activity.builder.end',
+          component: ActivityBuilder,
+          beforeEnter: (to, from, next) => {
+
+            if (store.state.activity.builder.steps.name === true &&
+              store.state.activity.builder.steps.information === true &&
+              store.state.activity.builder.steps.story === true) {
+
+              store.dispatch('activity/builder/reset')
+              store.commit('activity/builder/setCurrentStep', 'end')
+
+              next()
+            } else {
+              next({
+                name: 'activity.builder.story'
+              })
+            }
+          }
+        },
+        {
+          path: 'activity/:aid',
+          name: 'activity',
+          component: Activity,
           props: true,
-          component: FlickrCallback
+          beforeEnter: (to, from, next) => {
+            const selectedActivityId = store.state.c3s.Activity.currentActivity.id
+            if (parseInt(selectedActivityId) !== parseInt(to.params.id)) {
+              store.commit('activity/menu/setCurrentTab', store.state.project.menu.tabs.info)
+            }
+            next()
+          },
+          children: [{
+              path: 'activity/:id/task-importers',
+              name: 'activity.task.importers',
+              component: TaskImporterMenu,
+              props: true
+            },
+            {
+              path: 'activity/:id/task-exporters',
+              name: 'activity.task.exporters',
+              component: TaskExporterMenu,
+              props: true
+            },
+            {
+              path: 'task-settings',
+              name: 'activity.task.settings',
+              component: TaskSettingsMenu,
+              props: true
+            },
+            {
+              path: 'task-settings/delete',
+              name: 'activity.task.settings.delete',
+              component: DeleteTaskSetting,
+              props: true
+            },
+            {
+              path: 'task-settings/scheduler',
+              name: 'activity.task.settings.scheduler',
+              component: TaskSchedulerSetting,
+              props: true
+            },
+            {
+              path: 'task-settings/redundancy',
+              name: 'activity.task.settings.redundancy',
+              component: TaskRedundancySetting,
+              props: true
+            },
+            {
+              path: 'task-settings/priority',
+              name: 'activity.task.settings.priority',
+              component: TaskPrioritySetting,
+              props: true
+            },
+            {
+              path: 'task-presenter',
+              name: 'activity.task.presenter',
+              component: TemplateRenderer,
+              props: true
+            },
+            {
+              path: 'task-presenter/settings',
+              name: 'activity.task.presenter.settings',
+              component: TaskPresenterMenu,
+              props: true
+            },
+            {
+              path: 'task-presenter/editor',
+              name: 'activity.task.presenter.editor',
+              component: TaskPresenterEditor,
+              props: true
+            },
+            {
+              path: 'tasks',
+              name: 'activity.tasks.list',
+              component: TaskList,
+              props: true
+            },
+            {
+              path: 'task/builder/material',
+              name: 'task.builder.material',
+              component: TaskBuilder,
+              props: true,
+              beforeEnter: (to, from, next) => {
+                store.commit('task/builder/setCurrentStep', 'material')
+                next()
+              }
+            },
+            {
+              path: 'task/builder/job',
+              name: 'task.builder.job',
+              component: TaskBuilder,
+              props: true,
+              beforeEnter: (to, from, next) => {
+                if (store.state.task.builder.steps.material === true) {
+                  store.commit('task/builder/setCurrentStep', 'job')
+                  next()
+                } else {
+                  next({
+                    name: 'task.builder.material',
+                    params: {
+                      id: to.params.id
+                    }
+                  })
+                }
+              }
+            },
+            {
+              path: 'task/builder/template',
+              name: 'task.builder.template',
+              component: TaskBuilder,
+              props: true,
+              beforeEnter: (to, from, next) => {
+                if (store.state.task.builder.steps.job === true) {
+                  store.commit('task/builder/setCurrentStep', 'template')
+                  next()
+                } else {
+                  next({
+                    name: 'task.builder.job',
+                    params: {
+                      id: to.params.id
+                    }
+                  })
+                }
+              }
+            },
+            {
+              path: 'task/builder/source',
+              name: 'task.builder.source',
+              component: TaskBuilder,
+              props: true,
+              beforeEnter: (to, from, next) => {
+                if (store.state.task.builder.steps.template === true) {
+                  store.commit('task/builder/setCurrentStep', 'source')
+                  next()
+                } else {
+                  next({
+                    name: 'task.builder.template',
+                    params: {
+                      id: to.params.id
+                    }
+                  })
+                }
+              }
+            },
+            {
+              path: 'task/builder/summary',
+              name: 'task.builder.summary',
+              props: true,
+              component: TaskBuilder,
+              beforeEnter: (to, from, next) => {
+                if (store.state.task.builder.steps.source === true) {
+                  store.commit('task/builder/setCurrentStep', 'summary')
+                  next()
+                } else {
+                  next({
+                    name: 'task.builder.source',
+                    params: {
+                      id: to.params.id
+                    }
+                  })
+                }
+              }
+            }
+          ]
         }
+      ]
+    },
+    {
+      path: '/flickr/callback',
+      name: 'flickr.callback',
+      props: true,
+      component: FlickrCallback
+    }
   ]
 })
 
@@ -346,9 +384,8 @@ router.beforeEach((to, from, next) => {
 
 
 
-  }
-  else {
-      next('/' + i18n.locale + to.path);
+  } else {
+    next('/' + i18n.locale + to.path);
   }
 })
 

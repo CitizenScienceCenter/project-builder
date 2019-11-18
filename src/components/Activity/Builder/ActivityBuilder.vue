@@ -30,9 +30,6 @@ export default {
     }
   },
   props: {
-    pid: {
-      required: true
-    }
   },
   methods: {
     ...mapActions('task/builder', {
@@ -54,7 +51,7 @@ export default {
   computed: {
     ...mapState('activity/builder', [
       'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'croppedPicture'
-    ]),
+    ], 'config', ['projectId']),
     items () {
       return [
         {

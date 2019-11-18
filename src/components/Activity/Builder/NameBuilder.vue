@@ -37,9 +37,6 @@ export default {
     }
   },
   props: {
-    pid: {
-      required: true
-    }
   },
   created () {
     this.currentTitle = this.title
@@ -70,7 +67,8 @@ export default {
     },
     ...mapState('activity/builder', {
       title: state => state.title
-    })
+    },
+      'config', ['projectId'])
   },
   watch: {
     currentTitle () {
