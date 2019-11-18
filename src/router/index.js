@@ -4,7 +4,6 @@ import Router from 'vue-router'
 import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import Discover from '@/components/Discover.vue'
-import Project from '@/components/Project/Project.vue'
 import Activity from '@/components/Activity/Activity.vue'
 import ActivityBuilder from '@/components/Activity/Builder/ActivityBuilder.vue'
 import About from '@/components/About.vue'
@@ -96,80 +95,60 @@ const router = new Router({
             next()
           }
         },
-        {
-          path: 'project/:pid',
-          name: 'project',
-          component: Project,
-          props: true,
-          beforeEnter: (to, from, next) => {
-            const selectedProjectId = store.state.project.selectedProject.id
-            if (parseInt(selectedProjectId) !== parseInt(to.params.id)) {
-              store.commit('project/menu/setCurrentTab', store.state.project.menu.tabs.info)
+          {
+            path: 'builder/name',
+            name: 'activity.builder.name',
+            component: ActivityBuilder,
+            beforeEnter: (to, from, next) => {
+              store.commit('activity/builder/setCurrentStep', 'name')
+              next()
             }
-            next()
           },
-          children: [
-            {
-              path: 'activity',
-              name: 'ActivityRoot',
-              props: true,
-              children: [
-                {
-                  path: 'builder/name',
-                  name: 'activity.builder.name',
-                  component: ActivityBuilder,
-                  beforeEnter: (to, from, next) => {
-                    store.commit('activity/builder/setCurrentStep', 'name')
-                    next()
-                  }
-                },
-                {
-                  path: 'builder/information',
-                  name: 'activity.builder.information',
-                  component: ActivityBuilder,
-                  beforeEnter: (to, from, next) => {
-                    if (store.state.activity.builder.steps.name === true) {
-                      store.commit('activity/builder/setCurrentStep', 'information')
-                      next()
-                    } else {
-                      next({ name: 'activity.builder.name' })
-                    }
-                  }
-                },
-                {
-                  path: 'builder/story',
-                  name: 'activity.builder.story',
-                  component: ActivityBuilder,
-                  beforeEnter: (to, from, next) => {
-                    if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
-                      store.commit('activity/builder/setCurrentStep', 'story')
-                      next()
-                    } else {
-                      next({ name: 'activity.builder.information' })
-                    }
-                  }
-                },
-                {
-                  path: 'builder/end',
-                  name: 'activity.builder.end',
-                  component: ActivityBuilder,
-                  beforeEnter: (to, from, next) => {
+          {
+            path: 'builder/information',
+            name: 'activity.builder.information',
+            component: ActivityBuilder,
+            beforeEnter: (to, from, next) => {
+              if (store.state.activity.builder.steps.name === true) {
+                store.commit('activity/builder/setCurrentStep', 'information')
+                next()
+              } else {
+                next({ name: 'activity.builder.name' })
+              }
+            }
+          },
+          {
+            path: 'builder/story',
+            name: 'activity.builder.story',
+            component: ActivityBuilder,
+            beforeEnter: (to, from, next) => {
+              if (store.state.activity.builder.steps.name === true && store.state.activity.builder.steps.information === true) {
+                store.commit('activity/builder/setCurrentStep', 'story')
+                next()
+              } else {
+                next({ name: 'activity.builder.information' })
+              }
+            }
+          },
+          {
+            path: 'builder/end',
+            name: 'activity.builder.end',
+            component: ActivityBuilder,
+            beforeEnter: (to, from, next) => {
 
-                    if (store.state.activity.builder.steps.name === true &&
-                      store.state.activity.builder.steps.information === true &&
-                      store.state.activity.builder.steps.story === true) {
+              if (store.state.activity.builder.steps.name === true &&
+                store.state.activity.builder.steps.information === true &&
+                store.state.activity.builder.steps.story === true) {
 
-                      store.dispatch('activity/builder/reset')
-                      store.commit('activity/builder/setCurrentStep', 'end')
+                store.dispatch('activity/builder/reset')
+                store.commit('activity/builder/setCurrentStep', 'end')
 
-                      next()
-                    } else {
-                      next({ name: 'activity.builder.story' })
-                    }
-                  }
-                },
-              ],
-            },
+                next()
+              } else {
+                next({ name: 'activity.builder.story' })
+              }
+            }
+          },
             {
               path: 'activity/:aid',
               name: 'activity',
@@ -325,8 +304,6 @@ const router = new Router({
           props: true,
           component: FlickrCallback
         }
-      ]
-    }
   ]
 })
 
