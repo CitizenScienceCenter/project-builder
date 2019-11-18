@@ -95,7 +95,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('activity/builder', [
+    ...mapMutations('project/builder', [
       'setShortDescription',
       'setStep',
       'setPicture',

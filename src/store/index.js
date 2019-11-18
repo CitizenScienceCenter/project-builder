@@ -11,33 +11,16 @@ import osm from './modules/osm'
 
 import consts from './modules/consts'
 import settings from './modules/settings'
-import gdpr from "./modules/gdpr";
+import gdpr from './modules/gdpr'
 
-import createPersistedState from 'vuex-persistedstate';
+import createPersistedState from 'vuex-persistedstate'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production';
+const debug = process.env.NODE_ENV !== 'production'
 
-/*
-export default new Vuex.Store({
-  modules: {
-    notification,
-    project,
-    user,
-    task,
-    osm,
-    consts,
-    settings,
-    gdpr
-  },
-  strict: debug,
-  plugins: debug ? [createLogger()] : []
-})
-*/
-
-let store;
-if( window.localStorage ) {
+let store
+if (window.localStorage) {
   store = new Vuex.Store({
     modules: {
       notification,
@@ -50,10 +33,9 @@ if( window.localStorage ) {
       gdpr
     },
     strict: debug,
-    plugins: debug ? [createLogger(), createPersistedState({ storage: window.localStorage})] : [createPersistedState({ storage: window.localStorage})]
-  });
-}
-else {
+    plugins: debug ? [createLogger(), createPersistedState({ storage: window.localStorage })] : [createPersistedState({ storage: window.localStorage })]
+  })
+} else {
   store = new Vuex.Store({
     modules: {
       notification,
@@ -67,7 +49,7 @@ else {
     },
     strict: debug,
     plugins: debug ? [createLogger()] : []
-  });
+  })
 }
 
-export default store;
+export default store

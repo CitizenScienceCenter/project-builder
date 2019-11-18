@@ -9,7 +9,7 @@
         <b-form-group
                 id="fieldset-title"
                 label="Activity title"
-                description="Please write here a good one!"
+                description="Please write a good one!"
                 label-for="title"
                 :valid-feedback="validFeedback"
                 :invalid-feedback="invalidFeedback"
@@ -42,7 +42,7 @@ export default {
     this.currentTitle = this.title
   },
   methods: {
-    ...mapMutations('activity/builder', [
+    ...mapMutations('project/builder', [
       'setTitle',
       'setStep'
     ]),
@@ -65,7 +65,7 @@ export default {
     invalidFeedback () {
       return this.currentTitle.length === 0 ? 'You must set a title for your activity' : 'The title length should not exceed ' + this.maxNbCharacters + ' characters'
     },
-    ...mapState('activity/builder', {
+    ...mapState('project/builder', {
       title: state => state.title
     },
       'config', ['projectId'])
