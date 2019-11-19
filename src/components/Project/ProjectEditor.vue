@@ -268,6 +268,7 @@ export default {
 
           this.uploadAvatar({
             project: this.project,
+            imageName: this.imageName,
             image: this.croppedPicture
           }).then(response => {
             if (response) {
@@ -317,6 +318,7 @@ export default {
       }
 
       this.pictureSize = file.size
+      this.pictureName = file.name
 
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
@@ -357,8 +359,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject,
+    ...mapState('c3s/project', {
+      project: state => state.project
+    }, 'project', {
       categories: state => state.categories
     }),
 

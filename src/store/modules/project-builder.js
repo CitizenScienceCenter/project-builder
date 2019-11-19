@@ -7,6 +7,7 @@ const state = {
   title: '',
   shortDescription: '',
   picture: '',
+  pictureName: '',
   croppedPicture: '',
   cropData: {},
   story: {
@@ -43,6 +44,7 @@ const actions = {
       commit('setTitle', '')
       commit('setShortDescription', '')
       commit('setPicture', '')
+      commit('setPictureName', '')
       commit('setCroppedPicture', '')
       commit('setCropData', {})
       commit('setStory', {
@@ -63,6 +65,9 @@ const mutations = {
   },
   setPicture (state, picture) {
     state.picture = picture
+  },
+  setPictureName (state, name) {
+    state.pictureName = name
   },
   setCroppedPicture (state, picture) {
     state.croppedPicture = picture

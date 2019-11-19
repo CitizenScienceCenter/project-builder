@@ -137,6 +137,7 @@ export default {
       descriptionFirstInteraction: true,
 
       selectedPicture: '',
+      selectedPictureName: '',
       pictureSelected: false,
       selectedPictureSize: 0,
       maxPictureSizeInMB: 1
@@ -157,6 +158,7 @@ export default {
       'setShortDescription',
       'setStep',
       'setPicture',
+      'setPictureName',
       'setCroppedPicture',
       'setCropData'
     ]),
@@ -175,20 +177,15 @@ export default {
 
         if (this.selectedPicture) {
           this.setPicture(this.selectedPicture)
-
-          //const croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL();
-          //this.setCroppedPicture(croppedPicture)
-
-          this.setCroppedPicture(this.selectedPicture);
-
-          //this.setCropData(this.$refs.cropper.getData(true))
+          this.setPictureName(this.selectedPictureName)
+          this.setCroppedPicture(this.selectedPicture)
         }
       }
     },
 
     setImage (event) {
       const file = event.target.files[0]
-
+      this.selectedPictureName = file.name
       if (!file.type.includes('image/')) {
         alert('Please select an image file')
         return
@@ -200,7 +197,6 @@ export default {
         const reader = new FileReader()
         reader.onload = (e) => {
           this.selectedPicture = e.target.result
-          //this.$refs.cropper.replace(this.selectedPicture)
           this.pictureSelected = true
         }
         reader.readAsDataURL(file)
@@ -214,6 +210,7 @@ export default {
       title: state => state.title,
       shortDescription: state => state.shortDescription,
       picture: state => state.picture,
+      pictureName: state => state.pictureName,
       croppedPicture: state => state.croppedPicture,
       cropData: state => state.cropData
     }),

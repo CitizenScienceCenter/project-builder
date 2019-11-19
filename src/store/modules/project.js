@@ -316,16 +316,15 @@ const actions = {
    * @param image
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  uploadAvatar ({ commit, state, dispatch }, { project, image }) {
-    return dispatch('getProjectUpdateOptions', project).then(response => {
+  uploadAvatar ({ commit, state, dispatch }, { project, imageName, image }) {
+    return dispatch('c3s/media/getPresigned', [project.id, imageName], { root: true }).then(response => {
       if (response) {
-        return api.uploadAvatar(state.projectUpdateOptions.upload_form.csrf, project.short_name, image).then(value => {
-          // nothing to commit
-          return value.data
+        return dispatch('c3s/media/upload', [response.url, image], { root: true }).then(resp => {
+          return resp.data
         }).catch(reason => {
           commit('notification/showError', {
             title: errors.UPLOAD_PROJECT_AVATAR_ERROR,
-            content: 'Your picture is certainly too big. Ensure it size is less than 1MB'
+            content: 'Check your image size and format, please'
           }, { root: true })
           return false
         })
