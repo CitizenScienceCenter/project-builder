@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     ...mapState('project', {
-      project: state => state.selectedproject
+      project: state => state.selectedProject
     })
   },
   created () {

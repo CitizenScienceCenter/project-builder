@@ -61,7 +61,7 @@ export default {
       'isOnlineCsvImporterVisible'
     ]),
     ...mapState('project', {
-      project: state => state.selectedproject
+      project: state => state.selectedProject
     }),
 
     isOnlineCsvVisible: {

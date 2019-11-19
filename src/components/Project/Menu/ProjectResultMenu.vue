@@ -15,7 +15,7 @@ export default {
   name: 'ProjectResultsMenu',
   computed: {
     ...mapState('project', {
-      results: state => state.selectedprojectResults
+      results: state => state.selectedProjectResults
     })
   }
 }

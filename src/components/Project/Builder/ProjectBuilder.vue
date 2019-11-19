@@ -79,10 +79,10 @@ export default {
       'setTaskPresenter'
     ]),
     ...mapActions('project', [
-      'createProject', 'uploadAvatar'
+      'uploadAvatar'
     ]),
-    ...mapActions('c3s/activity', [
-      'createActivity'
+    ...mapActions('c3s/project', [
+      'createProject'
     ]),
     ...mapMutations('notification', [
       'showError'
@@ -128,13 +128,12 @@ export default {
 
         const image = this.croppedPicture
 
-        this.createActivity({
+        this.createProject({
           name: this.title,
           info: {
             shortDescription: this.shortDescription,
           },
-          part_of: this.projectId,
-          longDescription: JSON.stringify({
+          description: JSON.stringify({
             whatWhy: this.story.whatWhy,
             how: this.story.how,
             who: this.story.who,

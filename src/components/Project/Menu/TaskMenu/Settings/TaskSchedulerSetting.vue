@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     ...mapState('project', {
-      project: state => state.selectedproject
+      project: state => state.selectedProject
     }),
     ...mapState('task/settings', {
       currentScheduler: state => state.taskSchedulerOptions.form.sched
