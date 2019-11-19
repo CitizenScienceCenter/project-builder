@@ -98,7 +98,7 @@ const router = new Router({
       component: About,
       meta: {
         i18n: 'navigation-about',
-        nav: true,
+        nav: false,
         requiresAuth: false
       }
     },
@@ -112,7 +112,7 @@ const router = new Router({
       },
       meta: {
         i18n: 'navigation-profile',
-        nav: true,
+        nav: false,
         requiresAuth: true
       }
     },
@@ -126,7 +126,7 @@ const router = new Router({
       },
       meta: {
         i18n: 'profile-edit',
-        nav: true
+        nav: false
       }
     },
     {
@@ -139,7 +139,7 @@ const router = new Router({
       },
       meta: {
         nav: false,
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -159,7 +159,7 @@ const router = new Router({
       },
       meta: {
         nav: false,
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -178,7 +178,7 @@ const router = new Router({
       },
       meta: {
         nav: false,
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -201,7 +201,7 @@ const router = new Router({
       },
       meta: {
         nav: false,
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -326,7 +326,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: false
+          requiresAuth: true
         }
       },
       {
@@ -445,7 +445,7 @@ router.beforeEach((to, from, next) => {
       if (store.state.c3s.user.currentUser) {
         next()
       } else {
-        router.push('/en/login')
+        router.push( {name:'login'} )
       }
     } else {
       next()

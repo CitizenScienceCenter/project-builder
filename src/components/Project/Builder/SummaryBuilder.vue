@@ -7,17 +7,17 @@
           <div class="row row-centered">
             <div class="col col-large-8 col-xlarge-6 scroll-effect">
               <h2 class="heading centered">Congratulations</h2>
-              <p class="button-group centered">You just created your project {{ selectedProject.name }}.</p>
+              <p class="button-group centered">You just created your project {{ currentProject.name }}.</p>
               <p class="button-group centered">Want to keep going? Set it up right now!</p>
-              
+
               <div class="margin-bottom">
                 <div class="button-group centered">
-                  <router-link class="button button-primary" :to="{ name: 'task.builder.material', params: { id: selectedProject.id } }">Set up</router-link>
+                  <router-link class="button button-primary" :to="{ name: 'task.builder.material', params: { pid: currentProject.id } }">Set up</router-link>
                 </div>
               </div>
 
               <p class="button-group centered">
-                You can always leave it for later and visit your <router-link :to="{ name: 'project', params: { id: selectedProject.id } }">projects's page</router-link>
+                You can always leave it for later and visit your <router-link :to="{ name: 'project', params: { pid: currentProject.id } }">projects's page</router-link>
               </p>
             </div>
           </div>
@@ -50,12 +50,9 @@ export default {
     'app-content-section': ContentSection
   },
   computed: {
-    ...mapState('c3s/project', [
-      'currentProject'
-    ])
-  },
-  mounted() {
-    console.log('summary is here');
+    ...mapState('c3s/project', {
+      currentProject: state => state.project
+    })
   }
 }
 </script>
