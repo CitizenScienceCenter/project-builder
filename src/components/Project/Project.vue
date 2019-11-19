@@ -103,7 +103,7 @@ export default {
   created () {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
-    this.getproject(this.id).then(project => {
+    this.getProject(this.pid).then(project => {
       // load some stats
       this.getStatistics(project)
       this.getResults(project)
