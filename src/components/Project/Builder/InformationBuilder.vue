@@ -34,7 +34,8 @@
                 <div class="margin-bottom" v-if="selectedPicture && selectedPictureSizeInMB <= maxPictureSizeInMB">
                   <img :src="selectedPicture" />
                 </div>
-                <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="16/3"></vue-cropper>
+
+                <!-- <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" ></vue-cropper> -->
 
                 <div class="button-group right-aligned">
                   <button type="submit" class="button button-primary" :disabled="descriptionFirstInteraction || !validated || selectedPictureSizeInMB > this.maxPictureSizeInMB">Next Step</button>
@@ -148,7 +149,7 @@ export default {
       this.selectedPicture = this.picture
       this.pictureSelected = true
 
-      this.$refs.cropper.replace(this.picture)
+      //this.$refs.cropper.replace(this.picture)
     }
   },
   methods: {
@@ -175,10 +176,12 @@ export default {
         if (this.selectedPicture) {
           this.setPicture(this.selectedPicture)
 
-          const croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
-          this.setCroppedPicture(croppedPicture)
+          //const croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL();
+          //this.setCroppedPicture(croppedPicture)
 
-          this.setCropData(this.$refs.cropper.getData(true))
+          this.setCroppedPicture(this.selectedPicture);
+
+          //this.setCropData(this.$refs.cropper.getData(true))
         }
       }
     },
@@ -197,7 +200,7 @@ export default {
         const reader = new FileReader()
         reader.onload = (e) => {
           this.selectedPicture = e.target.result
-          this.$refs.cropper.replace(this.selectedPicture)
+          //this.$refs.cropper.replace(this.selectedPicture)
           this.pictureSelected = true
         }
         reader.readAsDataURL(file)
