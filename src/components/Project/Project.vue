@@ -103,18 +103,12 @@ export default {
   created () {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
-    this.getproject(this.id).then(project => {
-      // load some stats
-      this.getStatistics(project)
-      this.getResults(project)
-      // checks if the project is open for anonymous users or not
-      this.getNewTask(project).then(allowed => {
-        this.isAnonymousproject = !!allowed
-        // TODO: should go to the home screen?
-      })
-      if (this.isLoggedUserOwnerOfproject(project)) {
-        // has to be loaded to know if the project can be published
-        this.getprojectTasks(project)
+    this.getProject(this.pid).then(project => {
+      this.getStats(project.id)
+      //this.getResults(project)
+      this.isAnonymousProject = !!project.anonymous_allowed
+      if (this.currentUser.id === project.owner) {
+        this.getprojectTasks(project.id)
       }
     })
 
@@ -134,11 +128,10 @@ export default {
       'getProject',
       'createProject',
       'getResults',
-      'getStatistics'
+      'getStats'
     ]),
-    ...mapActions('task', [
+    ...mapActions('c3s/project', [
       'getProjectTasks',
-      'getNewTask'
     ]),
     ...mapMutations('project/menu', [
       'setCurrentTab'
@@ -179,8 +172,8 @@ export default {
     ...mapState('project/menu', [
       'currentTab', 'tabs'
     ]),
-    ...mapGetters('user', [
-      'isLoggedUserOwnerOfproject'
+    ...mapGetters('c3s/user', [
+      'currentUser'
     ])
   }
 }
