@@ -7,7 +7,9 @@
 "cover-subheading": "Start Building Your Projects",
 "cover-button-primary": "Create a Project",
 "cover-button-secondary": "Browse Projects",
-"content-header": "Featured Projects"
+
+"projects-header": "Featured Projects"
+
 }
 
 }
@@ -38,11 +40,33 @@
       </div>
     </app-cover>
 
-    <app-content-section>
+    <app-content-section v-if="projects.length > 0">
       <div class="content-wrapper">
         <div class="row row-centered">
-          <div class="col col-large-10 scroll-effect">
-            <h2 class="heading centered">{{ $t('content-header') }}</h2>
+          <div class="col col-large-6 scroll-effect">
+            <h2 class="heading centered">{{ $t('projects-header') }}</h2>
+
+
+              <div class="margin-bottom" :key="project.id" v-for="project in projects">
+
+                <div class="margin-bottom">
+
+                  <img v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url" />
+                  <img v-else :src="'/static/img/cover.jpg'" />
+
+                  {{ project.name }}<br>
+                  {{ project.info.shortDescription }}<br>
+
+                  {{ project.id }}
+
+                  <div class="button-group">
+                    <router-link class="button button-primary" :to="{ name: 'project', params: { pid: project.id } }">Go to Project</router-link>
+                  </div>
+
+                </div>
+
+              </div>
+
           </div>
         </div>
       </div>

@@ -54,7 +54,6 @@ export default {
     })
   },
   mounted() {
-    console.log('summary is here');
   }
 }
 </script>
