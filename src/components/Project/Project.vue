@@ -14,7 +14,7 @@
         <p>{{ project.description }}</p>
 
         <!-- Owner actions -->
-        <div v-if="isLoggedUserOwnerOfproject(project) && !project.published">
+        <div v-if="isOwner && !project.published">
           <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
@@ -34,7 +34,7 @@
           </b-modal>
         </div>
 
-        <div v-else-if="isAnonymousproject">
+        <div v-else-if="isAnonymousProject">
           <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
 
@@ -56,7 +56,7 @@
             <projectResultsMenu></projectResultsMenu>
           </b-tab>
 
-          <b-tab ref="tab-tasks" v-if="isLoggedUserOwnerOfproject(project)" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
+          <b-tab ref="tab-tasks" v-if="isOwner" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
             <projectTasksMenu></projectTasksMenu>
           </b-tab>
 
@@ -65,7 +65,7 @@
             <projectStatisticsMenu></projectStatisticsMenu>
           </b-tab>
 
-          <b-tab ref="tab-settings" v-if="isLoggedUserOwnerOfproject(project)" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
+          <b-tab ref="tab-settings" v-if="isOwner" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
             <!-- v-if used to render the component only if the tab is active -->
             <projectEditor v-if="currentTab === tabs.settings"></projectEditor>
           </b-tab>
@@ -108,6 +108,7 @@ export default {
       //this.getResults(project)
       this.isAnonymousProject = !!project.anonymous_allowed
       if (this.currentUser.id === project.owner) {
+        this.isOwner = true
         this.getprojectTasks(project.id)
       }
     })
@@ -115,7 +116,8 @@ export default {
   },
   data: () => {
     return {
-      isAnonymousProject: true
+      isAnonymousProject: true,
+      isOwner: false
     }
   },
   props: {
