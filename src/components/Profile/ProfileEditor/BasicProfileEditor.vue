@@ -267,28 +267,8 @@ export default {
       };
     },
     checkUsername() {
-      let query = {
-        'select': {
-          'fields': [
-            '*'
-          ],
-          'tables': [
-            'users'
-          ]
-        },
-        'where': [
-          {
-            "field": 'username',
-            'op': 'e',
-            'val': this.form.username
-          }
-        ]
-      };
-      this.$store.dispatch('c3s/submission/getSubmissions', [query, 1] ).then(res => {
-        console.log('username checked');
-        console.log( res );
-        if( res.body.length > 0 ) {
-          // email already registered
+      this.$store.dispatch('c3s/user/checkUsername', this.username ).then(res => {
+        if( res.status === 200 ) {
           this.errors.username = true;
         }
       });
@@ -296,6 +276,8 @@ export default {
 
     save() {
       console.log( 'save user ');
+      console.log( this.currentUser.id );
+      console.log( this.getUserObject() );
       this.saveInProgress = true;
       this.$store.dispatch('c3s/user/updateUser', [ this.currentUser.id, this.getUserObject() ] ).then(r => {
 
