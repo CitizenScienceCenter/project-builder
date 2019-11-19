@@ -317,9 +317,10 @@ const actions = {
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
   uploadAvatar ({ commit, state, dispatch }, { project, imageName, image }) {
-    return dispatch('c3s/media/getPresigned', [project.id, imageName], { root: true }).then(response => {
+    console.log(project)
+    return dispatch('c3s/media/getPresigned', [project, imageName], { root: true }).then(response => {
       if (response) {
-        return dispatch('c3s/media/upload', [response.url, image], { root: true }).then(resp => {
+        return dispatch('c3s/media/upload', [response.body.msg.url, image], { root: true }).then(resp => {
           return resp.data
         }).catch(reason => {
           commit('notification/showError', {

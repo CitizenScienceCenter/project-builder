@@ -92,6 +92,7 @@ export default {
     ...mapState('project/builder', [
       'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'pictureName', 'croppedPicture'
     ], 'consts', ['projectId']),
+      ...mapState('c3s/project', ['project']),
     items () {
       return [
         {
@@ -144,7 +145,7 @@ export default {
           if (project) {
             // if it fails, a message will say to the user that he can update it again later...
             if (image.length > 0) {
-              this.uploadAvatar({ project, imageName, image })
+              this.uploadAvatar({ project: this.project.id, imageName, image })
             }
 
             this.resetTaskBuilder()

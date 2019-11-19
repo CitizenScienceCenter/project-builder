@@ -163,9 +163,9 @@ export default {
     ...mapState('task/builder', [
       'task', 'materials', 'jobs', 'sources', 'bucket'
     ]),
-    ...mapState('c3s/project', [
-      'selectedProject'
-    ]),
+    ...mapState('c3s/project', {
+      'selectedProject': state => state.project
+    }),
     ...mapGetters('task/builder', [
       'getBucketFileLink'
     ])
