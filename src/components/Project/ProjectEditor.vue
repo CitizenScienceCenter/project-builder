@@ -27,10 +27,6 @@
               <b-textarea placeholder="Short description" v-model="form.shortDescription"></b-textarea>
             </b-form-group>
 
-            <b-form-group label="project category">
-              <b-select v-model="form.category" :options="selectCategories"></b-select>
-            </b-form-group>
-
             <b-form-checkbox v-model="form.allowAnonymousContributors">
               Allow anonymous contributors
             </b-form-checkbox>
@@ -136,7 +132,6 @@ export default {
     if (Object.keys(this.project).length > 0) {
       this.initForm(this.project)
     }
-    this.getCategories()
   },
   watch: {
     project (project) {
@@ -150,7 +145,6 @@ export default {
       form: {
         name: '',
         shortDescription: '',
-        category: '',
         whatWhy: '',
         how: '',
         who: '',
@@ -186,12 +180,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions('c3s/project', [
+      'getProject',
+      'deleteProject',
+      'updateProject'
+    ]),
     ...mapActions('project', [
-      'getproject',
-      'deleteproject',
-      'uploadAvatar',
-      'updateproject',
-      'getCategories'
+      'uploadAvatar'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError', 'showInfo'
@@ -199,11 +194,10 @@ export default {
 
     initForm (project) {
       this.form.name = project.name
-      this.form.shortDescription = project.description
-      this.form.category = project.category_id
-      this.form.allowAnonymousContributors = project.allow_anonymous_contributors
+      this.form.shortDescription = project.info.shortDescription
+      this.form.allowAnonymousContributors = project.anonymous_allowed
 
-      this.form = { ...this.form, ...JSON.parse(project.long_description) }
+      this.form = { ...this.form, ...JSON.parse(project.description) }
 
       if ('info' in project && 'thumbnail_url' in project.info) {
         // uuid used to avoid cache loading which make CORS issues
@@ -222,16 +216,14 @@ export default {
           project: this.project,
           form: {
             name: this.form.name,
-            short_name: slug(this.form.name, { lower: true, replacement: '_' }),
             description: this.form.shortDescription,
-            category_id: this.form.category,
             long_description: JSON.stringify({
               whatWhy: this.form.whatWhy,
               how: this.form.how,
               who: this.form.who,
               keepTrack: this.form.keepTrack
             }),
-            allow_anonymous_contributors: this.form.allowAnonymousContributors
+            anonymous_allowed: this.form.allowAnonymousContributors
           }
         }).then(response => {
           if ('form' in response && 'errors' in response.form) {
@@ -267,14 +259,14 @@ export default {
           this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
 
           this.uploadAvatar({
-            project: this.project,
+            project: this.project.id,
             imageName: this.imageName,
             image: this.croppedPicture
           }).then(response => {
             if (response) {
               this.showSuccess({
                 title: 'Success',
-                content: 'project picture updated'
+                content: 'Project picture updated'
               })
               this.getproject(this.project.id)
               this.$refs.cropper.replace(this.croppedPicture)
@@ -298,7 +290,7 @@ export default {
      * Delete the current project
      */
     onDeleteprojectSubmit () {
-      this.deleteproject(this.project).then(response => {
+      this.deleteProject(this.project.id).then(response => {
         if (response) {
           this.$router.push({ name: 'profile' })
         }
@@ -361,18 +353,8 @@ export default {
   computed: {
     ...mapState('c3s/project', {
       project: state => state.project
-    }, 'project', {
-      categories: state => state.categories
-    }),
-
-    selectCategories () {
-      return this.categories.map(category => {
-        return {
-          value: category.id,
-          text: category.name
-        }
-      })
     },
+    ),
 
     pictureSizeInMb () {
       return this.pictureSize / 1000000
