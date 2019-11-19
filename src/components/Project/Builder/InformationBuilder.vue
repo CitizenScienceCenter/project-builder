@@ -16,6 +16,7 @@
               <form @submit.prevent="onSubmit">
 
                 <div class="form-field form-field-block">
+                  <label>Short Description</label>
                   <growing-textarea v-model="currentShortDescription" placeholder="Please write a short description ..."></growing-textarea>
                   <span v-if="validated && validFeedback" class="message success">{{validFeedback}}</span>
                   <span v-if="!validated && invalidFeedback" class="message error">{{invalidFeedback}}</span>
@@ -30,13 +31,13 @@
                   <span class="message info">Authorized formats: .jpg, .png, .gif, .svg. <br>The picture must not exceed {{ maxPictureSizeInMB }} MB.</span>
                 </div>
 
-                <div class="margin-bottom" v-if="selectedPicture && this.selectedPictureSizeInMB <= this.maxPictureSizeInMB">
+                <div class="margin-bottom" v-if="selectedPicture && selectedPictureSizeInMB <= maxPictureSizeInMB">
                   <img :src="selectedPicture" />
                 </div>
-                <!-- <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="16/3"></vue-cropper> -->
+                <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" :autoCrop="true" :view-mode="2" :aspectRatio="16/3"></vue-cropper>
 
                 <div class="button-group right-aligned">
-                  <button type="submit" class="button button-primary" :disabled="!this.validated || this.selectedPictureSizeInMB > this.maxPictureSizeInMB">Next Step</button>
+                  <button type="submit" class="button button-primary" :disabled="descriptionFirstInteraction || !validated || selectedPictureSizeInMB > this.maxPictureSizeInMB">Next Step</button>
                 </div>
 
               </form>

@@ -19,7 +19,7 @@
               </div>
 
               <div class="button-group right-aligned">
-                <button type="submit" class="button button-primary">Create</button>
+                <button type="submit" class="button button-primary" :disabled="titleFirstInteraction || !validated">Create</button>
               </div>
 
             </form>

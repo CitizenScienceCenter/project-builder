@@ -3,7 +3,7 @@
   "de": {
 
   "page-title": "Login",
-  "label-email": "Email oder Benutzername",
+  "label-email": "Email",
   "label-password": "Passwort",
   "button-login": "Anmelden",
   "button-forgotten": "Passwort vergessen?"
@@ -11,7 +11,7 @@
   "en": {
 
   "page-title": "Login",
-  "label-email": "Email or Username",
+  "label-email": "Email",
   "label-password": "Password",
   "button-login": "Login",
   "button-forgotten": "Forgot Password?"
@@ -119,7 +119,7 @@ export default {
 
     onSubmit () {
       if(!validateEmail(this.form.email)) {
-        this.form['username'] = this.form.email
+        this.form['email'] = this.form.email
         delete this.form.email
       }
       this.signIn(this.form).then((response) => {
