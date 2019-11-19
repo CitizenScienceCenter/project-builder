@@ -1,14 +1,37 @@
+<i18n>
+  {
+  "en": {
+
+  "page-title": "Create a Project"
+
+  }
+  }
+</i18n>
+
 <template>
   <div>
+
+    <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
+    <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>
+    <StoryBuilder v-if="currentStep === 'story'"></StoryBuilder>
+    <SummaryBuilder v-if="currentStep === 'end'"></SummaryBuilder>
+
+    <!--
     <b-breadcrumb :items="items"></b-breadcrumb>
     <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
     <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>
     <StoryBuilder v-if="currentStep === 'story'"></StoryBuilder>
     <SummaryBuilder v-if="currentStep === 'end'"></SummaryBuilder>
+    -->
+
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
+
+import Footer from '@/components/shared/Footer.vue';
+
 import NameBuilder from '@/components/Project/Builder/NameBuilder'
 import InformationBuilder from '@/components/Project/Builder/InformationBuilder'
 import StoryBuilder from '@/components/Project/Builder/StoryBuilder'
@@ -22,7 +45,21 @@ export default {
     SummaryBuilder,
     StoryBuilder,
     InformationBuilder,
-    NameBuilder
+    NameBuilder,
+
+    'app-footer': Footer
+  },
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
   },
   data () {
     return {
@@ -129,6 +166,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

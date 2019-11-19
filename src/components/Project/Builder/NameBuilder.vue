@@ -1,5 +1,37 @@
 <template>
 <div>
+
+  <app-content-section>
+    <div class="content-subsection">
+      <div class="content-wrapper">
+        <div class="row row-centered">
+          <div class="col col-large-6 col-xlarge-4 scroll-effect">
+
+            <h2 class="heading centered">Project Title</h2>
+
+            <form @submit.prevent="onSubmit">
+
+              <div class="form-field form-field-block">
+                <label>Title</label>
+                <input v-model="currentTitle" autocomplete="new-password" />
+                <span v-if="validated && validFeedback" class="message success">{{validFeedback}}</span>
+                <span v-if="!validated && invalidFeedback" class="message error">{{invalidFeedback}}</span>
+              </div>
+
+              <div class="button-group right-aligned">
+                <button type="submit" class="button button-primary">Create</button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-content-section>
+
+
+  <!--
   <b-row align-h="center" class="m-5">
     <h2>Give us a good title for your new project</h2>
   </b-row>
@@ -21,14 +53,23 @@
       </b-form>
     </b-col>
   </b-row>
+  -->
+
 </div>
 </template>
 
 <script>
+
+
+import ContentSection from '@/components/shared/ContentSection.vue';
+
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'NameBuilder',
+  components: {
+    'app-content-section': ContentSection
+  },
   data: () => {
     return {
       maxNbCharacters: 25,
@@ -78,6 +119,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
