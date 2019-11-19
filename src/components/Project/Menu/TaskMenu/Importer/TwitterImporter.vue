@@ -77,7 +77,7 @@ export default {
       'isTwitterImporterVisible'
     ]),
     ...mapState('project', {
-      project: state => state.selectedproject
+      project: state => state.selectedProject
     }),
 
     isTwitterVisible: {

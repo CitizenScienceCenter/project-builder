@@ -31,7 +31,7 @@ export default {
   name: 'ProjectStatisticsMenu',
   computed: {
     ...mapState('project', {
-      stats: state => state.selectedprojectStats
+      stats: state => state.selectedProjectStats
     })
   }
 }

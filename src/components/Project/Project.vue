@@ -121,11 +121,11 @@ export default {
   },
   data: () => {
     return {
-      isAnonymousproject: true
+      isAnonymousProject: true
     }
   },
   props: {
-    aid: {
+    pid: {
       required: true
     }
   },
@@ -167,9 +167,9 @@ export default {
   },
   computed: {
     ...mapState('project', {
-      project: state => state.selectedproject,
-      results: state => state.selectedprojectResults,
-      stats: state => state.selectedprojectStats
+      project: state => state.selectedProject,
+      results: state => state.selectedProjectResults,
+      stats: state => state.selectedProjectStats
     }),
     ...mapState('task', [
       'taskPresenter',

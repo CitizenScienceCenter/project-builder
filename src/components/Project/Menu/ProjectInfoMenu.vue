@@ -40,7 +40,7 @@ export default {
   components: {projectDescription},
   computed: {
     ...mapState('project', {
-      stats: state => state.selectedprojectStats
+      stats: state => state.selectedProjectStats
     })
   }
 }

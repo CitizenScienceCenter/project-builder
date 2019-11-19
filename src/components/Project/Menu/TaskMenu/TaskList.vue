@@ -2,7 +2,7 @@
   <b-row>
     <b-col>
       <b-breadcrumb :items="items"></b-breadcrumb>
-      <!--<b-link :to="{ name: 'project', params: { id: 'id' in selectedproject ? selectedproject.id : 0 } }">Go back to the project</b-link>-->
+      <!--<b-link :to="{ name: 'project', params: { id: 'id' in selectedProject ? selectedProject.id : 0 } }">Go back to the project</b-link>-->
 
       <h2 class="mt-2">Browse tasks</h2>
       <p>This page shows all the available tasks for this project.</p>
@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     ...mapState('project', {
-      project: state => state.selectedproject
+      project: state => state.selectedProject
     }),
     ...mapState('task', [
       'projectTasks'

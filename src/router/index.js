@@ -168,7 +168,7 @@ const router = new Router({
           }
         },
         {
-          path: 'project/:aid',
+          path: 'project/:pid',
           name: 'project',
           component: Project,
           props: true,

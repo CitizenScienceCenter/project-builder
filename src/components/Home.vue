@@ -4,7 +4,7 @@
 "en": {
 
 "cover-heading": "Citizen Science Lab",
-"cover-subheading": "Start building your Projects",
+"cover-subheading": "Start Building Your Projects",
 "cover-button-primary": "Create a Project",
 "cover-button-secondary": "Browse Projects",
 "content-header": "Featured Projects"

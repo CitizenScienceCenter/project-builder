@@ -84,7 +84,7 @@ export default {
       'isLocalCsvImporterVisible'
     ]),
     ...mapState('project', {
-      project: state => state.selectedproject
+      project: state => state.selectedProject
     }),
 
     isLocalCsvVisible: {
