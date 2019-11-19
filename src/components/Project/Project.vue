@@ -132,7 +132,7 @@ export default {
   methods: {
     ...mapActions('c3s/project', [
       'getProject',
-      'publishProject',
+      'createProject',
       'getResults',
       'getStatistics'
     ]),
@@ -166,8 +166,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject,
+    ...mapState('c3s/project', {
+      project: state => state.project
+    }, 'project', {
       results: state => state.selectedProjectResults,
       stats: state => state.selectedProjectStats
     }),

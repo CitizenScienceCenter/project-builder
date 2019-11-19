@@ -163,7 +163,7 @@ export default {
     ...mapState('task/builder', [
       'task', 'materials', 'jobs', 'sources', 'bucket'
     ]),
-    ...mapState('project', [
+    ...mapState('c3s/project', [
       'selectedProject'
     ]),
     ...mapGetters('task/builder', [

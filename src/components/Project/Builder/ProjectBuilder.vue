@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     ...mapState('project/builder', [
-      'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'croppedPicture'
+      'currentStep', 'steps', 'title', 'shortDescription', 'story', 'picture', 'pictureName', 'croppedPicture'
     ], 'consts', ['projectId']),
     items () {
       return [
@@ -127,7 +127,7 @@ export default {
       } else if (this.currentStep === 'story' && newVal['story'] === true) {
 
         const image = this.croppedPicture
-
+        const imageName = this.pictureName
         this.createProject({
           name: this.title,
           info: {
@@ -142,10 +142,9 @@ export default {
         }).then(project => {
 
           if (project) {
-
             // if it fails, a message will say to the user that he can update it again later...
             if (image.length > 0) {
-              this.uploadAvatar({ project, image })
+              this.uploadAvatar({ project, imageName, image })
             }
 
             this.resetTaskBuilder()
