@@ -23,14 +23,14 @@ const actions = {
 
 // methods that change the state
 const mutations = {
-  showError (state, { title, content, timer=2000 }) {
-    const notID = uuid();
+  showError (state, { title, content, timer = 2000 }) {
+    const notID = uuid()
     state.errorNotifications.push({ id: notID, message: { title, content } })
     setTimeout(() => {
       state.errorNotifications = state.errorNotifications.filter(value => {
         return value.id !== notID
       })
-    }, timer);
+    }, timer)
   },
   closeError (state, id) {
     state.errorNotifications = state.errorNotifications.filter(value => {

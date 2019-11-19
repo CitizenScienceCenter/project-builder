@@ -1,26 +1,26 @@
 const state = {
-    language: undefined
-};
+  language: undefined
+}
 
 const getters = {
-};
+}
 
 const actions = {
-    setLanguage({state, commit, rootState}, language) {
-        commit('SET_LANGUAGE', language);
-    }
-};
+  setLanguage ({ state, commit, rootState }, language) {
+    commit('SET_LANGUAGE', language)
+  }
+}
 
 const mutations = {
-    SET_LANGUAGE(state, language) {
-        state.language = language
-    }
-};
+  SET_LANGUAGE (state, language) {
+    state.language = language
+  }
+}
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
 }

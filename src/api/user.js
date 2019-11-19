@@ -39,11 +39,11 @@ export default {
   },
 
   getAccountProfile () {
-/*    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/profile', {
+    /*    return axios.get(process.env.BASE_ENDPOINT_URL + 'account/profile', {
       data: {},
       withCredentials: true
-    })*/
-    return setTimeout(() => {return true}, 200);
+    }) */
+    return setTimeout(() => { return true }, 200)
   },
 
   signOut () {

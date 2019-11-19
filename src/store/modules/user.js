@@ -46,7 +46,7 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  getRegistrationOptions({
+  getRegistrationOptions ({
     commit
   }) {
     return api.getRegistrationOptions().then(value => {
@@ -71,7 +71,7 @@ const actions = {
    * @param form
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  register({
+  register ({
     commit,
     state,
     dispatch
@@ -82,7 +82,7 @@ const actions = {
       commit('setLogged')
       return response.data
     }).catch(reason => {
-      console.log(reason);
+      console.log(reason)
       commit('notification/showError', {
         title: 'Error during registration',
         content: reason
@@ -102,7 +102,7 @@ const actions = {
    * @param password
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  signIn({
+  signIn ({
     commit,
     state,
     dispatch
@@ -116,7 +116,7 @@ const actions = {
     }).then(response => {
       // checks if the user is authenticated (good credentials)
       if (response.status === 200) {
-        console.log('User signed in');
+        console.log('User signed in')
         commit('setLogged')
         commit('setUserInfos', response.body)
         return response
@@ -137,7 +137,7 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  getLoginOptions({
+  getLoginOptions ({
     commit
   }) {
     return api.getLoginOptions().then(value => {
@@ -159,7 +159,7 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  getAccountProfile({
+  getAccountProfile ({
     commit
   }) {
     return api.getAccountProfile().then(value => {
@@ -189,7 +189,7 @@ const actions = {
    * @param commit
    * @return {Promise<T | boolean>}
    */
-  signOut({
+  signOut ({
     commit
   }) {
     store.dispatch('c3s/user/logout')
@@ -215,7 +215,7 @@ const actions = {
    * @param user
    * @return {Promise<T | boolean>}
    */
-  getProfileUpdateOptions({
+  getProfileUpdateOptions ({
     commit
   }, user) {
     return api.getProfileUpdateOptions(user.name).then(value => {
@@ -241,7 +241,7 @@ const actions = {
    * @param form
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  updateProfile({
+  updateProfile ({
     commit,
     dispatch,
     state
@@ -279,7 +279,7 @@ const actions = {
    * @param user
    * @return {Promise<T | boolean>}
    */
-  getResetApiKeyOptions({
+  getResetApiKeyOptions ({
     commit
   }, user) {
     return api.getResetApiKeyOptions(user.name).then(value => {
@@ -304,7 +304,7 @@ const actions = {
    * @param user
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  resetApiKey({
+  resetApiKey ({
     commit,
     dispatch,
     state
@@ -345,7 +345,7 @@ const actions = {
    * @param avatar
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  updateAvatar({
+  updateAvatar ({
     commit,
     dispatch
   }, {
@@ -411,7 +411,7 @@ const actions = {
    * @param form
    * @return {Promise<any> | Thenable<any> | * | PromiseLike<T | never> | Promise<T | never>}
    */
-  updatePassword({
+  updatePassword ({
     commit,
     dispatch
   }, {
@@ -458,7 +458,7 @@ const actions = {
    * @param user
    * @return {Promise<boolean>}
    */
-  deleteAccount({
+  deleteAccount ({
     commit,
     dispatch
   }, user) {
@@ -489,7 +489,7 @@ const actions = {
    * @param user
    * @return {Promise<T | boolean>}
    */
-  exportAccountData({
+  exportAccountData ({
     commit
   }, user) {
     return api.exportAccountData(user.name).then(value => {
@@ -514,40 +514,40 @@ const actions = {
 
 // methods that change the state
 const mutations = {
-  setLogged(state) {
+  setLogged (state) {
     state.logged = true
   },
-  setLoggedOut(state) {
+  setLoggedOut (state) {
     state.logged = false
   },
-  setLoginOptions(state, options) {
+  setLoginOptions (state, options) {
     state.loginOptions = options
   },
-  setRegistrationOptions(state, options) {
+  setRegistrationOptions (state, options) {
     state.registrationOptions = options
   },
-  setUserInfos(state, infos) {
+  setUserInfos (state, infos) {
     state.infos = infos
   },
-  setUserContributedProjects(state, projects) {
+  setUserContributedProjects (state, projects) {
     state.contributedProjects = projects
   },
-  setUserDraftProjects(state, projects) {
+  setUserDraftProjects (state, projects) {
     state.draftProjects = projects
   },
-  setUserPublishedProjects(state, projects) {
+  setUserPublishedProjects (state, projects) {
     state.publishedProjects = projects
   },
-  isInProfileEditionMode(state, mode) {
+  isInProfileEditionMode (state, mode) {
     state.isInProfileEditionMode = mode
   },
-  setProfileUpdateOptions(state, options) {
+  setProfileUpdateOptions (state, options) {
     state.profileUpdateOptions = options
   },
-  setResetApiKeyOptions(state, options) {
+  setResetApiKeyOptions (state, options) {
     state.resetApiKeyOptions = options
   },
-  setBirthDateVerified(state, value) {
+  setBirthDateVerified (state, value) {
     state.isBirthDateVerified = value
   }
 }

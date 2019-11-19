@@ -120,7 +120,7 @@
               </b-card-body>
 
               <b-card-footer class="text-center">
-                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
               </b-card-footer>
             </b-card>
 
@@ -167,7 +167,6 @@ export default {
     }
   },
   created () {
-    console.log(this.projectId)
     this.$store.dispatch('c3s/project/getProjects', []).then(res => {
     });
   },

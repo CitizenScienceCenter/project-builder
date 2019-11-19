@@ -1,7 +1,7 @@
 import api from '../../api/project'
 import builder from './project-builder'
 import menu from './project-menu'
-import store from "@/store"
+import store from '@/store'
 
 const errors = {
   GET_ALL_PROJECTS_LOADING_ERROR: 'Error during projects loading',
@@ -88,10 +88,10 @@ const actions = {
    */
   getAllProjects ({ commit }) {
     return store.dispatch('c3s/project/getProjects', [undefined, 100]).then(projects => {
-      console.log(projects.data);
+      console.log(projects.data)
       return projects.data
     }).catch(err => {
-      console.error(err);
+      console.error(err)
     })
     // return api.getAllProjects().then(value => {
     //   commit('setProjects', value.data)
