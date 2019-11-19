@@ -20,7 +20,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'projectDescription',
+  name: 'ProjectDescription',
   data () {
     return {
       description: {
@@ -32,20 +32,19 @@ export default {
     }
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
-    })
+    ...mapState('c3s/project', [
+      'project'
+    ])
   },
   created () {
-    if (this.project.hasOwnProperty('long_description')) {
-      this.description = JSON.parse(this.project.long_description)
+    if (this.project && this.project.hasOwnProperty('description')) {
+      this.description = JSON.parse(this.project.description)
     }
   },
   watch: {
     project (project) {
-      // test if the object is initialized to parse the long description
-      if (project.hasOwnProperty('long_description')) {
-        this.description = JSON.parse(project.long_description)
+      if (project.hasOwnProperty('description')) {
+        this.description = JSON.parse(project.description)
       }
     }
   }

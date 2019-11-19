@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col>
-      <b-row align-h="between" align-v="start">
+      <b-row align-h="between" align-v="start" v-if="stats">
         <b-col>
           <b>{{ stats.hasOwnProperty('overall_progress') ? stats.overall_progress : 'NaN' }}</b><br>
           <span class="text-muted">published results</span>
@@ -39,9 +39,9 @@ export default {
   name: 'ProjectInfoMenu',
   components: {projectDescription},
   computed: {
-    ...mapState('project', {
-      stats: state => state.selectedProjectStats
-    })
+    ...mapState('c3s/project', [
+      'stats'
+    ])
   }
 }
 </script>
