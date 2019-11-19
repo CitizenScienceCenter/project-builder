@@ -14,8 +14,8 @@
         <p>{{ project.description }}</p>
 
         <!-- Owner actions -->
-        <div v-if="isLoggedUserOwnerOfproject(project) && !project.published">
-          <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { id } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+        <div v-if="isOwner && !project.published">
+          <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { pid } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
           <!-- Publish project modal -->
@@ -34,7 +34,7 @@
           </b-modal>
         </div>
 
-        <div v-else-if="isAnonymousproject">
+        <div v-else-if="isAnonymousProject">
           <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
         </div>
 
@@ -56,7 +56,7 @@
             <projectResultsMenu></projectResultsMenu>
           </b-tab>
 
-          <b-tab ref="tab-tasks" v-if="isLoggedUserOwnerOfproject(project)" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
+          <b-tab ref="tab-tasks" v-if="isOwner" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
             <projectTasksMenu></projectTasksMenu>
           </b-tab>
 
@@ -65,7 +65,7 @@
             <projectStatisticsMenu></projectStatisticsMenu>
           </b-tab>
 
-          <b-tab ref="tab-settings" v-if="isLoggedUserOwnerOfproject(project)" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
+          <b-tab ref="tab-settings" v-if="isOwner" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
             <!-- v-if used to render the component only if the tab is active -->
             <projectEditor v-if="currentTab === tabs.settings"></projectEditor>
           </b-tab>
@@ -104,24 +104,19 @@ export default {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
     this.getProject(this.pid).then(project => {
-      // load some stats
-      this.getStatistics(project)
-      this.getResults(project)
-      // checks if the project is open for anonymous users or not
-      this.getNewTask(project).then(allowed => {
-        this.isAnonymousproject = !!allowed
-        // TODO: should go to the home screen?
-      })
-      if (this.isLoggedUserOwnerOfproject(project)) {
-        // has to be loaded to know if the project can be published
-        this.getprojectTasks(project)
+      this.getStats(this.project.id)
+      this.isAnonymousProject = !!this.project.anonymous_allowed
+      if (this.currentUser.id === this.project.owner) {
+        this.isOwner = true
+        this.getProjectTasks(this.project.id)
       }
     })
 
   },
   data: () => {
     return {
-      isAnonymousProject: true
+      isAnonymousProject: true,
+      isOwner: false
     }
   },
   props: {
@@ -134,11 +129,10 @@ export default {
       'getProject',
       'createProject',
       'getResults',
-      'getStatistics'
+      'getStats'
     ]),
-    ...mapActions('task', [
+    ...mapActions('c3s/project', [
       'getProjectTasks',
-      'getNewTask'
     ]),
     ...mapMutations('project/menu', [
       'setCurrentTab'
@@ -179,8 +173,8 @@ export default {
     ...mapState('project/menu', [
       'currentTab', 'tabs'
     ]),
-    ...mapGetters('user', [
-      'isLoggedUserOwnerOfproject'
+    ...mapState('c3s/user', [
+      'currentUser'
     ])
   }
 }
