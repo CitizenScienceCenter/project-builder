@@ -126,11 +126,11 @@ export default {
   },
   props: {
     pid: {
-      required: true
+      required: false
     }
   },
   methods: {
-    ...mapActions('project', [
+    ...mapActions('c3s/project', [
       'getProject',
       'publishProject',
       'getResults',

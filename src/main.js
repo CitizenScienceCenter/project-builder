@@ -20,8 +20,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all'
 
-import '@/styles/undoBoostrap.scss';
-import '@/styles/shared/main.scss';
+import '@/styles/undoBoostrap.scss'
+import '@/styles/shared/main.scss'
 
 import 'codemirror/lib/codemirror.css'
 
@@ -38,14 +38,14 @@ Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
 })
 
-let VueScrollTo = require('vue-scrollto');
+const VueScrollTo = require('vue-scrollto')
 Vue.use(VueScrollTo, {
-  easing: "easeInOut",
+  easing: 'easeInOut',
   duration: 600,
   offset: 0
-});
+})
 
-//Vue.component('pdf', Pdf)
+// Vue.component('pdf', Pdf)
 
 window.Vue = Vue
 const apiURL = 'https://staging.citizenscience.ch/v3/openapi.json'
