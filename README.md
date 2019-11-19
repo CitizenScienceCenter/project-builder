@@ -35,9 +35,29 @@ yarn run e2e
 yarn test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ## Dev links
+
+## File Uploading
+
+C3S uses Minio for file uploads and these calls are handlded by the vuex library
+
+1. Use the vuex-c3s library to get a pre signed URL for your file (providing the ID of the object to link it to and the filename)
+2. Use the following snippet to upload:
+```bash
+
+fetch(pre_signed_url, {
+            method: 'PUT',
+            body: file
+        }).then(() => {
+            // Handle file status here
+            console.log(file.name + ' was uploaded successfully')
+        }).catch((e) => {
+            console.error(e)
+        })
+```
+
+More info for the S3 storage engine Minio can be found [here](https://docs.min.io/docs/upload-files-from-browser-using-pre-signed-urls.html)
 
 ### Vue
 - routing : https://router.vuejs.org/
