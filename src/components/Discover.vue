@@ -12,7 +12,7 @@
 
 <template>
   <b-row class="justify-content-center mt-4">
-    <b-col>
+    <b-col v-if="projects">
 
       <b-card no-body>
         <b-tabs pills card align="center">
@@ -34,7 +34,7 @@
 
             <!-- The list of projects -->
             <b-row>
-              <b-col :key="project.id" v-for="project in categoryAll.showedProjects" md="4" class="mt-3">
+              <b-col :key="project.id" v-for="project in projects" md="4" class="mt-3">
 
                 <b-card no-body tag="article" class="h-100">
                   <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
@@ -46,7 +46,7 @@
                   </b-card-body>
 
                   <b-card-footer class="text-center">
-                    <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                    <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
                   </b-card-footer>
                 </b-card>
 
@@ -158,12 +158,11 @@ export default {
   this.$store.dispatch('c3s/project/getProjects', []).then((p) => {
     // get all the projects only for the 'all' tab
     //this.getProjectActivities(this.projectId).then((p) => {
-      console.log(p)
       if (p.status === 200) {
-        //this.projects = p.body.data;
+       //this.projects = p.body.data;
         // init the tab 'all' to the first page
         //this.categoryAllPageChange(1)
-      } 
+      }
     })
   },
   data: () => {
@@ -175,14 +174,12 @@ export default {
         paginationSize: 20,
         currentPage: 1
       },
-      projects: []
     }
   },
   methods: {
     ...mapActions('c3s/project', [
       'getProject',
-      'getProjects',
-      'getProjectActivities'
+      'getProjects'
       // 'getCategories',
       // 'getProjectsWithCategory'
     ]),
@@ -209,17 +206,14 @@ export default {
   },
   computed: {
     ...mapState('project', [
-      //'projects',
       'categories',
       'categoryProjects',
       'categoryPagination'
-    ],
-    'c3s/project', [
+    ]),
+    ...mapState('c3s/project', [
       'projects'
-    ],
-    {
-      projectId: state => state.consts.projectId
-    }),
+    ]),
+    projectId: state => state.consts.projectId,
 
     /**
      * Returns the categories with the featured category
