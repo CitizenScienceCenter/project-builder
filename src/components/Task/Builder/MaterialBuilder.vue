@@ -85,7 +85,7 @@
     <b-row class="mt-4">
       <b-col>
         <h2 class="text-center">Select the items that you'll work with</h2>
-        <b-link :to="{ name: 'project', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">Go back to the project</b-link>
+        <b-link :to="{ name: 'project', params: { pid: this.selectedProject.id } }">Go back to the project</b-link>
       </b-col>
     </b-row>
     <b-row class="mt-4">
@@ -179,7 +179,7 @@
           You can use images, sounds, videos and PDFs files.
           The geo-coding template is also available and will allow you to get answers about places with a map.
         </p>
-        <p>Not what you were looking for? Try the <b-link :to="{ name: 'project.task.presenter.settings', params: { id: 'id' in this.selectedProject ? this.selectedProject.id : 0 } }">expert path</b-link> (not for beginners)</p>
+        <p>Not what you were looking for? Try the <b-link :to="{ name: 'project.task.presenter.settings', params: { pid: this.selectedProject.id } }">expert path</b-link> (not for beginners)</p>
       </b-col>
 
     </b-row>
@@ -236,7 +236,7 @@ export default {
         project: this.selectedProject,
         template: template
       }).then(() => {
-        this.$router.push({ name: 'project.task.presenter.editor', params: { id: this.selectedProject.id } })
+        this.$router.push({ name: 'project.task.presenter.editor', params: { pid: this.selectedProject.id } })
       })
     },
 
@@ -267,14 +267,14 @@ export default {
       'materials',
       'task'
     ]),
-    /*
-    ...mapState('project', [
-      'selectedProject'
-    ])
-     */
     ...mapState('c3s/project', {
       selectedProject: state => state.project
     })
+  },
+  props: {
+    pid: {
+      required: true
+    }
   }
 }
 </script>

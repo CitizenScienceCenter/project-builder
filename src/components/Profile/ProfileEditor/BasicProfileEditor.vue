@@ -33,7 +33,7 @@
 </i18n>
 
 <template>
-  <div>
+  <div v-if="currentUser">
 
     <div class="form-field form-field-block">
       <label>{{ $t('label-email') }}</label>

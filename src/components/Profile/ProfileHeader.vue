@@ -1,11 +1,11 @@
 <template>
-  <b-row align-v="center" align-h="around">
+  <b-row align-v="center" align-h="around" v-if="profile">
     <b-col md="2">
       <b-img v-if="profile.info" :src="profile.info.avatar_url" rounded="circle" fluid-grow></b-img>
       <b-img v-else blank-color="#777" :blank="true" rounded="circle" fluid-grow></b-img>
     </b-col>
 
-    <b-col md="4" class="mt-3 mt-md-0 text-center text-md-left">
+    <b-col md="4" class="mt-3 mt-md-0 text-center text-md-left" >
       <p class="h3">{{ profile.username }}</p>
       <b-btn ref="btn-edit-profile" v-if="!isInEditionMode" :to="{ name: 'profile.edition' }" variant="outline-primary">Edit your profile</b-btn>
       <b-btn ref="btn-go-back" v-else :to="{ name: 'profile' }">Go back to your profile</b-btn>

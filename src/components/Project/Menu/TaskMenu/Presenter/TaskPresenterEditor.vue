@@ -42,18 +42,10 @@ export default {
     codemirror
   },
   created () {
-    this.getproject(this.id).then(() => {
-      // if a template is given, the given template will be displayed in priority
-      if (this.template) {
-        this.code = this.template
-      }
-      // otherwise the project task presenter template will be displayed
-      else {
-        // loads the project template if it is already set or get the asked model template
-        this.getTaskPresenter({ project: this.project, template: this.usingTemplate }).then(() => {
-          this.code = this.taskPresenter
+    this.getProject(this.pid).then(() => {
+        this.getTaskPresenter({project: this.project, template: this.template}).then((temp) => {
+          this.code = temp
         })
-      }
     })
   },
   data: () => {
@@ -70,8 +62,8 @@ export default {
   },
   props: {
     // project id
-    id: {
-      required: true
+    pid: {
+      required: false
     },
     // template code (optional)
     template: {
@@ -81,10 +73,10 @@ export default {
   methods: {
     ...mapActions('task', [
       'getTaskPresenter',
-      'saveTaskPresenter'
     ]),
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject',
+      'updateProject'
     ]),
     ...mapMutations('notification', [
       'showSuccess',
@@ -95,14 +87,18 @@ export default {
      * Update the project task presenter with the currently edited
      */
     updateTaskPresenter () {
-      this.saveTaskPresenter({
-        project: this.project,
-        template: this.code
-      }).then(response => {
+      // TODO remove validation for fields when updating models
+      const proj = {}
+      proj['info'] = Object.assign({}, this.project.info)
+      proj['name'] = this.project.name
+      proj['description'] = this.project.description
+      proj['platform'] = this.project.platform
+      console.dir(proj)
+      this.updateProject([this.project.id, proj]).then(response => {
         if (!response) {
           this.showError({
             title: 'Error',
-            content: 'Impossible to update the task presenter'
+            content: 'Error applying update'
           })
         }
       })
@@ -112,7 +108,7 @@ export default {
      * Render the currently edited presenter without saving it
      */
     previewPresenter () {
-      this.$router.push({ name: 'project.task.presenter', params: { id: this.project.id, template: this.code } })
+      this.$router.push({ name: 'project.task.presenter', params: { pid: this.project.id, template: this.code } })
     }
   },
   computed: {
@@ -120,19 +116,19 @@ export default {
       'taskPresenter',
       'usingTemplate'
     ]),
-    ...mapState('project', {
-      project: state => state.selectedProject
+    ...mapState('c3s/project', {
+      project: state => state.project
     }),
 
     items () {
       return [
         {
           html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
-          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          to: { name: 'project', params: { pid: this.project.id } }
         },
         {
           text: 'Task presenter',
-          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          to: { name: 'project.task.presenter.settings', params: { pid: this.project.id } }
         },
         {
           text: 'Editor',

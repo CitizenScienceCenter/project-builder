@@ -87,6 +87,9 @@ export default {
     ]),
     ...mapMutations('notification', [
       'showError'
+    ]),
+    ...mapMutations('c3s/media', [
+      'uploadMedia'
     ])
   },
   computed: {
@@ -146,7 +149,10 @@ export default {
           if (project) {
             // if it fails, a message will say to the user that he can update it again later...
             if (image.length > 0) {
-              this.uploadAvatar({ project: this.project.id, imageName, image })
+              this.$store.dispatch('c3s/media/uploadMedia',[this.project.id, imageName, image], {root: true}).then(res => {
+              }).catch(err => {
+                console.error(err)
+              })
             }
 
             this.resetTaskBuilder()
