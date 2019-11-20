@@ -73,16 +73,16 @@ export default {
     }
   },
   created () {
-    this.getproject(this.id)
+    this.getProject(this.pid)
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject'
     ]),
     ...mapMutations('task', [
       'setUsingTemplate'
@@ -90,12 +90,12 @@ export default {
 
     displayTemplate (name) {
       this.setUsingTemplate(name)
-      this.$router.push({ name: 'project.task.presenter.editor', params: { id: 'id' in this.project ? this.project.id : 0 } })
+      this.$router.push({ name: 'project.task.presenter.editor', params: { pid: this.pid, template: name } })
     }
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
+    ...mapState('c3s/project', {
+      project: state => state.project
     }),
     ...mapState('task', [
       'templates'
@@ -105,11 +105,11 @@ export default {
       return [
         {
           html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
-          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          to: { name: 'project', params: { pid: this.project.id } }
         },
         {
           text: 'Task presenter',
-          to: { name: 'project.task.presenter.settings', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          to: { name: 'project.task.presenter.settings', params: { pid: this.project.id } }
         }
       ]
     }

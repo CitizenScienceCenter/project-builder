@@ -206,14 +206,22 @@ const router = new Router({
     },
     {
       path: 'project/:pid',
-      name: 'project',
-      component: Project,
       props: true,
+      component: { render (c) { return c('router-view') } },
       beforeEnter: (to, from, next) => {
         // TODO use project ID to make pid the `currentProject` in the store
         next()
       },
       children: [{
+        path: '',
+        name: 'project',
+        component: Project,
+        meta: {
+          nav: false,
+          requiresAuth: false
+        }
+      },
+      {
         path: 'task-importers',
         name: 'project.task.importers',
         component: TaskImporterMenu,

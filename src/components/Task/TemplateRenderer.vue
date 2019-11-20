@@ -1,8 +1,8 @@
 <template>
   <b-row class="mt-4 mb-4">
     <b-col>
-      <b-link v-if="template" :to="{ name: 'project.task.presenter.editor', params: { id: this.id, template: this.template } }">Go back to the editor</b-link>
-      <b-link v-else :to="{ name: 'project', params: { id: this.id } }">Go back to the project</b-link>
+      <b-link v-if="template" :to="{ name: 'project.task.presenter.editor', params: { pid: this.pid, template: this.template } }">Go back to the editor</b-link>
+      <b-link v-else :to="{ name: 'project', params: { pid: this.pid } }">Go back to the project</b-link>
 
       <div v-if="!taskPresenterLoaded" class="mt-4 text-center">
         <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
@@ -24,7 +24,7 @@ export default {
   name: 'TemplateRenderer',
   props: {
     // project id
-    id: {
+    pid: {
       required: true
     },
     // template code (optional)
@@ -33,12 +33,9 @@ export default {
     }
   },
   created () {
-    // load the project first to have access to the presenter and to the related tasks
-    this.getProject(this.id).then(() => {
+    this.getProject(this.pid).then(() => {
       this.taskPresenterLoaded = true
-      // if the project presenter exists or a template is given (with the task presenter editor), it will be displayed
-      // otherwise an alert is displayed to indicate that the presenter is not already configured
-      if (this.presenter || this.template) {
+      if (this.presenter || this.template || this.project.info.template) {
         this.taskPresenterExists = true
       }
     })
@@ -53,7 +50,7 @@ export default {
   computed: {
     ...mapState('c3s/project', {
       // the current project where is displayed the task presenter
-      project: state => state.currentProject,
+      project: state => state.project,
 
       // user task progress
       userProgress: state => state.selectedProjectUserProgress
@@ -69,7 +66,7 @@ export default {
 
     // user data
     ...mapState('c3s/user', {
-      isUserLogged: state => state.logged,
+      isUserLogged: state => state.currentUser,
       userId: state => state.currentUser.id,
       userApiKey: state => state.currentUser.api_key
     }),
@@ -79,28 +76,33 @@ export default {
     }),
 
     presenterComponent () {
-      const sanitize = el => el.replace(/[\n\r\t]+/g, '')
-      // display the optional template in priority if specified
-      const sanitizedPresenter = this.template ? sanitize(this.template) : sanitize(this.presenter)
+      const sanitize = (t) => {
+        return t.replace(/[\n\r\t]+/g, '')
+      }
       // eslint-disable-next-line no-eval
-      return { name: 'presenter', ...eval('() => { return' + sanitizedPresenter + '}')() }
+      const tmpl = sanitize(this.template)
+      return { name: 'presenter', ...eval('() => { return' + tmpl + '}')() }
     }
   },
   methods: {
-    ...mapActions('task', [
-      'getNewTask'
-    ]),
-
     ...mapActions('c3s/submission', [
       'createSubmission'
     ]),
 
     ...mapActions('project', [
-      'getUserProgress', 'getProject'
+      'getUserProgress',
     ]),
 
     ...mapActions('osm', [
       'qetLocalizationsWithQuery'
+    ]),
+
+    ...mapActions('c3s/project', [
+      'getProject',
+      'getProjectTasks'
+    ]),
+    ...mapActions('c3s/task', [
+      'getProjectTask'
     ]),
 
     ...mapMutations('notification', [
@@ -111,22 +113,21 @@ export default {
      * Called when the dynamic component start
      */
     run () {
-      this.newTask()
+      this.getProjectTask(this.pid)
     },
-
     /**
      * Load a new task for the presenter if authorized
      * Also load the global user progress
      */
     newTask () {
       this.taskLoaded = false
-      this.getNewTask(this.project).then(allowed => {
+      this.getProjectTask(this.pid).then(allowed => {
         if (!allowed) {
           this.showError({
             title: 'You are not allowed to contribute',
             content: 'This project does not allow anonymous contributors'
           })
-          this.$router.push({ name: 'project', params: { id: this.project.id } })
+          this.$router.push({ name: 'project', params: { pid: this.project.id } })
         } else {
           this.getUserProgress(this.project)
           this.taskLoaded = true
@@ -142,20 +143,13 @@ export default {
       this.taskLoaded = false
       const taskRun = {
         // required
-        project_id: this.project.id,
         task_id: this.task.id,
-        info: answer
-        // optional
-        // user_id: 1,
-        // external_uid: '',
-        // media_url: ''
-      }
-      if (this.isUserLogged) {
-        taskRun.user_id = this.userId
+        response: answer,
+        user_id: this.userId
       }
       this.createSubmission(JSON.stringify(taskRun)).then(() => {
         // load a new task when current task saved
-        this.newTask()
+        this.getProjectTask(this.pid)
       })
     }
   }

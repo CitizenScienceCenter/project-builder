@@ -149,7 +149,6 @@ export default {
             // if it fails, a message will say to the user that he can update it again later...
             if (image.length > 0) {
               this.$store.dispatch('c3s/media/uploadMedia',[this.project.id, imageName, image], {root: true}).then(res => {
-                console.log(res)
               }).catch(err => {
                 console.error(err)
               })
