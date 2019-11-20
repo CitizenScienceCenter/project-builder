@@ -1,12 +1,24 @@
+<i18n>
+    {
+    "en": {
+
+    "page-title": "Create Tasks"
+
+    }
+    }
+</i18n>
+
 <template>
-  <div class="mb-4">
-    <b-breadcrumb :items="items"></b-breadcrumb>
-    <MaterialBuilder v-if="currentStep === 'material'"></MaterialBuilder>
-    <JobBuilder v-if="currentStep === 'job'"></JobBuilder>
-    <TemplateBuilder v-if="currentStep === 'template'"></TemplateBuilder>
-    <SourceBuilder v-if="currentStep === 'source'"></SourceBuilder>
-    <SummaryBuilder v-if="currentStep === 'summary'"></SummaryBuilder>
-  </div>
+    <div>
+        <b-breadcrumb :items="items"></b-breadcrumb>
+        <MaterialBuilder v-if="currentStep === 'material'"></MaterialBuilder>
+        <JobBuilder v-if="currentStep === 'job'"></JobBuilder>
+        <TemplateBuilder v-if="currentStep === 'template'"></TemplateBuilder>
+        <SourceBuilder v-if="currentStep === 'source'"></SourceBuilder>
+        <SummaryBuilder v-if="currentStep === 'summary'"></SummaryBuilder>
+
+        <app-footer></app-footer>
+    </div>
 </template>
 
 <script>
@@ -17,27 +29,45 @@ import SourceBuilder from '@/components/Task/Builder/SourceBuilder'
 import SummaryBuilder from '@/components/Task/Builder/SummaryBuilder'
 import TemplateBuilder from '@/components/Task/Builder/TemplateBuilder'
 
+import Footer from "@/components/shared/Footer";
+
 export default {
   name: 'TaskBuilder',
+    metaInfo: function() {
+        return {
+            title: this.$t('page-title'),
+            meta: [
+                {
+                    property: 'og:title',
+                    content: this.$t('page-title'),
+                    template: '%s | '+this.$t('site-title')
+                }
+            ]
+        }
+    },
   components: {
+      Footer,
     SummaryBuilder,
     SourceBuilder,
     JobBuilder,
     MaterialBuilder,
-    TemplateBuilder
-  },
-  created () {
-    this.getProject(this.id)
+    TemplateBuilder,
+      'app-footer': Footer
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
   computed: {
+      ...mapState('c3s/project', {
+          project: state => state.project
+      }),
+      /*
     ...mapState('project', {
       project: state => state.selectedProject
     }),
+    */
     ...mapState('task/builder', [
       'currentStep',
       'steps'
@@ -46,7 +76,7 @@ export default {
       const items = [
         {
           html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
-          to: { name: 'project', params: { id: this.id } }
+          to: { name: 'project', params: { pid: this.pid } }
         },
         {
           text: 'Material',
@@ -101,31 +131,33 @@ export default {
     ...mapMutations('task/importer', [
       'setDropboxFiles'
     ]),
+      /*
     ...mapActions('project', [
       'getProject'
     ])
+       */
   },
   watch: {
     steps (steps) {
       if (this.currentStep === 'material' && steps['material'] === true) {
 
-        this.$router.push({ name: 'task.builder.job', params: { id: 'id' in this.project ? this.project.id : 0 } })
+        this.$router.push({ name: 'task.builder.job', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       } else if (this.currentStep === 'job' && steps['job'] === true) {
 
-        this.$router.push({ name: 'task.builder.template', params: { id: 'id' in this.project ? this.project.id : 0 } })
+        this.$router.push({ name: 'task.builder.template', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       } else if (this.currentStep === 'template' && steps['template'] === true) {
 
-        this.$router.push({ name: 'task.builder.source', params: { id: 'id' in this.project ? this.project.id : 0 } })
+        this.$router.push({ name: 'task.builder.source', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       } else if (this.currentStep === 'source' && steps['source'] === true) {
 
-        this.$router.push({ name: 'task.builder.summary', params: { id: 'id' in this.project ? this.project.id : 0 } })
+        this.$router.push({ name: 'task.builder.summary', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       } else {
 
-        this.$router.push({ name: 'task.builder.material', params: { id: 'id' in this.project ? this.project.id : 0 } })
+        this.$router.push({ name: 'task.builder.material', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       }
     }
@@ -133,6 +165,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
+
+
 
 </style>

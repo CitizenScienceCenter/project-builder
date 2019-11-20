@@ -190,11 +190,6 @@ export default {
 }
 </script>
 
-<!--
-<style lang="scss" src="@/styles/undoBoostrap.scss"></style>
-<style lang="scss" src="@/styles/shared/main.scss"></style>
--->
-
 <style>
 
 </style>

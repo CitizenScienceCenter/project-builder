@@ -10,6 +10,7 @@
 
 <template>
   <div>
+    <b-breadcrumb :items="items"></b-breadcrumb>
 
     <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
     <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>

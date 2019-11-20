@@ -1,5 +1,21 @@
 <template>
   <div>
+
+    <h3 class="subheading"></h3>
+
+    <div class="form-field form-field-block">
+      <growing-textarea v-model="question" placeholder="E.g. What is the people in the picture doing?" @input="questionUpdated(questionKey)"></growing-textarea>
+      <span v-if="questionValidated(question) && validQuestionFeedback(question)" class="message success">{{validQuestionFeedback(question)}}</span>
+      <span v-if="!questionValidated(question) && invalidQuestionFeedback(question)" class="message error">{{invalidQuestionFeedback(question)}}</span>
+    </div>
+
+
+
+
+    <br>
+    <br>
+    <br>
+
     <h3>Question</h3>
     <b-form-group>
       <b-form-group
@@ -36,9 +52,11 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
+import GrowingTextarea from "@/components/shared/GrowingTextarea";
 
 export default {
   name: 'JobDescribeEditor',
+  components: {GrowingTextarea},
   created () {
     if (this.task.template && typeof this.task.template === 'object') {
       this.question = this.task.template.question

@@ -5,13 +5,13 @@
       <div class="content-subsection">
         <div class="content-wrapper">
           <div class="row row-centered">
-            <div class="col col-large-8 col-xlarge-6 scroll-effect">
+            <div class="col col-large-6 col-xlarge-4 scroll-effect">
 
               <div class="margin-bottom">
                 <router-link class="button button-secondary button-secondary-naked" :to="{ name: 'project.builder.information' }" style="padding:0">Go Back</router-link>
               </div>
 
-              <h3 class="subheading">We want to know all about your project!</h3>
+              <h2 class="heading centered">We want to know all about your project!</h2>
 
               <form @submit.prevent="onSubmit">
 
@@ -69,7 +69,7 @@
 
 
 
-
+    <!--
 
     <b-row class="mt-4">
       <b-col>
@@ -159,6 +159,9 @@
       </b-row>
 
     </b-form>
+
+    -->
+
   </div>
 </template>
 

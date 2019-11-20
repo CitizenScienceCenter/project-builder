@@ -1,5 +1,56 @@
 <template>
   <div>
+
+    <div class="margin-bottom"
+         :key="questionKey" v-for="(question, questionKey) in questions">
+
+      <h3 class="subheading">Question {{ (questionKey + 1) }}</h3>
+
+      <div class="form-field form-field-block">
+        <growing-textarea v-model="question.question" placeholder="Please type a question ..." @input="questionUpdated(questionKey)"></growing-textarea>
+        <span v-if="questionValidated(questionKey) && validQuestionFeedback(question.question)" class="message success">{{validQuestionFeedback(question.question)}}</span>
+        <span v-if="!questionValidated(questionKey) && invalidQuestionFeedback(question.question)" class="message error">{{invalidQuestionFeedback(question.question)}}</span>
+      </div>
+
+      <div class="answer reduced-bottom-margin"
+           :key="answerKey"
+           v-for="(answer, answerKey) in question.answers">
+
+        <div class="form-field form-field-block">
+          <label>Answer {{ (answerKey + 1) }}</label>
+          <growing-textarea v-model="question.answers[answerKey]" placeholder="Answer ..." @input="answerUpdated(questionKey, answerKey)"></growing-textarea>
+          <span v-if="answerValidated(questionKey, answerKey) && validAnswerFeedback(answer)" class="message success">{{validAnswerFeedback(answer)}}</span>
+          <span v-if="!answerValidated(questionKey, answerKey) && invalidAnswerFeedback(answer)" class="message error">{{invalidAnswerFeedback(answer)}}</span>
+        </div>
+
+        <div class="button-group right-aligned" v-if="question.answers.length > 2">
+          <button class="button button-secondary button-secondary-naked" @click="deleteAnswer(questionKey, answerKey)">Delete answer</button>
+        </div>
+      </div>
+
+      <div class="button-group right-aligned">
+        <button class="button button-secondary button-secondary-naked" @click="addAnswer(questionKey)">Add answer</button>
+      </div>
+
+      <div class="button-group right-aligned" v-if="questions.length > 1">
+        <button class="button button-secondary" @click="deleteQuestion(questionKey)">Delete whole question</button>
+      </div>
+
+    </div>
+
+    <div class="button-group right-aligned">
+      {{ allHadFirstInteraction }}
+      {{ isFormValid() }}
+      <button class="button button-secondary button-secondary-naked" @click="addQuestion">Add another Question</button>
+      <button class="button button-primary" @click="onSubmit" :disabled="!allHadFirstInteraction || !isFormValid()">Done</button>
+    </div>
+
+
+    <!--
+    <br>
+    <br>
+    <br>
+
     <div class="clearfix">
       <h3 class="float-left">Question</h3>
       <b-btn @click="addQuestion" class="float-right">Add Question</b-btn>
@@ -41,14 +92,18 @@
         <b-btn @click="onSubmit" variant="success" size="lg" class="mt-4">I'm good to go</b-btn>
       </b-col>
     </b-row>
+    -->
+
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
+import GrowingTextarea from "@/components/shared/GrowingTextarea";
 
 export default {
   name: 'JobClassifyEditor',
+  components: {GrowingTextarea},
   created () {
     if (Array.isArray(this.task.template)) {
       // deep clone
@@ -76,7 +131,8 @@ export default {
           question: true,
           answers: [true, true]
         }
-      ]
+      ],
+      allHadFirstInteraction: false
     }
   },
   methods: {
@@ -149,6 +205,7 @@ export default {
      * @return {boolean}
      */
     isFormValid () {
+      console.log('is form valid?');
       let countInvalidQuestions = 0
       let countInvalidAnswers = 0
 
@@ -163,6 +220,28 @@ export default {
           }
         }
       }
+
+      // check firstInteractions array and give overall state (for submit button)
+      let allHadFirstInteraction = true;
+      for (let i in this.firstInteractions) {
+        if( this.firstInteractions[i].question ) {
+          allHadFirstInteraction = false;
+          if( !allHadFirstInteraction ) {
+            break;
+          }
+        }
+        for (let j in this.firstInteractions[i].answers) {
+          if( this.firstInteractions[i].answers[j] ) {
+            allHadFirstInteraction = false;
+            if( !allHadFirstInteraction ) {
+              break;
+            }
+          }
+        }
+      }
+      this.allHadFirstInteraction = allHadFirstInteraction;
+      //---
+
 
       return countInvalidQuestions === 0 && countInvalidAnswers === 0
     },
@@ -208,6 +287,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
+  .answer {
+    .form-field {
+      margin-bottom: 0;
+    }
+  }
 
 </style>

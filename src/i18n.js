@@ -37,7 +37,7 @@ export const i18n = new VueI18n({
       'site-description': 'Create your Projects',
 
       'navigation-discover': {
-        link: 'Projects'
+        link: 'Browse Projects'
       },
       'navigation-about': {
         link: 'About'

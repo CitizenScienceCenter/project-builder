@@ -53,7 +53,7 @@ export default {
   computed: {
     ...mapState('c3s/project', {
       // the current project where is displayed the task presenter
-      project: state => state.currentProject,
+      project: state => state.project,
 
       // user task progress
       userProgress: state => state.selectedProjectUserProgress

@@ -11,7 +11,7 @@
                 <router-link class="button button-secondary button-secondary-naked" :to="{ name: 'project.builder.name' }" style="padding:0">Go Back</router-link>
               </div>
 
-              <h3 class="subheading">{{ title }} in a few words</h3>
+              <h2 class="heading centered">{{ title }} in a few words</h2>
 
               <form @submit.prevent="onSubmit">
 

@@ -44,284 +44,98 @@ const router = new Router({
         return c('router-view')
       }
     },
-    children: [{
-      path: '',
-      name: 'home',
-      component: Home,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: 'login',
-      name: 'login',
-      component: Login,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: 'register',
-      name: 'register',
-      component: Registration,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: 'logout',
-      name: 'logout',
-      beforeEnter: (to, from, next) => {
-        store.dispatch('c3s/user/logout').then(signedOut => {
-          if (signedOut) {
-            next({ name: 'home' })
-          }
-        })
-      },
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'discover',
-      name: 'discover',
-      component: Discover,
-      meta: {
-        i18n: 'navigation-discover',
-        nav: true,
-        requiresAuth: false
-      }
-    },
-    {
-      path: 'about',
-      name: 'about',
-      component: About,
-      meta: {
-        i18n: 'navigation-about',
-        nav: false,
-        requiresAuth: false
-      }
-    },
-    {
-      path: 'profile',
-      name: 'profile',
-      component: Profile,
-      beforeEnter: (to, from, next) => {
-        store.commit('user/isInProfileEditionMode', false)
-        next()
-      },
-      meta: {
-        i18n: 'navigation-profile',
-        nav: false,
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'profile/edit',
-      name: 'profile.edition',
-      component: Profile,
-      beforeEnter: (to, from, next) => {
-        store.commit('user/isInProfileEditionMode', true)
-        next()
-      },
-      meta: {
-        i18n: 'profile-edit',
-        nav: false
-      }
-    },
-    {
-      path: 'builder/name',
-      name: 'project.builder.name',
-      component: ProjectBuilder,
-      beforeEnter: (to, from, next) => {
-        store.commit('project/builder/setCurrentStep', 'name')
-        next()
-      },
-      meta: {
-        nav: false,
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'builder/information',
-      name: 'project.builder.information',
-      component: ProjectBuilder,
-      beforeEnter: (to, from, next) => {
-        console.log(store.state)
-        if (store.state.project.builder.steps.name === true) {
-          store.commit('project/builder/setCurrentStep', 'information')
-          next()
-        } else {
-          next({
-            name: 'project.builder.name'
-          })
-        }
-      },
-      meta: {
-        nav: false,
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'builder/story',
-      name: 'project.builder.story',
-      component: ProjectBuilder,
-      beforeEnter: (to, from, next) => {
-        if (store.state.project.builder.steps.name === true && store.state.project.builder.steps.information === true) {
-          store.commit('project/builder/setCurrentStep', 'story')
-          next()
-        } else {
-          next({
-            name: 'project.builder.information'
-          })
-        }
-      },
-      meta: {
-        nav: false,
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'builder/end',
-      name: 'project.builder.end',
-      component: ProjectBuilder,
-      beforeEnter: (to, from, next) => {
-        if (store.state.project.builder.steps.name === true &&
-              store.state.project.builder.steps.information === true &&
-              store.state.project.builder.steps.story === true) {
-          store.dispatch('project/builder/reset')
-          store.commit('project/builder/setCurrentStep', 'end')
-
-          next()
-        } else {
-          next({
-            name: 'project.builder.story'
-          })
-        }
-      },
-      meta: {
-        nav: false,
-        requiresAuth: true
-      }
-    },
-    {
-      path: 'project/:pid',
-      name: 'project',
-      component: Project,
-      props: true,
-      beforeEnter: (to, from, next) => {
-        // TODO use project ID to make pid the `currentProject` in the store
-        next()
-      },
-      children: [{
-        path: 'task-importers',
-        name: 'project.task.importers',
-        component: TaskImporterMenu,
-        props: true,
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: Home,
         meta: {
-          nav: false,
           requiresAuth: false
         }
       },
       {
-        path: 'task-exporters',
-        name: 'project.task.exporters',
-        component: TaskExporterMenu,
-        props: true,
+        path: 'login',
+        name: 'login',
+        component: Login,
         meta: {
-          nav: false,
           requiresAuth: false
         }
       },
       {
-        path: 'task-settings',
-        name: 'project.task.settings',
-        component: TaskSettingsMenu,
-        props: true,
+        path: 'register',
+        name: 'register',
+        component: Registration,
         meta: {
-          nav: false,
           requiresAuth: false
         }
       },
       {
-        path: 'task-settings/delete',
-        name: 'project.task.settings.delete',
-        component: DeleteTaskSetting,
-        props: true,
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
-      },
-      {
-        path: 'task-settings/scheduler',
-        name: 'project.task.settings.scheduler',
-        component: TaskSchedulerSetting,
-        props: true,
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
-      },
-      {
-        path: 'task-settings/redundancy',
-        name: 'project.task.settings.redundancy',
-        component: TaskRedundancySetting,
-        props: true,
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
-      },
-      {
-        path: 'task-settings/priority',
-        name: 'project.task.settings.priority',
-        component: TaskPrioritySetting,
-        props: true,
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
-      },
-      {
-        path: 'task-presenter',
-        name: 'project.task.presenter',
-        component: TemplateRenderer,
-        props: true
-      },
-      {
-        path: 'task-presenter/settings',
-        name: 'project.task.presenter.settings',
-        component: TaskPresenterMenu,
-        props: true,
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
-      },
-      {
-        path: 'task-presenter/editor',
-        name: 'project.task.presenter.editor',
-        component: TaskPresenterEditor,
-        props: true,
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
-      },
-      {
-        path: 'tasks',
-        name: 'project.tasks.list',
-        component: TaskList,
-        props: true
-      },
-      {
-        path: 'task/builder/material',
-        name: 'task.builder.material',
-        component: TaskBuilder,
-        props: true,
+        path: 'logout',
+        name: 'logout',
         beforeEnter: (to, from, next) => {
-          store.commit('task/builder/setCurrentStep', 'material')
+          store.dispatch('c3s/user/logout').then(signedOut => {
+            if (signedOut) {
+              next({ name: 'home' })
+            }
+          })
+        },
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'discover',
+        name: 'discover',
+        component: Discover,
+        meta: {
+          i18n: 'navigation-discover',
+          nav: true,
+          requiresAuth: false
+        }
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: About,
+        meta: {
+          i18n: 'navigation-about',
+          nav: false,
+          requiresAuth: false
+        }
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: Profile,
+        beforeEnter: (to, from, next) => {
+          store.commit('user/isInProfileEditionMode', false)
+          next()
+        },
+        meta: {
+          i18n: 'navigation-profile',
+          nav: false,
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'profile/edit',
+        name: 'profile.edition',
+        component: Profile,
+        beforeEnter: (to, from, next) => {
+          store.commit('user/isInProfileEditionMode', true)
+          next()
+        },
+        meta: {
+          i18n: 'profile-edit',
+          nav: false
+        }
+      },
+      {
+        path: 'builder/name',
+        name: 'project.builder.name',
+        component: ProjectBuilder,
+        beforeEnter: (to, from, next) => {
+          store.commit('project/builder/setCurrentStep', 'name')
           next()
         },
         meta: {
@@ -330,99 +144,300 @@ const router = new Router({
         }
       },
       {
-        path: 'task/builder/job',
-        name: 'task.builder.job',
-        component: TaskBuilder,
-        props: true,
+        path: 'builder/information',
+        name: 'project.builder.information',
+        component: ProjectBuilder,
         beforeEnter: (to, from, next) => {
-          if (store.state.task.builder.steps.material === true) {
-            store.commit('task/builder/setCurrentStep', 'job')
+          console.log(store.state)
+          if (store.state.project.builder.steps.name === true) {
+            store.commit('project/builder/setCurrentStep', 'information')
             next()
           } else {
             next({
-              name: 'task.builder.material',
-              params: {
-                id: to.params.id
-              }
+              name: 'project.builder.name'
             })
           }
         },
         meta: {
           nav: false,
-          requiresAuth: false
+          requiresAuth: true
         }
       },
       {
-        path: 'task/builder/template',
-        name: 'task.builder.template',
-        component: TaskBuilder,
-        props: true,
+        path: 'builder/story',
+        name: 'project.builder.story',
+        component: ProjectBuilder,
         beforeEnter: (to, from, next) => {
-          if (store.state.task.builder.steps.job === true) {
-            store.commit('task/builder/setCurrentStep', 'template')
+          if (store.state.project.builder.steps.name === true && store.state.project.builder.steps.information === true) {
+            store.commit('project/builder/setCurrentStep', 'story')
             next()
           } else {
             next({
-              name: 'task.builder.job',
-              params: {
-                id: to.params.id
-              }
+              name: 'project.builder.information'
             })
           }
         },
         meta: {
           nav: false,
-          requiresAuth: false
+          requiresAuth: true
         }
       },
       {
-        path: 'task/builder/source',
-        name: 'task.builder.source',
-        component: TaskBuilder,
-        props: true,
+        path: 'builder/end',
+        name: 'project.builder.end',
+        component: ProjectBuilder,
         beforeEnter: (to, from, next) => {
-          if (store.state.task.builder.steps.template === true) {
-            store.commit('task/builder/setCurrentStep', 'source')
+          if (store.state.project.builder.steps.name === true &&
+                store.state.project.builder.steps.information === true &&
+                store.state.project.builder.steps.story === true) {
+            store.dispatch('project/builder/reset')
+            store.commit('project/builder/setCurrentStep', 'end')
+
             next()
           } else {
             next({
-              name: 'task.builder.template',
-              params: {
-                id: to.params.id
-              }
+              name: 'project.builder.story'
             })
           }
         },
         meta: {
           nav: false,
-          requiresAuth: false
+          requiresAuth: true
         }
       },
       {
-        path: 'task/builder/summary',
-        name: 'task.builder.summary',
-        props: true,
-        component: TaskBuilder,
-        beforeEnter: (to, from, next) => {
-          if (store.state.task.builder.steps.source === true) {
-            store.commit('task/builder/setCurrentStep', 'summary')
-            next()
-          } else {
-            next({
-              name: 'task.builder.source',
-              params: {
-                id: to.params.id
-              }
-            })
+        path: 'project/:pid',
+        component: {
+          render (c) {
+            return c('router-view')
           }
         },
-        meta: {
-          nav: false,
-          requiresAuth: false
-        }
+        props: true,
+        beforeEnter: (to, from, next) => {
+          // TODO use project ID to make pid the `currentProject` in the store
+          next()
+        },
+        children: [
+          {
+            path: '',
+            name: 'project',
+            component: Project,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-importers',
+            name: 'project.task.importers',
+            component: TaskImporterMenu,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-exporters',
+            name: 'project.task.exporters',
+            component: TaskExporterMenu,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-settings',
+            name: 'project.task.settings',
+            component: TaskSettingsMenu,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-settings/delete',
+            name: 'project.task.settings.delete',
+            component: DeleteTaskSetting,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-settings/scheduler',
+            name: 'project.task.settings.scheduler',
+            component: TaskSchedulerSetting,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-settings/redundancy',
+            name: 'project.task.settings.redundancy',
+            component: TaskRedundancySetting,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-settings/priority',
+            name: 'project.task.settings.priority',
+            component: TaskPrioritySetting,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-presenter',
+            name: 'project.task.presenter',
+            component: TemplateRenderer,
+            props: true
+          },
+          {
+            path: 'task-presenter/settings',
+            name: 'project.task.presenter.settings',
+            component: TaskPresenterMenu,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task-presenter/editor',
+            name: 'project.task.presenter.editor',
+            component: TaskPresenterEditor,
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'tasks',
+            name: 'project.tasks.list',
+            component: TaskList,
+            props: true
+          },
+          {
+            path: 'task/builder/material',
+            name: 'task.builder.material',
+            component: TaskBuilder,
+            props: true,
+            beforeEnter: (to, from, next) => {
+              store.commit('task/builder/setCurrentStep', 'material')
+              next()
+            },
+            meta: {
+              nav: false,
+              requiresAuth: true
+            }
+          },
+          {
+            path: 'task/builder/job',
+            name: 'task.builder.job',
+            component: TaskBuilder,
+            props: true,
+            beforeEnter: (to, from, next) => {
+              if (store.state.task.builder.steps.material === true) {
+                store.commit('task/builder/setCurrentStep', 'job')
+                next()
+              } else {
+                next({
+                  name: 'task.builder.material',
+                  params: {
+                    id: to.params.id
+                  }
+                })
+              }
+            },
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task/builder/template',
+            name: 'task.builder.template',
+            component: TaskBuilder,
+            props: true,
+            beforeEnter: (to, from, next) => {
+              if (store.state.task.builder.steps.job === true) {
+                store.commit('task/builder/setCurrentStep', 'template')
+                next()
+              } else {
+                next({
+                  name: 'task.builder.job',
+                  params: {
+                    id: to.params.id
+                  }
+                })
+              }
+            },
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task/builder/source',
+            name: 'task.builder.source',
+            component: TaskBuilder,
+            props: true,
+            beforeEnter: (to, from, next) => {
+              if (store.state.task.builder.steps.template === true) {
+                store.commit('task/builder/setCurrentStep', 'source')
+                next()
+              } else {
+                next({
+                  name: 'task.builder.template',
+                  params: {
+                    id: to.params.id
+                  }
+                })
+              }
+            },
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          },
+          {
+            path: 'task/builder/summary',
+            name: 'task.builder.summary',
+            props: true,
+            component: TaskBuilder,
+            beforeEnter: (to, from, next) => {
+              if (store.state.task.builder.steps.source === true) {
+                store.commit('task/builder/setCurrentStep', 'summary')
+                next()
+              } else {
+                next({
+                  name: 'task.builder.source',
+                  params: {
+                    id: to.params.id
+                  }
+                })
+              }
+            },
+            meta: {
+              nav: false,
+              requiresAuth: false
+            }
+          }
+        ]
       }
-      ]
-    }
     ]
   },
   {
