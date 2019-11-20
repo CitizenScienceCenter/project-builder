@@ -29,7 +29,7 @@
               <div class="content-subsection scroll-effect">
                 <div class="button-group centered">
                   <!-- <router-link tag="button" to="/logout" class="button button-secondary">{{ $t('button-logout') }}</router-link> -->
-                  <button class="button button-secondary" @click.prevent="logout()">{{ $t('button-logout') }}</button>
+                  <button class="button button-secondary" @click.prevent="handleLogout()">{{ $t('button-logout') }}</button>
                 </div>
               </div>
             </div>
@@ -163,24 +163,29 @@ export default {
   created () {
   },
   methods: {
-    ...mapActions('user', [
-      'getAccountProfile'
+    ...mapActions('c3s/user', [
+      'logout'
     ]),
-
-
-    logout() {
-      this.$store.commit('c3s/user/SET_CURRENT_USER', null);
-      this.$store.commit('c3s/user/SET_ANON', false);
-      this.$router.push('/');
+    handleLogout() {
+      this.logout().then(() => {
+        this.$router.push('/')
+      })
     }
+
+
   },
   computed: {
     ...mapState('user', {
-      profile: state => state.infos,
       draftProjects: state => state.draftProjects,
       contributedProjects: state => state.contributedProjects,
       publishedProjects: state => state.publishedProjects,
       isInEditionMode: state => state.isInProfileEditionMode
+    }),
+    ...mapState('c3s/user', {
+      profile: state => state.currentUser
+    }),
+    ...mapState('c3s/projects', {
+
     })
   }
 }
