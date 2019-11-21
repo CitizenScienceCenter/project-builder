@@ -1,17 +1,35 @@
 <template>
   <div>
 
-    <h3 class="subheading"></h3>
+    <h3 class="subheading">Question</h3>
 
     <div class="form-field form-field-block">
-      <growing-textarea v-model="question" placeholder="E.g. What is the people in the picture doing?" @input="questionUpdated(questionKey)"></growing-textarea>
+      <growing-textarea v-model="question" placeholder="E.g. What is the people in the picture doing?"></growing-textarea>
       <span v-if="questionValidated(question) && validQuestionFeedback(question)" class="message success">{{validQuestionFeedback(question)}}</span>
       <span v-if="!questionValidated(question) && invalidQuestionFeedback(question)" class="message error">{{invalidQuestionFeedback(question)}}</span>
     </div>
 
+    <div class="description reduced-bottom-margin"
+         :key="key"
+         v-for="(description, key) in descriptions">
+      <div class="form-field form-field-block">
+        <label>Description Field {{(key + 1)}}</label>
+        <growing-textarea v-model="descriptions[key]" placeholder="Field Label" @input="descriptionUpdated(key)"></growing-textarea>
+        <span v-if="descriptionValidated(key) && validDescriptionFeedback(description)" class="message success">{{validDescriptionFeedback(description)}}</span>
+        <span v-if="!descriptionValidated(key) && invalidDescriptionFeedback(description)" class="message error">{{invalidDescriptionFeedback(description)}}</span>
+      </div>
+      <div class="button-group right-aligned" v-if="descriptions.length > 1">
+        <button class="button button-secondary button-secondary-naked" @click="deleteDescription(key)" >Delete</button>
+      </div>
+    </div>
 
+    <div v-show="false">{{ isFormValid() }}</div> <!-- so formValidation is done ongoingly > for Button disabling -->
+    <div class="button-group right-aligned">
+      <button class="button button-secondary button-secondary-naked" @click="addDescription">Add Field</button>
+      <button class="button button-primary" @click="onSubmit" :disabled="!allHadFirstInteraction || !isFormValid()">Done</button>
+    </div>
 
-
+    <!--
     <br>
     <br>
     <br>
@@ -47,6 +65,7 @@
     </div>
 
     <b-btn @click="onSubmit" variant="success" size="lg" class="mt-4">I'm good to go</b-btn>
+    -->
   </div>
 </template>
 
@@ -74,7 +93,8 @@ export default {
       ],
 
       questionFirstInteraction: true,
-      descriptionsFirstInteraction: [true]
+      descriptionsFirstInteraction: [true],
+      allHadFirstInteraction: false
     }
   },
   computed: {
@@ -125,6 +145,23 @@ export default {
         }
       }
 
+      let allHadFirstInteraction = true;
+      // check firstInteractions array and give overall state (for submit button)
+      if( this.questionFirstInteraction ) {
+        allHadFirstInteraction = false;
+      }
+      else {
+
+        for (let i in this.descriptionsFirstInteraction) {
+          if( this.descriptionsFirstInteraction[i] ) {
+            allHadFirstInteraction = false;
+            break;
+          }
+        }
+      }
+      this.allHadFirstInteraction = allHadFirstInteraction;
+      //---
+
       return nbInvalidDescriptions === 0 && this.questionValidated(this.question)
     },
 
@@ -161,6 +198,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+
+  .description {
+    .form-field {
+      margin-bottom: 0;
+    }
+  }
 
 </style>
