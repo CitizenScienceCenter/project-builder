@@ -258,7 +258,7 @@ export default {
         if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
           this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
 
-          this.uploadMedia([
+          this.$store.dispatch('c3s/media/uploadMedia',[
             this.project.id,
             this.imageName,
             this.croppedPicture

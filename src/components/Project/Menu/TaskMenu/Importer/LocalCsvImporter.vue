@@ -46,8 +46,10 @@ export default {
         sound,
         pdf,
         geoCoding
-      }
+      },
     }
+  },
+  watch: {
   },
   methods: {
     ...mapMutations('task/importer', [
@@ -62,14 +64,25 @@ export default {
     ...mapActions('task/importer', [
       'importLocalCsvTasks'
     ]),
+    ...mapActions('c3s/task', [
+      'importCSV'
+    ]),
 
     onSubmit () {
-      this.importLocalCsvTasks({
-        project: this.project,
-        file: this.csvFile
+      const pid = this.$route.params.pid
+      const self = this
+      this.$papa.parse(this.csvFile, {
+        complete: function(res) {
+          self.importCSV([pid, res.data]).then(success => {
+            console.log('imported')
+          })
+        },
+        error: function(err) {
+          console.error(err)
+        },
+        header: true
       })
     },
-
     closeOtherImporters () {
       this.setGoogleDocImporterVisible(false)
       this.setOnlineCsvImporterVisible(false)

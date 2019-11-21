@@ -12,6 +12,7 @@ import {
 
 import BootstrapVue from 'bootstrap-vue'
 import VueLayers from 'vuelayers'
+import VuePapaParse from 'vue-papa-parse'
 // import Pdf from 'vue-pdf'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -34,6 +35,7 @@ Vue.config.productionTip = false
 
 Vue.use(Meta)
 Vue.use(BootstrapVue)
+Vue.use(VuePapaParse)
 Vue.use(VueLayers, {
   dataProjection: 'EPSG:4326'
 })
