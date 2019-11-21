@@ -3,7 +3,7 @@
     <b-col>
       <b-breadcrumb :items="items"></b-breadcrumb>
 
-      <h2 class="mt-2">Tasks importation</h2>
+      <h2 class="mt-2">Task Importer</h2>
 
       <b-row class="mt-4">
         <b-col>
@@ -70,7 +70,7 @@ export default {
     LocalCsvImporter
   },
   created () {
-    this.getproject(this.id)
+    this.getProject(this.pid)
 
     this.setGoogleDocImporterVisible(false)
     this.setLocalCsvImporterVisible(false)
@@ -81,7 +81,7 @@ export default {
     this.setTwitterImporterVisible(false)
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
@@ -91,8 +91,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject'
     ]),
     ...mapMutations('task/importer', [
       'setGoogleDocImporterVisible',
@@ -105,19 +105,19 @@ export default {
     ])
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
+    ...mapState('c3s/project', {
+      project: state => state.project
     }),
 
     items () {
       return [
         {
           html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
-          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          to: { name: 'project', params: { pid: 'id' in this.project ? this.project.id : 0 } }
         },
         {
           text: 'Task Importer',
-          to: { name: 'project.task.importers', params: { id: 'id' in this.project ? this.project.id : 0 } },
+          to: { name: 'project.task.importers', params: { pid: 'id' in this.project ? this.project.id : 0 } },
           active: true
         }
       ]

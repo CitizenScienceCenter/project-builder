@@ -36,18 +36,18 @@ import moment from 'moment'
 export default {
   name: 'DeleteTaskSetting',
   created () {
-    this.getproject(this.id).then(() => {
+    this.getProject(this.pid).then(() => {
       this.getTaskDeletionOptions(this.project)
     })
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject'
     ]),
     ...mapActions('task/settings', [
       'getTaskDeletionOptions',
@@ -63,13 +63,13 @@ export default {
     },
 
     goBack () {
-      this.$router.push({ name: 'project.task.settings', params: { id: this.id } })
+      this.$router.push({ name: 'project.task.settings', params: { pid: this.pid } })
     }
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
-    }),
+    ...mapState('c3s/project', [
+      'project'
+    ]),
     ...mapState('task/settings', {
       infos: state => state.taskDeletionOptions
     }),
@@ -81,12 +81,12 @@ export default {
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
-          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          to: { name: 'project', params: { pid: 'id' in this.project ? this.project.id : 0 } }
         },
         {
-          text: 'Task settings',
-          to: { name: 'project.task.settings', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          text: 'Task Settings',
+          to: { name: 'project.task.settings', params: { pid: 'id' in this.project ? this.project.id : 0 } }
         },
         {
           text: 'Delete',

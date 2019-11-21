@@ -6,13 +6,13 @@
         <b-form ref="project-form" @submit.prevent="onSubmit">
 
           <b-form-group
-                  label="project data"
+                  label="Project Information"
                   label-size="lg"
                   label-class="font-weight-bold mb-3"
           >
 
             <b-form-group
-              label="project name"
+              label="Project Name"
               :valid-feedback="validFeedback('name')"
               :invalid-feedback="invalidFeedback('name')"
               :state="validated('name')">
@@ -20,7 +20,7 @@
             </b-form-group>
 
             <b-form-group
-              label="project short description"
+              label="Project Tagline"
               :valid-feedback="validFeedback('shortDescription')"
               :invalid-feedback="invalidFeedback('shortDescription')"
               :state="validated('shortDescription')">
@@ -37,7 +37,7 @@
           <b-form-group
             label-size="lg"
             label-class="mb-3"
-            label="project long description"
+            label="Project Description"
           >
 
             <b-form-group
@@ -75,7 +75,7 @@
           </b-form-group>
 
           <div class="text-center">
-            <b-button type="submit" variant="primary" class="">Update project data</b-button>
+            <b-button type="submit" variant="primary" class="">Update Project Info</b-button>
           </div>
 
         </b-form>
@@ -93,7 +93,7 @@
           </b-form-group>
 
           <div class="text-center">
-            <b-button type="submit" variant="primary">Update project avatar</b-button>
+            <b-button type="submit" variant="primary">Update Project Avatar</b-button>
           </div>
         </b-form>
       </b-col>
@@ -105,10 +105,10 @@
       <b-col>
         <b-alert :show="true" variant="danger" class="text-center">
           <b>Danger Zone!</b> If you delete the project and its tasks, it will be gone forever!<br>
-          <b-button v-b-modal.modal-delete-project variant="danger" class="mt-3">Delete project</b-button>
+          <b-button v-b-modal.modal-delete-project variant="danger" class="mt-3">Delete Project</b-button>
         </b-alert>
         <b-modal  @ok="onDeleteprojectSubmit" id="modal-delete-project" title="Delete the project">
-          Are you sure you want to delete this project and all its tasks and associated task runs?
+          Are you sure you want to delete this project and all its tasks and associated submissions?
         </b-modal>
       </b-col>
     </b-row>
@@ -124,7 +124,7 @@ import slug from 'slug'
 import { getFormErrorsAsString, uuid } from '@/helper'
 
 export default {
-  name: 'projectEditor',
+  name: 'ProjectEditor',
   components: {
     VueCropper
   },
@@ -185,8 +185,8 @@ export default {
       'deleteProject',
       'updateProject'
     ]),
-    ...mapActions('project', [
-      'uploadAvatar'
+    ...mapActions('c3s/media', [
+      'uploadMedia'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError', 'showInfo'
@@ -236,7 +236,7 @@ export default {
               title: 'Success',
               content: 'project data updated'
             })
-            this.getproject(this.project.id) // reload the project
+            this.getProject(this.project.id) // reload the project
           }
         })
       } else {
@@ -258,17 +258,17 @@ export default {
         if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
           this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
 
-          this.uploadAvatar({
-            project: this.project.id,
-            imageName: this.imageName,
-            image: this.croppedPicture
-          }).then(response => {
+          this.uploadMedia([
+            this.project.id,
+            this.imageName,
+            this.croppedPicture
+          ]).then(response => {
             if (response) {
               this.showSuccess({
                 title: 'Success',
                 content: 'Project picture updated'
               })
-              this.getproject(this.project.id)
+              this.gePProject(this.project.id)
               this.$refs.cropper.replace(this.croppedPicture)
             }
           })

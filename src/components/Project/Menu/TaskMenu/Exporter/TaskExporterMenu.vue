@@ -108,7 +108,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'TaskExporterMenu',
   created () {
-    this.getproject(this.id)
+    this.getProject(this.pid)
   },
   data: () => {
     return {
@@ -116,13 +116,13 @@ export default {
     }
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject'
     ]),
     ...mapActions('task/exporter', [
       'exportTasksInCsv',
@@ -134,18 +134,18 @@ export default {
     ])
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
-    }),
+    ...mapState('c3s/project', [
+      'project'
+    ]),
 
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
-          to: { name: 'project', params: { id: this.id } }
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          to: { name: 'project', params: { pid: this.pid } }
         },
         {
-          text: 'Tasks exportation',
+          text: 'Task Exporter',
           disabled: true
         }
       ]

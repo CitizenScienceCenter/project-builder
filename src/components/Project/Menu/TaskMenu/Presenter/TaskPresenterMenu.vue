@@ -104,11 +104,11 @@ export default {
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
           to: { name: 'project', params: { pid: this.project.id } }
         },
         {
-          text: 'Task presenter',
+          text: 'Task Presenter',
           to: { name: 'project.task.presenter.settings', params: { pid: this.project.id } }
         }
       ]

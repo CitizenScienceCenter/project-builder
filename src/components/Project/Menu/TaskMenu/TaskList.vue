@@ -15,7 +15,7 @@
       </ul>
 
       <b-list-group>
-        <b-list-group-item :key="task.id" v-for="task in projectTasks">
+        <b-list-group-item :key="task.id" v-for="task in tasks">
           <b-row>
             <b-col md="3">
               Task <b-badge variant="primary">#{{ task.id }}</b-badge>&ensp;&ensp;&ensp;{{ task.n_task_runs }} of {{ task.n_answers }}
@@ -36,44 +36,40 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'TaskList',
   created () {
-    this.getproject(this.id).then(() => {
-      this.getprojectTasks(this.project)
+    this.getProject(this.pid).then(() => {
+      this.getProjectTasks(this.pid)
     })
   },
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
-    }),
-    ...mapState('task', [
-      'projectTasks'
+    ...mapState('c3s/project', [
+      'project',
+      'tasks'
     ]),
 
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
-          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          to: { name: 'project', params: { pid: 'id' in this.project ? this.project.id : 0 } }
         },
         {
-          text: 'Browse tasks',
-          to: { name: 'project.tasks.list', params: { id: 'id' in this.project ? this.project.id : 0 } },
+          text: 'Browse Tasks',
+          to: { name: 'project.tasks.list', params: { pid: 'id' in this.project ? this.project.id : 0 } },
           active: true
         }
       ]
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject',
+      'getProjectTasks'
     ]),
-    ...mapActions('task', [
-      'getprojectTasks'
-    ])
   }
 }
 </script>

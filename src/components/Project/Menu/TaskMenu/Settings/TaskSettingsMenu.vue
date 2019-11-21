@@ -73,12 +73,12 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'TaskSettingsMenu',
   props: {
-    id: {
+    pid: {
       required: true
     }
   },
   created () {
-    this.getproject(this.id)
+    this.getProject(this.pid)
   },
   data: () => {
     return {
@@ -86,24 +86,24 @@ export default {
     }
   },
   methods: {
-    ...mapActions('project', [
-      'getproject'
+    ...mapActions('c3s/project', [
+      'getProject'
     ])
   },
   computed: {
-    ...mapState('project', {
-      project: state => state.selectedProject
-    }),
+    ...mapState('c3s/project', [
+      'project'
+    ]),
 
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
-          to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          to: { name: 'project', params: { pid: 'id' in this.project ? this.project.id : 0 } }
         },
         {
-          text: 'Task settings',
-          to: { name: 'project.task.settings', params: { id: 'id' in this.project ? this.project.id : 0 } },
+          text: 'Task Settings',
+          to: { name: 'project.task.settings', params: { pid: 'id' in this.project ? this.project.id : 0 } },
           active: true
         }
       ]
