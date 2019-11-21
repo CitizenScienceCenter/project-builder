@@ -1,5 +1,25 @@
 <template>
   <div>
+
+    <h3 class="subheading">Question</h3>
+
+    <div class="form-field form-field-block">
+      <growing-textarea v-model="question" placeholder="E.g. How many people can you see in the image?"></growing-textarea>
+      <span v-if="validated && validFeedback" class="message success">{{validFeedback}}</span>
+      <span v-if="!validated && invalidFeedback" class="message error">{{invalidFeedback}}</span>
+    </div>
+
+    <div class="button-group right-aligned">
+      <button class="button button-primary" @click="onSubmit" :disabled="isFirstInteraction || !validated">Done</button>
+    </div>
+
+
+    <!--
+
+    <br>
+    <br>
+    <br>
+
     <h3>Question</h3>
     <b-form @submit.prevent="onSubmit">
       <b-form-group
@@ -10,14 +30,19 @@
       </b-form-group>
       <b-button type="submit" size="lg" variant="success">I'm good to go</b-button>
     </b-form>
+    -->
+
+
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
+import GrowingTextarea from "@/components/shared/GrowingTextarea";
 
 export default {
   name: 'JobCountEditor',
+  components: {GrowingTextarea},
   created () {
     if (typeof this.task.template === 'string') {
       this.question = this.task.template

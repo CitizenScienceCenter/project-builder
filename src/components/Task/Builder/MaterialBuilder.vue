@@ -270,11 +270,6 @@ export default {
     ...mapState('c3s/project', {
       selectedProject: state => state.project
     })
-  },
-  props: {
-    pid: {
-      required: true
-    }
   }
 }
 </script>

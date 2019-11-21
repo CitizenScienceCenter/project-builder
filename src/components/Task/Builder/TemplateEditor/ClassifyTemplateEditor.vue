@@ -38,9 +38,8 @@
 
     </div>
 
+    <div v-show="false">{{ isFormValid() }}</div> <!-- so formValidation is done ongoingly > for Button disabling -->
     <div class="button-group right-aligned">
-      {{ allHadFirstInteraction }}
-      {{ isFormValid() }}
       <button class="button button-secondary button-secondary-naked" @click="addQuestion">Add another Question</button>
       <button class="button button-primary" @click="onSubmit" :disabled="!allHadFirstInteraction || !isFormValid()">Done</button>
     </div>
@@ -205,7 +204,6 @@ export default {
      * @return {boolean}
      */
     isFormValid () {
-      console.log('is form valid?');
       let countInvalidQuestions = 0
       let countInvalidAnswers = 0
 
@@ -241,6 +239,7 @@ export default {
       }
       this.allHadFirstInteraction = allHadFirstInteraction;
       //---
+      this.formValid = countInvalidQuestions === 0 && countInvalidAnswers === 0;
 
 
       return countInvalidQuestions === 0 && countInvalidAnswers === 0
