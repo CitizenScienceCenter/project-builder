@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="mt-4">
+    <b-row class="mt-4" v-if='project'>
 
       <!-- Avatar -->
       <b-col md="4">
@@ -104,8 +104,10 @@ export default {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
     this.getProject(this.pid).then(project => {
+      console.log(project)
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
+      console.log(this.currentUser.id, this.project.owner)
       if (this.currentUser.id === this.project.owner) {
         this.isOwner = true
         this.getProjectTasks(this.project.id)

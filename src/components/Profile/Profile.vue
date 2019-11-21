@@ -40,13 +40,13 @@
         <tabbed-content>
 
           <tab>
-            <template slot="title">Published Projects</template>
+            <template slot="title">Active Projects</template>
             <template slot="content">
 
               <div class="content-wrapper">
                 <div class="row">
                   <div class="col">
-                    <p class="centered">Published projects here ...</p>
+                    <p class="centered">Active Projects here ...</p>
                   </div>
                 </div>
               </div>
@@ -113,7 +113,7 @@
     <ProfileHeader class="mt-4"></ProfileHeader>
 
     <ProfileEditor v-if="isInEditionMode" class="mt-4"></ProfileEditor>
-    <ProfileView v-else class="mt-4"></ProfileView>
+    <ProfileView v-else class="mt-4" v-bind:draftProjects="draftProjects" v-bind:activeProjects="activeProjects"></ProfileView>
 
   </div>
 </template>
@@ -157,14 +157,27 @@ export default {
   },
   data: () => {
     return {
-
+      draftProjects: [],
+      activeProjects: []
     }
   },
   created () {
+    this.getUserProjects().then(p => {
+      for (let idx in p.body.data) {
+        const proj = p.body.data[idx]
+        if (proj.active) {
+          this.activeProjects.push(proj)
+        } else {
+          this.draftProjects.push(proj)
+        }
+      }
+    })
   },
   methods: {
     ...mapActions('c3s/user', [
-      'logout'
+      'logout',
+      'getUserProjects',
+      'getUserSubmissions'
     ]),
     handleLogout() {
       this.logout().then(() => {
@@ -176,13 +189,13 @@ export default {
   },
   computed: {
     ...mapState('user', {
-      draftProjects: state => state.draftProjects,
       contributedProjects: state => state.contributedProjects,
-      publishedProjects: state => state.publishedProjects,
       isInEditionMode: state => state.isInProfileEditionMode
     }),
     ...mapState('c3s/user', {
-      profile: state => state.currentUser
+      profile: state => state.currentUser,
+      projects: state => state.projects,
+      submissions: state => state.submissions
     }),
     ...mapState('c3s/projects', {
 

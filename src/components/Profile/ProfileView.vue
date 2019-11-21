@@ -10,7 +10,7 @@
           <b-col :key="project.id" v-for="project in draftProjects" md="4" class="mt-3">
 
             <b-card no-body tag="article" class="h-100">
-              <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+              <b-card-img-lazy v-if="project && project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
               <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
 
               <b-card-body>
@@ -19,7 +19,8 @@
               </b-card-body>
 
               <b-card-footer class="text-center">
-                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
+
               </b-card-footer>
             </b-card>
 
@@ -49,7 +50,7 @@
               </b-card-body>
 
               <b-card-footer class="text-center">
-                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
               </b-card-footer>
             </b-card>
 
@@ -62,14 +63,14 @@
         </b-row>
       </b-tab>
 
-      <b-tab title="Published projects">
+      <b-tab title="Active Projects">
 
         <!-- The list of projects -->
-        <b-row v-if="publishedProjects.length > 0">
-          <b-col :key="project.id" v-for="project in publishedProjects" md="4" class="mt-3">
+        <b-row v-if="activeProjects.length > 0">
+          <b-col :key="project.id" v-for="project in activeProjects" md="4" class="mt-3">
 
             <b-card no-body tag="article" class="h-100">
-              <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+              <b-card-img-lazy v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
               <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
 
               <b-card-body>
@@ -78,7 +79,7 @@
               </b-card-body>
 
               <b-card-footer class="text-center">
-                <b-button :to="{ name: 'project', params: { id: project.id } }" variant="primary">Go to project</b-button>
+                <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
               </b-card-footer>
             </b-card>
 
@@ -100,11 +101,13 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'ProfileView',
+  props: [
+    'draftProjects',
+    'activeProjects'
+  ],
   computed: {
     ...mapState('user', {
-      draftProjects: state => state.draftProjects,
       contributedProjects: state => state.contributedProjects,
-      publishedProjects: state => state.publishedProjects
     })
   }
 }

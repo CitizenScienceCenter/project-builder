@@ -39,7 +39,7 @@ export default {
   name: 'LocalCsvImporter',
   data: () => {
     return {
-      csvFile: '',
+      csvFile: undefined,
       csvSamples: {
         video,
         image,
@@ -84,7 +84,7 @@ export default {
       'isLocalCsvImporterVisible'
     ]),
     ...mapState('project', {
-      project: state => state.selectedProject
+      project: state => state.project
     }),
 
     isLocalCsvVisible: {

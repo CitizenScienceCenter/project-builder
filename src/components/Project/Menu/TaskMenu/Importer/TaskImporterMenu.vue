@@ -112,11 +112,11 @@ export default {
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>project</span>',
+          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
           to: { name: 'project', params: { id: 'id' in this.project ? this.project.id : 0 } }
         },
         {
-          text: 'Tasks importation',
+          text: 'Task Importer',
           to: { name: 'project.task.importers', params: { id: 'id' in this.project ? this.project.id : 0 } },
           active: true
         }

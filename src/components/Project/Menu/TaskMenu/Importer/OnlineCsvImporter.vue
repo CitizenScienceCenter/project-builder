@@ -2,7 +2,7 @@
   <div>
     <b-card v-b-toggle.online-csv-collapse @click="closeOtherImporters" ref="card-online-csv" class="text-center material" :class="{ 'material-selected': isOnlineCsvVisible }">
       <i class="fas fa-link fa-4x"></i>
-      <div class="m-2">Public csv link</div>
+      <div class="m-2">Public CSV Link</div>
     </b-card>
     <b-collapse id="online-csv-collapse" v-model="isOnlineCsvVisible">
       <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
