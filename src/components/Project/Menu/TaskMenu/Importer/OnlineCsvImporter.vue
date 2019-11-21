@@ -7,7 +7,7 @@
     <b-collapse id="online-csv-collapse" v-model="isOnlineCsvVisible">
       <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
         <b-form-group>
-          <b-input placeholder="Csv public url" v-model="csvLink"></b-input>
+          <b-input placeholder="CSV Public URL" v-model="csvLink"></b-input>
         </b-form-group>
 
         <b-button type="submit" variant="success">Send tasks</b-button>
@@ -41,9 +41,19 @@ export default {
     ]),
 
     onSubmit () {
-      this.importOnlineCsvTasks({
-        project: this.project,
-        link: this.csvLink
+      const pid = this.$route.params.pid
+      const self = this
+      this.$papa.parse(this.csvLink, {
+        complete: function(res) {
+          self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
+            console.log(success)
+          })
+        },
+        error: function(err) {
+          console.error(err)
+        },
+        header: true,
+        download: true
       })
     },
 
@@ -60,8 +70,8 @@ export default {
     ...mapState('task/importer', [
       'isOnlineCsvImporterVisible'
     ]),
-    ...mapState('project', {
-      project: state => state.selectedProject
+    ...mapState('c3s/project', {
+      project: state => state.project
     }),
 
     isOnlineCsvVisible: {
