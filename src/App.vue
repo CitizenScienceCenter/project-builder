@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <app-header project-name="<span class='kerning-fix'>L</span>ab" :languages="['en']"></app-header>
+    <app-header project-name="<span class='kerning-fix'>L</span>ab" :languages="['en']" beta></app-header>
 
     <div class="content-area">
       <router-view></router-view>
