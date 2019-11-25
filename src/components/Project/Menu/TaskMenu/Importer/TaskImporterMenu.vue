@@ -1,51 +1,85 @@
 <template>
-  <b-row class="mb-4">
-    <b-col>
-      <b-breadcrumb :items="items"></b-breadcrumb>
+  <div>
 
-      <h2 class="mt-2">Task Importer</h2>
+    <breadcrumb :items="items"></breadcrumb>
 
-      <b-row class="mt-4">
-        <b-col>
-          <AmazonS3BucketImporter></AmazonS3BucketImporter>
-        </b-col>
-      </b-row>
+    <app-content-section>
+      <div class="content-subsection">
+        <div class="content-wrapper">
 
-      <b-row class="mt-4">
-        <b-col>
-          <FlickrImporter></FlickrImporter>
-        </b-col>
-      </b-row>
+          <div class="content-subsection">
+            <div class="row row-centered">
+              <div class="col scroll-effect">
 
-      <b-row class="mt-4">
-        <b-col>
-          <DropboxImporter></DropboxImporter>
-        </b-col>
-      </b-row>
+                <h2 class="heading centered">Task Importer</h2>
 
-      <b-row class="mt-4">
-        <b-col>
-          <TwitterImporter></TwitterImporter>
-        </b-col>
-      </b-row>
+                <AmazonS3BucketImporter></AmazonS3BucketImporter>
+                <FlickrImporter></FlickrImporter>
+                <DropboxImporter></DropboxImporter>
+                <TwitterImporter></TwitterImporter>
+                <GoogleDocImporter></GoogleDocImporter>
+                <OnlineCsvImporter></OnlineCsvImporter>
+                <LocalCsvImporter></LocalCsvImporter>
 
-      <b-row class="mt-4">
-        <b-col>
-          <GoogleDocImporter></GoogleDocImporter>
-        </b-col>
-      </b-row>
+              </div>
+            </div>
+          </div>
 
-      <b-row class="mt-4">
-        <b-col md="6">
-          <OnlineCsvImporter></OnlineCsvImporter>
-        </b-col>
-        <b-col md="6" class="mt-md-0 mt-4">
-          <LocalCsvImporter></LocalCsvImporter>
-        </b-col>
-      </b-row>
+        </div>
+      </div>
+    </app-content-section>
 
-    </b-col>
-  </b-row>
+    <app-footer></app-footer>
+
+
+    <b-row class="mb-4">
+      <b-col>
+        <b-breadcrumb :items="items"></b-breadcrumb>
+
+        <h2 class="mt-2">Task Importer</h2>
+
+        <b-row class="mt-4">
+          <b-col>
+            <AmazonS3BucketImporter></AmazonS3BucketImporter>
+          </b-col>
+        </b-row>
+
+        <b-row class="mt-4">
+          <b-col>
+            <FlickrImporter></FlickrImporter>
+          </b-col>
+        </b-row>
+
+        <b-row class="mt-4">
+          <b-col>
+            <DropboxImporter></DropboxImporter>
+          </b-col>
+        </b-row>
+
+        <b-row class="mt-4">
+          <b-col>
+            <TwitterImporter></TwitterImporter>
+          </b-col>
+        </b-row>
+
+        <b-row class="mt-4">
+          <b-col>
+            <GoogleDocImporter></GoogleDocImporter>
+          </b-col>
+        </b-row>
+
+        <b-row class="mt-4">
+          <b-col md="6">
+            <OnlineCsvImporter></OnlineCsvImporter>
+          </b-col>
+          <b-col md="6" class="mt-md-0 mt-4">
+            <LocalCsvImporter></LocalCsvImporter>
+          </b-col>
+        </b-row>
+
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
@@ -58,16 +92,24 @@ import FlickrImporter from '@/components/Project/Menu/TaskMenu/Importer/FlickrIm
 import DropboxImporter from '@/components/Project/Menu/TaskMenu/Importer/DropboxImporter'
 import TwitterImporter from '@/components/Project/Menu/TaskMenu/Importer/TwitterImporter'
 
+
+import ContentSection from '@/components/shared/ContentSection.vue';
+import Footer from '@/components/shared/Footer.vue';
+import Breadcrumb from "@/components/Breadcrumb";
+
 export default {
   name: 'TaskImportersMenu',
   components: {
+    Breadcrumb,
     TwitterImporter,
     DropboxImporter,
     FlickrImporter,
     AmazonS3BucketImporter,
     OnlineCsvImporter,
     GoogleDocImporter,
-    LocalCsvImporter
+    LocalCsvImporter,
+    'app-content-section': ContentSection,
+    'app-footer': Footer
   },
   created () {
     this.getProject(this.pid)
@@ -112,7 +154,8 @@ export default {
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          //html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          text: 'Project',
           to: { name: 'project', params: { pid: 'id' in this.project ? this.project.id : 0 } }
         },
         {

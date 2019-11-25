@@ -6,7 +6,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M381.48,273,187.13,467.31a24,24,0,0,1-33.94,0l-22.67-22.66a24,24,0,0,1,0-33.9L284.51,256l-154-154.75a24,24,0,0,1,0-33.9l22.67-22.66a24,24,0,0,1,33.94,0L381.48,239A24,24,0,0,1,381.48,273Z"/></svg>
                 </span>
 
-                <router-link :to="item.to" :class="{'active':item.active,'disabled':item.disabled}">{{ item.text }}</router-link>
+                <router-link v-if="item.to" :to="item.to" :class="{'active':item.active,'disabled':item.disabled}">{{ item.text }}</router-link>
+                <a v-else :class="{'active':item.active,'disabled':item.disabled}">{{ item.text }}</a>
             </li>
         </ul>
     </div>

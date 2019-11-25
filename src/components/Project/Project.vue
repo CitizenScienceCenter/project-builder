@@ -1,5 +1,100 @@
 <template>
   <div>
+
+    <app-content-section>
+      <div class="content-subsection">
+        <div class="content-wrapper">
+
+          <div class="content-subsection">
+            <div class="row row-centered">
+              <div class="col col-large-6 col-xlarge-4 scroll-effect">
+
+                <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" class="shadow" rounded fluid-grow></b-img>
+                <b-img v-else blank-color="#777" :blank="true" class="shadow" rounded fluid-grow></b-img>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="content-subsection">
+            <div class="row row-centered">
+              <div class="col col-large-6 col-xlarge-4 scroll-effect">
+
+                <h2>{{ project.name }}</h2>
+                <p>{{ project.description }}</p>
+
+                <!-- Owner actions -->
+                <div v-if="isOwner && !project.published">
+                  <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { pid } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
+                  <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
+                  <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
+                  <!-- Publish project modal -->
+                  <b-modal
+                          id="publish-project"
+                          title="Publish your project"
+                          ok-title="Yes, publish it"
+                          cancel-title="No, do not publish it!"
+                          @ok="publish"
+                  >
+                    <b-alert variant="danger" :show="true">
+                      You are about to publish your project. This CANNOT be undone! Once your project has been published, people will be able to contribute to it.
+                      All the task runs (answers) that may have been created during the test phase will be flushed and your project will start fresh.
+                      That means that your project should be working properly, so please make sure it does. Otherwise you can work on it and publish it once it works fine.
+                    </b-alert>
+                  </b-modal>
+                </div>
+
+                <div v-else-if="isAnonymousProject">
+                  <b-btn ref="btn-contribute" :to="{ name: 'project.task.presenter' }" variant="success" size="lg">Contribute!</b-btn>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="content-subsection">
+            <div class="row row-centered">
+              <div class="col scroll-effect">
+
+                <b-tabs content-class="mt-5 mb-5" active-nav-item-class="font-weight-bold" fill>
+
+                  <b-tab title="Info" :active="currentTab === tabs.info" @click="setCurrentTab(tabs.info)">
+                    <projectInfoMenu></projectInfoMenu>
+                  </b-tab>
+
+                  <!-- Temporary removed -->
+                  <b-tab v-if="false" :title="'Results (' + results.n_results + ')'" :active="currentTab === tabs.results" @click="setCurrentTab(tabs.results)">
+                    <projectResultsMenu></projectResultsMenu>
+                  </b-tab>
+
+                  <b-tab ref="tab-tasks" v-if="isOwner" title="Tasks" :active="currentTab === tabs.tasks" @click="setCurrentTab(tabs.tasks)">
+                    <projectTasksMenu></projectTasksMenu>
+                  </b-tab>
+
+                  <!-- Temporary removed -->
+                  <b-tab v-if="false" title="Statistics" :active="currentTab === tabs.statistics" @click="setCurrentTab(tabs.statistics)">
+                    <projectStatisticsMenu></projectStatisticsMenu>
+                  </b-tab>
+
+                  <b-tab ref="tab-settings" v-if="isOwner" title="Settings" :active="currentTab === tabs.settings" @click="setCurrentTab(tabs.settings)">
+                    <!-- v-if used to render the component only if the tab is active -->
+                    <projectEditor v-if="currentTab === tabs.settings"></projectEditor>
+                  </b-tab>
+
+                </b-tabs>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </app-content-section>
+
+
+    <app-footer></app-footer>
+
+
     <b-row class="mt-4" v-if='project'>
 
       <!-- Avatar -->
@@ -89,6 +184,9 @@ import ProjectDescription from '@/components/Project/ProjectDescription'
 import TemplateRenderer from '@/components/Task/TemplateRenderer'
 import ProjectEditor from '@/components/Project/ProjectEditor'
 
+import ContentSection from '@/components/shared/ContentSection.vue';
+import Footer from '@/components/shared/Footer.vue';
+
 export default {
   name: 'project',
   components: {
@@ -98,7 +196,9 @@ export default {
     ProjectResultsMenu,
     ProjectInfoMenu,
     ProjectTasksMenu,
-    ProjectStatisticsMenu
+    ProjectStatisticsMenu,
+    'app-content-section': ContentSection,
+    'app-footer': Footer
   },
   created () {
     // eager loading: load the project and finally get stats and results
@@ -182,6 +282,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

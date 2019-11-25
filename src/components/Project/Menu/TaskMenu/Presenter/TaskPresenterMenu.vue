@@ -1,5 +1,73 @@
 <template>
   <div>
+
+    <breadcrumb :items="items"></breadcrumb>
+
+    <app-content-section>
+      <div class="content-subsection">
+        <div class="content-wrapper">
+
+          <div class="content-subsection">
+            <div class="row row-centered">
+              <div class="col col-6 scroll-effect">
+
+                <h2 class="heading centered">Use one of the following available templates for your project</h2>
+
+                <div class="mb-5">
+                  <h4>Basic</h4>
+                  <p>The most basic template</p>
+                  <p><b>Skills</b>: HTML and Javascript</p>
+                  <b-btn ref="btn-basic-template" variant="outline-primary" @click="displayTemplate(templates.basic)">Use</b-btn>
+                </div>
+
+                <div class="mb-5">
+                  <h4>Sound Pattern Recognition</h4>
+                  <p>Re-use the SoundCloud template</p>
+                  <p><b>Skills</b>: HTML and Javascript</p>
+                  <b-btn variant="outline-primary" @click="displayTemplate(templates.sound)">Use</b-btn>
+                </div>
+
+                <div class="mb-5">
+                  <h4>Geo-coding</h4>
+                  <p>Re-use the Urban Park template</p>
+                  <p><b>Skills</b>: HTML, Javascript and Geo expertise</p>
+                  <b-btn variant="outline-primary" @click="displayTemplate(templates.geocoding)">Use</b-btn>
+                </div>
+
+                <div class="mb-5">
+                  <h4>Image Pattern Recognition</h4>
+                  <p>Re-use the Flickr Person Finder template</p>
+                  <p><b>Skills</b>: HTML and Javascript</p>
+                  <b-btn variant="outline-primary" @click="displayTemplate(templates.image)">Use</b-btn>
+                </div>
+
+                <div class="mb-5">
+                  <h4>Video Pattern Recognition</h4>
+                  <p>Re-use the Vimeo template</p>
+                  <p><b>Skills</b>: HTML and Javascript</p>
+                  <b-btn variant="outline-primary" @click="displayTemplate(templates.video)">Use</b-btn>
+                </div>
+
+                <div class="mb-5">
+                  <h4>Transcribing documents</h4>
+                  <p>Re-use the PDF transcription template</p>
+                  <p><b>Skills</b>: HTML, Javascript and Server side</p>
+                  <b-btn variant="outline-primary" @click="displayTemplate(templates.document)">Use</b-btn>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </app-content-section>
+
+    <app-footer></app-footer>
+
+
+
+
     <b-row>
       <b-col>
         <b-breadcrumb :items="items"></b-breadcrumb>
@@ -65,8 +133,17 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 
+import ContentSection from '@/components/shared/ContentSection.vue';
+import Footer from '@/components/shared/Footer.vue';
+import Breadcrumb from "@/components/Breadcrumb";
+
 export default {
   name: 'TaskPresenterMenu',
+  components: {
+    Breadcrumb,
+    'app-content-section': ContentSection,
+    'app-footer': Footer
+  },
   data: () => {
     return {
 
@@ -104,7 +181,8 @@ export default {
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          //html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          text: 'Project',
           to: { name: 'project', params: { pid: this.project.id } }
         },
         {

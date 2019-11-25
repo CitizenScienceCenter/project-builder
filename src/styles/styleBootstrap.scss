@@ -1,0 +1,13 @@
+.nav-tabs {
+
+  .nav-item {
+    &:before {
+      display: none;
+    }
+    padding-left: 0;
+  }
+
+  .nav-link {
+    border: none;
+  }
+}
