@@ -46,7 +46,34 @@
               <div class="content-wrapper">
                 <div class="row">
                   <div class="col">
-                    <p class="centered">Active Projects here ...</p>
+
+                    <!-- The list of projects -->
+                    <b-row v-if="activeProjects.length > 0">
+                      <b-col :key="project.id" v-for="project in activeProjects" md="4" class="mt-3">
+
+                        <b-card no-body tag="article" class="h-100">
+                          <b-card-img-lazy v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+                          <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
+
+                          <b-card-body>
+                            <b-card-title :title="project.name"></b-card-title>
+                            <b-card-text>{{ project.description }}</b-card-text>
+                          </b-card-body>
+
+                          <b-card-footer class="text-center">
+                            <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
+                          </b-card-footer>
+                        </b-card>
+
+                      </b-col>
+                    </b-row>
+                    <b-row v-else>
+                      <b-col class="text-center">
+                        <b-btn variant="outline-secondary" :to="{ name: 'project.builder.name' }">Create a project</b-btn>
+                      </b-col>
+                    </b-row>
+
+
                   </div>
                 </div>
               </div>
@@ -61,7 +88,35 @@
               <div class="content-wrapper">
                 <div class="row">
                   <div class="col">
-                    <p class="centered">Draft projects here ...</p>
+
+                    <!-- The list of projects -->
+                    <b-row v-if="draftProjects.length > 0">
+                      <b-col :key="project.id" v-for="project in draftProjects" md="4" class="mt-3">
+
+                        <b-card no-body tag="article" class="h-100">
+                          <b-card-img-lazy v-if="project && project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+                          <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
+
+                          <b-card-body>
+                            <b-card-title :title="project.name"></b-card-title>
+                            <b-card-text>{{ project.description }}</b-card-text>
+                          </b-card-body>
+
+                          <b-card-footer class="text-center">
+                            <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
+
+                          </b-card-footer>
+                        </b-card>
+
+                      </b-col>
+                    </b-row>
+                    <b-row v-else>
+                      <b-col class="text-center">
+                        <b-btn variant="outline-secondary" :to="{ name: 'project.builder.name' }">Create a project</b-btn>
+                      </b-col>
+                    </b-row>
+
+
                   </div>
                 </div>
               </div>
@@ -76,7 +131,34 @@
               <div class="content-wrapper">
                 <div class="row">
                   <div class="col">
-                    <p class="centered">Your contributions here ...</p>
+
+                    <!-- The list of projects -->
+                    <b-row v-if="contributedProjects.length > 0">
+                      <b-col :key="project.id" v-for="project in contributedProjects" md="4" class="mt-3">
+
+                        <b-card no-body tag="article" class="h-100">
+                          <b-card-img-lazy v-if="project.info.thumbnail_url" :src="project.info.thumbnail_url"></b-card-img-lazy>
+                          <b-card-img-lazy v-else :src="'https://dummyimage.com/334x250/777777/fff&text=' + project.name"></b-card-img-lazy>
+
+                          <b-card-body>
+                            <b-card-title :title="project.name"></b-card-title>
+                            <b-card-text>{{ project.description }}</b-card-text>
+                          </b-card-body>
+
+                          <b-card-footer class="text-center">
+                            <b-button :to="{ name: 'project', params: { pid: project.id } }" variant="primary">Go to project</b-button>
+                          </b-card-footer>
+                        </b-card>
+
+                      </b-col>
+                    </b-row>
+                    <b-row v-else>
+                      <b-col class="text-center">
+                        <b-btn variant="outline-secondary" :to="{ name: 'discover' }">Find a project</b-btn>
+                      </b-col>
+                    </b-row>
+
+
                   </div>
                 </div>
               </div>
@@ -109,8 +191,8 @@
 
 
 
-
     <ProfileHeader class="mt-4"></ProfileHeader>
+
 
     <ProfileEditor v-if="isInEditionMode" class="mt-4"></ProfileEditor>
     <ProfileView v-else class="mt-4" v-bind:draftProjects="draftProjects" v-bind:activeProjects="activeProjects"></ProfileView>
