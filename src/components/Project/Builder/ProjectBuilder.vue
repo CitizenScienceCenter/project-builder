@@ -10,7 +10,10 @@
 
 <template>
   <div>
+    <breadcrumb></breadcrumb>
     <b-breadcrumb :items="items"></b-breadcrumb>
+
+    <div v-for="item in items">{{item}}</div>
 
     <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
     <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>
@@ -40,9 +43,12 @@ import StoryBuilder from '@/components/Project/Builder/StoryBuilder'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import SummaryBuilder from '@/components/Project/Builder/SummaryBuilder'
 
+import Breadcrumb from "@/components/Breadcrumb";
+
 export default {
   name: 'ProjectBuilder',
   components: {
+    Breadcrumb,
     SummaryBuilder,
     StoryBuilder,
     InformationBuilder,

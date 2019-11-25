@@ -11,6 +11,9 @@
 <template>
     <div>
         <b-breadcrumb :items="items"></b-breadcrumb>
+
+        <div v-for="item in items">{{item}}</div>
+
         <MaterialBuilder v-if="currentStep === 'material'"></MaterialBuilder>
         <JobBuilder v-if="currentStep === 'job'"></JobBuilder>
         <TemplateBuilder v-if="currentStep === 'template'"></TemplateBuilder>
