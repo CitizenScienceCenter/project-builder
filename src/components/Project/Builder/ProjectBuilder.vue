@@ -10,10 +10,7 @@
 
 <template>
   <div>
-    <breadcrumb></breadcrumb>
-    <b-breadcrumb :items="items"></b-breadcrumb>
-
-    <div v-for="item in items">{{item}}</div>
+    <breadcrumb :items="items" v-if="currentStep !== 'end'"></breadcrumb>
 
     <NameBuilder v-if="currentStep === 'name'"></NameBuilder>
     <InformationBuilder v-if="currentStep === 'information'"></InformationBuilder>
@@ -117,7 +114,7 @@ export default {
           text: 'Story',
           to: { name: 'project.builder.story' },
           active: this.currentStep === 'story',
-          disabled: true
+          disabled: this.currentStep === 'name' || this.currentStep === 'information'
         }
       ]
     }

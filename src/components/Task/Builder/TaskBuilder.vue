@@ -10,9 +10,8 @@
 
 <template>
     <div>
-        <b-breadcrumb :items="items"></b-breadcrumb>
-
-        <div v-for="item in items">{{item}}</div>
+        <breadcrumb :items="items"></breadcrumb>
+        <!-- <b-breadcrumb></b-breadcrumb> -->
 
         <MaterialBuilder v-if="currentStep === 'material'"></MaterialBuilder>
         <JobBuilder v-if="currentStep === 'job'"></JobBuilder>
@@ -33,6 +32,7 @@ import SummaryBuilder from '@/components/Task/Builder/SummaryBuilder'
 import TemplateBuilder from '@/components/Task/Builder/TemplateBuilder'
 
 import Footer from "@/components/shared/Footer";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default {
   name: 'TaskBuilder',
@@ -49,6 +49,7 @@ export default {
         }
     },
   components: {
+      Breadcrumb,
       Footer,
     SummaryBuilder,
     SourceBuilder,
@@ -78,7 +79,8 @@ export default {
     items () {
       const items = [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          //html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          text: 'Project',
           to: { name: 'project', params: { pid: this.pid } }
         },
         {
