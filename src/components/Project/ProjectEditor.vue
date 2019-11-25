@@ -88,7 +88,13 @@
                         :state="pictureSizeInMb <= maxPictureSizeInMb"
                         invalid-feedback="The picture is too big"
           >
+
+            <!--
             <vue-cropper v-show="(('info' in project) && ('thumbnail_url' in project.info)) || picture" ref="cropper" :view-mode="2" :autoCropArea="1" :aspectRatio="4/3"></vue-cropper>
+            -->
+            <img :src="picture"/>
+
+
             <b-form-file @change="setImage" accept=".jpg, .png, .gif, .svg" placeholder="Choose a picture..." drop-placeholder="Drop picture here..."></b-form-file>
           </b-form-group>
 
@@ -212,7 +218,7 @@ export default {
     onSubmit () {
       if (this.isFormValid()) {
 
-        this.updateproject({
+        this.updateProject({
           project: this.project,
           form: {
             name: this.form.name,
@@ -256,7 +262,8 @@ export default {
       if (this.picture) {
         // check if the size of the picture is correct
         if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
-          this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
+          //this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
+          this.croppedPicture = this.picture;
 
           this.$store.dispatch('c3s/media/uploadMedia',[
             this.project.id,
@@ -269,7 +276,7 @@ export default {
                 content: 'Project picture updated'
               })
               this.gePProject(this.project.id)
-              this.$refs.cropper.replace(this.croppedPicture)
+              //this.$refs.cropper.replace(this.croppedPicture)
             }
           })
         } else {
@@ -316,7 +323,7 @@ export default {
         const reader = new FileReader()
         reader.onload = (e) => {
           this.picture = e.target.result
-          this.$refs.cropper.replace(this.picture)
+          //this.$refs.cropper.replace(this.picture)
         }
         reader.readAsDataURL(file)
       } else {
