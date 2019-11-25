@@ -1,3 +1,13 @@
+<i18n>
+  {
+  "en": {
+
+  "page-title": "Task Settings"
+
+  }
+  }
+</i18n>
+
 <template>
   <div>
 
@@ -161,6 +171,18 @@ import Breadcrumb from "@/components/Breadcrumb";
 
 export default {
   name: 'TaskSettingsMenu',
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   components: {
     Breadcrumb,
     'app-content-section': ContentSection,

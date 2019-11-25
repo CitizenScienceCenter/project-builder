@@ -189,6 +189,18 @@ import Footer from '@/components/shared/Footer.vue';
 
 export default {
   name: 'project',
+  metaInfo: function() {
+    return {
+      title: this.project.name,
+      meta: [
+        {
+          property: 'og:title',
+          content: this.project.name,
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   components: {
     ProjectEditor,
     TemplateRenderer,

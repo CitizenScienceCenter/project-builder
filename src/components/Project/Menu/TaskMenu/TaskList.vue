@@ -1,3 +1,13 @@
+<i18n>
+  {
+  "en": {
+
+  "page-title": "Browse Task"
+
+  }
+  }
+</i18n>
+
 <template>
   <div>
     <breadcrumb :items="items"></breadcrumb>
@@ -86,6 +96,18 @@ import Breadcrumb from "@/components/Breadcrumb";
 
 export default {
   name: 'TaskList',
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   components: {
     Breadcrumb,
     'app-content-section': ContentSection,

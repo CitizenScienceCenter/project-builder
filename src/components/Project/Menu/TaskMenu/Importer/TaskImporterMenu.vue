@@ -1,3 +1,13 @@
+<i18n>
+  {
+  "en": {
+
+  "page-title": "Task Importer"
+
+  }
+  }
+</i18n>
+
 <template>
   <div>
 
@@ -99,6 +109,18 @@ import Breadcrumb from "@/components/Breadcrumb";
 
 export default {
   name: 'TaskImportersMenu',
+  metaInfo: function() {
+    return {
+      title: this.$t('page-title'),
+      meta: [
+        {
+          property: 'og:title',
+          content: this.$t('page-title'),
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   components: {
     Breadcrumb,
     TwitterImporter,
