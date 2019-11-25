@@ -73,8 +73,8 @@ export default {
       const self = this
       this.$papa.parse(this.csvFile, {
         complete: function(res) {
-          self.importCSV([pid, res.data]).then(success => {
-            console.log('imported')
+          self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
+            console.log(success)
           })
         },
         error: function(err) {
