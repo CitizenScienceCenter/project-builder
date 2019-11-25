@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!disabled">
     <b-card v-b-toggle.amazon-s3-collapse @click="closeOtherImporters" ref="card-amazon-s3" class="text-center material" :class="{ 'material-selected': isAmazonS3Visible }">
       <i class="fab fa-aws fa-4x"></i>
       <div class="m-2">Amazon S3 bucket</div>
@@ -98,6 +98,11 @@ export default {
           this.setAmazonS3ImporterVisible(false)
         }
       })
+    }
+  },
+  props: {
+    disabled: {
+      default: true
     }
   },
   computed: {

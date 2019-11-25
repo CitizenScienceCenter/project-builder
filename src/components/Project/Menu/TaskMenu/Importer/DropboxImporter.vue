@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!disabled">
     <b-card v-b-toggle.dropbox-collapse @click="closeOtherImporters" ref="card-dropbox" class="text-center material" :class="{ 'material-selected': isDropboxVisible }">
       <i class="fab fa-dropbox fa-4x"></i>
       <div class="m-2">Dropbox</div>
@@ -93,6 +93,11 @@ export default {
       this.setAmazonS3ImporterVisible(false)
       this.setFlickrImporterVisible(false)
       this.setTwitterImporterVisible(false)
+    }
+  },
+  props: {
+    disabled: {
+      default: true
     }
   },
   computed: {

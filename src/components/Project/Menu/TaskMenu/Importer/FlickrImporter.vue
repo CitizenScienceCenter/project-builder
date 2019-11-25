@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!disabled">
     <b-card v-b-toggle.flickr-collapse @click="closeOtherImporters" ref="card-flickr" class="text-center material" :class="{ 'material-selected': isFlickrVisible }">
       <i class="fab fa-flickr fa-4x"></i>
       <div class="m-2">Flickr</div>
@@ -63,6 +63,11 @@ export default {
   },
   destroyed () {
     clearInterval(this.flickrAccessListenerHandlerId)
+  },
+  props: {
+    disabled: {
+      default: true
+    }
   },
   methods: {
     ...mapMutations('task/importer', [

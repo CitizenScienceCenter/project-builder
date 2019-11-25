@@ -23,13 +23,13 @@
 
                 <h2 class="heading centered">Task Importer</h2>
 
-                <AmazonS3BucketImporter></AmazonS3BucketImporter>
-                <FlickrImporter></FlickrImporter>
-                <DropboxImporter></DropboxImporter>
-                <TwitterImporter></TwitterImporter>
-                <GoogleDocImporter></GoogleDocImporter>
                 <OnlineCsvImporter></OnlineCsvImporter>
                 <LocalCsvImporter></LocalCsvImporter>
+                <AmazonS3BucketImporter :disabled="true"></AmazonS3BucketImporter>
+                <FlickrImporter :disabled="true"></FlickrImporter>
+                <DropboxImporter :disabled="true"></DropboxImporter>
+                <TwitterImporter :disabled="true"></TwitterImporter>
+                <GoogleDocImporter :disabled="true"></GoogleDocImporter>
 
               </div>
             </div>

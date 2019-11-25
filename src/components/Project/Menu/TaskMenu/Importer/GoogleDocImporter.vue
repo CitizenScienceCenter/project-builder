@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!disabled">
     <b-card v-b-toggle.google-doc-collapse @click="closeOtherImporters" ref="card-google-doc" class="text-center material" :class="{ 'material-selected': isGoogleDocVisible }">
       <i class="fab fa-google-drive fa-4x"></i>
       <div class="m-2">Google spreadsheet</div>
@@ -55,6 +55,11 @@ export default {
       this.setFlickrImporterVisible(false)
       this.setDropboxImporterVisible(false)
       this.setTwitterImporterVisible(false)
+    }
+  },
+  props: {
+    disabled: {
+      default: true
     }
   },
   computed: {
