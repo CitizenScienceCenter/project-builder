@@ -49,20 +49,16 @@
 
               <div class="margin-bottom" :key="project.id" v-for="project in projects">
 
-                <div class="margin-bottom">
+                <img v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url" />
+                <img v-else :src="'/static/img/cover.jpg'" />
 
-                  <img v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url" />
-                  <img v-else :src="'/static/img/cover.jpg'" />
+                {{ project.name }}<br>
+                {{ project.info.shortDescription }}<br>
 
-                  {{ project.name }}<br>
-                  {{ project.info.shortDescription }}<br>
+                {{ project.id }}
 
-                  {{ project.id }}
-
-                  <div class="button-group">
-                    <router-link class="button button-primary" :to="{ name: 'project', params: { pid: project.id } }">Go to Project</router-link>
-                  </div>
-
+                <div class="button-group">
+                  <router-link class="button button-primary" :to="{ name: 'project', params: { pid: project.id } }">Go to Project</router-link>
                 </div>
 
               </div>
