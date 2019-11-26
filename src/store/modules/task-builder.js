@@ -25,7 +25,8 @@ const sources = {
   dropbox: 'dropbox',
   amazon: 'amazon',
   flickr: 'flickr',
-  twitter: 'twitter'
+  twitter: 'twitter',
+  csv: 'csv'
 }
 
 // global state for this module
@@ -77,24 +78,29 @@ const state = {
   // available sources for each material type
   materialSources: {
     [materials.image]: [
-      sources.amazon,
-      sources.dropbox,
-      sources.flickr
+//    sources.amazon,
+//   sources.dropbox,
+//  sources.flickr,
+      sources.csv
     ],
     [materials.sound]: [
-      sources.amazon,
-      sources.dropbox
+//      sources.amazon,
+//     sources.dropbox,
+      sources.csv
     ],
     [materials.pdf]: [
-      sources.amazon,
-      sources.dropbox
+//      sources.amazon,
+//     sources.dropbox,
+      sources.csv
     ],
     [materials.tweet]: [
-      sources.twitter
+      sources.twitter,
+      sources.csv
     ],
     [materials.video]: [
-      sources.amazon,
-      sources.dropbox
+//      sources.amazon,
+//     sources.dropbox,
+      sources.csv
     ]
   },
   // available extensions for each material type
