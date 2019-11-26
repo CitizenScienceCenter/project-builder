@@ -48,11 +48,14 @@ export default {
     ]),
 
     onSubmit () {
+      console.log('on submit');
       this.setTaskSource(this.sources.csv)
       const pid = this.$route.params.pid
       const self = this
       this.$papa.parse(this.csvFile, {
         complete: function(res) {
+          console.log('response from papa');
+          console.log( res );
           self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
             console.log(success)
           })

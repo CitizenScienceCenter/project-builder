@@ -1,6 +1,29 @@
 <template>
   <div>
 
+    <project-cover imageUrl="/static/img/cover.jpg">
+      <div class="row row-centered">
+        <div class="col col-large-8">
+          <h2 class="cover-heading scroll-effect" v-html="project.name"></h2>
+        </div>
+      </div>
+      <div class="row row-centered">
+        <div class="col col-large-8">
+          <p class="cover-subheading scroll-effect scroll-effect-delayed-1">{{ project.info.shortDescription }}</p>
+        </div>
+      </div>
+      <!--
+      <div class="row row-centered">
+        <div class="col col-large-8">
+          <div class="button-group centered scroll-effect scroll-effect-delayed-2">
+            <router-link tag="button" :to="{ name: 'project.builder.name' }" class="button button-primary">{{ $t('cover-button-primary') }}</router-link>
+            <router-link tag="button" to="/discover" class="button button-secondary button-secondary-inverted">{{ $t('cover-button-secondary') }}</router-link>
+          </div>
+        </div>
+      </div>
+      -->
+    </project-cover>
+
     <app-content-section>
       <div class="content-subsection">
         <div class="content-wrapper">
@@ -9,8 +32,9 @@
             <div class="row row-centered">
               <div class="col col-large-6 col-xlarge-4 scroll-effect">
 
-                <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" class="shadow" rounded fluid-grow></b-img>
-                <b-img v-else blank-color="#777" :blank="true" class="shadow" rounded fluid-grow></b-img>
+                img:
+                <img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="'/static/img/cover.jpg'" />
+                <!--<img v-else src="/static/img/cover.jpg" /> -->
 
               </div>
             </div>
@@ -19,9 +43,6 @@
           <div class="content-subsection">
             <div class="row row-centered">
               <div class="col col-large-6 col-xlarge-4 scroll-effect">
-
-                <h2>{{ project.name }}</h2>
-                <p>{{ project.description }}</p>
 
                 <!-- Owner actions -->
                 <div v-if="isOwner && !project.published">
@@ -186,6 +207,7 @@ import ProjectEditor from '@/components/Project/ProjectEditor'
 
 import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
+import ProjectCover from "@/components/shared/ProjectCover";
 
 export default {
   name: 'project',
@@ -210,7 +232,8 @@ export default {
     ProjectTasksMenu,
     ProjectStatisticsMenu,
     'app-content-section': ContentSection,
-    'app-footer': Footer
+    'app-footer': Footer,
+    ProjectCover
   },
   created () {
     // eager loading: load the project and finally get stats and results
@@ -220,6 +243,31 @@ export default {
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
       console.log(this.currentUser.id, this.project.owner)
+
+
+      const mediaQuery = {
+        'select': {
+          'fields': [
+            '*'
+          ],
+          'tables': [
+            'media'
+          ]
+        },
+        'where': [
+          {
+            "field": "source_id",
+            'op': 'e',
+            'val': this.pid
+          }
+        ]
+      };
+      console.log( mediaQuery );
+      this.$store.dispatch('c3s/media/getMedia', [mediaQuery, 'c3s/project/SET_MEDIA', 1]).then(media => {
+        console.log('media loaded');
+        console.log( media );
+      });
+
       if (this.currentUser.id === this.project.owner) {
         this.isOwner = true
         this.getProjectTasks(this.project.id)
