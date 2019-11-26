@@ -1,0 +1,74 @@
+<template>
+  <b-row class="mt-4">
+
+    <b-col md="9">
+      <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
+        <b-form-group>
+          <b-file placeholder="Select a CSV file..." accept=".csv" v-model="csvFile"></b-file>
+        </b-form-group>
+
+        <b-button type="submit" variant="success">Send tasks</b-button>
+      </b-form>
+
+    </b-col>
+
+    <b-col md="3">
+      <p>You can use any free licensed pics (Creative Commons or alike), your own pictures or those copyright images that you are authorised to use.</p>
+    </b-col>
+  </b-row>
+</template>
+
+<script>
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
+import LoadingSpinner from '@/components/Helper/LoadingSpinner'
+
+export default {
+  name: 'CsvSourceEditor',
+  components: {
+  },
+  data: () => {
+    return {
+      csvFile: null
+    }
+  },
+  created () {
+  },
+  computed: {
+    ...mapState('task/builder', [
+      'materialExtensions', 'task', 'sources', 'materials', 'loaders'
+    ]),
+    ...mapGetters('task/builder', [
+      'getBucketFilesWithExtensions', 'getBucketFileLink'
+    ]),
+
+  },
+  methods: {
+    ...mapMutations('task/builder', [
+      'setTaskSource', 'setTaskSourceContent', 'setStep', 'setBucketFiles', 'setBucketName', 'deleteBucketFile'
+    ]),
+
+    onSubmit () {
+      this.setTaskSource(this.sources.csv)
+      const pid = this.$route.params.pid
+      const self = this
+      this.$papa.parse(this.csvFile, {
+        complete: function(res) {
+          self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
+            console.log(success)
+          })
+        },
+        error: function(err) {
+          console.error(err)
+        },
+        header: true
+      })
+      this.setTaskSourceContent([])
+      this.setStep({ step: 'source', value: true })
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
