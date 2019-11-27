@@ -37,6 +37,7 @@ export default {
       this.taskPresenterLoaded = true
       if (this.presenter || this.template || this.project.info.template) {
         this.taskPresenterExists = true
+        this.template = this.project.info.template
       }
     })
   },

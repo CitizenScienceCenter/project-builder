@@ -242,29 +242,7 @@ export default {
       console.log(project)
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
-      console.log(this.currentUser.id, this.project.owner)
-
-
-      const mediaQuery = {
-        'select': {
-          'fields': [
-            '*'
-          ],
-          'tables': [
-            'media'
-          ]
-        },
-        'where': [
-          {
-            "field": "source_id",
-            'op': 'e',
-            'val': this.pid
-          }
-        ]
-      };
-      console.log( mediaQuery );
-      this.$store.dispatch('c3s/media/getMedia', [mediaQuery, 'c3s/project/SET_MEDIA', 1]).then(media => {
-        console.log('media loaded');
+      this.getProjectMedia(this.pid).then(media => {
         console.log( media );
       });
 
@@ -291,7 +269,9 @@ export default {
       'getProject',
       'createProject',
       'getResults',
-      'getStats'
+      'getStats',
+      'getProjectMedia',
+      'updateProject'
     ]),
     ...mapActions('c3s/project', [
       'getProjectTasks',
@@ -306,7 +286,12 @@ export default {
     publish () {
       if (this.taskPresenter.length > 0) {
         if (this.projectTasks.length > 0) {
-          this.publishproject(this.project)
+          this.$store.dispatch('c3s/project/updateProject', {'active': true}).then((res) => {
+            this.showSuccess({
+              title: 'Project Published',
+              content: 'Successfully published project'
+            })
+          })
         } else {
           this.showError({
             title: 'Impossible to publish the project',
