@@ -267,6 +267,7 @@ export default {
 
           this.$store.dispatch('c3s/media/uploadMedia',[
             this.project.id,
+            'project',
             this.imageName,
             this.croppedPicture
           ]).then(response => {
@@ -275,7 +276,7 @@ export default {
                 title: 'Success',
                 content: 'Project picture updated'
               })
-              this.gePProject(this.project.id)
+              this.getProject(this.project.id)
               //this.$refs.cropper.replace(this.croppedPicture)
             }
           })

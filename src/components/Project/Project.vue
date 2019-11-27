@@ -45,7 +45,7 @@
               <div class="col col-large-6 col-xlarge-4 scroll-effect">
 
                 <!-- Owner actions -->
-                <div v-if="isOwner && !project.published">
+                <div v-if="isOwner && !project.active">
                   <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { pid } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
                   <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
                   <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
@@ -130,7 +130,7 @@
         <p>{{ project.description }}</p>
 
         <!-- Owner actions -->
-        <div v-if="isOwner && !project.published">
+        <div v-if="isOwner && !project.active">
           <b-btn ref="btn-draft-complete-it" :to="{ name: 'task.builder.material', params: { pid } }" variant="success" size="lg">Draft, complete it!</b-btn><br>
           <b-btn ref="btn-test-it" :to="{ name: 'project.task.presenter' }" variant="outline-secondary" size="sm" class="mt-2">Test it!</b-btn>
           <b-btn ref="btn-publish-it" variant="outline-secondary" size="sm" class="mt-2" v-b-modal.publish-project>Publish it!</b-btn><br>
@@ -238,7 +238,7 @@ export default {
   created () {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
-    this.getProject(this.pid).then(project => {
+    this.getProject(this.$route.params.pid || this.pid).then(project => {
       console.log(project)
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
@@ -248,7 +248,9 @@ export default {
 
       if (this.currentUser.id === this.project.owner) {
         this.isOwner = true
-        this.getProjectTasks(this.project.id)
+        this.getProjectTasks(this.project.id).then(t => {
+          console.log(t)
+        })
       }
     })
 
