@@ -54,8 +54,6 @@ export default {
       // Go through CSV and link task content to media
       this.$papa.parse(this.csvFile, {
         complete: function(res) {
-          console.log(res)
-          console.log(self.task)
           for (let idx in res.data) {
             let row = res.data[idx]
             row['part_of'] = pid

@@ -1,5 +1,6 @@
 <template>
   <b-row>
+    stats here ....
     <b-col>
       <b-row align-h="between" align-v="start" v-if="stats">
         <b-col>
@@ -24,7 +25,6 @@
         </b-col>
       </b-row>
 
-      <hr class="mt-5">
 
       <projectDescription></projectDescription>
     </b-col>

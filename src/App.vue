@@ -69,8 +69,7 @@
             variant="danger"
             @hidden="closeError(notification.id)"
             visible
-            auto-hide-delay="4000"
-            no-auto-hide>
+            auto-hide-delay="4000">
       <span v-html="notification.message.content"></span>
     </b-toast>
 
@@ -84,8 +83,7 @@
             variant="info"
             @hidden="closeInfo(notification.id)"
             visible
-            auto-hide-delay="4000"
-            no-auto-hide>
+            auto-hide-delay="4000">
       <span v-html="notification.message.content"></span>
     </b-toast>
 
@@ -99,8 +97,7 @@
             variant="success"
             @hidden="closeSuccess(notification.id)"
             visible
-            auto-hide-delay="4000"
-            no-auto-hide>
+            auto-hide-delay="4000">
       <span v-html="notification.message.content"></span>
     </b-toast>
 

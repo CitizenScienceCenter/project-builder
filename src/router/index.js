@@ -23,6 +23,8 @@ import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/T
 import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
 import FlickrCallback from '@/components/Task/Builder/FlickrCallback.vue'
 
+import Terms from '@/views/shared/static/Terms.vue';
+
 import {
   i18n
 } from '../i18n.js'
@@ -99,6 +101,16 @@ const router = new Router({
         component: About,
         meta: {
           i18n: 'navigation-about',
+          nav: false,
+          requiresAuth: false
+        }
+      },
+      {
+        path: 'terms',
+        name: 'terms',
+        component: Terms,
+        meta: {
+          i18n: 'navigation-terms',
           nav: false,
           requiresAuth: false
         }
