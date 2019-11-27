@@ -10,6 +10,7 @@ export default {
     })
   },
 
+
   importAmazonS3Tasks (csrf, project, bucket, files) {
     return axios.post(process.env.BASE_ENDPOINT_URL + 'project/' + project.short_name + '/tasks/import?type=s3', {
       bucket: bucket,

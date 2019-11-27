@@ -51,8 +51,20 @@ export default {
       this.setTaskSource(this.sources.csv)
       const pid = this.$route.params.pid
       const self = this
+      // Go through CSV and link task content to media
       this.$papa.parse(this.csvFile, {
         complete: function(res) {
+          console.log(res)
+          console.log(self.task)
+          for (let idx in res.data) {
+            let row = res.data[idx]
+            row['part_of'] = pid
+            row['required'] = true
+            row['sequence'] = 0
+            row['info'] = {}
+            row['title'] = self.task.template[0].question
+            row['content'] = self.task.template[0].answers
+          }
           self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
             console.log(success)
           })

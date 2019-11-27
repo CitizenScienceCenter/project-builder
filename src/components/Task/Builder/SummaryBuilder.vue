@@ -341,9 +341,6 @@ export default {
     ])
   },
   methods: {
-    ...mapActions('task', [
-      'saveTaskPresenter'
-    ]),
     ...mapActions('task/importer', [
       'importAmazonS3Tasks',
       'importDropboxTasks',
@@ -356,6 +353,24 @@ export default {
     ...mapMutations('notification', [
       'showSuccess', 'showError'
     ]),
+    updateTaskPresenter (template) {
+      const tmpl = {
+        'info': {
+        }
+      }
+      tmpl['info'] = template
+      return this.$store.dispatch('c3s/project/updateProject', [this.$route.params.pid, tmpl]).then(response => {
+        if (!response) {
+          this.showError({
+            title: 'Error',
+            content: 'Error applying update'
+          })
+        } else {
+          console.log(response)
+          return Promise.resolve(true)
+        }
+      })
+    },
 
     onSubmit () {
       /// -----------------------------------------------------------
@@ -444,12 +459,12 @@ export default {
         }
 
       }
-
       // store the generated template for the selected project
-      const templatePromise = this.saveTaskPresenter({
-        project: this.selectedProject,
+      const templatePromise = this.updateTaskPresenter({
         template: template
       })
+
+
 
       /// --------------------------------------------------
       /// Tasks importation depending on the selected source
@@ -487,9 +502,12 @@ export default {
           maxTweets: this.task.sourceContent.maxTweets
         })
       }
+      // CSV
+      else if (this.task.source === this.sources.csv) {
+        sourcePromise = Promise.resolve(true)
+      }
 
       /// --------------------------------------------------
-
       // test if all calls have been done correctly and redirects to the project detail page
       Promise.all([templatePromise, sourcePromise]).then(results => {
         if (results.filter(el => el !== false).length === 2) {
