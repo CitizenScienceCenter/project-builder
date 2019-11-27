@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="margin-bottom" v-if="selectedPicture && selectedPictureSizeInMB <= maxPictureSizeInMB">
-                  <img :src="selectedPicture" />
+                  <img :src="encodedPicture" />
                 </div>
 
                 <!-- <vue-cropper ref="cropper" v-show="pictureSelected" :src="selectedPicture" :data="cropData" ></vue-cropper> -->
@@ -137,6 +137,7 @@ export default {
       descriptionFirstInteraction: true,
 
       selectedPicture: '',
+      encodedPicture: '',
       selectedPictureName: '',
       pictureSelected: false,
       selectedPictureSize: 0,
@@ -185,7 +186,7 @@ export default {
 
     setImage (event) {
       const file = event.target.files[0]
-      this.selectedPictureName = file.name
+      this.selectedPicture = file
       if (!file.type.includes('image/')) {
         alert('Please select an image file')
         return
@@ -196,7 +197,7 @@ export default {
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
         reader.onload = (e) => {
-          this.selectedPicture = e.target.result
+          this.encodedPicture = e.target.result
           this.pictureSelected = true
         }
         reader.readAsDataURL(file)

@@ -148,12 +148,11 @@ export default {
 
           if (project) {
             // if it fails, a message will say to the user that he can update it again later...
-            if (image.length > 0) {
-              this.$store.dispatch('c3s/media/uploadMedia', [this.project.id, 'project', imageName, image]).then(res => {
+              this.$store.dispatch('c3s/media/uploadMedia', [this.project.id, 'project', this.picture]).then(res => {
+                console.log(res)
               }).catch(err => {
                 console.error(err)
               })
-            }
 
             this.resetTaskBuilder()
             this.setTaskPresenter('')

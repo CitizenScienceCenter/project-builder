@@ -157,10 +157,12 @@ export default {
         keepTrack: '',
         allowAnonymousContributors: true
       },
-
+      selectedFile: undefined,
       picture: '',
       croppedPicture: '',
       pictureSize: 0,
+      pictureName: '',
+      pictureType: '',
       maxPictureSizeInMb: 2,
 
       validation: {
@@ -268,8 +270,7 @@ export default {
           this.$store.dispatch('c3s/media/uploadMedia',[
             this.project.id,
             'project',
-            this.imageName,
-            this.croppedPicture
+            this.selectedFile
           ]).then(response => {
             if (response) {
               this.showSuccess({
@@ -311,6 +312,7 @@ export default {
      */
     setImage (event) {
       const file = event.target.files[0]
+      this.selectedFile = file
 
       if (!file.type.includes('image/')) {
         alert('Please select an image file')
@@ -319,7 +321,7 @@ export default {
 
       this.pictureSize = file.size
       this.pictureName = file.name
-
+      this.pictureType = file.type
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
         reader.onload = (e) => {
