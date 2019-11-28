@@ -42,7 +42,8 @@ export default {
       taskLoaded: false,
       template: undefined,
       taskIndex: 0,
-      task: undefined
+      task: undefined,
+      userProgress: 0
     }
   },
   computed: {
@@ -50,9 +51,6 @@ export default {
       // the current project where is displayed the task presenter
       project: state => state.project,
       tasks: state => state.tasks,
-
-      // user task progress
-      userProgress: state => state.selectedProjectUserProgress
     }),
     ...mapState('c3s/task', {
       media: state => state.media
@@ -62,10 +60,6 @@ export default {
       isUserLogged: state => state.currentUser,
       userId: state => state.currentUser.id,
       userApiKey: state => state.currentUser.api_key
-    }),
-
-    ...mapGetters('project', {
-      userProgressInPercent: 'getUserProgressInPercent'
     }),
 
     presenterComponent () {
@@ -126,8 +120,10 @@ export default {
         this.getTaskMedia(this.task.id).then(m => {
           this.taskLoaded = true
         });
+        this.userProgress = this.taskIndex/this.tasks.length * 100
       } else {
         this.task = undefined
+        this.userProgress = 100
       }
     },
 

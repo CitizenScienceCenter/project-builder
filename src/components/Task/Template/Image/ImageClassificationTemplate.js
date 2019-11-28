@@ -33,7 +33,7 @@ const component = {
         <b-col md="6" class="order-1 order-md-2">
           <div class="text-center">
             <div v-if="pybossa.taskLoaded">
-              <b-img v-if="media" fluid-grow :src="media[0].path" class="shadow" style="min-height: 120px; background-color: grey" alt="Image loading..."></b-img>
+              <b-img v-if="media && media.length > 0" fluid-grow :src="media[0].path" class="shadow" style="min-height: 120px; background-color: grey" alt="Image loading..."></b-img>
             </div>
             <b-spinner v-else style="width: 4rem; height: 4rem;" variant="primary" label="Image loading..."></b-spinner>
           </div>
