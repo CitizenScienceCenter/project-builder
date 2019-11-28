@@ -108,10 +108,8 @@ export default {
      */
     run () {
       this.getProjectTasks(this.pid).then((t) => {
-        console.log(this.tasks)
         this.task = this.tasks[this.taskIndex]
         this.getTaskMedia(this.task.id).then(m => {
-          console.log(this.media)
           this.taskLoaded = true
         })
       });
