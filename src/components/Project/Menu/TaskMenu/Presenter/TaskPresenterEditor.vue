@@ -76,21 +76,24 @@ export default {
       'showSuccess',
       'showError'
     ]),
-
     /**
      * Update the project task presenter with the currently edited
      */
-    updateTaskPresenter () {
-      // TODO remove validation for fields when updating models
-      const proj = {}
-      proj['info'] = Object.assign({}, this.project.info)
-      proj['info']['template'] = this.code
-      this.updateProject([this.project.id, proj]).then(response => {
+    updateTaskPresenter (template) {
+      const tmpl = {
+        'info': {
+        }
+      }
+      tmpl['info'] = template
+      return this.$store.dispatch('c3s/project/updateProject', [this.project.id, tmpl]).then(response => {
         if (!response) {
           this.showError({
             title: 'Error',
             content: 'Error applying update'
           })
+        } else {
+          console.log(response)
+          return Promise.resolve(true)
         }
       })
     },
