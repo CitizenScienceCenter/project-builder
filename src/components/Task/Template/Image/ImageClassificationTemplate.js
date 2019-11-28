@@ -48,7 +48,7 @@ const component =
         </b-col>
       </b-row>`,
 
-  data: () => { return {"questions":[{"question":"DEF1","answers":["DEF1","DEF1"]}],"answers":[],"showAlert":false}},
+  data: () => { return {"answers":[], "questions":[{"question":"DEF1","answers":["DEF1","DEF1"]}],"answers":[],"showAlert":false}},
 
   methods: {
 	submit: function submit() {
