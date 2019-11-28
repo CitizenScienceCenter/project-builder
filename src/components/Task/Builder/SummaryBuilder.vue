@@ -357,6 +357,7 @@ export default {
     ]),
     updateTaskPresenter (template) {
       let tmpl = Object.assign({}, this.selectedProject.info, template)
+      tmpl['template'] = template
     return this.$store.dispatch('c3s/project/updateProject', [this.$route.params.pid, {'info': tmpl}]).then(response => {
         if (!response) {
           this.showError({

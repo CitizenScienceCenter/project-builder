@@ -80,7 +80,8 @@ export default {
      * Update the project task presenter with the currently edited
      */
     updateTaskPresenter () {
-      let tmpl = Object.assign({}, this.selectedProject.info, this.code)
+      let tmpl = Object.assign({}, this.project.info, this.code)
+      tmpl['template'] = this.code
     return this.$store.dispatch('c3s/project/updateProject', [this.$route.params.pid, {'info': tmpl}]).then(response => {
         if (!response) {
           this.showError({

@@ -10,7 +10,7 @@
 
       <component class="mt-4" ref="presenter" v-if="taskPresenterExists" :is="presenterComponent" :pybossa="this"></component>
       <div class="mt-4" v-else-if="taskPresenterLoaded">
-        <b-alert :show="true" variant="warning">The project does not contains a task presenter</b-alert>
+        <b-alert :show="true" variant="warning">The project does not contain a task presenter</b-alert>
       </div>
 
     </b-col>
@@ -40,14 +40,15 @@ export default {
       taskPresenterExists: false,
       taskPresenterLoaded: false,
       taskLoaded: false,
-      template: undefined
+      template: undefined,
+      taskIndex: 0,
+      task: undefined
     }
   },
   computed: {
     ...mapState('c3s/project', {
       // the current project where is displayed the task presenter
       project: state => state.project,
-      task: state => state.task,
       tasks: state => state.tasks,
 
       // user task progress
@@ -106,10 +107,12 @@ export default {
      * Called when the dynamic component start
      */
     run () {
-      this.getProjectTask(this.pid).then((t) => {
-        console.log(this.task.content)
-        this.$store.dispatch('c3s/task/getTaskMedia', this.task.id).then(m => {
-          console.log(m)
+      this.getProjectTasks(this.pid).then((t) => {
+        console.log(this.tasks)
+        this.task = this.tasks[this.taskIndex]
+        this.getTaskMedia(this.task.id).then(m => {
+          console.log(this.media)
+          this.taskLoaded = true
         })
       });
     },
@@ -119,20 +122,15 @@ export default {
      */
     newTask () {
       this.taskLoaded = false
-      this.getProjectTask(this.pid).then(allowed => {
-        console.log(this.task.id)
-        this.getTaskMedia(this.task.id)
-        if (!allowed) {
-          this.showError({
-            title: 'You are not allowed to contribute',
-            content: 'This project does not allow anonymous contributors'
-          })
-          this.$router.push({ name: 'project', params: { pid: this.project.id } })
-        } else {
-          this.getUserProgress(this.project)
+      this.taskIndex++
+      if(this.taskIndex < this.tasks.length) {
+        this.task = this.tasks[this.taskIndex]
+        this.getTaskMedia(this.task.id).then(m => {
           this.taskLoaded = true
-        }
-      })
+        });
+      } else {
+        this.task = undefined
+      }
     },
 
     /**
@@ -149,7 +147,7 @@ export default {
       }
       this.createSubmission(JSON.stringify(taskRun)).then(() => {
         // load a new task when current task saved
-        this.getProjectTask(this.pid)
+        this.newTask()
       })
     }
   }
