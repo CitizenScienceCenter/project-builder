@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const component =
-{
+const component = {
   template: `
       <!-- This template use https://bootstrap-vue.js.org/ -->
 
@@ -48,32 +47,40 @@ const component =
         </b-col>
       </b-row>`,
 
-  data: () => { return {"answers":[], "questions":[{"question":"DEF1","answers":["DEF1","DEF1"]}],"answers":[],"showAlert":false}},
-
+  data: {
+    questions: [{
+      question: '',
+      answers: [
+        ''
+      ]
+    }],
+    answers: [],
+    showAlert: false
+  },
   methods: {
-	submit: function submit() {
+    submit: function submit() {
       var _this = this;
 
       if (this.isFormValid()) {
         this.pybossa.saveTask(this.answers);
         this.showAlert = false;
         this.answers = [];
-        this.questions.forEach(function () {
+        this.questions.forEach(function() {
           return _this.answers.push(null);
         });
       } else {
         this.showAlert = true;
       }
     },
-	isFormValid: function isFormValid() {
-      return this.answers.length === this.questions.length && !this.answers.some(function (el) {
+    isFormValid: function isFormValid() {
+      return this.answers.length === this.questions.length && !this.answers.some(function(el) {
         return typeof el === 'undefined' || el == null;
       });
     },
   },
 
   computed: {
-	task: function task() {
+    task: function task() {
       return this.pybossa.task;
     },
     media: function media() {
@@ -81,13 +88,12 @@ const component =
     }
   },
 
-  watch: {
-  },
+  watch: {},
 
   created: function created() {
     var _this2 = this;
 
-    this.questions.forEach(function () {
+    this.questions.forEach(function() {
       return _this2.answers.push(null);
     });
   },
@@ -96,7 +102,11 @@ const component =
     this.pybossa.run();
   },
 
-  props: {"pybossa":{"required":true}}
+  props: {
+    "pybossa": {
+      "required": true
+    }
+  }
 
 }
 
