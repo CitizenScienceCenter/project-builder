@@ -32,8 +32,7 @@ export default {
     this.getProject(this.pid).then(() => {
       this.taskPresenterLoaded = true
       this.template = this.project.info.template
-      console.log(this.project.info.template)
-        this.taskPresenterExists = true
+      this.taskPresenterExists = true
     })
   },
   data: () => {
@@ -95,7 +94,8 @@ export default {
       'getProjectTasks'
     ]),
     ...mapActions('c3s/task', [
-      'getProjectTask'
+      'getProjectTask',
+      'getTaskMedia'
     ]),
 
     ...mapMutations('notification', [
@@ -107,7 +107,10 @@ export default {
      */
     run () {
       this.getProjectTask(this.pid).then((t) => {
-        this.getTaskMedia(this.task.id)
+        console.log(this.task.content)
+        this.$store.dispatch('c3s/task/getTaskMedia', this.task.id).then(m => {
+          console.log(m)
+        })
       });
     },
     /**
@@ -117,6 +120,7 @@ export default {
     newTask () {
       this.taskLoaded = false
       this.getProjectTask(this.pid).then(allowed => {
+        console.log(this.task.id)
         this.getTaskMedia(this.task.id)
         if (!allowed) {
           this.showError({

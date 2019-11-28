@@ -354,12 +354,8 @@ export default {
       'showSuccess', 'showError'
     ]),
     updateTaskPresenter (template) {
-      const tmpl = {
-        "info": {
-          "template": template
-        }
-      }
-      return this.$store.dispatch('c3s/project/updateProject', [this.$route.params.pid, tmpl]).then(response => {
+      let tmpl = Object.assign({}, this.selectedProject.info, template)
+    return this.$store.dispatch('c3s/project/updateProject', [this.$route.params.pid, {'info': tmpl}]).then(response => {
         if (!response) {
           this.showError({
             title: 'Error',
