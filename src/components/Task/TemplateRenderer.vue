@@ -120,7 +120,7 @@ export default {
         this.getTaskMedia(this.task.id).then(m => {
           this.taskLoaded = true
         });
-        this.userProgress = this.taskIndex/this.tasks.length * 100
+        this.userProgress = (this.taskIndex/this.tasks.length) * 100
       } else {
         this.task = undefined
         this.userProgress = 100
