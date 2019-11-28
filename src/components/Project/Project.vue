@@ -117,7 +117,7 @@
 
       <!-- Avatar -->
       <b-col md="4">
-        <b-img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="project.info.thumbnail_url" class="shadow" rounded fluid-grow></b-img>
+        <b-img v-if="media && media.length > 0" :src="media[0].path" class="shadow" rounded fluid-grow></b-img>
         <b-img v-else blank-color="#777" :blank="true" class="shadow" rounded fluid-grow></b-img>
       </b-col>
 
