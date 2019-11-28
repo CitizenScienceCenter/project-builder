@@ -79,12 +79,12 @@ export default {
     /**
      * Update the project task presenter with the currently edited
      */
-    updateTaskPresenter (template) {
+    updateTaskPresenter () {
       const tmpl = {
-        'info': {
+        "info": {
+          "template": this.code
         }
       }
-      tmpl['info'] = template
       return this.$store.dispatch('c3s/project/updateProject', [this.project.id, tmpl]).then(response => {
         if (!response) {
           this.showError({

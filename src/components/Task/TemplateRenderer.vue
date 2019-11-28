@@ -32,6 +32,7 @@ export default {
     this.getProject(this.pid).then(() => {
       this.taskPresenterLoaded = true
       this.template = this.project.info.template
+      console.log(this.project.info.template)
         this.taskPresenterExists = true
     })
   },
@@ -53,6 +54,9 @@ export default {
       // user task progress
       userProgress: state => state.selectedProjectUserProgress
     }),
+    ...mapState('c3s/task', {
+      media: state => state.media
+    }),
     // user data
     ...mapState('c3s/user', {
       isUserLogged: state => state.currentUser,
@@ -70,7 +74,6 @@ export default {
       }
       // eslint-disable-next-line no-eval
       const tmpl = sanitize(this.template)
-      console.log(tmpl)
       return { name: 'presenter', ...eval('() => { return' + tmpl + '}')() }
     }
   },
@@ -84,7 +87,7 @@ export default {
     ]),
 
     ...mapActions('osm', [
-      'qetLocalizationsWithQuery'
+      'getLocalizationsWithQuery'
     ]),
 
     ...mapActions('c3s/project', [
@@ -104,7 +107,7 @@ export default {
      */
     run () {
       this.getProjectTask(this.pid).then((t) => {
-
+        this.getTaskMedia(this.task.id)
       });
     },
     /**
@@ -114,6 +117,7 @@ export default {
     newTask () {
       this.taskLoaded = false
       this.getProjectTask(this.pid).then(allowed => {
+        this.getTaskMedia(this.task.id)
         if (!allowed) {
           this.showError({
             title: 'You are not allowed to contribute',
