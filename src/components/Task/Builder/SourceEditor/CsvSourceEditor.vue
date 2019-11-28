@@ -63,8 +63,11 @@ export default {
             row['title'] = self.task.job
             row['content'] = self.task.template
           }
-          self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
-            console.log(success)
+          self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(res => {
+            console.log(res)
+
+            self.setTaskSourceContent( res.body.data );
+            self.setStep({ step: 'source', value: true })
           })
         },
         error: function(err) {
@@ -72,8 +75,6 @@ export default {
         },
         header: true
       })
-      this.setTaskSourceContent([])
-      this.setStep({ step: 'source', value: true })
     }
   }
 }

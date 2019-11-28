@@ -33,6 +33,12 @@
               <div class="col col-large-6 col-xlarge-4 scroll-effect">
                 <img v-if=" media && media.length > 0" :src="media[0].path" />
                 <!--<img v-else src="/static/img/cover.jpg" /> -->
+
+                {{ project.info }}
+                <div class="button-group">
+                  <router-link tag="button" class="button button-secondary" :to="{ name: 'task.builder.material', params: { pid: pid } }">Reimport Tasks</router-link>
+                </div>
+
               </div>
             </div>
           </div>

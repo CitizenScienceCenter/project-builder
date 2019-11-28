@@ -137,9 +137,11 @@
 
                   <ul v-if="task.source !== sources.flickr && task.source !== sources.twitter">
                     <li :key="key" v-for="(file, key) in task.sourceContent">
+
                       <b-link v-if="task.source === sources.amazon" :href="getBucketFileLink(file)" target="_blank">{{ file }}</b-link>
                       <b-link v-else-if="task.source === sources.dropbox" :href="file.link" target="_blank">{{ file.name }}</b-link>
-                      <b-link v-else :href="file" target="_blank">{{ file }}</b-link>
+
+                      <b-link v-else :href="file.info.path" target="_blank">{{ file.info.path }}</b-link>
                     </li>
                   </ul>
                   <p v-else-if="task.source === sources.flickr">One album to import (<span class="font-italic">{{ task.sourceContent }}</span>)</p>
