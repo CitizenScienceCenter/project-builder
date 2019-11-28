@@ -179,7 +179,7 @@ export default {
         if (this.selectedPicture) {
           this.setPicture(this.selectedPicture)
           this.setPictureName(this.selectedPictureName)
-          this.setCroppedPicture(this.selectedPicture)
+          this.setCroppedPicture(this.encodedPicture)
         }
       }
     },

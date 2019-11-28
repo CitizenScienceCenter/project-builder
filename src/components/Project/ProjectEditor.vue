@@ -125,14 +125,12 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import VueCropper from 'vue-cropperjs'
 import slug from 'slug'
 import { getFormErrorsAsString, uuid } from '@/helper'
 
 export default {
   name: 'ProjectEditor',
   components: {
-    VueCropper
   },
   mounted () {
     if (Object.keys(this.project).length > 0) {
@@ -206,12 +204,6 @@ export default {
       this.form.allowAnonymousContributors = project.anonymous_allowed
 
       this.form = { ...this.form, ...JSON.parse(project.description) }
-
-      if ('info' in project && 'thumbnail_url' in project.info) {
-        // uuid used to avoid cache loading which make CORS issues
-        this.picture = project.info.thumbnail_url + '?id=' + uuid()
-        this.$refs.cropper.replace(this.picture)
-      }
     },
 
     /**
@@ -261,11 +253,9 @@ export default {
      */
     onPictureSubmit () {
       // check if a picture is selected
-      if (this.picture) {
+      if (this.selectedFile) {
         // check if the size of the picture is correct
-        if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
-          //this.croppedPicture = this.$refs.cropper.getCroppedCanvas().toDataURL()
-          this.croppedPicture = this.picture;
+        if (this.pictureSizeInMb() <= this.maxPictureSizeInMb) {
 
           this.$store.dispatch('c3s/media/uploadMedia',[
             this.project.id,
@@ -277,8 +267,8 @@ export default {
                 title: 'Success',
                 content: 'Project picture updated'
               })
-              this.getProject(this.project.id)
-              //this.$refs.cropper.replace(this.croppedPicture)
+              this.selectedFile = undefined
+              this.getProjectMedia(this.project.id)
             }
           })
         } else {
@@ -319,14 +309,11 @@ export default {
         return
       }
 
-      this.pictureSize = file.size
       this.pictureName = file.name
-      this.pictureType = file.type
       if (typeof FileReader === 'function') {
         const reader = new FileReader()
         reader.onload = (e) => {
           this.picture = e.target.result
-          //this.$refs.cropper.replace(this.picture)
         }
         reader.readAsDataURL(file)
       } else {
@@ -367,7 +354,7 @@ export default {
     ),
 
     pictureSizeInMb () {
-      return this.pictureSize / 1000000
+      return this.selectedFile ? this.selectedFile.size / 1000000 : 0
     }
   }
 }

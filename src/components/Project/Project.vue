@@ -33,7 +33,7 @@
               <div class="col col-large-6 col-xlarge-4 scroll-effect">
 
                 img:
-                <img v-if=" 'info' in project && 'thumbnail_url' in project.info " :src="'/static/img/cover.jpg'" />
+                <img v-if=" media && media.length > 0" :src="media[0].path" />
                 <!--<img v-else src="/static/img/cover.jpg" /> -->
 
               </div>
@@ -239,11 +239,10 @@ export default {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
     this.getProject(this.$route.params.pid || this.pid).then(project => {
-      console.log(project)
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
       this.getProjectMedia(this.pid).then(media => {
-        console.log( media );
+        this.media = media.body
       });
 
       if (this.currentUser.id === this.project.owner) {
@@ -258,7 +257,8 @@ export default {
   data: () => {
     return {
       isAnonymousProject: true,
-      isOwner: false
+      isOwner: false,
+      media: []
     }
   },
   props: {
@@ -313,7 +313,7 @@ export default {
       project: state => state.project
     }, 'project', {
       results: state => state.selectedProjectResults,
-      stats: state => state.selectedProjectStats
+      stats: state => state.selectedProjectStats,
     }),
     ...mapState('task', [
       'taskPresenter',
