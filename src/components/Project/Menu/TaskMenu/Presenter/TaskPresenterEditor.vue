@@ -43,9 +43,7 @@ export default {
   },
   created () {
     this.getProject(this.pid).then(() => {
-        this.getTaskPresenter({project: this.project, template: this.template}).then((temp) => {
-          this.code = temp
-        })
+      this.code = this.project.info.template
     })
   },
   data: () => {
@@ -65,10 +63,6 @@ export default {
     pid: {
       required: false
     },
-    // template code (optional)
-    template: {
-      type: String
-    }
   },
   methods: {
     ...mapActions('task', [
@@ -90,10 +84,7 @@ export default {
       // TODO remove validation for fields when updating models
       const proj = {}
       proj['info'] = Object.assign({}, this.project.info)
-      proj['name'] = this.project.name
-      proj['description'] = this.project.description
-      proj['platform'] = this.project.platform
-      console.dir(proj)
+      proj['info']['template'] = this.code
       this.updateProject([this.project.id, proj]).then(response => {
         if (!response) {
           this.showError({

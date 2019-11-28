@@ -61,7 +61,7 @@ export default {
             row['sequence'] = 0
             row['info'] = {}
             row['title'] = self.task.template[0].question
-            row['content'] = self.task.template[0].answers
+            row['content'] = self.task.template
           }
           self.$store.dispatch('c3s/task/importCSV', [pid, res.data]).then(success => {
             console.log(success)

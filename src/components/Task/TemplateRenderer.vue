@@ -26,45 +26,33 @@ export default {
     // project id
     pid: {
       required: true
-    },
-    // template code (optional)
-    template: {
-      type: String
     }
   },
   created () {
     this.getProject(this.pid).then(() => {
       this.taskPresenterLoaded = true
-      if (this.presenter || this.template || this.project.info.template) {
+      this.template = this.project.info.template
         this.taskPresenterExists = true
-        this.template = this.project.info.template
-      }
     })
   },
   data: () => {
     return {
       taskPresenterExists: false,
       taskPresenterLoaded: false,
-      taskLoaded: false
+      taskLoaded: false,
+      template: undefined
     }
   },
   computed: {
     ...mapState('c3s/project', {
       // the current project where is displayed the task presenter
       project: state => state.project,
+      task: state => state.task,
+      tasks: state => state.tasks,
 
       // user task progress
       userProgress: state => state.selectedProjectUserProgress
     }),
-
-    ...mapState('c3s/task', {
-      // the currently displayed task in the presenter
-      task: state => state.currentTask,
-
-      // the task presenter template loaded from the pybossa server
-      presenter: state => state.taskPresenter
-    }),
-
     // user data
     ...mapState('c3s/user', {
       isUserLogged: state => state.currentUser,
@@ -82,6 +70,7 @@ export default {
       }
       // eslint-disable-next-line no-eval
       const tmpl = sanitize(this.template)
+      console.log(tmpl)
       return { name: 'presenter', ...eval('() => { return' + tmpl + '}')() }
     }
   },
@@ -114,7 +103,9 @@ export default {
      * Called when the dynamic component start
      */
     run () {
-      this.getProjectTask(this.pid)
+      this.getProjectTask(this.pid).then((t) => {
+
+      });
     },
     /**
      * Load a new task for the presenter if authorized

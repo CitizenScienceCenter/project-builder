@@ -31,11 +31,8 @@
           <div class="content-subsection">
             <div class="row row-centered">
               <div class="col col-large-6 col-xlarge-4 scroll-effect">
-
-                img:
                 <img v-if=" media && media.length > 0" :src="media[0].path" />
                 <!--<img v-else src="/static/img/cover.jpg" /> -->
-
               </div>
             </div>
           </div>
@@ -244,11 +241,13 @@ export default {
       this.getProjectMedia(this.pid).then(media => {
         this.media = media.body
       });
+      if (this.project['info'] && this.project['info']['template']) {
+        this.taskPresenter = this.project.info.template
+      }
 
       if (this.currentUser.id === this.project.owner) {
         this.isOwner = true
         this.getProjectTasks(this.project.id).then(t => {
-          console.log(t)
         })
       }
     })
@@ -258,6 +257,7 @@ export default {
     return {
       isAnonymousProject: true,
       isOwner: false,
+      taskPresenter: undefined,
       media: []
     }
   },
@@ -282,13 +282,13 @@ export default {
       'setCurrentTab'
     ]),
     ...mapMutations('notification', [
-      'showError'
+      'showError', 'showSuccess'
     ]),
 
     publish () {
-      if (this.taskPresenter.length > 0) {
+      if (this.taskPresenter && this.taskPresenter.length > 0) {
         if (this.projectTasks.length > 0) {
-          this.$store.dispatch('c3s/project/updateProject', {'active': true}).then((res) => {
+          this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active': true}]).then((res) => {
             this.showSuccess({
               title: 'Project Published',
               content: 'Successfully published project'
@@ -310,15 +310,12 @@ export default {
   },
   computed: {
     ...mapState('c3s/project', {
-      project: state => state.project
+      project: state => state.project,
+      projectTasks: state => state.tasks
     }, 'project', {
       results: state => state.selectedProjectResults,
       stats: state => state.selectedProjectStats,
     }),
-    ...mapState('task', [
-      'taskPresenter',
-      'projectTasks'
-    ]),
     ...mapState('project/menu', [
       'currentTab', 'tabs'
     ]),

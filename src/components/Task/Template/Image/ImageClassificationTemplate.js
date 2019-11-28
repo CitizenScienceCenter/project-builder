@@ -4,7 +4,7 @@ const component =
     template: `
       <!-- This template use https://bootstrap-vue.js.org/ -->
 
-      <b-row v-if="pybossa.userProgressInPercent < 100">
+      <b-row v-if="pybossa.task">
         
         <!-- Form zone -->
         <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
@@ -52,7 +52,7 @@ const component =
       <!-- Task end message -->
       <b-row v-else>
         <b-col>
-          <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>
+          <b-jumbotron header="This is the end!" lead="Thanks you for your participation"></b-jumbotron>
         </b-col>
       </b-row>`,
 
