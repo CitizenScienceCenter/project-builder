@@ -13,7 +13,7 @@
             v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you are doing."
             ref="btn-update-presenter"
             variant="success"
-            @click="updateTaskPresenter"
+            @click="updatePresenter"
           >
             Update task presenter
           </b-btn>
@@ -32,6 +32,8 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
+
+import api from '@/api/c3s'
 
 import 'codemirror/mode/vue/vue.js'
 import { codemirror } from 'vue-codemirror'
@@ -77,29 +79,13 @@ export default {
       'showError'
     ]),
     /**
-     * Update the project task presenter with the currently edited
-     */
-    updateTaskPresenter () {
-      let tmpl = this.project.info
-      tmpl['template'] = this.code
-    return this.$store.dispatch('c3s/project/updateProject', [this.$route.params.pid, {'info': tmpl}]).then(response => {
-        if (!response) {
-          this.showError({
-            title: 'Error',
-            content: 'Error applying update'
-          })
-        } else {
-          console.log(response)
-          return Promise.resolve(true)
-        }
-      })
-    },
-
-    /**
      * Render the currently edited presenter without saving it
      */
     previewPresenter () {
       this.$router.push({ name: 'project.task.presenter', params: { pid: this.project.id, template: this.code } })
+    },
+    updatePresenter () {
+      api.updateTaskPresenter(this.project, this.code)
     }
   },
   computed: {
