@@ -39,7 +39,7 @@ export default {
   },
   props: {
     'msg': {
-      type: string,
+      type: 'string',
       required: false
     }
   },

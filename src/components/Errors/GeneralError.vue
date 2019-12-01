@@ -39,7 +39,6 @@ export default {
   },
   props: {
     'msg': {
-      type: string,
       required: false
     }
   },

@@ -22,6 +22,8 @@ export default {
   nextTask () {
 
   },
+  getTask () {
+  },
   errorHandler (err, router) {
     // TODO set message as response error and model
     if (err.status === 200 || (err.body && err.body.ok === true)) {
