@@ -255,6 +255,9 @@ export default {
         this.getProjectTasks(this.project.id).then(t => {
         })
       }
+    }).catch((err) => {
+      console.error(err)
+      this.$router.push({'name': '404', 'props': {'msg': 'Project not found'}})
     })
 
   },

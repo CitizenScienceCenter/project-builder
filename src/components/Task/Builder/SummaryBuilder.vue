@@ -299,7 +299,7 @@ export default {
 
       }
       // store the generated template for the selected project
-      const templatePromise = api.createTaskPresenter(this.selectedProject, template)
+      const templatePromise = api.updateTaskPresenter(this.selectedProject, template)
 
 
 

@@ -31,6 +31,7 @@ export default {
   created () {
     this.getProject(this.pid).then(() => {
       this.taskPresenterLoaded = true
+      console.log(this.project.info)
       this.template = this.project.info.template
       this.taskPresenterExists = true
     })

@@ -23,7 +23,11 @@ import TaskRedundancySetting from '@/components/Project/Menu/TaskMenu/Settings/T
 import TaskPrioritySetting from '@/components/Project/Menu/TaskMenu/Settings/TaskPrioritySetting.vue'
 import FlickrCallback from '@/components/Task/Builder/FlickrCallback.vue'
 
-import Terms from '@/views/shared/static/Terms.vue';
+import GeneralError from '@/components/Errors/GeneralError.vue'
+import NotFound from '@/components/Errors/404.vue'
+import Unauthorised from '@/components/Errors/401.vue'
+import ServerError from '@/components/Errors/500.vue'
+import Terms from '@/views/shared/static/Terms.vue'
 
 import {
   i18n
@@ -51,6 +55,38 @@ const router = new Router({
         path: '',
         name: 'home',
         component: Home,
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: 'error',
+        name: 'error',
+        component: GeneralError,
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: '404',
+        name: '404',
+        component: NotFound,
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: '401',
+        name: '401',
+        component: Unauthorised,
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: '500',
+        name: '500',
+        component: ServerError,
         meta: {
           requiresAuth: false
         }
