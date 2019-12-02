@@ -1,21 +1,49 @@
 <template>
-  <b-row class="mt-4">
+  <div>
+    <p>The CSV needs to look like this ... <br>(explanation coming here)</p>
 
-    <b-col md="9">
-      <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
-        <b-form-group>
-          <b-file placeholder="Select a CSV file..." accept=".csv" v-model="csvFile"></b-file>
-        </b-form-group>
 
-        <b-button type="submit" variant="success">Send tasks</b-button>
-      </b-form>
+    <div class="margin-bottom">
+    <form @submit.prevent="onSubmit">
 
-    </b-col>
+      <div class="form-field form-field-block">
+        <label>CSV File</label>
+        <input type="file" accept=".csv" placeholder="Select a CSV file ..." @change="setFile" />
+      </div>
 
-    <b-col md="3">
-      <p>You can use any free licensed pics (Creative Commons or alike), your own pictures or those copyright images that you are authorised to use.</p>
-    </b-col>
-  </b-row>
+      <div class="button-group right-aligned">
+        <button type="submit" class="button button-primary" :disabled="!csvFile">Submit</button>
+      </div>
+
+    </form>
+    </div>
+
+    <p class="small">You can use any free licensed pics (Creative Commons or alike), your own pictures or those copyright images that you are authorised to use</p>
+
+
+    <!--
+    <br>
+    <br>
+
+    <b-row class="mt-4">
+
+      <b-col md="9">
+        <b-form ref="form" @submit.prevent="onSubmit" class="mt-4">
+          <b-form-group>
+            <b-file placeholder="Select a CSV file..." accept=".csv" v-model="csvFile"></b-file>
+          </b-form-group>
+
+          <b-button type="submit" variant="success">Send tasks</b-button>
+        </b-form>
+
+      </b-col>
+
+      <b-col md="3">
+        <p>You can use any free licensed pics (Creative Commons or alike), your own pictures or those copyright images that you are authorised to use.</p>
+      </b-col>
+    </b-row>
+    -->
+  </div>
 </template>
 
 <script>
@@ -46,6 +74,11 @@ export default {
     ...mapMutations('task/builder', [
       'setTaskSource', 'setTaskSourceContent', 'setStep', 'setBucketFiles', 'setBucketName', 'deleteBucketFile'
     ]),
+
+    setFile (event) {
+      this.csvFile = event.target.files[0];
+    },
+
 
     onSubmit () {
       this.setTaskSource(this.sources.csv)
@@ -80,6 +113,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
