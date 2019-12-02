@@ -59,7 +59,6 @@
                 font-weight: 700;
                 line-height: 1.25;
                 text-align: left;
-                text-transform: none;
                 margin-bottom: $spacing-2;
                 text-transform: uppercase;
             }

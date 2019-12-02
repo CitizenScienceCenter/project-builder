@@ -3,7 +3,9 @@
 
   "en": {
 
-  "page-title": "Projects"
+  "page-title": "Projects",
+
+  "projects-header": "All Projects"
 
   }
 
@@ -11,42 +13,31 @@
 </i18n>
 
 <template>
-  <div>
+  <div v-if="loadedProjects.length > 6">
     <app-content-section>
-      <div class="content-subsection">
-        <div class="content-wrapper">
-
-          <div class="content-subsection">
-            <div class="row row-centered">
-              <div class="col col-large-6 col-xlarge-4 scroll-effect">
-
-                <h2 class="heading centered">Discover Projects</h2>
-
-                <div class="margin-bottom" :key="project.id" v-for="project in projects">
-
-                  <img v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url" />
-                  <img v-else :src="'/static/img/cover.jpg'" />
-
-                  {{ project.name }}<br>
-                  {{ project.info.shortDescription }}<br>
-
-                  {{ project.id }}
-
-                  <div class="button-group">
-                    <router-link class="button button-primary" :to="{ name: 'project', params: { pid: project.id } }">Go to Project</router-link>
-                  </div>
-
-                </div>
-
-              </div>
+      <div class="content-wrapper">
+        <div class="row row-centered">
+          <div class="col col-large-6 scroll-effect">
+            <h2 class="heading centered">{{ $t('projects-header') }}</h2>
+          </div>
+        </div>
+        <div class="margin-bottom">
+          <div class="row row-wrapping row-centered scroll-effect">
+            <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
+              <ProjectTeaser :project="loadedProject[0]" :media="loadedProject[1]"></ProjectTeaser>
             </div>
           </div>
+        </div>
+        <div class="button-group centered">
+          <button class="button button-secondary">Show more Projects</button>
         </div>
       </div>
     </app-content-section>
 
     <app-footer></app-footer>
 
+
+    <!--
     <br>
     <br>
     <br>
@@ -57,9 +48,8 @@
         <b-card no-body>
           <b-tabs pills card align="center">
 
-            <!-- All projects fake category -->
+
             <b-tab :title="'All (' + projects.length + ')'">
-              <!-- A paginator at the top -->
               <b-row>
                 <b-col>
                   <b-pagination
@@ -72,7 +62,6 @@
                 </b-col>
               </b-row>
 
-              <!-- The list of projects -->
               <b-row>
                 <b-col :key="project.id" v-for="project in projects" md="4" class="mt-3">
 
@@ -93,7 +82,6 @@
                 </b-col>
               </b-row>
 
-              <!-- A paginator at the bottom -->
               <b-row class="mt-3">
                 <b-col>
                   <b-pagination
@@ -107,13 +95,13 @@
               </b-row>
             </b-tab>
 
-            <!-- A tab for each category -->
+
             <b-tab
                     v-for="category in allCategories"
                     :key="category.id"
                     :title="category.name + (category.short_name in categoryPagination ? ' (' + categoryPagination[category.short_name].total + ')' : '')"
             >
-              <!-- A paginator at the top -->
+
               <b-row>
                 <b-col>
                   <b-pagination
@@ -126,7 +114,7 @@
                 </b-col>
               </b-row>
 
-              <!-- The list of projects -->
+
               <b-row>
                 <b-col :key="project.id" v-for="project in categoryProjects[category.short_name]" md="4" class="mt-3">
 
@@ -147,7 +135,7 @@
                 </b-col>
               </b-row>
 
-              <!-- A paginator at the bottom -->
+
               <b-row class="mt-3">
                 <b-col>
                   <b-pagination
@@ -167,7 +155,10 @@
       </b-col>
     </b-row>
 
+    -->
+
   </div>
+  <loader v-else></loader>
 </template>
 
 <script>
@@ -175,10 +166,14 @@ import { mapState, mapActions } from 'vuex'
 
 import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
+import ProjectTeaser from "@/components/Project/ProjectTeaser";
+import Loader from "@/components/shared/Loader";
 
 export default {
   name: 'Discover',
   components: {
+    Loader,
+    ProjectTeaser,
     'app-content-section': ContentSection,
     'app-footer': Footer,
   },
@@ -204,13 +199,15 @@ export default {
     //     })
     //   })
     // })
-  this.$store.dispatch('c3s/project/getProjects', []).then((p) => {
+  this.$store.dispatch('c3s/project/getProjects', [,30,]).then((p) => {
     // get all the projects only for the 'all' tab
     //this.getProjectActivities(this.projectId).then((p) => {
       if (p.status === 200) {
        //this.projects = p.body.data;
         // init the tab 'all' to the first page
         //this.categoryAllPageChange(1)
+        this.projectsToLoad += p.body.data.length;
+        this.loadProject(0);
       }
     })
   },
@@ -223,12 +220,16 @@ export default {
         paginationSize: 20,
         currentPage: 1
       },
+
+      projectsToLoad: 0,
+      loadedProjects: []
     }
   },
   methods: {
     ...mapActions('c3s/project', [
       'getProject',
-      'getProjects'
+      'getProjects',
+      'getProjectMedia'
       // 'getCategories',
       // 'getProjectsWithCategory'
     ]),
@@ -251,6 +252,26 @@ export default {
         category,
         page
       })
+    },
+
+    loadProject(index) {
+      if( index < this.projectsToLoad ) {
+
+        this.getProjectMedia( this.projects[index].id ).then(media => {
+
+          let projectMedia;
+          if( media.body.length ) {
+            projectMedia = media.body[0];
+          }
+
+          this.loadedProjects.push( [ this.projects[index], projectMedia ] );
+
+          // load next
+          if( this.loadedProjects.length < this.projects.length ) {
+            this.loadProject(index+1);
+          }
+        });
+      }
     }
   },
   computed: {
