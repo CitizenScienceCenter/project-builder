@@ -238,9 +238,16 @@ export default {
     ProjectCover
   },
   created () {
+
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
+
+    console.log('project created: ');
+    console.log( this.$route.params.pid );
+    console.log( this.pid );
+
     this.getProject(this.$route.params.pid || this.pid).then(project => {
+
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
       this.getProjectMedia(this.pid).then(media => {
@@ -255,10 +262,13 @@ export default {
         this.getProjectTasks(this.project.id).then(t => {
         })
       }
-    }).catch((err) => {
+    })
+    /* ... sorry, hat to comment it out, navigating to projects wasn't working anymore
+    .catch((err) => {
       console.error(err)
       this.$router.push({'name': '404', 'props': {'msg': 'Project not found'}})
     })
+    */
 
   },
   data: () => {
