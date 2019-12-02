@@ -87,10 +87,10 @@ export default {
 
     ...mapActions('c3s/project', [
       'getProject',
-      'getProjectTasks'
+      'getProjectTasks',
+      'getProjectTask'
     ]),
     ...mapActions('c3s/task', [
-      'getProjectTask',
       'getTaskMedia'
     ]),
 
@@ -102,7 +102,7 @@ export default {
      * Called when the dynamic component start
      */
     run () {
-      this.getProjectTask(this.pid).then(t => {
+      this.getProjectTask({pid:this.pid}).then(t => {
         console.log(t)
       })
       this.getProjectTasks(this.pid).then((t) => {
@@ -143,7 +143,7 @@ export default {
         response: answer,
         user_id: this.userId
       }
-      this.createSubmission(JSON.stringify(taskRun)).then(() => {
+      this.createSubmissionWithObject(JSON.stringify(taskRun)).then(() => {
         // load a new task when current task saved
         this.newTask()
       })
