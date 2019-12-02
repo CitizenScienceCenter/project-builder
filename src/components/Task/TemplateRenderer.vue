@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     ...mapActions('c3s/submission', [
-      'createSubmission'
+      'createSubmissionWithObject'
     ]),
 
     ...mapActions('project', [
