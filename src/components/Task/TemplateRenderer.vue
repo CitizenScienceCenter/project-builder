@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     ...mapActions('c3s/submission', [
-      'createSubmission'
+      'createSubmissionWithObject'
     ]),
 
     ...mapActions('project', [
@@ -102,7 +102,7 @@ export default {
      * Called when the dynamic component start
      */
     run () {
-      this.getProjectTask({pid:this.pid}).then(t => {
+      this.getProjectTask({pid:this.pid, random: false, index: this.taskIndex}).then(t => {
         console.log(t)
       })
       this.getProjectTasks(this.pid).then((t) => {
