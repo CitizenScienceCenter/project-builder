@@ -124,10 +124,12 @@ export default {
       }
       this.signIn(this.form).then((response) => {
         if (response && response.status === 200) {
+          /*
           this.showInfo({
             title: 'Welcome',
             content: 'We are happy to see you again!'
           })
+           */
           this.$router.push({ name: 'home' })
         } else {
           this.showError({ title: 'Wrong credentials', content: 'Your email and/or your password are incorrect' })

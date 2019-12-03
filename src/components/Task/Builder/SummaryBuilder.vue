@@ -5,7 +5,108 @@
       <div class="content-subsection">
         <div class="content-wrapper">
           <div class="row row-centered">
-            <div class="col col-large-10 col-xlarge-8 scroll-effect">
+            <div class="col scroll-effect">
+
+              <div class="content-subsection">
+                <h2 class="heading centered">Ready to Create</h2>
+
+                <div class="button-group centered">
+                  <button class="button button-primary" @click="onSubmit">Create</button>
+                </div>
+              </div>
+
+
+              <div class="content-subsection">
+                <div class="row row-wrapping row-centered">
+                  <div class="col col-wrapping col-large-3">
+
+                    <h3 class="subheading reduced-bottom-margin">Material</h3>
+                    <p class="">
+                      {{ task.material }}
+                    </p>
+
+                    <h3 class="subheading reduced-bottom-margin">Job</h3>
+                    <p class="">
+                      {{ task.job }}
+                    </p>
+
+                    <h3 class="subheading reduced-bottom-margin">Sources</h3>
+                    <p class="">
+                      {{ task.source }}
+                    </p>
+
+                  </div>
+                  <div class="col col-wrapping col-large-3">
+
+                    <h3 class="subheading reduced-bottom-margin">Template</h3>
+
+                    <div v-if="task.job === jobs.describe">
+                      <div class="form-field form-field-block">
+                        <label>Question</label>
+                        {{task.template.question}}
+                      </div>
+                      <ul>
+                        <li :key="index" v-for="(description, index) in task.template.descriptions">
+                          <div class="form-field form-field-block">
+                            <label>Description {{ (index + 1) }}</label>
+                            {{description}}
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div v-if="task.job === jobs.classify">
+                      <div :key="q" v-for="(question, q) in task.template">
+                        <div class="form-field form-field-block reduced-bottom-margin">
+                          <label>Question {{ (q + 1) }}</label>
+                          {{ question.question }}
+                        </div>
+
+                        <ul>
+                          <li :key="a" v-for="(answer, a) in task.template[q].answers">
+                            <div class="form-field form-field-block reduced-bottom-margin">
+                              <label>Answer {{ (a + 1) }}</label>
+                              {{ answer }}
+                            </div>
+                          </li>
+                        </ul>
+
+                      </div>
+                    </div>
+
+                    <div v-if="task.job === jobs.count">
+                      <div class="form-field form-field-block">
+                        <label>Question</label>
+                        {{task.template}}
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col col-large-6 col-wrapping">
+
+                    <h3 class="subheading">{{ task.sourceContent.length }} Tasks</h3>
+                    <ul>
+                      <li :key="key" v-for="(file, key) in task.sourceContent">
+                        <a :href="file.info.path" target="_blank">{{ file.info.path }}</a>
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="content-subsection">
+                <div class="button-group centered">
+                  <button class="button button-primary" @click="onSubmit">Create</button>
+                </div>
+              </div>
+
+
+
+
+              <!--
+              <br><br><br>
+
 
               <b-row class="mt-4">
                 <b-col md="8">
@@ -30,7 +131,7 @@
 
                   <ul class="list-unstyled">
 
-                    <!-- Material -->
+
                     <b-media no-body tag="li" vertical-align="center" class="mb-4">
                       <b-media-aside style="width: 100px; font-size: 50px" class="pr-4 justify-content-end">
                         <i v-if="task.material === materials.image" class="fas fa-images"></i>
@@ -46,7 +147,7 @@
                       </b-media-body>
                     </b-media>
 
-                    <!-- Job -->
+
                     <b-media no-body tag="li" vertical-align="center" class="mb-4">
                       <b-media-aside style="width: 100px; font-size: 50px" class="pr-4 justify-content-end">
                         <i v-if="task.job === jobs.describe" class="fas fa-edit"></i>
@@ -60,7 +161,7 @@
                       </b-media-body>
                     </b-media>
 
-                    <!-- Template -->
+
                     <b-media no-body tag="li" vertical-align="center">
                       <b-media-aside style="width: 100px; font-size: 50px" class="pr-4 justify-content-end">
                         <i class="fas fa-code"></i>
@@ -69,7 +170,7 @@
                       <b-media-body>
                         <h4 class="mt-0">TEMPLATE</h4>
 
-                        <!-- Describe template -->
+
                         <ul v-if="task.job === jobs.describe" class="list-unstyled">
                           <li>
                             <b-form-group label="Question">
@@ -85,7 +186,7 @@
                           </li>
                         </ul>
 
-                        <!-- Classify template -->
+
                         <ul v-if="task.job === jobs.classify" class="list-unstyled">
                           <li :key="q" v-for="(question, q) in task.template">
                             <b-form-group :label="'Question ' + (q + 1)">
@@ -101,7 +202,7 @@
                           </li>
                         </ul>
 
-                        <!-- Count template -->
+
                         <ul v-if="task.job === jobs.count" class="list-unstyled">
                           <li>
                             <b-form-group label="Question">
@@ -115,7 +216,7 @@
                   </ul>
                 </b-col>
 
-                <!-- Source section -->
+
                 <b-col md="6">
                   <ul class="list-unstyled">
                     <b-media no-body tag="li" vertical-align="center">
@@ -149,6 +250,8 @@
                 </b-col>
               </b-row>
 
+
+              -->
 
 
             </div>
@@ -363,6 +466,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

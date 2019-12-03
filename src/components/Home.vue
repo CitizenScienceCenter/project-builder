@@ -8,7 +8,7 @@
 "cover-button-primary": "Create a Project",
 "cover-button-secondary": "Browse Projects",
 
-"projects-header": "Featured Projects"
+"projects-header": "Latest Projects"
 
 }
 
@@ -40,30 +40,22 @@
       </div>
     </app-cover>
 
-    <app-content-section v-if="projects.length > 0">
+    <app-content-section v-if="loadedProjects.length > 0">
       <div class="content-wrapper">
         <div class="row row-centered">
           <div class="col col-large-6 scroll-effect">
             <h2 class="heading centered">{{ $t('projects-header') }}</h2>
-
-
-              <div class="margin-bottom" :key="project.id" v-for="project in projects">
-
-                <img v-if="project.info && project.info.thumbnail_url" :src="project.info.thumbnail_url" />
-                <img v-else :src="'/static/img/cover.jpg'" />
-
-                {{ project.name }}<br>
-                {{ project.info.shortDescription }}<br>
-
-                {{ project.id }}
-
-                <div class="button-group">
-                  <router-link class="button button-primary" :to="{ name: 'project', params: { pid: project.id } }">Go to Project</router-link>
-                </div>
-
-              </div>
-
           </div>
+        </div>
+        <div class="margin-bottom">
+          <div class="row row-wrapping row-centered scroll-effect">
+            <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
+              <ProjectTeaser :project="loadedProject[0]" :media="loadedProject[1]"></ProjectTeaser>
+            </div>
+          </div>
+        </div>
+        <div class="button-group centered">
+          <router-link tag="button" to="/discover" class="button button-secondary">All Projects</router-link>
         </div>
       </div>
     </app-content-section>
@@ -74,9 +66,7 @@
 
 
 
-
-
-
+    <!--
     <b-row class="mt-4">
 
       <b-col cols="12" md="6">
@@ -125,6 +115,7 @@
 
       </b-col>
     </b-row>
+    -->
 
   </div>
 </template>
@@ -136,10 +127,12 @@ import Cover from '@/components/shared/Cover.vue';
 import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
 import SectionNewsletterSignup from "@/components/shared/SectionNewsletterSignup";
+import ProjectTeaser from "@/components/Project/ProjectTeaser";
 
 export default {
   name: 'Home',
   components: {
+    ProjectTeaser,
     SectionNewsletterSignup,
       'app-cover': Cover,
       'app-content-section': ContentSection,
@@ -147,7 +140,10 @@ export default {
   },
   data: function() {
     return {
-      lang: 'en'
+      lang: 'en',
+
+      projectsToLoad: 0,
+      loadedProjects: []
     }
   },
   metaInfo: function() {
@@ -163,13 +159,35 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('c3s/project/getProjects', []).then(res => {
+    this.$store.dispatch('c3s/project/getProjects', [,6,]).then(res => {
+      this.projectsToLoad += res.body.data.length;
+      this.loadProject(0);
     });
   },
   methods: {
     ...mapActions('c3s/project', [
-      'getProjects'
+      'getProjects',
+      'getProjectMedia'
     ]),
+    loadProject(index) {
+      if( index < this.projectsToLoad ) {
+
+        this.getProjectMedia( this.projects[index].id ).then(media => {
+
+          let projectMedia;
+          if( media.body.length ) {
+            projectMedia = media.body[0];
+          }
+
+          this.loadedProjects.push( [ this.projects[index], projectMedia ] );
+
+          // load next
+          if( this.loadedProjects.length < this.projects.length ) {
+            this.loadProject(index+1);
+          }
+        });
+      }
+    }
   },
   computed: {
     ...mapState({
