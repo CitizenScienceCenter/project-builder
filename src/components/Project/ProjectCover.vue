@@ -1,5 +1,5 @@
 <template>
-  <section class="project-cover" :style="{ 'background-image': 'url(' + imageUrl + ')' }">
+  <section class="project-cover" :style="{ 'background-image': 'url(' + encodeURI(imageUrl) + ')' }">
 
     <div class="content-wrapper">
       <div class="row">
