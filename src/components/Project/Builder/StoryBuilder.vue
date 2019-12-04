@@ -16,29 +16,29 @@
               <form @submit.prevent="onSubmit">
 
                 <div class="form-field form-field-block">
-                  <label>What & Why</label>
-                  <growing-textarea v-model="currentWhatWhy" placeholder="Explain what is the purpose of your project."></growing-textarea>
+                  <label>Project Purpose</label>
+                  <growing-textarea v-model="currentWhatWhy" placeholder="What is the purpose of your project."></growing-textarea>
                   <span v-if="validated('currentWhatWhy') && validFeedback('currentWhatWhy')" class="message success">{{validFeedback('currentWhatWhy')}}</span>
                   <span v-if="!validated('currentWhatWhy') && invalidFeedback('currentWhatWhy')" class="message error">{{invalidFeedback('currentWhatWhy')}}</span>
                 </div>
 
                 <div class="form-field form-field-block">
-                  <label>How</label>
-                  <growing-textarea v-model="currentHow" placeholder="Explain how you will use the contribution results."></growing-textarea>
+                  <label>Usage of Results</label>
+                  <growing-textarea v-model="currentHow" placeholder="How you will use the contribution results."></growing-textarea>
                   <span v-if="validated('currentHow') && validFeedback('currentHow')" class="message success">{{validFeedback('currentHow')}}</span>
                   <span v-if="!validated('currentHow') && invalidFeedback('currentHow')" class="message error">{{invalidFeedback('currentHow')}}</span>
                 </div>
 
                 <div class="form-field form-field-block">
-                  <label>Who</label>
+                  <label>Who should contribute</label>
                   <growing-textarea v-model="currentWho" placeholder="Explain who should contribute to this project."></growing-textarea>
                   <span v-if="validated('currentWho') && validFeedback('currentWho')" class="message success">{{validFeedback('currentWho')}}</span>
                   <span v-if="!validated('currentWho') && invalidFeedback('currentWho')" class="message error">{{invalidFeedback('currentWho')}}</span>
                 </div>
 
                 <div class="form-field form-field-block">
-                  <label>Keep Track</label>
-                  <growing-textarea v-model="currentKeepTrack" placeholder="Give some details about how contributors can contact or follow you."></growing-textarea>
+                  <label>Contact Information</label>
+                  <growing-textarea v-model="currentKeepTrack" placeholder="Your Email, Phone, Address, ..."></growing-textarea>
                   <span v-if="validated('currentKeepTrack') && validFeedback('currentKeepTrack')" class="message success">{{validFeedback('currentKeepTrack')}}</span>
                   <span v-if="!validated('currentKeepTrack') && invalidFeedback('currentKeepTrack')" class="message error">{{invalidFeedback('currentKeepTrack')}}</span>
                 </div>

@@ -220,7 +220,7 @@ export default {
       meta: [
         {
           property: 'og:title',
-          content: this.project.name,
+          content: this.project.name || 'Project Name',
           template: '%s | '+this.$t('site-title')
         }
       ]

@@ -15,7 +15,7 @@
             <div class="overlay"></div>
 
             <div v-if="media" class="project-bg-image" :style="{
-                backgroundImage: 'url('+media.path+')'
+                backgroundImage: 'url('+encodeURI(media.path)+')'
             }"></div>
             <div v-else class="project-bg-image"></div>
 

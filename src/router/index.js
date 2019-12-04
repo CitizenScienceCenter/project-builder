@@ -162,7 +162,7 @@ const router = new Router({
         meta: {
           i18n: 'navigation-profile',
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -175,7 +175,8 @@ const router = new Router({
         },
         meta: {
           i18n: 'profile-edit',
-          nav: false
+          nav: false,
+          requiresAccount: true
         }
       },
       {
@@ -188,7 +189,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -208,7 +209,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -227,7 +228,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -250,7 +251,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -273,7 +274,7 @@ const router = new Router({
             props: true,
             meta: {
               nav: false,
-              requiresAuth: false
+              requiresAuth: true
             }
           },
           {
@@ -350,7 +351,11 @@ const router = new Router({
             path: 'task-presenter',
             name: 'project.task.presenter',
             component: TemplateRenderer,
-            props: true
+            props: true,
+            meta: {
+              nav: false,
+              requiresAuth: true
+            }
           },
           {
             path: 'task-presenter/settings',
@@ -503,16 +508,52 @@ router.beforeEach((to, from, next) => {
     const language = to.params.lang
     store.dispatch('settings/setLanguage', language)
     i18n.locale = language
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-      // TODO validate user
-      if (store.state.c3s.user.currentUser) {
-        next()
-      } else {
-        router.push( {name:'login'} )
+
+    // --- auth / account
+
+    console.log('check flags: '+to.path);
+
+    if( to.matched.some(record => record.meta.requiresAuth) ) {
+
+      console.log('check auth');
+      if( store.state.c3s.user.currentUser ) {
+        console.log('validate user '+store.state.c3s.user.currentUser.username);
+
+        store.dispatch('c3s/user/validate').then(v => {
+          //console.log('validation success');
+          if (v) {
+            next();
+          }
+          else {
+            router.push({ name: 'login' });
+          }
+        });
       }
-    } else {
-      next()
+      else {
+        store.dispatch('c3s/user/generateAnon').then(u => {
+          console.log('generate anon');
+          next();
+        });
+      }
+
     }
+    else if( to.matched.some(record => record.meta.requiresAccount) ) {
+
+      console.log('check account');
+      if( !store.state.c3s.user.currentUser || store.state.c3s.user.isAnon ) {
+        router.push({ name: 'login' });
+      }
+      else {
+        next();
+      }
+    }
+    else {
+      next();
+    }
+
+    // ----
+
+
   } else {
     next('/' + i18n.locale + to.path)
   }
