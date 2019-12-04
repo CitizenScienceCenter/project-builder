@@ -162,7 +162,7 @@ const router = new Router({
         meta: {
           i18n: 'navigation-profile',
           nav: false,
-          requiresAccount: true
+          requiresAuth: true
         }
       },
       {
@@ -175,8 +175,7 @@ const router = new Router({
         },
         meta: {
           i18n: 'profile-edit',
-          nav: false,
-          requiresAccount: true
+          nav: false
         }
       },
       {
@@ -209,7 +208,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAccount: true
+          requiresAuth: true
         }
       },
       {
@@ -228,7 +227,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAccount: true
+          requiresAuth: true
         }
       },
       {
@@ -237,8 +236,8 @@ const router = new Router({
         component: ProjectBuilder,
         beforeEnter: (to, from, next) => {
           if (store.state.project.builder.steps.name === true &&
-                store.state.project.builder.steps.information === true &&
-                store.state.project.builder.steps.story === true) {
+              store.state.project.builder.steps.information === true &&
+              store.state.project.builder.steps.story === true) {
             store.dispatch('project/builder/reset')
             store.commit('project/builder/setCurrentStep', 'end')
 
@@ -251,7 +250,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAccount: true
+          requiresAuth: true
         }
       },
       {
@@ -351,11 +350,7 @@ const router = new Router({
             path: 'task-presenter',
             name: 'project.task.presenter',
             component: TemplateRenderer,
-            props: true,
-            meta: {
-              nav: false,
-              requiresAuth: true
-            }
+            props: true
           },
           {
             path: 'task-presenter/settings',
@@ -410,7 +405,7 @@ const router = new Router({
                 next({
                   name: 'task.builder.material',
                   params: {
-                    id: to.params.id
+                    pid: to.params.pid
                   }
                 })
               }
@@ -433,7 +428,7 @@ const router = new Router({
                 next({
                   name: 'task.builder.job',
                   params: {
-                    id: to.params.id
+                    pid: to.params.pid
                   }
                 })
               }
@@ -456,7 +451,7 @@ const router = new Router({
                 next({
                   name: 'task.builder.template',
                   params: {
-                    id: to.params.id
+                    pid: to.params.pid
                   }
                 })
               }
@@ -479,7 +474,7 @@ const router = new Router({
                 next({
                   name: 'task.builder.source',
                   params: {
-                    id: to.params.id
+                    pid: to.params.pid
                   }
                 })
               }
@@ -493,12 +488,12 @@ const router = new Router({
       }
     ]
   },
-  {
-    path: '/flickr/callback',
-    name: 'flickr.callback',
-    props: true,
-    component: FlickrCallback
-  }
+    {
+      path: '/flickr/callback',
+      name: 'flickr.callback',
+      props: true,
+      component: FlickrCallback
+    }
   ]
 })
 
@@ -511,13 +506,9 @@ router.beforeEach((to, from, next) => {
 
     // --- auth / account
 
-    console.log('check flags: '+to.path);
-
     if( to.matched.some(record => record.meta.requiresAuth) ) {
-
-      console.log('check auth');
       if( store.state.c3s.user.currentUser ) {
-        console.log('validate user '+store.state.c3s.user.currentUser.username);
+        //console.log('validate user '+store.state.c3s.user.currentUser.username);
 
         store.dispatch('c3s/user/validate').then(v => {
           //console.log('validation success');
@@ -525,13 +516,13 @@ router.beforeEach((to, from, next) => {
             next();
           }
           else {
-            router.push({ name: 'login' });
+            next('/login');
           }
         });
       }
       else {
         store.dispatch('c3s/user/generateAnon').then(u => {
-          console.log('generate anon');
+          //console.log('generate anon');
           next();
         });
       }
@@ -539,9 +530,8 @@ router.beforeEach((to, from, next) => {
     }
     else if( to.matched.some(record => record.meta.requiresAccount) ) {
 
-      console.log('check account');
       if( !store.state.c3s.user.currentUser || store.state.c3s.user.isAnon ) {
-        router.push({ name: 'login' });
+        next('/login');
       }
       else {
         next();
@@ -552,7 +542,6 @@ router.beforeEach((to, from, next) => {
     }
 
     // ----
-
 
   } else {
     next('/' + i18n.locale + to.path)
