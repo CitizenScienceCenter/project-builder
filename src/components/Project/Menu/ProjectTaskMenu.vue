@@ -1,5 +1,22 @@
 <template>
   <div>
+
+    <h2 class="heading centered">Tasks</h2>
+
+    <div class="margin-bottom">
+      <div class="button-group centered">
+
+        <router-link tag="button" class="button button-secondary" :to="{ name: 'task.builder.material', params: { pid: project.id } }">Reimport Tasks</router-link>
+        <router-link disabled tag="button" :to="{ name: 'project.task.exporters', params: { id: ('id' in project) ? project.id : 0 } }" class="button button-secondary">Export Tasks</router-link>
+        <router-link disabled tag="button" :to="{ name: 'project.task.settings', params: { id: ('id' in project) ? project.id : 0 } }" class="button button-secondary">Settings</router-link>
+
+      </div>
+    </div>
+
+    <TaskList :pid="project.id"></TaskList>
+
+
+    <!--
     <b-row>
       <b-col>
 
@@ -55,27 +72,39 @@
 
       </b-col>
     </b-row>
+    -->
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import TaskList from "@/components/Project/Menu/TaskMenu/TaskList";
 
 export default {
   name: 'ProjectTaskMenu',
+  components: {TaskList},
   data: () => {
     return {
 
     }
   },
   computed: {
+    /*
     ...mapState('project', {
       project: state => state.selectedProject
     }),
+     */
     // task presenter already loaded in the project.vue component
     ...mapState('task', [
       'taskPresenter'
-    ])
+    ]),
+    ...mapState('c3s/project', {
+      project: state => state.project,
+      projectTasks: state => state.tasks
+    }, 'project', {
+      results: state => state.selectedProjectResults,
+      stats: state => state.selectedProjectStats,
+    }),
   },
   methods: {
     ...mapMutations('task', [
