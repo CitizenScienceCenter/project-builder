@@ -136,6 +136,9 @@ export default {
     ...mapMutations('task/importer', [
       'setDropboxFiles'
     ]),
+      ...mapActions('task/builder', {
+          resetTaskBuilder: 'reset'
+      }),
       /*
     ...mapActions('project', [
       'getProject'
@@ -144,6 +147,7 @@ export default {
   },
   watch: {
     steps (steps) {
+
       if (this.currentStep === 'material' && steps['material'] === true) {
 
         this.$router.push({ name: 'task.builder.job', params: { pid: 'id' in this.project ? this.project.id : 0 } })
@@ -162,6 +166,7 @@ export default {
 
       } else {
 
+          this.resetTaskBuilder()
         this.$router.push({ name: 'task.builder.material', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       }

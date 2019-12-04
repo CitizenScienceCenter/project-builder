@@ -451,8 +451,8 @@ export default {
       // test if all calls have been done correctly and redirects to the project detail page
       Promise.all([templatePromise, sourcePromise]).then(results => {
         if (results.filter(el => el !== false).length === 2) {
-          this.resetTaskBuilder()
-          this.$router.push({ name: 'project', params: { id: this.selectedProject.id } })
+          //this.resetTaskBuilder()
+          this.$router.push({ name: 'project', params: { pid: this.selectedProject.id } })
         } else {
           this.showError({
             title: 'Error during creation',

@@ -208,7 +208,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -227,7 +227,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -250,7 +250,7 @@ const router = new Router({
         },
         meta: {
           nav: false,
-          requiresAuth: true
+          requiresAccount: true
         }
       },
       {
@@ -389,7 +389,7 @@ const router = new Router({
             },
             meta: {
               nav: false,
-              requiresAuth: true
+              requiresAccount: true
             }
           },
           {
@@ -412,7 +412,7 @@ const router = new Router({
             },
             meta: {
               nav: false,
-              requiresAuth: false
+              requiresAccount: true
             }
           },
           {
@@ -435,7 +435,7 @@ const router = new Router({
             },
             meta: {
               nav: false,
-              requiresAuth: false
+              requiresAccount: true
             }
           },
           {
@@ -458,7 +458,7 @@ const router = new Router({
             },
             meta: {
               nav: false,
-              requiresAuth: false
+              requiresAccount: true
             }
           },
           {
@@ -481,7 +481,7 @@ const router = new Router({
             },
             meta: {
               nav: false,
-              requiresAuth: false
+              requiresAccount: true
             }
           }
         ]
@@ -516,7 +516,10 @@ router.beforeEach((to, from, next) => {
             next();
           }
           else {
-            next('/login');
+            store.dispatch('c3s/user/generateAnon').then(u => {
+              //console.log('generate anon');
+              next();
+            });
           }
         });
       }
@@ -534,7 +537,15 @@ router.beforeEach((to, from, next) => {
         next('/login');
       }
       else {
-        next();
+        store.dispatch('c3s/user/validate').then(v => {
+          //console.log('validation success');
+          if (v) {
+            next();
+          }
+          else {
+            next('/login');
+          }
+        });
       }
     }
     else {
