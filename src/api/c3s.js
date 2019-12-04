@@ -2,7 +2,7 @@ import store from '@/store'
 
 export default {
   updateTaskPresenter (project, tmplCode) {
-      let tmpl = project.info
+      let tmpl = Object.assign({}, project.info)
       tmpl['template'] = tmplCode
       return store.dispatch('c3s/project/updateProject', [project.id, { 'info': tmpl }]).then(response => {
         if (!response) {

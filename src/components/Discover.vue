@@ -206,8 +206,8 @@ export default {
        //this.projects = p.body.data;
         // init the tab 'all' to the first page
         //this.categoryAllPageChange(1)
-        this.projectsToLoad += p.body.data.length;
-        this.loadProject(0);
+        //this.projectsToLoad += p.body.data.length;
+        //this.loadProject(0);
       }
     })
   },
