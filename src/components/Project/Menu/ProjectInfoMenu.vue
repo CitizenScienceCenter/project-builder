@@ -1,6 +1,7 @@
 <template>
   <div>
 
+    <!--
     <div class="margin-bottom">
 
       <h2 class="heading centered">Stats</h2>
@@ -36,12 +37,9 @@
       </b-row>
 
     </div>
+    -->
 
-    <div class="margin-bottom">
-
-      <projectDescription></projectDescription>
-
-    </div>
+    <projectDescription></projectDescription>
 
 
   </div>
@@ -62,6 +60,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
