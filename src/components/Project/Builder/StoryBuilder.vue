@@ -8,7 +8,12 @@
             <div class="col col-large-6 col-xlarge-4 scroll-effect">
 
               <div class="margin-bottom">
-                <router-link class="button button-secondary button-secondary-naked" :to="{ name: 'project.builder.information' }" style="padding:0">Go Back</router-link>
+                <div class="button-group centered">
+                  <router-link class="button button-secondary button-icon button-secondary-naked" :to="{ name: 'project.builder.information' }">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M159.69,239l136-136a23.9,23.9,0,0,1,33.9,0l22.6,22.6a23.9,23.9,0,0,1,0,33.9L255.89,256l96.4,96.4a23.9,23.9,0,0,1,0,33.9L329.69,409a23.9,23.9,0,0,1-33.9,0l-136-136a23.93,23.93,0,0,1-.1-34Z"/></svg>
+                    Go Back
+                  </router-link>
+                </div>
               </div>
 
               <h2 class="heading centered">We want to know all about your project!</h2>

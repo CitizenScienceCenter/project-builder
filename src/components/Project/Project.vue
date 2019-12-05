@@ -50,11 +50,7 @@
               <template slot="title">Info</template>
               <template slot="content">
                 <div class="content-wrapper">
-                  <div class="row row-centered">
-                    <div class="col col-large-8">
-                      <projectInfoMenu></projectInfoMenu>
-                    </div>
-                  </div>
+                  <projectInfoMenu></projectInfoMenu>
                 </div>
               </template>
             </tab>

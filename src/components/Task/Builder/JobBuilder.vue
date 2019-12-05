@@ -9,7 +9,10 @@
 
               <div class="margin-bottom">
                 <div class="button-group centered">
-                  <button class="button button-secondary button-secondary-naked" @click="goBack" style="padding:0">Go Back</button>
+                  <button class="button button-secondary button-icon button-secondary-naked" @click="goBack">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M159.69,239l136-136a23.9,23.9,0,0,1,33.9,0l22.6,22.6a23.9,23.9,0,0,1,0,33.9L255.89,256l96.4,96.4a23.9,23.9,0,0,1,0,33.9L329.69,409a23.9,23.9,0,0,1-33.9,0l-136-136a23.93,23.93,0,0,1-.1-34Z"/></svg>
+                    Go Back
+                  </button>
                 </div>
               </div>
 

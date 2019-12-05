@@ -1,18 +1,29 @@
 <template>
   <div>
 
-    <h2 class="heading centered">Project Purpose</h2>
-    <p class="centered">{{ description.whatWhy }}</p>
+    <div class="row row-wrapping row-centered">
 
-    <h2 class="heading centered">Usage of Results</h2>
-    <p class="centered">{{ description.how }}</p>
+      <div class="col col-wrapping col-large-5">
+        <h2 class="heading centered">Project Purpose</h2>
+        <p class="centered">{{ description.whatWhy }}</p>
+      </div>
 
-    <h2 class="heading centered">Who should contribute</h2>
-    <p class="centered">{{ description.who }}</p>
+      <div class="col col-wrapping col-large-5">
+        <h2 class="heading centered">Usage of Results</h2>
+        <p class="centered">{{ description.how }}</p>
+      </div>
 
-    <h2 class="heading centered">Contact Information</h2>
-    <p class="centered">{{ description.keepTrack }}</p>
+      <div class="col col-wrapping col-large-5">
+        <h2 class="heading centered">Who should contribute</h2>
+        <p class="centered">{{ description.who }}</p>
+      </div>
 
+      <div class="col col-wrapping col-large-5">
+        <h2 class="heading centered">Contact Information</h2>
+        <p class="centered">{{ description.keepTrack }}</p>
+      </div>
+
+    </div>
     <!--
     <b-row>
       <b-col>

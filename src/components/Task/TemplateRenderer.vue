@@ -38,7 +38,7 @@
 
     <app-footer></app-footer>
 
-
+    <!--
     <b-row class="mt-4 mb-4">
       <b-col>
         <b-link v-if="template" :to="{ name: 'project.task.presenter.editor', params: { pid: this.pid, template: this.template } }">Go back to the editor</b-link>
@@ -55,6 +55,7 @@
 
       </b-col>
     </b-row>
+    -->
   </div>
 </template>
 
