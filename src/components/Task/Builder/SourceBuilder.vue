@@ -147,7 +147,7 @@ export default {
   },
   created () {
     //this.selectedSource = this.task.source
-    this.selectedSource = 'csv'
+    //this.selectedSource = 'csv'
     console.log(this.materialSources)
   },
   methods: {

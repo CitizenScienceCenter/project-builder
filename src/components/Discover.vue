@@ -199,7 +199,7 @@ export default {
     //     })
     //   })
     // })
-    this.$store.dispatch('c3s/project/getProjects', [,30,30]).then((p) => {
+    this.$store.dispatch('c3s/project/getProjects', [undefined,10,40]).then((p) => {
     // get all the projects only for the 'all' tab
     //this.getProjectActivities(this.projectId).then((p) => {
       console.log( p )
@@ -207,8 +207,8 @@ export default {
        //this.projects = p.body.data;
         // init the tab 'all' to the first page
         //this.categoryAllPageChange(1)
-        this.projectsToLoad += p.body.data.length;
-        this.loadProject(0);
+       this.projectsToLoad += p.body.data.length;
+       this.loadProject(0);
       }
     })
   },

@@ -151,13 +151,10 @@ export default {
      * Called when the dynamic component start
      */
     run () {
-      console.log('run called');
-      this.getProjectTask({pid:this.pid}).then(t => {
-        console.log('getProjectTask:');
+      this.getProjectTask({pid:this.pid, random: false, index: this.taskIndex}).then(t => {
         console.log(t)
       })
       this.getProjectTasks(this.pid).then((t) => {
-        console.log('getProjectTasks:');
         console.log(t);
         this.task = this.tasks[this.taskIndex]
         this.getTaskMedia(this.task.id).then(m => {

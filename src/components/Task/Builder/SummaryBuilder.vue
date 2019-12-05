@@ -284,6 +284,7 @@ import TwitterDescriptionTemplate from '@/components/Task/Template/Twitter/Twitt
 
 import ContentSection from '@/components/shared/ContentSection.vue';
 
+
 export default {
   name: 'SummaryBuilder',
   components: {
@@ -422,10 +423,10 @@ export default {
       }
       // Dropbox
       else if (this.task.source === this.sources.dropbox) {
-        sourcePromise = this.importDropboxTasks({
-          project: this.selectedProject,
-          files: this.task.sourceContent
-        })
+        sourcePromise = api.createMediaCloudTasks(
+          this.selectedProject,
+          this.task.sourceContent
+        )
       }
       // Flickr
       else if (this.task.source === this.sources.flickr) {
@@ -450,8 +451,7 @@ export default {
       /// --------------------------------------------------
       // test if all calls have been done correctly and redirects to the project detail page
       Promise.all([templatePromise, sourcePromise]).then(results => {
-        if (results.filter(el => el !== false).length === 2) {
-          //this.resetTaskBuilder()
+        if (results.filter(el => el === true || el.ok === true).length === 2) {
           this.$router.push({ name: 'project', params: { pid: this.selectedProject.id } })
         } else {
           this.showError({

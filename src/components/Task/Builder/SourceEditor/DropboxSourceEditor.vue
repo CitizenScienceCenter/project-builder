@@ -37,7 +37,7 @@ export default {
   name: 'DropboxSourceEditor',
   data: () => {
     return {
-      selectedFiles: []
+      selectedFiles: [],
     }
   },
   mounted () {
@@ -63,8 +63,13 @@ export default {
       const dropbox = window.Dropbox
       const options = {
         success: (files) => {
+          files.forEach(f => {
+            f['info'] = {}
+            f['info']['path'] = f.link
+          })
           this.selectedFiles = files
           this.setDropboxFiles(files)
+          // TODO handle upload here
         },
         extensions: this.materialExtensions[this.task.material],
         linkType: 'direct',
