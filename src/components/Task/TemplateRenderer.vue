@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div class="back-link-area">
-      <div class="button-group centered">
+    <div class="back-link-area centered">
         <router-link tag="button" class="button button-secondary button-secondary-naked button-icon" :to="{ name: 'project', params: { pid: this.pid } }">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M159.69,239l136-136a23.9,23.9,0,0,1,33.9,0l22.6,22.6a23.9,23.9,0,0,1,0,33.9L255.89,256l96.4,96.4a23.9,23.9,0,0,1,0,33.9L329.69,409a23.9,23.9,0,0,1-33.9,0l-136-136a23.93,23.93,0,0,1-.1-34Z"/></svg>
           Back to the Project Page
         </router-link>
         <router-link v-if="currentUser.info.isAdmin" tag="button" class="button button-secondary button-secondary-naked" :to="{ name: 'project.task.presenter.editor', params: { pid: this.pid, template: this.template } }">Edit Template</router-link>
-      </div>
     </div>
 
     <app-content-section class="templateRenderer">
