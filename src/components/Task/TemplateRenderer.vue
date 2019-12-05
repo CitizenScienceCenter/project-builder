@@ -1,24 +1,69 @@
 <template>
-  <b-row class="mt-4 mb-4">
-    <b-col>
-      <b-link v-if="template" :to="{ name: 'project.task.presenter.editor', params: { pid: this.pid, template: this.template } }">Go back to the editor</b-link>
-      <b-link v-else :to="{ name: 'project', params: { pid: this.pid } }">Go back to the project</b-link>
+  <div>
 
-      <div v-if="!taskPresenterLoaded" class="mt-4 text-center">
-        <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
+    <app-content-section>
+      <div class="content-wrapper">
+
+        <div class="margin-bottom">
+          <div class="row row-centered">
+            <div class="col">
+              <div class="button-group centered">
+                <router-link tag="button" class="button button-secondary button-secondary-naked button-icon" :to="{ name: 'project', params: { pid: this.pid } }">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M159.69,239l136-136a23.9,23.9,0,0,1,33.9,0l22.6,22.6a23.9,23.9,0,0,1,0,33.9L255.89,256l96.4,96.4a23.9,23.9,0,0,1,0,33.9L329.69,409a23.9,23.9,0,0,1-33.9,0l-136-136a23.93,23.93,0,0,1-.1-34Z"/></svg>
+                  Back to the Project Page
+                </router-link>
+                <router-link v-if="currentUser.info.isAdmin" tag="button" class="button button-secondary button-secondary-naked" :to="{ name: 'project.task.presenter.editor', params: { pid: this.pid, template: this.template } }">Edit Template</router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <template v-if="taskPresenterExists">
+          <component v-if="taskPresenterLoaded" ref="presenter" :is="presenterComponent" :pybossa="this"></component>
+          <Loader v-else></Loader>
+        </template>
+
+        <template v-else>
+          <div class="row row-centered">
+            <div class="col">
+              <p class="centered">
+                The project does not contain a task presenter
+              </p>
+            </div>
+          </div>
+        </template>
+
       </div>
+    </app-content-section>
 
-      <component class="mt-4" ref="presenter" v-if="taskPresenterExists" :is="presenterComponent" :pybossa="this"></component>
-      <div class="mt-4" v-else-if="taskPresenterLoaded">
-        <b-alert :show="true" variant="warning">The project does not contain a task presenter</b-alert>
-      </div>
+    <app-footer></app-footer>
 
-    </b-col>
-  </b-row>
+
+    <b-row class="mt-4 mb-4">
+      <b-col>
+        <b-link v-if="template" :to="{ name: 'project.task.presenter.editor', params: { pid: this.pid, template: this.template } }">Go back to the editor</b-link>
+        <b-link v-else :to="{ name: 'project', params: { pid: this.pid } }">Go back to the project</b-link>
+
+        <div v-if="!taskPresenterLoaded" class="mt-4 text-center">
+          <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Task presenter loading..."></b-spinner>
+        </div>
+
+        <component class="mt-4" ref="presenter" v-if="taskPresenterExists" :is="presenterComponent" :pybossa="this"></component>
+        <div class="mt-4" v-else-if="taskPresenterLoaded">
+          <b-alert :show="true" variant="warning">The project does not contain a task presenter</b-alert>
+        </div>
+
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+
+import ContentSection from '@/components/shared/ContentSection.vue';
+import Footer from '@/components/shared/Footer.vue';
+import Loader from "@/components/shared/Loader";
 
 export default {
   name: 'TemplateRenderer',
@@ -28,10 +73,14 @@ export default {
       required: true
     }
   },
+  components: {
+    Loader,
+    'app-content-section': ContentSection,
+    'app-footer': Footer,
+  },
   created () {
     this.getProject(this.pid).then(() => {
       this.taskPresenterLoaded = true
-      console.log(this.project.info)
       this.template = this.project.info.template
       this.taskPresenterExists = true
     })
@@ -58,7 +107,7 @@ export default {
     }),
     // user data
     ...mapState('c3s/user', {
-      isUserLogged: state => state.currentUser,
+      currentUser: state => state.currentUser,
       userId: state => state.currentUser.id,
       userApiKey: state => state.currentUser.api_key
     }),
@@ -102,10 +151,14 @@ export default {
      * Called when the dynamic component start
      */
     run () {
+      console.log('run called');
       this.getProjectTask({pid:this.pid}).then(t => {
+        console.log('getProjectTask:');
         console.log(t)
       })
       this.getProjectTasks(this.pid).then((t) => {
+        console.log('getProjectTasks:');
+        console.log(t);
         this.task = this.tasks[this.taskIndex]
         this.getTaskMedia(this.task.id).then(m => {
           this.taskLoaded = true
@@ -152,6 +205,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

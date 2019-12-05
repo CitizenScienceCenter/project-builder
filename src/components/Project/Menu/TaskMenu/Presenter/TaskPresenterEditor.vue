@@ -1,33 +1,79 @@
 <template>
-  <b-row>
-    <b-col>
-      <b-breadcrumb :items="items"></b-breadcrumb>
+  <div>
 
-      <div class="mt-2 clearfix">
-        <h2 class="float-left">Task presenter editor</h2>
+    <breadcrumb :items="items"></breadcrumb>
 
-        <!-- Buttons -->
-        <div class="float-right">
-          <b-btn ref="btn-preview" variant="secondary" @click="previewPresenter">Preview task presenter</b-btn>
-          <b-btn
-            v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you are doing."
-            ref="btn-update-presenter"
-            variant="success"
-            @click="updatePresenter"
-          >
-            Update task presenter
-          </b-btn>
+    <app-content-section>
+      <div class="content-wrapper">
+        <div class="row row-centered">
+          <div class="col scroll-effect">
+
+            <div class="mt-2 clearfix">
+              <h2 class="float-left">Task presenter editor</h2>
+
+              <!-- Buttons -->
+              <div class="float-right">
+                <b-btn ref="btn-preview" variant="secondary" @click="previewPresenter">Preview task presenter</b-btn>
+                <b-btn
+                        v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you are doing."
+                        ref="btn-update-presenter"
+                        variant="success"
+                        @click="updatePresenter"
+                >
+                  Update task presenter
+                </b-btn>
+              </div>
+
+            </div>
+
+            <div class="mt-2 clearfix">
+              <i class="float-left">This editor is reserved for expert users having coding skills. Edit and update at your own risk!</i>
+            </div>
+
+            <codemirror class="mt-3 float-none" ref="code-mirror" v-model="code" :options="cmOptions"></codemirror>
+
+          </div>
+        </div>
+      </div>
+    </app-content-section>
+
+    <!--
+    <br>
+    <br>
+    <br>
+    <br>
+    <b-row>
+      <b-col>
+        <b-breadcrumb :items="items"></b-breadcrumb>
+
+        <div class="mt-2 clearfix">
+          <h2 class="float-left">Task presenter editor</h2>
+
+
+          <div class="float-right">
+            <b-btn ref="btn-preview" variant="secondary" @click="previewPresenter">Preview task presenter</b-btn>
+            <b-btn
+              v-b-tooltip.hover title="This editor is reserved for expert users having 'coding' skills. Update the presenter only if you know what you are doing."
+              ref="btn-update-presenter"
+              variant="success"
+              @click="updatePresenter"
+            >
+              Update task presenter
+            </b-btn>
+          </div>
+
         </div>
 
-      </div>
+        <div class="mt-2 clearfix">
+          <i class="float-left">This editor is reserved for expert users having coding skills. Edit and update at your own risk!</i>
+        </div>
 
-      <div class="mt-2 clearfix">
-        <i class="float-left">This editor is reserved for expert users having coding skills. Edit and update at your own risk!</i>
-      </div>
+        <codemirror class="mt-3 float-none" ref="code-mirror" v-model="code" :options="cmOptions"></codemirror>
+      </b-col>
+    </b-row>
 
-      <codemirror class="mt-3 float-none" ref="code-mirror" v-model="code" :options="cmOptions"></codemirror>
-    </b-col>
-  </b-row>
+    -->
+  </div>
 </template>
 
 <script>
@@ -35,13 +81,21 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 import api from '@/api/c3s'
 
+
+import ContentSection from '@/components/shared/ContentSection.vue';
+import Footer from '@/components/shared/Footer.vue';
+
 import 'codemirror/mode/vue/vue.js'
 import { codemirror } from 'vue-codemirror'
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default {
   name: 'TaskPresenterEditor',
   components: {
-    codemirror
+    Breadcrumb,
+    codemirror,
+    'app-content-section': ContentSection,
+    'app-footer': Footer,
   },
   created () {
     this.getProject(this.pid).then(() => {
@@ -100,13 +154,16 @@ export default {
     items () {
       return [
         {
-          html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
-          to: { name: 'project', params: { pid: this.project.id } }
+          //html: '<i class="fas fa-home"></i>&ensp;<span>Project</span>',
+          text: 'Template',
+          to: { name: 'project.task.presenter', params: { pid: this.project.id, template: this.code } }
         },
+              /*
         {
           text: 'Task Presenter',
           to: { name: 'project.task.presenter.settings', params: { pid: this.project.id } }
         },
+               */
         {
           text: 'Editor',
           active: false

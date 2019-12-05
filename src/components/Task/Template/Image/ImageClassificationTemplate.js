@@ -1,14 +1,50 @@
 // eslint-disable-next-line no-unused-vars
 const component = {
   template: `
-      <!-- This template use https://bootstrap-vue.js.org/ -->
+<div>
 
+  <div v-if="pybossa.task" class="row row-centered">
+    
+      <div class="col col-large-6">
+        <img v-if="media && media.length > 0" :src="media[0].path" />
+        <Loader v-else></Loader>
+      </div>
+    
+      <div class="col col-large-6">
+      
+        <div class="form-field form-field-block" :key="key" v-for="(question, key) in task.content" >
+            <label>{{ question.question }}</label>
+            <div class="options">
+              <label v-for="(answer,key2) in question.answers" :key="key2">
+                  <input type="radio" :value="answer" v-model="answers[key]">
+                  <div class="radio">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z"/></svg>
+                  </div>
+                  <span>{{ answer }}</span>
+              </label>
+            </div>
+        </div>
+        
+        <div class="button-group right-aligned">
+            <button @click="submit" class="button button-primary" :disabled="!isFormValid()">Submit</button>
+        </div>
+      </div>
+      
+  </div>
+  <div v-else class="row row-centered">
+      <div class="col col-large-6">
+          <p class="centered">
+              Thanks you for your participation
+          </p>
+      </div>
+  </div>
+<!--
       <b-row v-if="pybossa.task">
         
-        <!-- Form zone -->
+        
         <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
         
-          <!-- Questions with answers -->
+          
           <b-form-group :key="key" v-for="(question, key) in task.content" :label="question.question" label-size="lg">
           
             <b-form-radio-group 
@@ -20,16 +56,16 @@ const component = {
             
           </b-form-group>
           
-          <!-- Submit button -->
+          
           <b-btn @click="submit" variant="success">Submit</b-btn>
           
-          <!-- Form validation errors -->
+          
           <b-alert variant="danger" v-model="showAlert" class="mt-2" dismissible>
             You must complete the form to submit
           </b-alert>
         </b-col>
         
-        <!-- Image -->
+        
         <b-col md="6" class="order-1 order-md-2">
           <div class="text-center">
             <div v-if="pybossa.taskLoaded">
@@ -40,12 +76,15 @@ const component = {
         </b-col>
       </b-row>
       
-      <!-- Task end message -->
+      
       <b-row v-else>
         <b-col>
           <b-jumbotron header="This is the end!" lead="Thanks you for your participation"></b-jumbotron>
         </b-col>
-      </b-row>`,
+      </b-row>
+-->
+
+</div>`,
 
   data: {
     questions: [{
@@ -59,6 +98,7 @@ const component = {
   },
   methods: {
     submit: function submit() {
+      console.log('submit is called');
       var _this = this;
 
       if (this.isFormValid()) {
