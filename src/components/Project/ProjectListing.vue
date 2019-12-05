@@ -1,6 +1,6 @@
 <template>
     <div class="scroll-effect">
-        <div class="margin-bottom" v-show="loadedProjects.length >= 2">
+        <div class="margin-bottom" v-show="loadedProjects.length >= Math.min( 6, limit)">
             <div class="margin-bottom">
                 <div class="row row-wrapping row-centered">
                     <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <Loader v-show="loadedProjects.length < 2"></Loader>
+        <Loader v-show="loadedProjects.length < Math.min( 6, limit)"></Loader>
     </div>
 </template>
 
