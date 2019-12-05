@@ -78,19 +78,19 @@ const state = {
   // available sources for each material type
   materialSources: {
     [materials.image]: [
-//    sources.amazon,
-//   sources.dropbox,
-//  sources.flickr,
+      //    sources.amazon,
+      sources.dropbox,
+      //  sources.flickr,
       sources.csv
     ],
     [materials.sound]: [
-//      sources.amazon,
-//     sources.dropbox,
+      //      sources.amazon,
+      sources.dropbox,
       sources.csv
     ],
     [materials.pdf]: [
-//      sources.amazon,
-//     sources.dropbox,
+      //      sources.amazon,
+      sources.dropbox,
       sources.csv
     ],
     [materials.tweet]: [
@@ -98,8 +98,8 @@ const state = {
       sources.csv
     ],
     [materials.video]: [
-//      sources.amazon,
-//     sources.dropbox,
+      //      sources.amazon,
+      sources.dropbox,
       sources.csv
     ]
   },
