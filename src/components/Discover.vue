@@ -199,9 +199,10 @@ export default {
     //     })
     //   })
     // })
-  this.$store.dispatch('c3s/project/getProjects', [,30,]).then((p) => {
+    this.$store.dispatch('c3s/project/getProjects', [,30,30]).then((p) => {
     // get all the projects only for the 'all' tab
     //this.getProjectActivities(this.projectId).then((p) => {
+      console.log( p )
       if (p.status === 200) {
        //this.projects = p.body.data;
         // init the tab 'all' to the first page

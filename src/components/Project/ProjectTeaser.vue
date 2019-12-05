@@ -6,6 +6,7 @@
 
                 <h3>{{ project.name }}</h3>
                 <p>{{ project.info.shortDescription }}</p>
+
                 <div class="button-group">
                     <router-link class="button button-primary" :to="{ name: 'project', params: { pid: project.id } }">Go to Project</router-link>
                 </div>
@@ -69,6 +70,14 @@
             }
 
 
+            min-height: 240px;
+
+            .button-group {
+                position: absolute;
+                bottom: $spacing-2;
+                left: $spacing-2;
+            }
+
         }
         .overlay {
             background: linear-gradient(120deg, $color-gradient-start, $color-gradient-end );
@@ -92,6 +101,23 @@
             background-position: 50% 50%;
         }
 
+
+    }
+
+    @media only screen and (min-width: $viewport-large) {
+
+
+        .project {
+
+            .project-info {
+            }
+            .overlay {
+            }
+            .project-bg-image {
+            }
+
+
+        }
 
     }
 
