@@ -7,13 +7,11 @@
           <div class="row row-centered">
             <div class="col col-large-6 col-xlarge-4 scroll-effect">
 
-              <!--
-              <div class="margin-bottom" v-if="!selectedSource && materialSources[task.material].length > 1">
+              <div class="margin-bottom" v-if="selectedSource">
                 <div class="button-group centered">
-                  <button class="button button-secondary button-secondary-naked" @click="goBack" style="padding:0">Go back: select another source</button>
+                  <button class="button button-secondary button-secondary-naked" @click="goBack">Back</button>
                 </div>
               </div>
-              -->
 
               <h2 class="heading centered">Select Source</h2>
 
