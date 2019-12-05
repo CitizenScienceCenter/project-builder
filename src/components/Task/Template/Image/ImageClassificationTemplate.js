@@ -3,14 +3,14 @@ const component = {
   template: `
 <div>
 
-  <div v-if="pybossa.task" class="row row-centered">
+  <div v-if="pybossa.task" class="row row-centered row-wrapping">
     
-      <div class="col col-large-6">
+      <div class="col col-wrapping col-large-6">
         <img v-if="media && media.length > 0" :src="media[0].path" />
         <Loader v-else></Loader>
       </div>
     
-      <div class="col col-large-6">
+      <div class="col col-wrapping col-large-6">
       
         <div class="form-field form-field-block" :key="key" v-for="(question, key) in task.content" >
             <label>{{ question.question }}</label>

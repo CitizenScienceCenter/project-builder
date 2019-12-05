@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <app-content-section>
+    <app-content-section class="templateRenderer">
       <div class="content-wrapper">
 
         <div class="margin-bottom">
@@ -202,6 +202,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+  @import '@/styles/theme.scss';
+  @import '@/styles/shared/variables.scss';
+
+  .templateRenderer {
+    img {
+      min-width: 100%;
+      border-radius: $border-radius;
+    }
+  }
 
 </style>
