@@ -31,6 +31,16 @@
         </div>
       </project-cover>
 
+      <app-content-section color="greyish" class="content-section-condensed stats-section">
+        <div class="content-wrapper">
+          <sub-section-stats
+                  :userCount="3"
+                  :submissionCount="343"
+                  :taskCount="1234" >
+          </sub-section-stats>
+        </div>
+      </app-content-section>
+
       <app-content-section>
 
         <div class="content-subsection scroll-effect">
@@ -49,6 +59,7 @@
               </template>
             </tab>
 
+            <!--
             <tab>
               <template slot="title">Results</template>
               <template slot="content">
@@ -61,9 +72,10 @@
                 </div>
               </template>
             </tab>
+            -->
 
             <tab v-if="isOwner">
-              <template slot="title">Tasks</template>
+              <template slot="title">Tasks & Results</template>
               <template slot="content">
                 <div class="content-wrapper">
                   <div class="row row-centered">
@@ -75,6 +87,7 @@
               </template>
             </tab>
 
+            <!--
             <tab>
               <template slot="title">Statistics</template>
               <template slot="content">
@@ -87,6 +100,7 @@
                 </div>
               </template>
             </tab>
+            -->
 
             <tab v-if="isOwner">
               <template slot="title">Edit Project</template>
@@ -214,6 +228,7 @@ import Footer from '@/components/shared/Footer.vue';
 import ProjectCover from "@/components/Project/ProjectCover";
 import TabbedContent from "@/components/shared/TabbedContent";
 import Tab from "@/components/shared/Tab";
+import SubSectionStats from "@/components/shared/SubSectionStats";
 
 export default {
   name: 'project',
@@ -230,6 +245,7 @@ export default {
     }
   },
   components: {
+    SubSectionStats,
     Tab,
     TabbedContent,
     ProjectEditor,
