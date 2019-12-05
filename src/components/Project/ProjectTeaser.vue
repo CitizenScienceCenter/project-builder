@@ -65,6 +65,7 @@
             }
 
             p {
+                width: 75%;
                 font-size: $font-size-small;
                 margin-bottom: $spacing-2;
             }
@@ -74,7 +75,7 @@
 
             .button-group {
                 position: absolute;
-                bottom: $spacing-2;
+                bottom: $spacing-3;
                 left: $spacing-2;
             }
 
@@ -110,6 +111,12 @@
         .project {
 
             .project-info {
+
+                min-height: 280px;
+
+                p {
+                    width: 50%;
+                }
             }
             .overlay {
             }

@@ -47,15 +47,13 @@
             <h2 class="heading centered">{{ $t('projects-header') }}</h2>
           </div>
         </div>
-        <div class="margin-bottom">
-          <div class="row row-wrapping row-centered scroll-effect">
-            <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
-              <ProjectTeaser :project="loadedProject[0]" :media="loadedProject[1]"></ProjectTeaser>
+        <ProjectListing :limit="6"></ProjectListing>
+        <div class="row">
+          <div class="col">
+            <div class="button-group centered">
+              <router-link tag="button" to="/discover" class="button button-secondary">All Projects</router-link>
             </div>
           </div>
-        </div>
-        <div class="button-group centered">
-          <router-link tag="button" to="/discover" class="button button-secondary">All Projects</router-link>
         </div>
       </div>
     </app-content-section>
@@ -128,10 +126,12 @@ import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
 import SectionNewsletterSignup from "@/components/shared/SectionNewsletterSignup";
 import ProjectTeaser from "@/components/Project/ProjectTeaser";
+import ProjectListing from "@/components/Project/ProjectListing";
 
 export default {
   name: 'Home',
   components: {
+    ProjectListing,
     ProjectTeaser,
     SectionNewsletterSignup,
       'app-cover': Cover,
@@ -161,7 +161,7 @@ export default {
   created () {
     this.$store.dispatch('c3s/project/getProjects', [,6,]).then(res => {
       this.projectsToLoad += res.body.data.length;
-      this.loadProject(0);
+      this.loadMediaForProject(0);
     });
   },
   methods: {
@@ -169,7 +169,7 @@ export default {
       'getProjects',
       'getProjectMedia'
     ]),
-    loadProject(index) {
+    loadMediaForProject(index) {
       if( index < this.projectsToLoad ) {
 
         this.getProjectMedia( this.projects[index].id ).then(media => {
@@ -183,7 +183,7 @@ export default {
 
           // load next
           if( this.loadedProjects.length < this.projects.length ) {
-            this.loadProject(index+1);
+            this.loadMediaForProject(index+1);
           }
         });
       }

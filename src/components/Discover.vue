@@ -13,7 +13,7 @@
 </i18n>
 
 <template>
-  <div v-if="loadedProjects.length > 6">
+  <div>
     <app-content-section>
       <div class="content-wrapper">
         <div class="row row-centered">
@@ -21,21 +21,13 @@
             <h2 class="heading centered">{{ $t('projects-header') }}</h2>
           </div>
         </div>
-        <div class="margin-bottom">
-          <div class="row row-wrapping row-centered scroll-effect">
-            <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
-              <ProjectTeaser :project="loadedProject[0]" :media="loadedProject[1]"></ProjectTeaser>
-            </div>
-          </div>
-        </div>
-        <div class="button-group centered">
-          <button class="button button-secondary">Show more Projects</button>
-        </div>
+        <ProjectListing :limit="20" showMore></ProjectListing>
       </div>
     </app-content-section>
 
     <app-footer></app-footer>
 
+  </div>
 
     <!--
     <br>
@@ -156,9 +148,6 @@
     </b-row>
 
     -->
-
-  </div>
-  <loader v-else></loader>
 </template>
 
 <script>
@@ -166,14 +155,12 @@ import { mapState, mapActions } from 'vuex'
 
 import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
-import ProjectTeaser from "@/components/Project/ProjectTeaser";
-import Loader from "@/components/shared/Loader";
+import ProjectListing from "@/components/Project/ProjectListing";
 
 export default {
   name: 'Discover',
   components: {
-    Loader,
-    ProjectTeaser,
+    ProjectListing,
     'app-content-section': ContentSection,
     'app-footer': Footer,
   },
@@ -199,18 +186,6 @@ export default {
     //     })
     //   })
     // })
-    this.$store.dispatch('c3s/project/getProjects', [undefined,10,40]).then((p) => {
-    // get all the projects only for the 'all' tab
-    //this.getProjectActivities(this.projectId).then((p) => {
-      console.log( p )
-      if (p.status === 200) {
-       //this.projects = p.body.data;
-        // init the tab 'all' to the first page
-        //this.categoryAllPageChange(1)
-       this.projectsToLoad += p.body.data.length;
-       this.loadProject(0);
-      }
-    })
   },
   data: () => {
     return {
@@ -220,10 +195,7 @@ export default {
         showedProjects: [],
         paginationSize: 20,
         currentPage: 1
-      },
-
-      projectsToLoad: 0,
-      loadedProjects: []
+      }
     }
   },
   methods: {
@@ -253,26 +225,6 @@ export default {
         category,
         page
       })
-    },
-
-    loadProject(index) {
-      if( index < this.projectsToLoad ) {
-
-        this.getProjectMedia( this.projects[index].id ).then(media => {
-
-          let projectMedia;
-          if( media.body.length ) {
-            projectMedia = media.body[0];
-          }
-
-          this.loadedProjects.push( [ this.projects[index], projectMedia ] );
-
-          // load next
-          if( this.loadedProjects.length < this.projects.length ) {
-            this.loadProject(index+1);
-          }
-        });
-      }
     }
   },
   computed: {
