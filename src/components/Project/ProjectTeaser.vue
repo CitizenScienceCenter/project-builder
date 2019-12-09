@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="project">
+        <router-link tag="div" :to="{ name: 'project', params: { pid: project.id } }" class="project">
 
             <div class="project-info">
 
@@ -20,7 +20,7 @@
             }"></div>
             <div v-else class="project-bg-image"></div>
 
-        </div>
+        </router-link>
     </div>
 </template>
 
@@ -102,6 +102,19 @@
             background-position: 50% 50%;
         }
 
+
+        &:active {
+            .button-primary {
+                background-color: $color-primary-shade-20;
+            }
+        }
+        @media (hover: hover) {
+            &:hover {
+                .button-primary {
+                    background-color: $color-primary-shade-20;
+                }
+            }
+        }
 
     }
 
