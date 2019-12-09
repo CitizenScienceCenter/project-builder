@@ -47,7 +47,7 @@
     "vue-scrollto": "^2.17.1",
     "vuelayers": "^0.11.9",
     "vuex": "^3.1.1",
-    "vuex-c3s": "^2.2.9-beta",
+    "vuex-c3s": "^2.3.1-beta",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
