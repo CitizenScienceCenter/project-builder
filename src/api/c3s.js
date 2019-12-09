@@ -20,24 +20,26 @@ export default {
   submitTask() {
 
   },
-  nextTask() {
+  nextTask () {
 
   },
-  getTask() {},
-  createMediaCloudTasks(project, files) {
+  getTask () {
+
+  },
+  createMediaCloudTasks (project, taskBuilder) {
     const task = {
       part_of: project.id,
       info: {
         path: []
       },
-      title: 'title',
-      content: {},
+      title: taskBuilder.job,
+      content: taskBuilder.template,
       required: true,
       allow_multiple: true,
       sequence: 0
     }
     let tasks = []
-    files.forEach(f => {
+    taskBuilder.sourceContent.forEach(f => {
       const t = Object.assign({}, task)
       t.info.path = f.info.path
       tasks.push(t)

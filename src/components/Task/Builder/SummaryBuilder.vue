@@ -425,7 +425,7 @@ export default {
       else if (this.task.source === this.sources.dropbox) {
         sourcePromise = api.createMediaCloudTasks(
           this.selectedProject,
-          this.task.sourceContent
+          this.task
         )
       }
       // Flickr
