@@ -61,6 +61,18 @@ import Loader from "@/components/shared/Loader";
 
 export default {
   name: 'TemplateRenderer',
+  metaInfo: function() {
+    return {
+      title: this.project.name,
+      meta: [
+        {
+          property: 'og:title',
+          content: this.project.name || 'Project Name',
+          template: '%s | '+this.$t('site-title')
+        }
+      ]
+    }
+  },
   props: {
     // project id
     pid: {
