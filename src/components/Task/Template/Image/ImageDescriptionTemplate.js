@@ -18,8 +18,7 @@ const component =
       
         <div class="form-field form-field-block" :key="index" v-for="(description, index) in task.content.descriptions" >
             <label>{{ description }}</label>
-            <input type="text" v-model="answers[index]" placeholder="Describe ..." />
-            <span class="error" v-if="!isFieldValid(answers[index])"></span>
+            <textarea rows="1" v-model="answers[index]" placeholder="Describe ..."></textarea>
         </div>
         
         <div class="button-group right-aligned">

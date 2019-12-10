@@ -2,11 +2,40 @@
 const component =
   {
     template: `
-      <!-- This template use https://bootstrap-vue.js.org/ -->
+<div>
 
+    <div v-if="pybossa.task" class="row row-centered row-wrapping">
+    
+      <div class="col col-wrapping col-large-6">
+        <img v-if="media && media.length > 0" :src="media[0].path" />
+        <Loader v-else></Loader>
+      </div>
+    
+      <div class="col col-wrapping col-large-6">
+      
+        <div class="form-field" >
+            <h3 class="subheading">{{question.question}}</h3>
+            <input type="number" v-model="count" />
+        </div>
+        
+        <div class="button-group right-aligned">
+            <button @click="answer(count)" class="button button-primary">Submit</button>
+        </div>
+        
+      </div>
+      
+  </div>
+  <div v-else class="row row-centered">
+      <div class="col col-large-6">
+          <p class="centered">
+              Thanks you for your participation
+          </p>
+      </div>
+  </div>
+<!--      
       <b-row v-if="pybossa.task">
         
-        <!-- Form -->
+        
         <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
           
           <h2>{{ question }}</h2>
@@ -16,7 +45,7 @@ const component =
           
         </b-col>
         
-        <!-- Image -->
+        
         <b-col md="6" class="order-1 order-md-2">
           <div v-if="media && media.length > 0" class="text-center">
             <div v-if="pybossa.taskLoaded">
@@ -28,12 +57,14 @@ const component =
         </b-col>
       </b-row>
       
-      <!-- Task end message -->
+      
       <b-row v-else>
         <b-col>
           <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>
         </b-col>
-      </b-row>`,
+      </b-row>
+      -->
+</div>`,
 
     /* All template data */
     data: {
@@ -43,7 +74,8 @@ const component =
 
     methods: {
       answer (answer) {
-        this.pybossa.saveTask(answer)
+        this.pybossa.saveTask(answer);
+        this.count = 0;
       }
     },
 
