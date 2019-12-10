@@ -39,15 +39,16 @@ export default {
       sequence: 0
     }
     let tasks = []
-    taskBuilder.sourceContent.forEach(f => {
-      const t = Object.assign({}, task)
-      t.info.path = f.info.path
-      tasks.push(t)
-    })
+    for (let i = 0; i < taskBuilder.sourceContent.length; i++) {
+      tasks.push(JSON.parse(JSON.stringify(task))) // stupid JS hack to deal with non standard assign implementation
+      tasks[i].info.path = taskBuilder.sourceContent[i].info.path
+    }
+    console.log(tasks)
     return store.dispatch('c3s/task/createTasks', tasks).then(res => {
       let createdTasks = res.body.data
       let media = []
       createdTasks.forEach(t => {
+        console.log(t)
         const m = {
           path: t.info.path,
           source_id: t.id,
