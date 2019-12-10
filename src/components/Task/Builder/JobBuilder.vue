@@ -171,7 +171,8 @@ export default {
     },
     goBack () {
       // invalidate job step and go to material selection
-      this.setStep({ step: 'job', value: false })
+      //this.setStep({ step: 'material', value: false })
+      this.$router.push({ name: 'task.builder.material', params: { pid: this.selectedProject.id } })
     }
   }
 }

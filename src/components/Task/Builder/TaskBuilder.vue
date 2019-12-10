@@ -166,7 +166,6 @@ export default {
 
       } else {
 
-          this.resetTaskBuilder()
         this.$router.push({ name: 'task.builder.material', params: { pid: 'id' in this.project ? this.project.id : 0 } })
 
       }

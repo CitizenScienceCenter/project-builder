@@ -43,6 +43,7 @@
                   </button>
                   <div class="info">This task allows you to present videos to an user in order for him to either describe them or classify them.</div>
 
+                  <!--
                   <button class="button button-icon button-toggle button-toggle-fullwidth"
                           :class="{ 'selected': selectedMaterial === materials.pdf }"
                           @click="onMaterialSelected(materials.pdf)">
@@ -66,6 +67,7 @@
                     Geo Coding
                   </button>
                   <div class="info">This task allows you to present places on a map to an user. The user can answer your question by placing a marker on the map that will give you some coordinates.</div>
+                  -->
 
                 </div>
               </div>
