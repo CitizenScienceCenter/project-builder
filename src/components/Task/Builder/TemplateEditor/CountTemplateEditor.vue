@@ -67,7 +67,7 @@ export default {
       this.isFirstInteraction = false
 
       if (this.validated) {
-        this.setTaskTemplate(JSON.parse(JSON.stringify(this.question)))
+        this.setTaskTemplate(JSON.parse(JSON.stringify( { 'question':this.question } )))
         this.setStep({ step: 'template', value: true })
       } else {
         this.showError({ title: 'Incomplete form', content: 'You have to provide a correct question' })

@@ -82,7 +82,7 @@ export default {
   components: {
     Loader,
     'app-content-section': ContentSection,
-    'app-footer': Footer,
+    'app-footer': Footer
   },
   created () {
     this.getProject(this.pid).then(() => {

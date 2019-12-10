@@ -13,7 +13,7 @@ const component = {
       <div class="col col-wrapping col-large-6">
       
         <div class="form-field form-field-block" :key="key" v-for="(question, key) in task.content" >
-            <label>{{ question.question }}</label>
+            <h3 class="subheading">{{ question.question }}</h3>
             <div class="options">
               <label v-for="(answer,key2) in question.answers" :key="key2">
                   <input type="radio" :value="answer" v-model="answers[key]">

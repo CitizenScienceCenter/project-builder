@@ -77,7 +77,7 @@
                     <div v-if="task.job === jobs.count">
                       <div class="form-field form-field-block">
                         <label>Question</label>
-                        {{task.template}}
+                        {{task.template.question}}
                       </div>
                     </div>
 

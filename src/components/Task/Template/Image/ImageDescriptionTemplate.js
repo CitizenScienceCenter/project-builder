@@ -3,16 +3,50 @@ const component =
   {
     template: `
       <!-- This template use https://bootstrap-vue.js.org/ -->
+<div>
+    
+  <div v-if="pybossa.task" class="row row-centered row-wrapping">
+    
+      <div class="col col-wrapping col-large-6">
+        <img v-if="media && media.length > 0" :src="media[0].path" />
+        <Loader v-else></Loader>
+      </div>
+    
+      <div class="col col-wrapping col-large-6">
+      
+        <h3 class="subheading">{{question}}</h3>
+      
+        <div class="form-field form-field-block" :key="index" v-for="(description, index) in task.content.descriptions" >
+            <label>{{ description }}</label>
+            <input type="text" v-model="answers[index]" placeholder="Describe ..." />
+            <span class="error" v-if="!isFieldValid(answers[index])"></span>
+        </div>
+        
+        <div class="button-group right-aligned">
+            <button @click="submit" class="button button-primary" :disabled="!isFormValid()">Submit</button>
+        </div>
+      </div>
+      
+  </div>
+  <div v-else class="row row-centered">
+      <div class="col col-large-6">
+          <p class="centered">
+              Thanks you for your participation
+          </p>
+      </div>
+  </div>
   
+  <!--
+    
       <b-row v-if="pybossa.task">
       
-        <!-- Form zone -->
+      
         <b-col md="6" class="mt-4 mt-md-0 order-2 order-md-1">
           <h2>{{ question }}</h2>
     
           <b-form-group
               :key="index"
-              v-for="(description, index) in task.content"
+              v-for="(description, index) in task.content.descriptions"
               :label="description"
               label-size="lg"
               :state="isFieldValid(answers[index])"
@@ -24,14 +58,14 @@ const component =
          
           <b-button @click="submit" variant="primary" class="mt-2">Submit</b-button>
           
-          <!-- Form validation errors -->
+          
           <b-alert variant="danger" v-model="showAlert" class="mt-2" dismissible>
             You must complete the form to submit
           </b-alert>
           
         </b-col>
         
-        <!-- Media -->
+        
         <b-col md="6" class="order-1 order-md-2">
             <div v-if="media && media.length > 0" class="text-center">
               <div v-if="pybossa.taskLoaded">
@@ -44,12 +78,15 @@ const component =
         </b-col>
       </b-row>
       
-      <!-- Task end message -->
+      
       <b-row v-else>
         <b-col>
           <b-jumbotron header="This the end!" lead="Thanks you for your participation"></b-jumbotron>
         </b-col>
-      </b-row>`,
+      </b-row>
+      
+      -->
+</div>`,
 
     data: {
       question: 'Describe the picture',
@@ -59,6 +96,12 @@ const component =
       answers: [],
       showAlert: false
     },
+      props: {
+          /* Injected by the Pybossa App */
+          pybossa: {
+              required: true
+          }
+      },
 
     methods: {
       submit () {
@@ -86,7 +129,10 @@ const component =
       },
       taskInfo () {
         return this.task.info
-      }
+      },
+        media: function media() {
+            return this.pybossa.media;
+        }
     },
 
     created () {
@@ -97,12 +143,7 @@ const component =
       this.pybossa.run()
     },
 
-    props: {
-      /* Injected by the Pybossa App */
-      pybossa: {
-        required: true
-      }
-    }
+
   }
 
 export default component

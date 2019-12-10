@@ -20,7 +20,7 @@
       </div>
     </div>
 
-
+    <h3 class="subheading" v-if="files">{{ files.length }} Files selected:</h3>
     <ul v-if="files">
       <li :key="file.id" v-for="file in files">
         <a :href="file.link" target="_blank">{{ file.name }}</a>
