@@ -88,7 +88,7 @@
           <span class="message info">Authorized formats: .jpg, .png, .gif, .svg. <br>The picture must not exceed {{ maxPictureSizeInMb }} MB.</span>
         </div>
 
-        <div v-if="picture" class="margin-bottom">
+        <div v-if="pictureSizeInMb <= maxPictureSizeInMb && picture" class="margin-bottom">
           <img :src="picture"/>
         </div>
 
