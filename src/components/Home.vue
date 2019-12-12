@@ -47,7 +47,9 @@
             <h2 class="heading centered">{{ $t('projects-header') }}</h2>
           </div>
         </div>
-        <ProjectListing :limit="6"></ProjectListing>
+        <div class="margin-bottom scroll-effect">
+          <ProjectListing :limit="6"></ProjectListing>
+        </div>
         <div class="row">
           <div class="col">
             <div class="button-group centered">

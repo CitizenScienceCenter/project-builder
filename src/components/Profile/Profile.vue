@@ -47,7 +47,35 @@
                 <div class="row">
                   <div class="col">
 
-                    <!-- The list of projects -->
+                    <ProjectListing :search="{
+                    'select': {
+                      'fields': [
+                        '*'
+                      ],
+                      'tables': [
+                        'projects'
+                      ],
+                      'orderBy': {
+                        'created_at': 'DESC'
+                      }
+                    },
+                    'where': [
+                      {
+                        'field': 'owner',
+                        'op': 'e',
+                        'val': this.currentUser.id
+                      },
+                      {
+                        'field': 'active',
+                        'op': 'e',
+                        'val': true,
+                        'join': 'a'
+                      }
+                    ]
+                    }" :limit="20" showMore></ProjectListing>
+
+                    <!--
+
                     <b-row v-if="activeProjects.length > 0">
                       <b-col :key="project.id" v-for="project in activeProjects" md="4" class="mt-3">
 
@@ -73,6 +101,8 @@
                       </b-col>
                     </b-row>
 
+                    -->
+
 
                   </div>
                 </div>
@@ -89,7 +119,35 @@
                 <div class="row">
                   <div class="col">
 
-                    <!-- The list of projects -->
+                    <ProjectListing :search="{
+                    'select': {
+                      'fields': [
+                        '*'
+                      ],
+                      'tables': [
+                        'projects'
+                      ],
+                      'orderBy': {
+                        'created_at': 'DESC'
+                      }
+                    },
+                    'where': [
+                      {
+                        'field': 'owner',
+                        'op': 'e',
+                        'val': this.currentUser.id
+                      },
+                      {
+                        'field': 'active',
+                        'op': 'e',
+                        'val': false,
+                        'join': 'a'
+                      }
+                    ]
+                    }" :limit="20" showMore></ProjectListing>
+
+
+                    <!--
                     <b-row v-if="draftProjects.length > 0">
                       <b-col :key="project.id" v-for="project in draftProjects" md="4" class="mt-3">
 
@@ -116,6 +174,8 @@
                       </b-col>
                     </b-row>
 
+                    -->
+
 
                   </div>
                 </div>
@@ -123,6 +183,7 @@
 
             </template>
           </tab>
+
 
           <tab>
             <template slot="title">Your Contributions</template>
@@ -132,7 +193,8 @@
                 <div class="row">
                   <div class="col">
 
-                    <!-- The list of projects -->
+                    todo
+                    <!--
                     <b-row v-if="contributedProjects.length > 0">
                       <b-col :key="project.id" v-for="project in contributedProjects" md="4" class="mt-3">
 
@@ -157,6 +219,7 @@
                         <b-btn variant="outline-secondary" :to="{ name: 'discover' }">Find a project</b-btn>
                       </b-col>
                     </b-row>
+                    -->
 
 
                   </div>
@@ -191,12 +254,14 @@
 
 
 
+    <!--
     <ProfileHeader class="mt-4"></ProfileHeader>
 
 
     <ProfileEditor v-if="isInEditionMode" class="mt-4"></ProfileEditor>
     <ProfileView v-else class="mt-4" v-bind:draftProjects="draftProjects" v-bind:activeProjects="activeProjects"></ProfileView>
-
+    -->
+    
   </div>
 </template>
 
@@ -211,10 +276,12 @@ import Footer from '@/components/shared/Footer.vue';
 import SubSectionStats from "@/components/shared/SubSectionStats";
 import TabbedContent from "@/components/shared/TabbedContent";
 import Tab from "@/components/shared/Tab";
+import ProjectListing from "@/components/Project/ProjectListing";
 
 export default {
   name: 'Profile',
   components: {
+    ProjectListing,
     Tab,
     TabbedContent,
     SubSectionStats,
@@ -275,7 +342,7 @@ export default {
       isInEditionMode: state => state.isInProfileEditionMode
     }),
     ...mapState('c3s/user', {
-      profile: state => state.currentUser,
+      currentUser: state => state.currentUser,
       projects: state => state.projects,
       submissions: state => state.submissions
     }),

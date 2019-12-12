@@ -267,8 +267,9 @@ export default {
       };
     },
     checkUsername() {
-      this.$store.dispatch('c3s/user/checkUsername', this.username ).then(res => {
-        if( res.status === 200 ) {
+      console.log('check username');
+      this.$store.dispatch('c3s/user/checkUsername', this.form.username ).then(res => {
+        if( res.status !== 404 ) {
           this.errors.username = true;
         }
       });
@@ -281,9 +282,11 @@ export default {
       this.saveInProgress = true;
       this.$store.dispatch('c3s/user/updateUser', [ this.currentUser.id, this.getUserObject() ] ).then(r => {
 
+        console.log( 'update response: ');
         console.log( r );
         this.$store.dispatch('c3s/user/validate').then(v => {
 
+          console.log( 'validate response: ');
           console.log( v );
 
           this.showSubmissionInfo = true;

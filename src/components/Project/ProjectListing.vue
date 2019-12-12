@@ -1,20 +1,27 @@
 <template>
-    <div class="scroll-effect">
-        <div class="margin-bottom" v-show="loadedProjects.length >= Math.min( 6, limit)">
-            <div class="margin-bottom">
-                <div class="row row-wrapping row-centered">
-                    <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
-                        <ProjectTeaser :project="loadedProject[0]" :media="loadedProject[1]"></ProjectTeaser>
+    <div>
+        <template v-if="allProjects !== undefined">
+            <template v-if="allProjects.length > 0">
+                <div class="margin-bottom" v-show="loadedProjects.length > 0">
+                    <div class="margin-bottom">
+                        <div class="row row-wrapping row-centered">
+                            <div class="col col-wrapping col-large-5" :key="loadedProject[0].id" v-for="loadedProject in loadedProjects">
+                                <ProjectTeaser :project="loadedProject[0]" :media="loadedProject[1]"></ProjectTeaser>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-centered" v-if="showMore && !allLoaded">
+                        <div class="button-group centered">
+                            <button @click="loadMore" class="button button-secondary">Show more Projects</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row row-centered" v-if="showMore">
-                <div class="button-group centered">
-                    <button @click="loadMore" class="button button-secondary">Show more Projects</button>
-                </div>
-            </div>
-        </div>
-        <Loader v-show="loadedProjects.length < Math.min( 6, limit)"></Loader>
+            </template>
+            <template v-else>
+                <p class="centered">No projects</p>
+            </template>
+        </template>
+        <Loader v-else></Loader>
     </div>
 </template>
 
@@ -34,15 +41,17 @@
             showMore: {
                 type: Boolean,
                 default: false
-            }
+            },
+            search: Object
         },
         data() {
             return {
-                allProjects: [],
+                allProjects: undefined,
                 projectsToLoad: 0,
                 loadedProjects: [],
                 loadOffset: 0,
-                loadLimit: this.limit
+                loadLimit: this.limit,
+                allLoaded: false
             }
         },
         created() {
@@ -57,14 +66,21 @@
                 // 'getProjectsWithCategory'
             ]),
 
-            loadProjects( limit, offset ) {
-                this.$store.dispatch('c3s/project/getProjects', [undefined,limit,offset]).then((res) => {
+            loadProjects( search, limit, offset ) {
+                this.$store.dispatch('c3s/project/getProjects', [search,limit,offset]).then((res) => {
                     // get all the projects only for the 'all' tab
                     //this.getProjectActivities(this.projectId).then((p) => {
                     if (res.status === 200) {
+                        console.log( res);
                         //this.projects = p.body.data;
                         // init the tab 'all' to the first page
                         //this.categoryAllPageChange(1)
+                        if( this.allProjects === undefined ) {
+                            this.allProjects = [];
+                        }
+                        if( res.body.data.length < limit ) {
+                            this.allLoaded = true;
+                        }
                         this.allProjects = this.allProjects.concat( res.body.data );
                         this.projectsToLoad = this.allProjects.length;
                         this.loadMediaForProject(this.loadOffset);
@@ -73,7 +89,7 @@
                 })
             },
             loadMore() {
-                this.loadProjects( this.loadLimit, this.loadOffset );
+                this.loadProjects( this.search, this.loadLimit, this.loadOffset );
             },
             loadMediaForProject(index) {
                 if( index < this.projectsToLoad ) {

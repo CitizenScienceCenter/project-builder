@@ -21,7 +21,9 @@
             <h2 class="heading centered">{{ $t('projects-header') }}</h2>
           </div>
         </div>
-        <ProjectListing :limit="20" showMore></ProjectListing>
+        <div class="scroll-effect">
+          <ProjectListing :limit="20" showMore></ProjectListing>
+        </div>
       </div>
     </app-content-section>
 
