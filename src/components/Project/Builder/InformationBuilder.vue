@@ -30,7 +30,7 @@
                 <h3 class="subheading">Project Picture</h3>
 
                 <div class="form-field form-field-block">
-                  <label>Title</label>
+                  <label>Image</label>
                   <input type="file" accept=".jpg, .png, .gif, .svg" placeholder="Select a picture ..." @change="setImage" />
                   <span class="message error" v-if="selectedPictureSizeInMB > maxPictureSizeInMB">The picture is too big in file size.</span>
                   <span class="message info">Authorized formats: .jpg, .png, .gif, .svg. <br>The picture must not exceed {{ maxPictureSizeInMB }} MB.</span>

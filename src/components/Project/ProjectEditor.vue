@@ -1,7 +1,129 @@
 <template>
   <div>
 
+    <h2 class="heading centered">Edit Project</h2>
 
+    <div class="content-subsection">
+      <form @submit.prevent="onSubmit">
+
+        <div class="form-field form-field-block">
+          <label>Project Name</label>
+          <input type="text" v-model="form.name" autocomplete="new-password" />
+          <span v-if="validated('name') && validFeedback('name')" class="message success">{{validFeedback('name')}}</span>
+          <span v-if="!validated('name') && invalidFeedback('name')" class="message error">{{invalidFeedback('name')}}</span>
+        </div>
+
+        <div class="form-field form-field-block">
+          <label>Short Description</label>
+          <growing-textarea v-model="form.shortDescription" placeholder="Please write a short description ..."></growing-textarea>
+          <span v-if="validated('shortDescription') && validFeedback('shortDescription')" class="message success">{{validFeedback('shortDescription')}}</span>
+          <span v-if="!validated('shortDescription') && invalidFeedback('shortDescription')" class="message error">{{invalidFeedback('shortDescription')}}</span>
+        </div>
+
+        <h3 class="subheading centered">Project Information</h3>
+
+        <div class="form-field form-field-block">
+          <label>Project Purpose</label>
+          <growing-textarea v-model="form.whatWhy" placeholder="What is the purpose of your project."></growing-textarea>
+          <span v-if="validated('whatWhy') && validFeedback('whatWhy')" class="message success">{{validFeedback('whatWhy')}}</span>
+          <span v-if="!validated('whatWhy') && invalidFeedback('whatWhy')" class="message error">{{invalidFeedback('whatWhy')}}</span>
+        </div>
+
+        <div class="form-field form-field-block">
+          <label>Usage of Results</label>
+          <growing-textarea v-model="form.how" placeholder="How you will use the contribution results."></growing-textarea>
+          <span v-if="validated('how') && validFeedback('how')" class="message success">{{validFeedback('how')}}</span>
+          <span v-if="!validated('how') && invalidFeedback('how')" class="message error">{{invalidFeedback('how')}}</span>
+        </div>
+
+        <div class="form-field form-field-block">
+          <label>Who should contribute</label>
+          <growing-textarea v-model="form.who" placeholder="Explain who should contribute to this project."></growing-textarea>
+          <span v-if="validated('who') && validFeedback('who')" class="message success">{{validFeedback('who')}}</span>
+          <span v-if="!validated('who') && invalidFeedback('who')" class="message error">{{invalidFeedback('who')}}</span>
+        </div>
+
+        <div class="form-field form-field-block">
+          <label>Contact Information</label>
+          <growing-textarea v-model="form.keepTrack" placeholder="Your Email, Phone, Address, ..."></growing-textarea>
+          <span v-if="validated('keepTrack') && validFeedback('keepTrack')" class="message success">{{validFeedback('keepTrack')}}</span>
+          <span v-if="!validated('keepTrack') && invalidFeedback('keepTrack')" class="message error">{{invalidFeedback('keepTrack')}}</span>
+        </div>
+
+        <div class="button-group right-aligned">
+          <submit-button :submissionInfo="infoSaved" infoMessage="Saved" :disabled="
+                        !validated('name') ||
+                        !validated('shortDescription') ||
+                        !validated('whatWhy') ||
+                        !validated('how') ||
+                        !validated('who') ||
+                        !validated('keepTrack')
+                        ">
+            Save
+          </submit-button>
+          <!--
+          <button type="submit" class="button button-primary" :disabled="
+                        !validated('name') ||
+                        !validated('shortDescription') ||
+                        !validated('whatWhy') ||
+                        !validated('how') ||
+                        !validated('who') ||
+                        !validated('keepTrack')
+                        ">Save</button>
+                        -->
+        </div>
+
+      </form>
+    </div>
+
+    <div class="content-subsection">
+      <form @submit.prevent="onPictureSubmit">
+
+        <h3 class="subheading centered">Project Image</h3>
+
+        <div class="form-field form-field-block">
+          <label>Image</label>
+          <input type="file" accept=".jpg, .png, .gif, .svg" placeholder="Select a picture ..." @change="setImage" />
+          <span class="message error" v-if="pictureSizeInMb > maxPictureSizeInMb">The picture is too big in file size.</span>
+          <span class="message info">Authorized formats: .jpg, .png, .gif, .svg. <br>The picture must not exceed {{ maxPictureSizeInMb }} MB.</span>
+        </div>
+
+        <div v-if="picture" class="margin-bottom">
+          <img :src="picture"/>
+        </div>
+
+        <div class="button-group right-aligned">
+          <submit-button :submissionInfo="imageUploaded" infoMessage="changed" :disabled="!selectedFile">
+            Change
+          </submit-button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="content-subsection">
+
+        <h3 class="subheading centered">Delete Project</h3>
+
+        <div class="form-field form-message form-message-error">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M336,432a80,80,0,1,1-80-80A80.09,80.09,0,0,1,336,432ZM185.26,25.2l13.6,272a24,24,0,0,0,24,22.8h66.34a24,24,0,0,0,24-22.8l13.6-272a24,24,0,0,0-24-25.2H209.23A24,24,0,0,0,185.26,25.2Z"/></svg>
+          </div>
+          <span class="text">If you delete the project and its tasks, it will be gone forever!</span>
+        </div>
+
+        <div class="button-group centered">
+          todo > <button @click="onDeleteprojectSubmit" class="button button-secondary">Delete the Project</button>
+        </div>
+
+    </div>
+
+
+    <!--
+
+    <br>
+    <br>
+    <br>
 
     <b-row class="mt-4 mb-4">
 
@@ -36,7 +158,7 @@
 
           </b-form-group>
 
-          <!-- WhatWhy, How, Who, Keep Track -->
+
           <b-form-group
             label-size="lg"
             label-class="mb-3"
@@ -84,7 +206,7 @@
         </b-form>
       </b-col>
 
-      <!-- Avatar update -->
+
       <b-col md="5" class="mt-md-0 mt-5">
         <b-form ref="picture-form" @submit.prevent="onPictureSubmit">
           <b-form-group :description="'Authorized formats: .jpg, .png, .gif, .svg. Maximum file size: ' + maxPictureSizeInMb + 'MB.'"
@@ -92,9 +214,10 @@
                         invalid-feedback="The picture is too big"
           >
 
-            <!--
+
             <vue-cropper v-show="(('info' in project) && ('thumbnail_url' in project.info)) || picture" ref="cropper" :view-mode="2" :autoCropArea="1" :aspectRatio="4/3"></vue-cropper>
-            -->
+
+
             <img :src="picture"/>
 
 
@@ -109,7 +232,6 @@
 
     </b-row>
 
-    <!-- Delete project -->
     <b-row class="mt-5 mb-4">
       <b-col>
         <b-alert :show="true" variant="danger" class="text-center">
@@ -121,6 +243,7 @@
         </b-modal>
       </b-col>
     </b-row>
+    -->
 
   </div>
 
@@ -130,10 +253,14 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import slug from 'slug'
 import { getFormErrorsAsString, uuid } from '@/helper'
+import GrowingTextarea from "@/components/shared/GrowingTextarea";
+import SubmitButton from "@/components/shared/SubmitButton";
 
 export default {
   name: 'ProjectEditor',
   components: {
+    SubmitButton,
+    GrowingTextarea
   },
   mounted () {
     if (Object.keys(this.project).length > 0) {
@@ -185,7 +312,10 @@ export default {
         keepTrack: {
           maxLength: 400
         }
-      }
+      },
+
+      infoSaved: false,
+      imageUploaded: false
     }
   },
   methods: {
@@ -195,7 +325,8 @@ export default {
       'updateProject'
     ]),
     ...mapActions('c3s/media', [
-      'uploadMedia'
+      'uploadMedia',
+      'deleteMedium'
     ]),
     ...mapMutations('notification', [
       'showSuccess', 'showError', 'showInfo'
@@ -215,6 +346,26 @@ export default {
     onSubmit () {
       if (this.isFormValid()) {
 
+        let newProjectData = {};
+        newProjectData['name'] = this.form.name;
+        newProjectData['info'] = Object.assign( {}, this.project.info );
+        newProjectData['info']['shortDescription'] = this.form.shortDescription;
+        newProjectData['description'] = {};
+        newProjectData['description']['whatWhy'] = this.form.whatWhy;
+        newProjectData['description']['how'] = this.form.how;
+        newProjectData['description']['who'] = this.form.who;
+        newProjectData['description']['keepTrack'] = this.form.keepTrack;
+        newProjectData['description'] = JSON.stringify( newProjectData['description'] );
+
+        this.$store.dispatch('c3s/project/updateProject', [this.project.id, newProjectData]).then( res => {
+          this.infoSaved = true;
+          let self = this;
+          setTimeout( function() {
+            self.infoSaved = false;
+          }, 1000);
+        });
+
+        /*
         this.updateProject({
           project: this.project,
           form: {
@@ -229,6 +380,8 @@ export default {
             anonymous_allowed: this.form.allowAnonymousContributors
           }
         }).then(response => {
+          console.log('update response');
+          console.log( response );
           if ('form' in response && 'errors' in response.form) {
             this.showError({
               title: 'Error',
@@ -247,8 +400,9 @@ export default {
           title: 'Incomplete form',
           content: 'All the fields must be validated to update the project data'
         })
-      }
 
+         */
+      }
     },
 
     /**
@@ -258,7 +412,7 @@ export default {
       // check if a picture is selected
       if (this.selectedFile) {
         // check if the size of the picture is correct
-        if (this.pictureSizeInMb() <= this.maxPictureSizeInMb) {
+        if (this.pictureSizeInMb <= this.maxPictureSizeInMb) {
 
           this.$store.dispatch('c3s/media/uploadMedia',[
             this.project.id,
@@ -266,15 +420,30 @@ export default {
             this.selectedFile
           ]).then(response => {
             if (response) {
+
+              /*
               this.showSuccess({
                 title: 'Success',
                 content: 'Project picture updated'
               })
+              */
+
+              this.imageUploaded = true;
+              let self = this;
+              setTimeout( function() {
+                self.imageUploaded = false;
+              }, 1000);
+
               this.selectedFile = undefined
-              this.getProjectMedia(this.project.id)
+
+              this.$emit('refreshMedia');
+
+              //this.getProjectMedia(this.project.id)
             }
           })
-        } else {
+
+        }
+        else {
           this.showError({
             title: 'Picture too big',
             content: 'Your picture must be less than ' + this.maxPictureSizeInMb + 'MB'
@@ -292,9 +461,14 @@ export default {
      * Delete the current project
      */
     onDeleteprojectSubmit () {
+      console.log('delete project');
+
       this.deleteProject(this.project.id).then(response => {
         if (response) {
-          this.$router.push({ name: 'profile' })
+
+          console.log( response );
+          //this.$router.push({ name: 'profile' })
+
         }
       })
     },
@@ -363,6 +537,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

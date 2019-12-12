@@ -82,6 +82,11 @@
 
                         let projectMedia;
                         if( media.body.length ) {
+                            media.body.sort( function(a,b){
+                                let a_time = new Date(a.created_at).getTime();
+                                let b_time = new Date(b.created_at).getTime();
+                                return b_time - a_time;
+                            });
                             projectMedia = media.body[0];
                         }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="project">
     <div v-if="!hasMedia || hasMedia && media">
 
       <project-cover :imageUrl="coverImg">
@@ -103,8 +103,8 @@
               <template slot="content">
                 <div class="content-wrapper">
                   <div class="row row-centered">
-                    <div class="col col-large-8">
-                      <projectEditor></projectEditor>
+                    <div class="col col-large-4">
+                      <projectEditor @refreshMedia="loadMedia()"></projectEditor>
                     </div>
                   </div>
                 </div>
@@ -260,22 +260,12 @@ export default {
     // eager loading: load the project and finally get stats and results
     // to have a fresh state for all sub components
 
-
     this.getProject(this.$route.params.pid || this.pid).then(project => {
 
       this.getStats(this.project.id)
       this.isAnonymousProject = !!this.project.anonymous_allowed
 
-      this.hasMedia = true;
-      this.getProjectMedia(this.pid).then(media => {
-        if( media.body.length ) {
-          this.media = media.body[0];
-          this.hasMedia = true;
-        }
-        else {
-          this.hasMedia = false;
-        }
-      });
+      this.loadMedia();
 
       if (this.project['info'] && this.project['info']['template']) {
         this.taskPresenter = this.project.info.template
@@ -310,6 +300,23 @@ export default {
     }
   },
   methods: {
+    loadMedia() {
+      this.hasMedia = true;
+      this.getProjectMedia(this.pid).then(media => {
+        if( media.body.length ) {
+          media.body.sort( function(a,b){
+            let a_time = new Date(a.created_at).getTime();
+            let b_time = new Date(b.created_at).getTime();
+            return b_time - a_time;
+          });
+          this.media = media.body[0];
+          this.hasMedia = true;
+        }
+        else {
+          this.hasMedia = false;
+        }
+      });
+    },
     ...mapActions('c3s/project', [
       'getProject',
       'createProject',
