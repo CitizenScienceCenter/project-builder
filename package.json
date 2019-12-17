@@ -15,7 +15,7 @@
     "build": "npm run prod",
     "prod": "NODE_ENV=production webpack",
     "now-build": "NODE_ENV=production webpack",
-    "now-static": "npm run build && cp config/now.json public && cd public && now --prod"
+    "now-static": "npm run build && now --prod"
   },
   "dependencies": {
     "@babel/polyfill": "^7.6.0",
