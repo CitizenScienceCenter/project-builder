@@ -27,21 +27,22 @@
                   </button>
                   <div class="info">This task allows you to present images to an user in order for him to either describe them, classify them or count them.</div>
 
-                  <button class="button button-icon button-toggle button-toggle-fullwidth"
+
+                  <button class="button button-icon button-toggle button-toggle-fullwidth" disabled
                           :class="{ 'selected': selectedMaterial === materials.sound }"
                           @click="onMaterialSelected(materials.sound)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M470.38,1.51,150.41,96A32,32,0,0,0,128,126.51V387.92A139.16,139.16,0,0,0,96,384c-53,0-96,28.66-96,64s43,64,96,64,96-28.66,96-64V214.32l256-75V323.93A138.62,138.62,0,0,0,416,320c-53,0-96,28.66-96,64s43,64,96,64,96-28.65,96-64V32A32,32,0,0,0,470.38,1.51Z"/></svg>
                     Sounds
                   </button>
-                  <div class="info">This task allows you to present sounds to an user in order for him to either describe them or classify them.</div>
+                  <div class="info">Coming Soon ... This task allows you to present sounds to an user in order for him to either describe them or classify them.</div>
 
-                  <button class="button button-icon button-toggle button-toggle-fullwidth"
+                  <button class="button button-icon button-toggle button-toggle-fullwidth" disabled
                           :class="{ 'selected': selectedMaterial === materials.video }"
                           @click="onMaterialSelected(materials.video)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M456.41,214.66l-352-208.1C75.81-10.34,32,6.06,32,47.86V464c0,37.5,40.7,60.1,72.4,41.3l352-208c31.4-18.5,31.5-64.1,0-82.6Z"/></svg>
                     Videos
                   </button>
-                  <div class="info">This task allows you to present videos to an user in order for him to either describe them or classify them.</div>
+                  <div class="info">Coming Soon ... This task allows you to present videos to an user in order for him to either describe them or classify them.</div>
 
                   <!--
                   <button class="button button-icon button-toggle button-toggle-fullwidth"
