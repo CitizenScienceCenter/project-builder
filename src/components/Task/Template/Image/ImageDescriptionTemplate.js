@@ -2,7 +2,7 @@
 const component =
   {
     template: `
-      <!-- This template use https://bootstrap-vue.js.org/ -->
+      
 <div>
     
   <div v-if="pybossa.task" class="row row-centered row-wrapping">
@@ -18,7 +18,7 @@ const component =
       
         <div class="form-field form-field-block" :key="index" v-for="(description, index) in task.content.descriptions" >
             <label>{{ description }}</label>
-            <textarea rows="1" v-model="answers[index]" placeholder="Describe ..."></textarea>
+            <growing-textarea v-model="answers[index]" placeholder="Describe ..."></growing-textarea>
         </div>
         
         <div class="button-group right-aligned">
@@ -34,6 +34,9 @@ const component =
           </p>
       </div>
   </div>
+  
+  
+  <!-- This template use https://bootstrap-vue.js.org/ -->
   
   <!--
     
@@ -95,12 +98,16 @@ const component =
       answers: [],
       showAlert: false
     },
-      props: {
-          /* Injected by the Pybossa App */
-          pybossa: {
-              required: true
-          }
+
+    props: {
+      /* Injected by the Pybossa App */
+      pybossa: {
+          required: true
       },
+      growingTextarea: {
+          required: true
+      }
+    },
 
     methods: {
       submit () {
@@ -136,6 +143,8 @@ const component =
 
     created () {
       this.descriptions.forEach(() => this.answers.push(''))
+
+        this.$options.components.GrowingTextarea = this.growingTextarea;
     },
 
     mounted () {

@@ -12,7 +12,7 @@
       <div class="content-wrapper">
 
         <template v-if="taskPresenterExists">
-          <component v-if="taskPresenterLoaded" ref="presenter" :is="presenterComponent" :pybossa="this"></component>
+          <component v-if="taskPresenterLoaded" ref="presenter" :is="presenterComponent" :pybossa="this" :growingTextarea="growingTextarea"></component>
           <Loader v-else></Loader>
         </template>
 
@@ -50,6 +50,7 @@
     </b-row>
     -->
   </div>
+
 </template>
 
 <script>
@@ -58,6 +59,8 @@ import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
 import Loader from "@/components/shared/Loader";
+
+import GrowingTextarea from "@/components/shared/GrowingTextarea";
 
 export default {
   name: 'TemplateRenderer',
@@ -99,7 +102,9 @@ export default {
       template: undefined,
       taskIndex: 0,
       task: undefined,
-      userProgress: 0
+      userProgress: 0,
+
+      growingTextarea: GrowingTextarea
     }
   },
   computed: {
