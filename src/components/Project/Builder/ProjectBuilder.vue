@@ -136,6 +136,8 @@ export default {
         this.createProject({
           name: this.title,
           info: {
+            builder: true,
+            approved: false,
             shortDescription: this.shortDescription,
           },
           description: JSON.stringify({
