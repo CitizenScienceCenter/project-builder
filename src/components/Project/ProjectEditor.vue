@@ -113,7 +113,11 @@
         </div>
 
         <div class="button-group centered">
-          todo > <button @click="onDeleteprojectSubmit" class="button button-secondary">Delete the Project</button>
+          <button v-if="!deleteProjectConfirmation" @click="onDeleteprojectSubmit" class="button button-secondary">Delete the Project</button>
+          <template v-else>
+            Are you sure?
+            <button @click="deleteProject" class="button button-secondary">Delete Project</button>
+          </template>
         </div>
 
     </div>
@@ -315,7 +319,9 @@ export default {
       },
 
       infoSaved: false,
-      imageUploaded: false
+      imageUploaded: false,
+
+      deleteProjectConfirmation: false
     }
   },
   methods: {
@@ -461,16 +467,13 @@ export default {
      * Delete the current project
      */
     onDeleteprojectSubmit () {
-      console.log('delete project');
-
-      this.deleteProject(this.project.id).then(response => {
-        if (response) {
-
-          console.log( response );
-          //this.$router.push({ name: 'profile' })
-
-        }
-      })
+      this.deleteProjectConfirmation = true;
+    },
+    deleteProject() {
+      console.log('delete project')
+      this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active':false}]).then((res) => {
+        this.$router.push('/');
+      });
     },
 
     /**
