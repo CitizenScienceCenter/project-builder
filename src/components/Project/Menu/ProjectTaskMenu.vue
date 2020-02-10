@@ -6,9 +6,12 @@
     <div class="margin-bottom">
       <div class="button-group centered">
 
-        <router-link tag="button" class="button button-secondary" :to="{ name: 'task.builder.material', params: { pid: project.id } }">Reimport Tasks</router-link>
-        <router-link disabled tag="button" :to="{ name: 'project.task.exporters', params: { id: ('id' in project) ? project.id : 0 } }" class="button button-secondary">Export Tasks</router-link>
+        <router-link tag="button" class="button button-secondary" :to="{ name: 'task.builder.material', params: { pid: project.id } }">Import Tasks</router-link>
+        <button disabled class="button button-secondary">Export Results</button>
+        <button disabled class="button button-secondary">Delete Tasks</button>
+        <!--
         <router-link disabled tag="button" :to="{ name: 'project.task.settings', params: { id: ('id' in project) ? project.id : 0 } }" class="button button-secondary">Settings</router-link>
+        -->
 
       </div>
     </div>

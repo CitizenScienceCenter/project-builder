@@ -112,13 +112,23 @@
           <span class="text">If you delete the project and its tasks, it will be gone forever!</span>
         </div>
 
-        <div class="button-group centered">
-          <button v-if="!deleteProjectConfirmation" @click="onDeleteprojectSubmit" class="button button-secondary">Delete the Project</button>
-          <template v-else>
-            Are you sure?
-            <button @click="deleteProject" class="button button-secondary">Delete Project</button>
+
+          <template v-if="!deleteProjectConfirmation">
+            <div class="button-group centered">
+              <button @click="onDeleteprojectSubmit" class="button button-secondary">Delete the Project</button>
+            </div>
           </template>
-        </div>
+
+          <template v-else>
+            <p class="centered reduced-bottom-margin">
+              Are you sure?
+            </p>
+            <div class="button-group centered">
+              <button @click="deleteProject" class="button button-secondary">Delete Project</button>
+              <button @click="deleteProjectConfirmation = false" class="button button-secondary button-secondary-naked">Cancel</button>
+            </div>
+          </template>
+
 
     </div>
 
