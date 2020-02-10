@@ -16,16 +16,37 @@
         <div class="row row-centered">
           <div class="col col-large-8">
 
-            <div v-if="isOwner && !project.active" class="button-group centered scroll-effect scroll-effect-delayed-2">
-              <!-- <router-link tag="button" to="" class="button button-primary">Complete it</router-link> -->
-              <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
-              <button @click="publish" class="button button-primary">Publish</button>
-            </div>
+            <div class="scroll-effect scroll-effect-delayed-2">
 
-            <div v-else-if="isAnonymousProject" class="button-group centered scroll-effect scroll-effect-delayed-2">
-              <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
-            </div>
+              <template v-if="!project.active">
+                <!-- inactive project -->
+                <div v-if="isAdmin" class="button-group centered">
+                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
+                  <button @click="publish" class="button button-primary">Publish</button>
+                </div>
+                <div v-else-if="isOwner" class="button-group centered">
+                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
+                  <button v-if="!project.info.requestApproval" @click="requestApproval" class="button button-primary">Request Approval</button>
+                  <button v-else @click="cancelApprovalRequest" class="button button-secondary button-secondary-inverted">Cancel Approval Request</button>
+                </div>
+              </template>
 
+              <template v-else>
+                <!-- active project -->
+                <div v-if="isAdmin" class="button-group centered">
+                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
+                  <button @click="unpublish" class="button button-secondary button-secondary-inverted">Unpublish</button>
+                </div>
+                <div v-else-if="isOwner" class="button-group centered">
+                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
+                  <button @click="unpublish" class="button button-secondary button-secondary-inverted">Unpublish</button>
+                </div>
+                <div v-else class="button-group centered">
+                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
+                </div>
+              </template>
+
+            </div>
 
           </div>
         </div>
@@ -272,9 +293,14 @@ export default {
       }
 
       if( this.currentUser && this.currentUser.id === this.project.owner) {
-        this.isOwner = true
+        this.isOwner = true;
+        /*
         this.getProjectTasks(this.project.id).then(t => {
         })
+        */
+      }
+      if( this.currentUser && this.currentUser.info.isAdmin ) {
+        this.isAdmin = true;
       }
     })
     /* ... sorry, hat to comment it out, navigating to projects wasn't working anymore
@@ -289,6 +315,7 @@ export default {
     return {
       isAnonymousProject: true,
       isOwner: false,
+      isAdmin: false,
       taskPresenter: undefined,
       media: undefined,
       hasMedia: true
@@ -338,11 +365,17 @@ export default {
     publish () {
       if (this.taskPresenter && this.taskPresenter.length > 0) {
         if (this.projectTasks.length > 0) {
-          this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active': true}]).then((res) => {
+
+          let info = JSON.parse( JSON.stringify( this.project.info ) );
+          info.requestApproval = false;
+
+          this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active': true, 'info': info}]).then((res) => {
+            /*
             this.showSuccess({
               title: 'Project Published',
               content: 'Successfully published project'
             })
+             */
           })
         } else {
           this.showError({
@@ -356,6 +389,27 @@ export default {
           content: 'You must provide a task presenter to publish the project'
         })
       }
+    },
+
+    requestApproval() {
+      let info = JSON.parse( JSON.stringify( this.project.info ) );
+      info.requestApproval = true;
+      this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'info':info}]).then((res) => {
+
+      });
+    },
+    cancelApprovalRequest() {
+      let info = JSON.parse( JSON.stringify( this.project.info ) );
+      info.requestApproval = false;
+      this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'info':info}]).then((res) => {
+
+      });
+    },
+
+    unpublish() {
+      this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active': false}]).then((res) => {
+
+      });
     }
   },
   computed: {

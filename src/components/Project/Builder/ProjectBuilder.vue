@@ -137,7 +137,7 @@ export default {
           name: this.title,
           info: {
             builder: true,
-            approved: false,
+            requestApproval: false,
             shortDescription: this.shortDescription,
           },
           description: JSON.stringify({
@@ -159,8 +159,8 @@ export default {
                 })
             }
 
-            this.resetTaskBuilder()
-            this.setTaskPresenter('')
+            this.resetTaskBuilder();
+            this.setTaskPresenter('');
             this.$router.push({name: 'project.builder.end'})
           } else {
             this.setCurrentStep(this.steps.name)

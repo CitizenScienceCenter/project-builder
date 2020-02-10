@@ -22,7 +22,112 @@
           </div>
         </div>
         <div class="scroll-effect">
-          <ProjectListing :limit="20" showMore></ProjectListing>
+
+          <template v-if="currentUser && currentUser.info.isAdmin">
+            <!-- admin users see tabs -->
+            <tabbed-content>
+              <tab>
+                <template slot="title">Active Projects</template>
+                <template slot="content">
+                  <ProjectListing :search="{
+                    'select': {
+                      'fields': [
+                        '*'
+                      ],
+                      'tables': [
+                        'projects'
+                      ],
+                      'orderBy': {
+                        'created_at': 'DESC'
+                      }
+                    },
+                    'where': [
+                      {
+                        'field': 'active',
+                        'op': 'e',
+                        'val': true
+                      },
+                      {
+                        'field': '(info->\'builder\') :: bool',
+                        'op': 'e',
+                        'val': true,
+                        'join': 'a'
+                      }
+                    ]
+                    }" :limit="20" showMore></ProjectListing>
+                </template>
+              </tab>
+              <tab>
+                <template slot="title">Waiting for Approval</template>
+                <template slot="content">
+                  <ProjectListing :search="{
+                    'select': {
+                      'fields': [
+                        '*'
+                      ],
+                      'tables': [
+                        'projects'
+                      ],
+                      'orderBy': {
+                        'created_at': 'DESC'
+                      }
+                    },
+                    'where': [
+                      {
+                        'field': 'active',
+                        'op': 'e',
+                        'val': false
+                      },
+                      {
+                        'field': '(info->\'builder\') :: bool',
+                        'op': 'e',
+                        'val': true,
+                        'join': 'a'
+                      },
+                      {
+                        'field': '(info->\'requestApproval\') :: bool',
+                        'op': 'e',
+                        'val': true,
+                        'join': 'a'
+                      },
+                    ]
+                    }" :limit="20" showMore></ProjectListing>
+                </template>
+              </tab>
+            </tabbed-content>
+          </template>
+
+          <template v-else>
+            <!-- regular users only see active builder projects -->
+            <ProjectListing :search="{
+                    'select': {
+                      'fields': [
+                        '*'
+                      ],
+                      'tables': [
+                        'projects'
+                      ],
+                      'orderBy': {
+                        'created_at': 'DESC'
+                      }
+                    },
+                    'where': [
+                      {
+                        'field': 'active',
+                        'op': 'e',
+                        'val': true
+                      },
+                      {
+                        'field': '(info->\'builder\') :: bool',
+                        'op': 'e',
+                        'val': true,
+                        'join': 'a'
+                      }
+                    ]
+                    }" :limit="20" showMore></ProjectListing>
+
+          </template>
+
         </div>
       </div>
     </app-content-section>
@@ -158,10 +263,14 @@ import { mapState, mapActions } from 'vuex'
 import ContentSection from '@/components/shared/ContentSection.vue';
 import Footer from '@/components/shared/Footer.vue';
 import ProjectListing from "@/components/Project/ProjectListing";
+import TabbedContent from "@/components/shared/TabbedContent";
+import Tab from "@/components/shared/Tab";
 
 export default {
   name: 'Discover',
   components: {
+    Tab,
+    TabbedContent,
     ProjectListing,
     'app-content-section': ContentSection,
     'app-footer': Footer,
@@ -238,7 +347,9 @@ export default {
     ...mapState('c3s/project', [
       'projects'
     ]),
-    projectId: state => state.consts.projectId,
+    ...mapState({
+      currentUser: state => state.c3s.user.currentUser
+    }),
 
     /**
      * Returns the categories with the featured category

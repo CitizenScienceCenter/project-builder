@@ -48,7 +48,34 @@
           </div>
         </div>
         <div class="margin-bottom scroll-effect">
-          <ProjectListing :limit="6"></ProjectListing>
+
+          <ProjectListing :search="{
+                    'select': {
+                      'fields': [
+                        '*'
+                      ],
+                      'tables': [
+                        'projects'
+                      ],
+                      'orderBy': {
+                        'created_at': 'DESC'
+                      }
+                    },
+                    'where': [
+                      {
+                        'field': 'active',
+                        'op': 'e',
+                        'val': true
+                      },
+                      {
+                        'field': '(info->\'builder\') :: bool',
+                        'op': 'e',
+                        'val': true,
+                        'join': 'a'
+                      }
+                    ]
+                    }" :limit="6"></ProjectListing>
+
         </div>
         <div class="row">
           <div class="col">
@@ -194,7 +221,7 @@ export default {
   computed: {
     ...mapState({
       projects: state => state.c3s.project.projects,
-      user: state => state.c3s.user.currentUser,
+      currentUser: state => state.c3s.user.currentUser,
       projectId: state => state.consts.projectId
     })
   }
