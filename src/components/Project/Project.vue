@@ -50,11 +50,26 @@
                     <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
                     <button @click="publish" class="button button-primary">Publish</button>
                   </div>
-                  <div v-else-if="isOwner" class="button-group centered">
-                    <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
-                    <button v-if="!project.info.requestApproval" @click="requestApproval" class="button button-primary">Request Approval</button>
-                    <button v-else @click="cancelApprovalRequest" class="button button-secondary button-secondary-inverted">Cancel Approval Request</button>
-                  </div>
+                  <template v-else-if="isOwner">
+                    <template v-if="!project.info.requestApproval">
+                      <div class="button-group centered">
+                        <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
+                        <button @click="requestApproval" class="button button-primary">Request Approval</button>
+                      </div>
+                    </template>
+
+                    <template v-else>
+                      <div class="button-group centered">
+                        <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
+                        <button @click="cancelApprovalRequest" class="button button-secondary button-secondary-inverted">Cancel Approval Request</button>
+                      </div>
+                      <br>
+                      <p class="centered" style="color: white">
+                        You're request be handled shortly.
+                      </p>
+                    </template>
+
+                  </template>
                 </template>
 
                 <template v-else>
