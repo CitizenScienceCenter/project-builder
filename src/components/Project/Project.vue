@@ -18,32 +18,60 @@
 
             <div class="scroll-effect scroll-effect-delayed-2">
 
-              <template v-if="!project.active">
-                <!-- inactive project -->
-                <div v-if="isAdmin" class="button-group centered">
-                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
-                  <button @click="publish" class="button button-primary">Publish</button>
+              <template v-if="!taskPresenter || projectTasks.length < 1">
+
+                <div v-if="!taskPresenter" class="form-message form-message-centered form-message-error">
+                  <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M322.72,256,422.79,155.93a31.46,31.46,0,0,0,0-44.48L400.55,89.21a31.46,31.46,0,0,0-44.48,0L256,189.28,155.93,89.21a31.46,31.46,0,0,0-44.48,0L89.21,111.45a31.46,31.46,0,0,0,0,44.48L189.28,256,89.21,356.07a31.46,31.46,0,0,0,0,44.48l22.24,22.24a31.46,31.46,0,0,0,44.48,0L256,322.72,356.07,422.79a31.46,31.46,0,0,0,44.48,0l22.24-22.24a31.46,31.46,0,0,0,0-44.48Z"></path>
+                    </svg>
+                  </div>
+                  <span class="text" style="color: white">No task presenter</span>
                 </div>
-                <div v-else-if="isOwner" class="button-group centered">
-                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
-                  <button v-if="!project.info.requestApproval" @click="requestApproval" class="button button-primary">Request Approval</button>
-                  <button v-else @click="cancelApprovalRequest" class="button button-secondary button-secondary-inverted">Cancel Approval Request</button>
+
+                <div v-if="projectTasks.length < 1" class="form-message form-message-centered form-message-error">
+                  <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M322.72,256,422.79,155.93a31.46,31.46,0,0,0,0-44.48L400.55,89.21a31.46,31.46,0,0,0-44.48,0L256,189.28,155.93,89.21a31.46,31.46,0,0,0-44.48,0L89.21,111.45a31.46,31.46,0,0,0,0,44.48L189.28,256,89.21,356.07a31.46,31.46,0,0,0,0,44.48l22.24,22.24a31.46,31.46,0,0,0,44.48,0L256,322.72,356.07,422.79a31.46,31.46,0,0,0,44.48,0l22.24-22.24a31.46,31.46,0,0,0,0-44.48Z"></path>
+                    </svg>
+                  </div>
+                  <span class="text" style="color: white">No tasks</span>
                 </div>
+
               </template>
 
+
               <template v-else>
-                <!-- active project -->
-                <div v-if="isAdmin" class="button-group centered">
-                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
-                  <button @click="unpublish" class="button button-secondary button-secondary-inverted">Unpublish</button>
-                </div>
-                <div v-else-if="isOwner" class="button-group centered">
-                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
-                  <button @click="unpublish" class="button button-secondary button-secondary-inverted">Unpublish</button>
-                </div>
-                <div v-else class="button-group centered">
-                  <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
-                </div>
+                <!-- show buttons if tasks exists -->
+
+                <template v-if="!project.active">
+                  <!-- inactive project -->
+                  <div v-if="isAdmin" class="button-group centered">
+                    <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
+                    <button @click="publish" class="button button-primary">Publish</button>
+                  </div>
+                  <div v-else-if="isOwner" class="button-group centered">
+                    <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-secondary button-secondary-inverted">Preview</router-link>
+                    <button v-if="!project.info.requestApproval" @click="requestApproval" class="button button-primary">Request Approval</button>
+                    <button v-else @click="cancelApprovalRequest" class="button button-secondary button-secondary-inverted">Cancel Approval Request</button>
+                  </div>
+                </template>
+
+                <template v-else>
+                  <!-- active project -->
+                  <div v-if="isAdmin" class="button-group centered">
+                    <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
+                    <button @click="unpublish" class="button button-secondary button-secondary-inverted">Unpublish</button>
+                  </div>
+                  <div v-else-if="isOwner" class="button-group centered">
+                    <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
+                    <button @click="unpublish" class="button button-secondary button-secondary-inverted">Unpublish</button>
+                  </div>
+                  <div v-else class="button-group centered">
+                    <router-link tag="button" :to="{ name: 'project.task.presenter' }" class="button button-primary">Contribute now</router-link>
+                  </div>
+                </template>
+
               </template>
 
             </div>
@@ -283,7 +311,16 @@ export default {
 
     this.getProject(this.$route.params.pid || this.pid).then(project => {
 
-      this.getStats(this.project.id)
+      console.log( 'stats');
+      /*
+      this.getStats(this.pid).then( stats => {
+        console.log( stats );
+      });
+      */
+      this.getStats(this.pid).then( res => {
+
+      });
+
       this.isAnonymousProject = !!this.project.anonymous_allowed
 
       this.loadMedia();
@@ -363,6 +400,13 @@ export default {
     ]),
 
     publish () {
+      let info = JSON.parse( JSON.stringify( this.project.info ) );
+      info.requestApproval = false;
+
+      this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active': true, 'info': info}]).then((res) => {
+
+      });
+      /*
       if (this.taskPresenter && this.taskPresenter.length > 0) {
         if (this.projectTasks.length > 0) {
 
@@ -370,12 +414,10 @@ export default {
           info.requestApproval = false;
 
           this.$store.dispatch('c3s/project/updateProject', [this.project.id, {'active': true, 'info': info}]).then((res) => {
-            /*
             this.showSuccess({
               title: 'Project Published',
               content: 'Successfully published project'
             })
-             */
           })
         } else {
           this.showError({
@@ -389,6 +431,7 @@ export default {
           content: 'You must provide a task presenter to publish the project'
         })
       }
+       */
     },
 
     requestApproval() {
